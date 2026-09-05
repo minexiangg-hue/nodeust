@@ -47,7 +47,7 @@ export async function POST(_request: NextRequest, context: Context) {
         createdAt: now,
         updatedAt: now,
       })
-      .onConflictDoNothing();
+      .onDuplicateKeyUpdate({ set: { updatedAt: now } });
     const [exchange] = await getDb()
       .select()
       .from(contactExchangeRequests)

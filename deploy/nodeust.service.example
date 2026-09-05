@@ -1,0 +1,26 @@
+[Unit]
+Description=NODE HKUST community web application
+After=network-online.target mysql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nodeust
+Group=nodeust
+WorkingDirectory=/opt/nodeust
+Environment=NODE_ENV=production
+Environment=HOSTNAME=127.0.0.1
+Environment=PORT=3000
+EnvironmentFile=/etc/nodeust/nodeust.env
+ExecStart=/usr/bin/node /opt/nodeust/.next/standalone/server.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/nodeust
+
+[Install]
+WantedBy=multi-user.target

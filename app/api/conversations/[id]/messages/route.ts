@@ -47,15 +47,13 @@ export async function POST(request: NextRequest, context: Context) {
         { status: 422 },
       );
     const messageId = crypto.randomUUID();
-    await getDb()
-      .insert(messages)
-      .values({
-        id: messageId,
-        conversationId: id,
-        senderId: member.id,
-        body,
-        createdAt: new Date(),
-      });
+    await getDb().insert(messages).values({
+      id: messageId,
+      conversationId: id,
+      senderId: member.id,
+      body,
+      createdAt: new Date(),
+    });
     return NextResponse.json({ id: messageId }, { status: 201 });
   } catch {
     return NextResponse.json({ error: '消息发送失败。' }, { status: 500 });

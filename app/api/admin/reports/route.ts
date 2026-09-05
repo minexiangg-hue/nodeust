@@ -42,6 +42,7 @@ export async function PATCH(request: NextRequest) {
       !input.reason?.trim()
     )
       return NextResponse.json({ error: '处置参数不完整。' }, { status: 400 });
+    const reason = input.reason.trim();
     const [report] = await getDb()
       .select()
       .from(reports)
@@ -60,51 +61,80 @@ export async function PATCH(request: NextRequest) {
       | 'warn'
       | 'suspend'
       | 'ban';
-    const reportUpdate = getDb()
-      .update(reports)
-      .set({
-        status: action === 'dismiss' ? 'dismissed' : 'resolved',
-        assignedTo: member.id,
-        resolvedAt: now,
-      })
-      .where(eq(reports.id, report.id));
-    const auditInsert = getDb()
-      .insert(moderationActions)
-      .values({
-        id: crypto.randomUUID(),
-        moderatorId: member.id,
-        targetType: report.targetType,
-        targetId: report.targetId,
-        action,
-        reason: input.reason.trim(),
-        createdAt: now,
-      });
     if (action === 'remove' && report.targetType === 'post') {
-      await getDb().batch([
-        reportUpdate,
-        auditInsert,
-        getDb()
+      await getDb().transaction(async (transaction) => {
+        await transaction
+          .update(reports)
+          .set({
+            status: 'resolved',
+            assignedTo: member.id,
+            resolvedAt: now,
+          })
+          .where(eq(reports.id, report.id));
+        await transaction.insert(moderationActions).values({
+          id: crypto.randomUUID(),
+          moderatorId: member.id,
+          targetType: report.targetType,
+          targetId: report.targetId,
+          action,
+          reason,
+          createdAt: now,
+        });
+        await transaction
           .update(posts)
           .set({ status: 'removed', updatedAt: now })
-          .where(eq(posts.id, report.targetId)),
-      ]);
+          .where(eq(posts.id, report.targetId));
+      });
     } else if (
       (action === 'suspend' || action === 'ban') &&
       report.targetType === 'user'
     ) {
-      await getDb().batch([
-        reportUpdate,
-        auditInsert,
-        getDb()
+      await getDb().transaction(async (transaction) => {
+        await transaction
+          .update(reports)
+          .set({
+            status: 'resolved',
+            assignedTo: member.id,
+            resolvedAt: now,
+          })
+          .where(eq(reports.id, report.id));
+        await transaction.insert(moderationActions).values({
+          id: crypto.randomUUID(),
+          moderatorId: member.id,
+          targetType: report.targetType,
+          targetId: report.targetId,
+          action,
+          reason,
+          createdAt: now,
+        });
+        await transaction
           .update(users)
           .set({
             status: action === 'ban' ? 'banned' : 'suspended',
             updatedAt: now,
           })
-          .where(eq(users.id, report.targetId)),
-      ]);
+          .where(eq(users.id, report.targetId));
+      });
     } else {
-      await getDb().batch([reportUpdate, auditInsert]);
+      await getDb().transaction(async (transaction) => {
+        await transaction
+          .update(reports)
+          .set({
+            status: action === 'dismiss' ? 'dismissed' : 'resolved',
+            assignedTo: member.id,
+            resolvedAt: now,
+          })
+          .where(eq(reports.id, report.id));
+        await transaction.insert(moderationActions).values({
+          id: crypto.randomUUID(),
+          moderatorId: member.id,
+          targetType: report.targetType,
+          targetId: report.targetId,
+          action,
+          reason,
+          createdAt: now,
+        });
+      });
     }
     return NextResponse.json({
       id: report.id,

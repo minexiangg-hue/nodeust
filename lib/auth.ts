@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto';
 import { headers } from 'next/headers';
 
 export type AppUser = {
@@ -15,8 +16,10 @@ export async function getCurrentUser(): Promise<AppUser | null> {
   const identityId = requestHeaders.get('x-hkust-uid');
   const email = requestHeaders.get('x-hkust-email');
   const affiliation = requestHeaders.get('x-hkust-affiliation');
+  const trustedIdentitySource =
+    process.env.NODE_ENV === 'development' || isTrustedProxy(requestHeaders);
 
-  if (identityId && email && HKUST_EMAIL.test(email)) {
+  if (trustedIdentitySource && identityId && email && HKUST_EMAIL.test(email)) {
     return {
       identityId,
       email,
@@ -37,6 +40,19 @@ export async function getCurrentUser(): Promise<AppUser | null> {
   }
 
   return null;
+}
+
+function isTrustedProxy(requestHeaders: Headers) {
+  const expected = process.env.NODE_TRUSTED_PROXY_SECRET;
+  const received = requestHeaders.get('x-node-proxy-secret');
+  if (!expected || !received) return false;
+
+  const expectedBytes = Buffer.from(expected);
+  const receivedBytes = Buffer.from(received);
+  return (
+    expectedBytes.length === receivedBytes.length &&
+    timingSafeEqual(expectedBytes, receivedBytes)
+  );
 }
 
 export async function requireCurrentUser(): Promise<AppUser> {

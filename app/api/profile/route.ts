@@ -19,6 +19,11 @@ export async function PATCH(request: NextRequest) {
     const member = await requireMember();
     const input = (await request.json()) as Record<string, unknown>;
     const nickname = clean(input.nickname, 50);
+    const preferredLanguage = ['zh-CN', 'zh-HK', 'en'].includes(
+      String(input.preferredLanguage),
+    )
+      ? (String(input.preferredLanguage) as 'en' | 'zh-CN' | 'zh-HK')
+      : member.preferredLanguage;
     const update = {
       ...(nickname ? { nickname } : {}),
       department: clean(input.department, 100),
@@ -28,11 +33,7 @@ export async function PATCH(request: NextRequest) {
       avatarSeed: clean(input.avatarSeed, 80),
       contactMethod: clean(input.contactMethod, 30),
       contactValue: clean(input.contactValue, 120),
-      preferredLanguage: ['zh-CN', 'zh-HK', 'en'].includes(
-        String(input.preferredLanguage),
-      )
-        ? String(input.preferredLanguage)
-        : member.preferredLanguage,
+      preferredLanguage,
       profileVisibility:
         input.profileVisibility === 'mutual'
           ? ('mutual' as const)

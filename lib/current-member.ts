@@ -1,5 +1,4 @@
-import { env } from 'cloudflare:workers';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 
 import { getDb } from '@/db';
 import { users } from '@/db/schema';
@@ -18,45 +17,51 @@ const animals = [
 
 export async function requireMember() {
   const identity = await requireCurrentUser();
-  const now = Date.now();
-  const userId = crypto.randomUUID();
-  const alias = `${animals[Math.floor(Math.random() * animals.length)]} ${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
-
-  await env.DB.prepare(`
-    INSERT OR IGNORE INTO users (
-      id, identity_id, email, affiliation, full_name, nickname, anonymous_alias,
-      preferred_language, role, status, created_at, updated_at
-    )
-    SELECT ?, ?, ?, ?, ?, ?, ?, 'en',
-      CASE WHEN NOT EXISTS (SELECT 1 FROM users) THEN 'owner' ELSE ? END,
-      'active', ?, ?
-  `)
-    .bind(
-      userId,
-      identity.identityId,
-      identity.email.toLowerCase(),
-      identity.affiliation,
-      identity.fullName,
-      identity.fullName,
-      alias,
-      preferredRole(identity),
-      now,
-      now,
-    )
-    .run();
-
-  const [member] = await getDb()
+  const db = getDb();
+  let [member] = await db
     .select()
     .from(users)
     .where(eq(users.identityId, identity.identityId))
     .limit(1);
+
+  if (!member) {
+    const now = new Date();
+    const [{ total }] = await db.select({ total: count() }).from(users);
+    const alias = `${animals[Math.floor(Math.random() * animals.length)]} ${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+
+    await db
+      .insert(users)
+      .values({
+        id: crypto.randomUUID(),
+        identityId: identity.identityId,
+        email: identity.email.toLowerCase(),
+        affiliation: identity.affiliation,
+        fullName: identity.fullName,
+        nickname: identity.fullName,
+        anonymousAlias: alias,
+        preferredLanguage: 'en',
+        role: preferredRole(identity, total === 0),
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      })
+      .onDuplicateKeyUpdate({ set: { updatedAt: now } });
+
+    [member] = await db
+      .select()
+      .from(users)
+      .where(eq(users.identityId, identity.identityId))
+      .limit(1);
+  }
+
   if (!member || member.status !== 'active')
     throw new Error(member?.status === 'banned' ? 'BANNED' : 'SUSPENDED');
   return member;
 }
 
-function preferredRole(identity: AppUser) {
+function preferredRole(identity: AppUser, isFirstMember: boolean) {
   if (identity.role === 'owner') return 'owner';
+  if (isFirstMember) return 'owner';
   if (
     process.env.NODE_OWNER_EMAIL?.toLowerCase() === identity.email.toLowerCase()
   )

@@ -18,6 +18,7 @@ export async function PATCH(request: NextRequest) {
     };
     if (!input.userId || !input.action || !input.reason?.trim())
       return NextResponse.json({ error: '处置参数不完整。' }, { status: 400 });
+    const reason = input.reason.trim();
     const [target] = await getDb()
       .select()
       .from(users)
@@ -46,25 +47,26 @@ export async function PATCH(request: NextRequest) {
                     : ('suspended' as const),
               updatedAt: now,
             };
-    await getDb().batch([
-      getDb().update(users).set(userUpdate).where(eq(users.id, target.id)),
-      getDb()
-        .insert(moderationActions)
-        .values({
-          id: crypto.randomUUID(),
-          moderatorId: actor.id,
-          targetType: 'user',
-          targetId: target.id,
-          action:
-            action === 'make_moderator' ||
-            action === 'make_admin' ||
-            action === 'activate'
-              ? 'restore'
-              : action,
-          reason: input.reason.trim(),
-          createdAt: now,
-        }),
-    ]);
+    await getDb().transaction(async (transaction) => {
+      await transaction
+        .update(users)
+        .set(userUpdate)
+        .where(eq(users.id, target.id));
+      await transaction.insert(moderationActions).values({
+        id: crypto.randomUUID(),
+        moderatorId: actor.id,
+        targetType: 'user',
+        targetId: target.id,
+        action:
+          action === 'make_moderator' ||
+          action === 'make_admin' ||
+          action === 'activate'
+            ? 'restore'
+            : action,
+        reason,
+        createdAt: now,
+      });
+    });
     return NextResponse.json({ userId: target.id, action, status: 'updated' });
   } catch {
     return NextResponse.json({ error: '账号操作失败。' }, { status: 500 });

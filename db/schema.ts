@@ -1,48 +1,55 @@
 import {
+  boolean,
+  datetime,
   index,
-  integer,
-  sqliteTable,
+  int,
+  mysqlEnum,
+  mysqlTable,
   text,
   uniqueIndex,
-} from 'drizzle-orm/sqlite-core';
+  varchar,
+} from 'drizzle-orm/mysql-core';
 
-export const users = sqliteTable(
+const id = (name: string) => varchar(name, { length: 36 });
+const instant = (name: string) => datetime(name, { mode: 'date', fsp: 3 });
+
+export const users = mysqlTable(
   'users',
   {
-    id: text('id').primaryKey(),
-    identityId: text('identity_id').notNull(),
-    email: text('email').notNull(),
-    affiliation: text('affiliation', {
-      enum: ['student', 'staff', 'faculty'],
-    }).notNull(),
-    fullName: text('full_name').notNull(),
-    nickname: text('nickname').notNull(),
-    anonymousAlias: text('anonymous_alias').notNull(),
-    department: text('department'),
-    programme: text('programme'),
-    yearOfStudy: text('year_of_study'),
+    id: id('id').primaryKey(),
+    identityId: varchar('identity_id', { length: 191 }).notNull(),
+    email: varchar('email', { length: 320 }).notNull(),
+    affiliation: mysqlEnum('affiliation', [
+      'student',
+      'staff',
+      'faculty',
+    ]).notNull(),
+    fullName: varchar('full_name', { length: 160 }).notNull(),
+    nickname: varchar('nickname', { length: 80 }).notNull(),
+    anonymousAlias: varchar('anonymous_alias', { length: 80 }).notNull(),
+    department: varchar('department', { length: 160 }),
+    programme: varchar('programme', { length: 160 }),
+    yearOfStudy: varchar('year_of_study', { length: 40 }),
     bio: text('bio'),
-    avatarSeed: text('avatar_seed'),
-    contactMethod: text('contact_method'),
-    contactValue: text('contact_value'),
-    currentLocationId: text('current_location_id'),
-    locationUpdatedAt: integer('location_updated_at', {
-      mode: 'timestamp_ms',
-    }),
-    profileVisibility: text('profile_visibility', {
-      enum: ['private', 'mutual'],
-    })
+    avatarSeed: varchar('avatar_seed', { length: 100 }),
+    contactMethod: varchar('contact_method', { length: 40 }),
+    contactValue: varchar('contact_value', { length: 255 }),
+    currentLocationId: varchar('current_location_id', { length: 80 }),
+    locationUpdatedAt: instant('location_updated_at'),
+    profileVisibility: mysqlEnum('profile_visibility', ['private', 'mutual'])
       .notNull()
       .default('private'),
-    preferredLanguage: text('preferred_language').notNull().default('zh-CN'),
-    role: text('role', { enum: ['member', 'moderator', 'admin', 'owner'] })
+    preferredLanguage: mysqlEnum('preferred_language', ['en', 'zh-CN', 'zh-HK'])
+      .notNull()
+      .default('en'),
+    role: mysqlEnum('role', ['member', 'moderator', 'admin', 'owner'])
       .notNull()
       .default('member'),
-    status: text('status', { enum: ['active', 'suspended', 'banned'] })
+    status: mysqlEnum('status', ['active', 'suspended', 'banned'])
       .notNull()
       .default('active'),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+    createdAt: instant('created_at').notNull(),
+    updatedAt: instant('updated_at').notNull(),
   },
   (table) => [
     uniqueIndex('idx_users_identity_id').on(table.identityId),
@@ -51,30 +58,33 @@ export const users = sqliteTable(
   ],
 );
 
-export const posts = sqliteTable(
+export const posts = mysqlTable(
   'posts',
   {
-    id: text('id').primaryKey(),
-    ownerId: text('owner_id')
+    id: id('id').primaryKey(),
+    ownerId: id('owner_id')
       .notNull()
       .references(() => users.id),
-    category: text('category', {
-      enum: ['hall', 'goods', 'study', 'other'],
-    }).notNull(),
-    title: text('title').notNull(),
+    category: mysqlEnum('category', [
+      'hall',
+      'goods',
+      'study',
+      'other',
+    ]).notNull(),
+    title: varchar('title', { length: 200 }).notNull(),
     body: text('body').notNull(),
-    locationId: text('location_id'),
-    currentHall: text('current_hall'),
-    targetHall: text('target_hall'),
-    roomType: text('room_type'),
-    genderEligibility: text('gender_eligibility'),
-    availableFrom: text('available_from'),
-    status: text('status', { enum: ['active', 'matched', 'closed', 'removed'] })
+    locationId: varchar('location_id', { length: 80 }),
+    currentHall: varchar('current_hall', { length: 80 }),
+    targetHall: varchar('target_hall', { length: 80 }),
+    roomType: varchar('room_type', { length: 80 }),
+    genderEligibility: varchar('gender_eligibility', { length: 80 }),
+    availableFrom: varchar('available_from', { length: 80 }),
+    status: mysqlEnum('status', ['active', 'matched', 'closed', 'removed'])
       .notNull()
       .default('active'),
-    replyCount: integer('reply_count').notNull().default(0),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+    replyCount: int('reply_count').notNull().default(0),
+    createdAt: instant('created_at').notNull(),
+    updatedAt: instant('updated_at').notNull(),
   },
   (table) => [
     index('idx_posts_status_category_created').on(
@@ -97,26 +107,26 @@ export const posts = sqliteTable(
   ],
 );
 
-export const announcements = sqliteTable(
+export const announcements = mysqlTable(
   'announcements',
   {
-    id: text('id').primaryKey(),
-    authorId: text('author_id')
+    id: id('id').primaryKey(),
+    authorId: id('author_id')
       .notNull()
       .references(() => users.id),
-    title: text('title').notNull(),
+    title: varchar('title', { length: 160 }).notNull(),
     body: text('body').notNull(),
-    kind: text('kind', { enum: ['info', 'maintenance', 'upgrade'] })
+    kind: mysqlEnum('kind', ['info', 'maintenance', 'upgrade'])
       .notNull()
       .default('info'),
-    status: text('status', { enum: ['draft', 'published', 'archived'] })
+    status: mysqlEnum('status', ['draft', 'published', 'archived'])
       .notNull()
       .default('published'),
-    startsAt: integer('starts_at', { mode: 'timestamp_ms' }),
-    endsAt: integer('ends_at', { mode: 'timestamp_ms' }),
-    publishedAt: integer('published_at', { mode: 'timestamp_ms' }),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+    startsAt: instant('starts_at'),
+    endsAt: instant('ends_at'),
+    publishedAt: instant('published_at'),
+    createdAt: instant('created_at').notNull(),
+    updatedAt: instant('updated_at').notNull(),
   },
   (table) => [
     index('idx_announcements_status_window').on(
@@ -128,36 +138,34 @@ export const announcements = sqliteTable(
   ],
 );
 
-export const conversations = sqliteTable(
+export const conversations = mysqlTable(
   'conversations',
   {
-    id: text('id').primaryKey(),
-    postId: text('post_id').references(() => posts.id),
-    status: text('status', { enum: ['active', 'closed', 'blocked'] })
+    id: id('id').primaryKey(),
+    postId: id('post_id').references(() => posts.id),
+    status: mysqlEnum('status', ['active', 'closed', 'blocked'])
       .notNull()
       .default('active'),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+    createdAt: instant('created_at').notNull(),
+    updatedAt: instant('updated_at').notNull(),
   },
   (table) => [
     index('idx_conversations_post_status').on(table.postId, table.status),
   ],
 );
 
-export const conversationParticipants = sqliteTable(
+export const conversationParticipants = mysqlTable(
   'conversation_participants',
   {
-    id: text('id').primaryKey(),
-    conversationId: text('conversation_id')
+    id: id('id').primaryKey(),
+    conversationId: id('conversation_id')
       .notNull()
       .references(() => conversations.id),
-    userId: text('user_id')
+    userId: id('user_id')
       .notNull()
       .references(() => users.id),
-    isBlocked: integer('is_blocked', { mode: 'boolean' })
-      .notNull()
-      .default(false),
-    joinedAt: integer('joined_at', { mode: 'timestamp_ms' }).notNull(),
+    isBlocked: boolean('is_blocked').notNull().default(false),
+    joinedAt: instant('joined_at').notNull(),
   },
   (table) => [
     uniqueIndex('idx_participants_conversation_user').on(
@@ -168,23 +176,26 @@ export const conversationParticipants = sqliteTable(
   ],
 );
 
-export const messages = sqliteTable(
+export const messages = mysqlTable(
   'messages',
   {
-    id: text('id').primaryKey(),
-    conversationId: text('conversation_id')
+    id: id('id').primaryKey(),
+    conversationId: id('conversation_id')
       .notNull()
       .references(() => conversations.id),
-    senderId: text('sender_id')
+    senderId: id('sender_id')
       .notNull()
       .references(() => users.id),
     body: text('body').notNull(),
-    kind: text('kind', {
-      enum: ['message', 'system', 'contact_request', 'contact_reveal'],
-    })
+    kind: mysqlEnum('kind', [
+      'message',
+      'system',
+      'contact_request',
+      'contact_reveal',
+    ])
       .notNull()
       .default('message'),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    createdAt: instant('created_at').notNull(),
   },
   (table) => [
     index('idx_messages_conversation_created').on(
@@ -194,32 +205,31 @@ export const messages = sqliteTable(
   ],
 );
 
-export const contactExchangeRequests = sqliteTable(
+export const contactExchangeRequests = mysqlTable(
   'contact_exchange_requests',
   {
-    id: text('id').primaryKey(),
-    conversationId: text('conversation_id')
+    id: id('id').primaryKey(),
+    conversationId: id('conversation_id')
       .notNull()
       .references(() => conversations.id),
-    requesterId: text('requester_id')
+    requesterId: id('requester_id')
       .notNull()
       .references(() => users.id),
-    recipientId: text('recipient_id')
+    recipientId: id('recipient_id')
       .notNull()
       .references(() => users.id),
-    requesterConsent: integer('requester_consent', { mode: 'boolean' })
-      .notNull()
-      .default(true),
-    recipientConsent: integer('recipient_consent', { mode: 'boolean' })
-      .notNull()
-      .default(false),
-    status: text('status', {
-      enum: ['pending', 'accepted', 'declined', 'cancelled'],
-    })
+    requesterConsent: boolean('requester_consent').notNull().default(true),
+    recipientConsent: boolean('recipient_consent').notNull().default(false),
+    status: mysqlEnum('status', [
+      'pending',
+      'accepted',
+      'declined',
+      'cancelled',
+    ])
       .notNull()
       .default('pending'),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+    createdAt: instant('created_at').notNull(),
+    updatedAt: instant('updated_at').notNull(),
   },
   (table) => [
     uniqueIndex('idx_contact_exchange_conversation_pair').on(
@@ -234,39 +244,33 @@ export const contactExchangeRequests = sqliteTable(
   ],
 );
 
-export const reports = sqliteTable(
+export const reports = mysqlTable(
   'reports',
   {
-    id: text('id').primaryKey(),
-    reporterId: text('reporter_id')
+    id: id('id').primaryKey(),
+    reporterId: id('reporter_id')
       .notNull()
       .references(() => users.id),
-    targetType: text('target_type', {
-      enum: ['post', 'message', 'user'],
-    }).notNull(),
-    targetId: text('target_id').notNull(),
-    reason: text('reason', {
-      enum: [
-        'illegal',
-        'hall_trade',
-        'fraud',
-        'harassment',
-        'hate',
-        'sexual',
-        'privacy',
-        'spam',
-        'other',
-      ],
-    }).notNull(),
+    targetType: mysqlEnum('target_type', ['post', 'message', 'user']).notNull(),
+    targetId: varchar('target_id', { length: 80 }).notNull(),
+    reason: mysqlEnum('reason', [
+      'illegal',
+      'hall_trade',
+      'fraud',
+      'harassment',
+      'hate',
+      'sexual',
+      'privacy',
+      'spam',
+      'other',
+    ]).notNull(),
     details: text('details'),
-    status: text('status', {
-      enum: ['open', 'reviewing', 'resolved', 'dismissed'],
-    })
+    status: mysqlEnum('status', ['open', 'reviewing', 'resolved', 'dismissed'])
       .notNull()
       .default('open'),
-    assignedTo: text('assigned_to').references(() => users.id),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-    resolvedAt: integer('resolved_at', { mode: 'timestamp_ms' }),
+    assignedTo: id('assigned_to').references(() => users.id),
+    createdAt: instant('created_at').notNull(),
+    resolvedAt: instant('resolved_at'),
   },
   (table) => [
     index('idx_reports_status_created').on(table.status, table.createdAt),
@@ -274,22 +278,30 @@ export const reports = sqliteTable(
   ],
 );
 
-export const moderationActions = sqliteTable(
+export const moderationActions = mysqlTable(
   'moderation_actions',
   {
-    id: text('id').primaryKey(),
-    moderatorId: text('moderator_id')
+    id: id('id').primaryKey(),
+    moderatorId: id('moderator_id')
       .notNull()
       .references(() => users.id),
-    targetType: text('target_type', {
-      enum: ['post', 'message', 'user', 'report'],
-    }).notNull(),
-    targetId: text('target_id').notNull(),
-    action: text('action', {
-      enum: ['warn', 'remove', 'restore', 'suspend', 'ban', 'dismiss'],
-    }).notNull(),
-    reason: text('reason').notNull(),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    targetType: mysqlEnum('target_type', [
+      'post',
+      'message',
+      'user',
+      'report',
+    ]).notNull(),
+    targetId: varchar('target_id', { length: 80 }).notNull(),
+    action: mysqlEnum('action', [
+      'warn',
+      'remove',
+      'restore',
+      'suspend',
+      'ban',
+      'dismiss',
+    ]).notNull(),
+    reason: varchar('reason', { length: 500 }).notNull(),
+    createdAt: instant('created_at').notNull(),
   },
   (table) => [
     index('idx_moderation_target_created').on(

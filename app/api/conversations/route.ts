@@ -29,27 +29,25 @@ export async function POST(request: NextRequest) {
 
     const id = crypto.randomUUID();
     const now = new Date();
-    await getDb().batch([
-      getDb()
+    await getDb().transaction(async (transaction) => {
+      await transaction
         .insert(conversations)
-        .values({ id, postId, createdAt: now, updatedAt: now }),
-      getDb()
-        .insert(conversationParticipants)
-        .values([
-          {
-            id: crypto.randomUUID(),
-            conversationId: id,
-            userId: member.id,
-            joinedAt: now,
-          },
-          {
-            id: crypto.randomUUID(),
-            conversationId: id,
-            userId: post.ownerId,
-            joinedAt: now,
-          },
-        ]),
-    ]);
+        .values({ id, postId, createdAt: now, updatedAt: now });
+      await transaction.insert(conversationParticipants).values([
+        {
+          id: crypto.randomUUID(),
+          conversationId: id,
+          userId: member.id,
+          joinedAt: now,
+        },
+        {
+          id: crypto.randomUUID(),
+          conversationId: id,
+          userId: post.ownerId,
+          joinedAt: now,
+        },
+      ]);
+    });
     return NextResponse.json({ id, status: 'active' }, { status: 201 });
   } catch (error) {
     return NextResponse.json(

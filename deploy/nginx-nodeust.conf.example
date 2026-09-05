@@ -1,0 +1,47 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name node.example.com;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name node.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/node.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/node.example.com/privkey.pem;
+
+    client_max_body_size 1m;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Never forward identity headers supplied by the public client.
+        # A future trusted HKUST SSO proxy must replace these empty values with
+        # verified attributes and set X-Node-Proxy-Secret itself.
+        proxy_set_header X-HKUST-UID "";
+        proxy_set_header X-HKUST-Email "";
+        proxy_set_header X-HKUST-Affiliation "";
+        proxy_set_header X-HKUST-Full-Name "";
+        proxy_set_header X-Node-Role "";
+        proxy_set_header X-Node-Proxy-Secret "";
+
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
+    }
+}
