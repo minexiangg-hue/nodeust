@@ -6,6 +6,8 @@ export type LocationGroupId =
   | 'lsk-campus'
   | 'campus-life';
 
+export type CampusLocale = 'en' | 'zh-CN' | 'zh-HK';
+
 export type CampusLocation = {
   id: string;
   label: string;
@@ -19,44 +21,65 @@ export type CampusLocation = {
 export const locationGroups: Array<{
   id: LocationGroupId;
   label: string;
+  labelZhHk: string;
   labelEn: string;
   description: string;
+  descriptionZhHk: string;
+  descriptionEn: string;
 }> = [
   {
     id: 'ug-housing',
     label: '本科生宿舍',
+    labelZhHk: '本科生宿舍',
     labelEn: 'UG Halls',
     description: 'Hall I–XIII 与赛马会大楼',
+    descriptionZhHk: 'Hall I–XIII 與賽馬會大樓',
+    descriptionEn: 'Halls I–XIII and Jockey Club residences',
   },
   {
     id: 'pg-housing',
     label: '研究生宿舍',
+    labelZhHk: '研究生宿舍',
     labelEn: 'PG Housing',
     description: 'PG Hall、University Apartments 与 GGT',
+    descriptionZhHk: 'PG Hall、University Apartments 與 GGT',
+    descriptionEn: 'PG Halls, University Apartments and GGT',
   },
   {
     id: 'staff-housing',
     label: '教职员宿舍',
+    labelZhHk: '教職員宿舍',
     labelEn: 'Staff Quarters',
     description: '按官方校园图分组展示 Staff Quarters',
+    descriptionZhHk: '按官方校園圖分組展示 Staff Quarters',
+    descriptionEn: 'Staff Quarters grouped by the official campus map',
   },
   {
     id: 'academic-core',
     label: '教学区',
+    labelZhHk: '教學區',
     labelEn: 'Academic Core',
     description: '学术大楼、图书馆与主要教学设施',
+    descriptionZhHk: '學術大樓、圖書館與主要教學設施',
+    descriptionEn: 'Academic Building, Library and teaching facilities',
   },
   {
     id: 'lsk-campus',
     label: '李兆基校区',
+    labelZhHk: '李兆基校區',
     labelEn: 'LSK Campus',
     description: '商学院、IAS 与南门一带',
+    descriptionZhHk: '商學院、IAS 與南門一帶',
+    descriptionEn: 'Business School, IAS and the South Entrance area',
   },
   {
     id: 'campus-life',
     label: '校园生活',
+    labelZhHk: '校園生活',
     labelEn: 'Campus Life',
     description: '交通、运动、演艺与公共空间',
+    descriptionZhHk: '交通、運動、演藝與公共空間',
+    descriptionEn: 'Transport, sports, performance and public spaces',
   },
 ];
 
@@ -301,7 +324,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'academic-building',
     label: 'Academic Building',
-    shortLabel: '学术大楼',
+    shortLabel: 'Academic Building',
     group: 'academic-core',
     x: 18,
     y: 24,
@@ -310,7 +333,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'academic-concourse',
     label: 'Chia-Wei Woo Academic Concourse',
-    shortLabel: '学术廊',
+    shortLabel: 'Academic Concourse',
     group: 'academic-core',
     x: 49,
     y: 15,
@@ -319,7 +342,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'library',
     label: 'Lee Shau Kee Library',
-    shortLabel: '图书馆',
+    shortLabel: 'Library',
     group: 'academic-core',
     x: 79,
     y: 25,
@@ -328,7 +351,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'enterprise-centre',
     label: 'Jockey Club Enterprise Center',
-    shortLabel: '创业中心',
+    shortLabel: 'Enterprise Center',
     group: 'academic-core',
     x: 26,
     y: 68,
@@ -337,7 +360,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'cyt-building',
     label: 'Cheng Yu Tung Building',
-    shortLabel: '郑裕彤楼',
+    shortLabel: 'CYT Building',
     group: 'academic-core',
     x: 57,
     y: 66,
@@ -346,7 +369,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'innovation-building',
     label: 'Martin Ka Shing Lee Innovation Building',
-    shortLabel: '创科大楼',
+    shortLabel: 'Innovation Building',
     group: 'academic-core',
     x: 86,
     y: 66,
@@ -356,7 +379,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'lsk-business-building',
     label: 'Lee Shau Kee Business Building',
-    shortLabel: '商学大楼',
+    shortLabel: 'LSK Business Building',
     group: 'lsk-campus',
     x: 18,
     y: 27,
@@ -374,7 +397,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'conference-lodge',
     label: 'Conference Lodge',
-    shortLabel: '会议大楼',
+    shortLabel: 'Conference Lodge',
     group: 'lsk-campus',
     x: 81,
     y: 30,
@@ -383,7 +406,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'lsk-campus-south',
     label: 'Lee Shau Kee Campus · South',
-    shortLabel: 'LSK 南区',
+    shortLabel: 'LSK Campus South',
     group: 'lsk-campus',
     x: 33,
     y: 72,
@@ -392,7 +415,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'south-entrance',
     label: 'South Entrance',
-    shortLabel: '南门',
+    shortLabel: 'South Entrance',
     group: 'lsk-campus',
     x: 70,
     y: 70,
@@ -402,7 +425,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'entrance-piazza',
     label: 'Entrance Piazza & Atrium',
-    shortLabel: '入口广场',
+    shortLabel: 'Entrance Piazza',
     group: 'campus-life',
     x: 16,
     y: 25,
@@ -411,7 +434,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'north-bus-station',
     label: 'North Bus Station',
-    shortLabel: '北门车站',
+    shortLabel: 'North Bus Station',
     group: 'campus-life',
     x: 47,
     y: 15,
@@ -420,7 +443,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'south-bus-station',
     label: 'South Bus Station',
-    shortLabel: '南门车站',
+    shortLabel: 'South Bus Station',
     group: 'campus-life',
     x: 78,
     y: 25,
@@ -429,7 +452,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'shaw-auditorium',
     label: 'Shaw Auditorium',
-    shortLabel: '逸夫演艺中心',
+    shortLabel: 'Shaw Auditorium',
     group: 'campus-life',
     x: 20,
     y: 69,
@@ -438,7 +461,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'sports-centres',
     label: 'Sports Centres & Swimming Pools',
-    shortLabel: '运动中心',
+    shortLabel: 'Sports Centres',
     group: 'campus-life',
     x: 52,
     y: 66,
@@ -447,7 +470,7 @@ export const campusLocations: CampusLocation[] = [
   {
     id: 'waterfront',
     label: 'Waterfront, BBQ & Amphitheater',
-    shortLabel: '海旁休闲区',
+    shortLabel: 'Waterfront',
     group: 'campus-life',
     x: 83,
     y: 68,
@@ -461,6 +484,57 @@ export const campusLocationIds = new Set(
 
 export function getCampusLocation(id: string | null | undefined) {
   return campusLocations.find((location) => location.id === id);
+}
+
+const locationShortTranslations: Record<
+  string,
+  { 'zh-CN': string; 'zh-HK': string }
+> = {
+  'academic-building': { 'zh-CN': '学术大楼', 'zh-HK': '學術大樓' },
+  'academic-concourse': { 'zh-CN': '学术廊', 'zh-HK': '學術廊' },
+  library: { 'zh-CN': '图书馆', 'zh-HK': '圖書館' },
+  'enterprise-centre': { 'zh-CN': '创业中心', 'zh-HK': '創業中心' },
+  'cyt-building': { 'zh-CN': '郑裕彤楼', 'zh-HK': '鄭裕彤樓' },
+  'innovation-building': { 'zh-CN': '创科大楼', 'zh-HK': '創科大樓' },
+  'lsk-business-building': { 'zh-CN': '商学大楼', 'zh-HK': '商學大樓' },
+  'conference-lodge': { 'zh-CN': '会议大楼', 'zh-HK': '會議大樓' },
+  'lsk-campus-south': { 'zh-CN': 'LSK 南区', 'zh-HK': 'LSK 南區' },
+  'south-entrance': { 'zh-CN': '南门', 'zh-HK': '南門' },
+  'entrance-piazza': { 'zh-CN': '入口广场', 'zh-HK': '入口廣場' },
+  'north-bus-station': { 'zh-CN': '北门车站', 'zh-HK': '北門車站' },
+  'south-bus-station': { 'zh-CN': '南门车站', 'zh-HK': '南門車站' },
+  'shaw-auditorium': { 'zh-CN': '逸夫演艺中心', 'zh-HK': '逸夫演藝中心' },
+  'sports-centres': { 'zh-CN': '运动中心', 'zh-HK': '運動中心' },
+  waterfront: { 'zh-CN': '海旁休闲区', 'zh-HK': '海旁休閒區' },
+};
+
+export function getCampusLocationLabel(
+  location: CampusLocation | undefined,
+  locale: CampusLocale,
+  short = true,
+) {
+  if (!location) return '';
+  if (locale === 'en') return short ? location.shortLabel : location.label;
+  return (
+    locationShortTranslations[location.id]?.[locale] ??
+    (short ? location.shortLabel : location.label)
+  );
+}
+
+export function getLocationGroupLabel(
+  group: (typeof locationGroups)[number],
+  locale: CampusLocale,
+) {
+  if (locale === 'en') return group.labelEn;
+  return locale === 'zh-HK' ? group.labelZhHk : group.label;
+}
+
+export function getLocationGroupDescription(
+  group: (typeof locationGroups)[number],
+  locale: CampusLocale,
+) {
+  if (locale === 'en') return group.descriptionEn;
+  return locale === 'zh-HK' ? group.descriptionZhHk : group.description;
 }
 
 export function getLocationForHall(hall: string | null | undefined) {

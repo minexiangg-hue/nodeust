@@ -6,14 +6,14 @@ import { users } from '@/db/schema';
 import { requireCurrentUser, type AppUser } from '@/lib/auth';
 
 const animals = [
-  '雾鲸',
-  '夜鹭',
-  '银狐',
-  '水獭',
-  '海星',
-  '松鼠',
-  '雨燕',
-  '云豹',
+  'Misty Whale',
+  'Night Heron',
+  'Silver Fox',
+  'Sea Otter',
+  'Starfish',
+  'Red Squirrel',
+  'Swift',
+  'Clouded Leopard',
 ];
 
 export async function requireMember() {
@@ -27,7 +27,7 @@ export async function requireMember() {
       id, identity_id, email, affiliation, full_name, nickname, anonymous_alias,
       preferred_language, role, status, created_at, updated_at
     )
-    SELECT ?, ?, ?, ?, ?, ?, ?, 'zh-CN',
+    SELECT ?, ?, ?, ?, ?, ?, ?, 'en',
       CASE WHEN NOT EXISTS (SELECT 1 FROM users) THEN 'owner' ELSE ? END,
       'active', ?, ?
   `)

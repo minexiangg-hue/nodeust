@@ -1,6 +1,6 @@
 # NODE
 
-NODE is a local-first MVP for an HKUST-only anonymous exchange community. It uses a segmented campus-location plaza instead of a conventional feed and supports housing matching, item exchange, study help, other campus needs, anonymous chat, mutual contact reveal, reporting, and moderation.
+NODE is a local-first MVP for an HKUST-only anonymous exchange community. It uses a segmented campus-location plaza instead of a conventional feed and supports housing matching, item exchange, study help, other campus needs, anonymous chat, mutual contact reveal, announcements, reporting, and moderation.
 
 ## Run locally
 
@@ -17,14 +17,22 @@ Open `http://localhost:3000`. Development mode uses a clearly marked local Owner
 
 ## Architecture
 
-- `app/plaza-app.tsx`: responsive campus-location plaza, manual non-GPS location tag, working matching/chat/saved sections, search/filtering, posting, profile, and Owner console.
-- `app/api/`: D1-backed posts, reports, conversations/messages, private profile, mutual contact exchange, and moderation endpoints.
-- `db/schema.ts`: users, private profiles, posts, conversations, messages, contact consent, reports, and auditable moderation actions.
+- `app/plaza-app.tsx`: responsive campus-location plaza, location-anchored pop-ups with a persistent visibility toggle, manual non-GPS location tag, working matching/chat/saved sections, search/filtering, posting, announcement board, profile, and Owner console.
+- `app/api/`: D1-backed posts, announcements, reports, conversations/messages, private profile, mutual contact exchange, and moderation endpoints.
+- `db/schema.ts`: users, private profiles, posts, announcements, conversations, messages, contact consent, reports, and auditable moderation actions.
 - `drizzle/`: append-only D1 migrations.
 - `lib/auth.ts`: authentication boundary. Local development returns a demo Owner; production accepts only identity headers written by a trusted HKUST SSO gateway.
 - `lib/content-policy.ts`: explicit prohibited-content taxonomy plus pre-publication safety checks.
 - `lib/campus-locations.ts`: shared location registry for UG/PG/staff housing, academic core, Lee Shau Kee Campus, and campus-life areas.
 - `app/rules/page.tsx`: user-facing community standard and enforcement policy.
+
+English is the default interface language and new automatic anonymous aliases are generated in English. Simplified and Traditional Chinese remain available from the language switcher.
+
+## Announcements and maintenance
+
+Owners, administrators, and moderators can publish information, maintenance, or upgrade notices from the moderation console. Published notices appear in the plaza announcement board and can be scheduled with database start/end times through the API.
+
+For planned work, publish a maintenance announcement first. To replace the home page with the lightweight maintenance screen, set `NODE_MAINTENANCE_MODE=true`; `NODE_MAINTENANCE_RETURN` and `NODE_STATUS_URL` customize its return message and optional status link. `/maintenance` always provides a preview. A provider-level outage still requires an independently hosted status page or edge fallback in production.
 
 ## HKUST SSO production handoff
 

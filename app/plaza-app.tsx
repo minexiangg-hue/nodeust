@@ -12,11 +12,14 @@ import {
   ChevronDown,
   CheckCircle2,
   Clock3,
+  Eye,
+  EyeOff,
   Flag,
   Gavel,
   List,
   Map,
   MapPin,
+  Megaphone,
   MessageCircle,
   MoreHorizontal,
   Plus,
@@ -62,6 +65,9 @@ import { Textarea } from '@/components/ui/textarea';
 import {
   campusLocations,
   getCampusLocation,
+  getCampusLocationLabel,
+  getLocationGroupDescription,
+  getLocationGroupLabel,
   locationGroups,
   type LocationGroupId,
 } from '@/lib/campus-locations';
@@ -69,6 +75,14 @@ import {
 type Locale = 'zh-CN' | 'zh-HK' | 'en';
 type Category = 'all' | 'hall' | 'goods' | 'study' | 'other';
 type ActiveSection = 'explore' | 'matches' | 'chats' | 'saved';
+type Announcement = {
+  id: string;
+  title: string;
+  body: string;
+  kind: 'info' | 'maintenance' | 'upgrade';
+  publishedAt: string | null;
+  authorAlias: string;
+};
 type RequestItem = {
   id: number | string;
   author: string;
@@ -287,12 +301,13 @@ const halls = [
 const initialRequests: RequestItem[] = [
   {
     id: 1,
-    author: '蓝鲸 271',
+    author: 'Blue Whale 271',
     category: 'hall',
     from: 'Hall VII',
     to: 'Hall III',
-    title: 'Hall VII 单人房 → Hall III',
-    detail: '希望交换 Fall term，同性别房型。时间灵活，可先匿名沟通具体情况。',
+    title: 'Hall VII single room → Hall III',
+    detail:
+      'Looking for a Fall-term swap with the same eligible room type. Timing is flexible.',
     age: '3 min',
     replies: 4,
     hall: 'VII',
@@ -301,12 +316,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 2,
-    author: '松鼠 084',
+    author: 'Red Squirrel 084',
     category: 'goods',
     from: 'Hall I',
     to: '',
-    title: '出九成新显示器支架',
-    detail: '北门或宿舍区面交，也可以交换桌面收纳用品。',
+    title: 'Monitor arm in excellent condition',
+    detail:
+      'Meet near North Gate or the halls. Open to swapping for desk organisers.',
     age: '8 min',
     replies: 2,
     hall: 'I',
@@ -315,12 +331,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 3,
-    author: '水獭 619',
+    author: 'Sea Otter 619',
     category: 'study',
     from: 'Hall III',
     to: '',
-    title: '找 COMP 2011 复习搭子',
-    detail: '每周两次，主要刷题和互相讲概念。',
+    title: 'COMP 2011 study partner',
+    detail:
+      'Twice a week for practice questions and explaining concepts to each other.',
     age: '12 min',
     replies: 6,
     hall: 'III',
@@ -329,12 +346,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 4,
-    author: '夜鹭 402',
+    author: 'Night Heron 402',
     category: 'hall',
     from: 'Hall V',
     to: 'Hall VII',
-    title: 'Hall V 双人房 → Hall VII',
-    detail: '寻找符合 SHRLO 条件的正式换宿伙伴，不涉及任何费用。',
+    title: 'Hall V double room → Hall VII',
+    detail:
+      'Seeking an eligible partner for the official SHRLO process. No payment involved.',
     age: '18 min',
     replies: 1,
     hall: 'V',
@@ -343,12 +361,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 5,
-    author: '海星 933',
+    author: 'Starfish 933',
     category: 'other',
     from: 'Academic Building',
     to: '',
-    title: '找 Python 入门学习伙伴',
-    detail: '周末一起从零练习，内容可以按课程作业进度调整。',
+    title: 'Python beginner study partner',
+    detail:
+      'Weekend practice from the basics, paced around current coursework.',
     age: '24 min',
     replies: 3,
     hall: '',
@@ -357,12 +376,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 6,
-    author: '银狐 118',
+    author: 'Silver Fox 118',
     category: 'hall',
     from: 'GGT',
     to: 'UA Tower A',
-    title: 'GGT 单人房 → UA Tower A',
-    detail: 'RPG，已有有效 hall offer，希望在正式 swapping period 申请。',
+    title: 'GGT single room → UA Tower A',
+    detail:
+      'RPG with a valid hall offer, looking to apply during the official swapping period.',
     age: '31 min',
     replies: 5,
     hall: 'GGT',
@@ -371,12 +391,12 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 7,
-    author: '雾鲸 017',
+    author: 'Misty Whale 017',
     category: 'hall',
     from: 'Hall III',
     to: 'Hall VII',
     title: 'Hall III → Hall VII',
-    detail: '希望在官方 swapping period 内办理，同性别房型。',
+    detail: 'For the official swapping period and the same eligible room type.',
     age: '36 min',
     replies: 2,
     hall: 'III',
@@ -386,12 +406,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 8,
-    author: '云豹 741',
+    author: 'Clouded Leopard 741',
     category: 'goods',
     from: 'Lee Shau Kee Business Building',
     to: '',
-    title: '交换闲置财务计算器',
-    detail: '工作日下午可在商学大楼公共区域交收。',
+    title: 'Financial calculator exchange',
+    detail:
+      'Available to meet in a public area of the Business Building on weekday afternoons.',
     age: '41 min',
     replies: 1,
     hall: '',
@@ -400,12 +421,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 9,
-    author: '夜鹭 552',
+    author: 'Night Heron 552',
     category: 'goods',
     from: 'Staff Quarters Towers 5–7',
     to: '',
-    title: '借用搬运小推车',
-    detail: '今晚搬两个收纳箱，用完即还。',
+    title: 'Looking to borrow a small trolley',
+    detail:
+      'For moving two storage boxes tonight. Will return it immediately afterwards.',
     age: '49 min',
     replies: 0,
     hall: '',
@@ -414,12 +436,13 @@ const initialRequests: RequestItem[] = [
   },
   {
     id: 10,
-    author: '海星 033',
+    author: 'Starfish 033',
     category: 'other',
     from: 'North Bus Station',
     to: '',
-    title: '坑口方向拼车同行',
-    detail: '20:30 左右从北门出发，只找同行者，不代收费用。',
+    title: 'Heading towards Hang Hau around 20:30',
+    detail:
+      'Leaving from North Gate. Looking for company only; no money collection.',
     age: '1 hr',
     replies: 3,
     hall: '',
@@ -434,8 +457,12 @@ const localeLabels: Record<Locale, string> = {
   en: 'EN',
 };
 
+function localize(locale: Locale, en: string, zhCn: string, zhHk: string) {
+  return locale === 'en' ? en : locale === 'zh-HK' ? zhHk : zhCn;
+}
+
 export function PlazaApp() {
-  const [locale, setLocale] = useState<Locale>('zh-CN');
+  const [locale, setLocale] = useState<Locale>('en');
   const [category, setCategory] = useState<Category>('all');
   const [group, setGroup] = useState<LocationGroupId>('ug-housing');
   const [activeSection, setActiveSection] = useState<ActiveSection>('explore');
@@ -451,6 +478,8 @@ export function PlazaApp() {
   const [chatPost, setChatPost] = useState<RequestItem | null>(null);
   const [chatIds, setChatIds] = useState<Set<string>>(new Set());
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
+  const [showBubbles, setShowBubbles] = useState(true);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [adminOpen, setAdminOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
@@ -530,10 +559,22 @@ export function PlazaApp() {
       const result = (await response.json()) as { error?: string };
       if (!response.ok) throw new Error(result.error);
       setNotice(
-        `地点标签已更新为 ${getCampusLocation(locationId)?.shortLabel}。`,
+        localize(
+          locale,
+          `Location updated to ${getCampusLocationLabel(getCampusLocation(locationId), locale)}.`,
+          `地点标签已更新为 ${getCampusLocationLabel(getCampusLocation(locationId), locale)}。`,
+          `地點標籤已更新為 ${getCampusLocationLabel(getCampusLocation(locationId), locale)}。`,
+        ),
       );
     } catch {
-      setNotice('地点已在本页更新，但暂时无法同步到本地数据库。');
+      setNotice(
+        localize(
+          locale,
+          'The tag changed on this page, but could not sync to the database.',
+          '地点已在本页更新，但暂时无法同步到本地数据库。',
+          '地點已在本頁更新，但暫時無法同步到本地資料庫。',
+        ),
+      );
     }
   };
 
@@ -553,7 +594,15 @@ export function PlazaApp() {
       });
       const result = (await response.json()) as { id?: string; error?: string };
       if (!response.ok || !result.id) {
-        setNotice(result.error ?? '发布失败，请稍后再试。');
+        setNotice(
+          result.error ??
+            localize(
+              locale,
+              'Could not publish. Please try again.',
+              '发布失败，请稍后再试。',
+              '發佈失敗，請稍後再試。',
+            ),
+        );
         return;
       }
       setItems((current) => [
@@ -561,9 +610,23 @@ export function PlazaApp() {
         ...current,
       ]);
       setCreateOpen(false);
-      setNotice('需求已安全写入本地数据库并发布到广场。');
+      setNotice(
+        localize(
+          locale,
+          'Your request is now live.',
+          '需求已安全写入本地数据库并发布到广场。',
+          '需求已安全寫入本地資料庫並發佈到廣場。',
+        ),
+      );
     } catch {
-      setNotice('发布失败，请检查本地服务后重试。');
+      setNotice(
+        localize(
+          locale,
+          'Could not publish. Check the local service and try again.',
+          '发布失败，请检查本地服务后重试。',
+          '發佈失敗，請檢查本地服務後重試。',
+        ),
+      );
     }
   };
 
@@ -643,6 +706,19 @@ export function PlazaApp() {
   }, []);
 
   useEffect(() => {
+    void fetch('/api/announcements')
+      .then(async (response) => {
+        if (!response.ok) return [];
+        const result = (await response.json()) as {
+          items?: Announcement[];
+        };
+        return result.items ?? [];
+      })
+      .then(setAnnouncements)
+      .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
     try {
       const storedSaved = JSON.parse(
         localStorage.getItem('node:saved') || '[]',
@@ -650,9 +726,14 @@ export function PlazaApp() {
       const storedChats = JSON.parse(
         localStorage.getItem('node:chats') || '[]',
       ) as string[];
+      const storedLocale = localStorage.getItem('node:locale') as Locale | null;
+      const storedBubbleSetting = localStorage.getItem('node:show-bubbles');
       queueMicrotask(() => {
         setSavedIds(new Set(storedSaved));
         setChatIds(new Set(storedChats));
+        if (storedLocale && ['en', 'zh-CN', 'zh-HK'].includes(storedLocale))
+          setLocale(storedLocale);
+        if (storedBubbleSetting === 'false') setShowBubbles(false);
       });
     } catch {
       localStorage.removeItem('node:saved');
@@ -667,6 +748,15 @@ export function PlazaApp() {
   useEffect(() => {
     localStorage.setItem('node:chats', JSON.stringify([...chatIds]));
   }, [chatIds]);
+
+  useEffect(() => {
+    localStorage.setItem('node:locale', locale);
+    document.documentElement.lang = locale;
+  }, [locale]);
+
+  useEffect(() => {
+    localStorage.setItem('node:show-bubbles', String(showBubbles));
+  }, [showBubbles]);
 
   useEffect(() => {
     const modelContext = (
@@ -816,6 +906,7 @@ export function PlazaApp() {
             </DialogTrigger>
             <CreatePostDialog
               t={t}
+              locale={locale}
               onCreated={publishPost}
               currentLocationId={currentLocationId}
             />
@@ -899,7 +990,7 @@ export function PlazaApp() {
           <div className="identity-card">
             <div className="mini-avatar">W</div>
             <div>
-              <strong>雾鲸 017</strong>
+              <strong>Misty Whale 017</strong>
               <span>
                 <ShieldCheck /> {t.profile}
               </span>
@@ -907,7 +998,7 @@ export function PlazaApp() {
             <MoreHorizontal />
             <p>{t.hidden}</p>
             <p className="identity-location">
-              <MapPin /> {currentLocation?.shortLabel}
+              <MapPin /> {getCampusLocationLabel(currentLocation, locale)}
             </p>
           </div>
         </aside>
@@ -918,7 +1009,7 @@ export function PlazaApp() {
               <div className="eyebrow">
                 <span className="pulse-dot" />
                 {activeSection === 'explore'
-                  ? `${t.live} · 当前记录动态计数`
+                  ? `${t.live} · ${localize(locale, 'live record counts', '当前记录动态计数', '目前記錄動態計數')}`
                   : activeSection === 'matches'
                     ? 'RECIPROCAL ROUTES'
                     : activeSection === 'chats'
@@ -939,7 +1030,13 @@ export function PlazaApp() {
               {activeSection === 'explore' ? (
                 <div className="location-status">
                   <span>
-                    <MapPin /> 我的位置标签
+                    <MapPin />{' '}
+                    {localize(
+                      locale,
+                      'My location tag',
+                      '我的位置标签',
+                      '我的位置標籤',
+                    )}
                   </span>
                   <Select
                     value={currentLocationId}
@@ -947,19 +1044,32 @@ export function PlazaApp() {
                       if (value) void updateLocation(value);
                     }}
                   >
-                    <SelectTrigger aria-label="手动设置位置标签">
+                    <SelectTrigger
+                      aria-label={localize(
+                        locale,
+                        'Set location tag manually',
+                        '手动设置位置标签',
+                        '手動設定位置標籤',
+                      )}
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {campusLocations.map((location) => (
                         <SelectItem key={location.id} value={location.id}>
-                          {location.shortLabel}
+                          {getCampusLocationLabel(location, locale)}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                   <small>
-                    <Clock3 /> 手动更新 · 非 GPS
+                    <Clock3 />{' '}
+                    {localize(
+                      locale,
+                      'Manual · no GPS',
+                      '手动更新 · 非 GPS',
+                      '手動更新 · 非 GPS',
+                    )}
                   </small>
                 </div>
               ) : (
@@ -967,7 +1077,22 @@ export function PlazaApp() {
                   variant="outline"
                   onClick={() => setActiveSection('explore')}
                 >
-                  <Map /> 返回地图
+                  <Map />{' '}
+                  {localize(locale, 'Back to map', '返回地图', '返回地圖')}
+                </Button>
+              )}
+              {activeSection === 'explore' && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="bubble-visibility"
+                  onClick={() => setShowBubbles((visible) => !visible)}
+                  aria-pressed={!showBubbles}
+                >
+                  {showBubbles ? <EyeOff /> : <Eye />}
+                  {showBubbles
+                    ? localize(locale, 'Hide pop-ups', '隐藏气泡', '隱藏氣泡')
+                    : localize(locale, 'Show pop-ups', '显示气泡', '顯示氣泡')}
                 </Button>
               )}
               <div
@@ -992,14 +1117,24 @@ export function PlazaApp() {
           </div>
 
           {activeSection === 'explore' && (
-            <div className="campus-groups" aria-label="校园分区">
+            <div
+              className="campus-groups"
+              aria-label={localize(
+                locale,
+                'Campus areas',
+                '校园分区',
+                '校園分區',
+              )}
+            >
               {locationGroups.map((locationGroup) => (
                 <button
                   key={locationGroup.id}
                   className={group === locationGroup.id ? 'active' : ''}
                   onClick={() => setGroup(locationGroup.id)}
                 >
-                  <strong>{locationGroup.label}</strong>
+                  <strong>
+                    {getLocationGroupLabel(locationGroup, locale)}
+                  </strong>
                   <span>{locationGroup.labelEn}</span>
                 </button>
               ))}
@@ -1007,16 +1142,27 @@ export function PlazaApp() {
           )}
 
           {view === 'plaza' && activeSection === 'explore' ? (
-            <div className="plaza-canvas" aria-label="校园需求地点广场">
+            <div
+              className="plaza-canvas"
+              aria-label={localize(
+                locale,
+                'Campus request map',
+                '校园需求地点广场',
+                '校園需求地點廣場',
+              )}
+            >
               <div className="zone-context">
                 <strong>
-                  {locationGroups.find((entry) => entry.id === group)?.label}
+                  {getLocationGroupLabel(
+                    locationGroups.find((entry) => entry.id === group)!,
+                    locale,
+                  )}
                 </strong>
                 <span>
-                  {
-                    locationGroups.find((entry) => entry.id === group)
-                      ?.description
-                  }
+                  {getLocationGroupDescription(
+                    locationGroups.find((entry) => entry.id === group)!,
+                    locale,
+                  )}
                 </span>
               </div>
               <div
@@ -1033,11 +1179,21 @@ export function PlazaApp() {
                   const demoCount = locationItems.length - realCount;
                   const countLabel = realCount
                     ? demoCount
-                      ? `${realCount} 实际 · ${demoCount} DEMO`
-                      : `${realCount} 条需求`
+                      ? localize(
+                          locale,
+                          `${realCount} live · ${demoCount} DEMO`,
+                          `${realCount} 实际 · ${demoCount} DEMO`,
+                          `${realCount} 實際 · ${demoCount} DEMO`,
+                        )
+                      : localize(
+                          locale,
+                          `${realCount} requests`,
+                          `${realCount} 条需求`,
+                          `${realCount} 條需求`,
+                        )
                     : demoCount
                       ? `${demoCount} DEMO`
-                      : '暂无需求';
+                      : localize(locale, 'No requests', '暂无需求', '暫無需求');
                   return (
                     <button
                       key={location.id}
@@ -1052,43 +1208,56 @@ export function PlazaApp() {
                       aria-label={`${location.label}，${countLabel}`}
                     >
                       <span className="node-orbit" />
-                      <strong>{location.shortLabel}</strong>
+                      <strong>
+                        {getCampusLocationLabel(location, locale)}
+                      </strong>
                       <span>{countLabel}</span>
                     </button>
                   );
                 })}
-                {filtered
-                  .filter(
-                    (item) =>
-                      getCampusLocation(item.locationId)?.group === group,
-                  )
-                  .slice(0, 5)
-                  .map((item, index) => {
-                    const meta = categoryMeta[item.category];
-                    const Icon = meta.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => setSelected(item)}
-                        className={`request-bubble bubble-${index}`}
-                        style={
-                          {
-                            '--bubble-color': meta.color,
-                          } as React.CSSProperties
-                        }
-                      >
-                        <span className="request-icon">
-                          <Icon />
-                        </span>
-                        <span>
-                          <strong>{item.title}</strong>
-                          <small>
-                            {item.demo && 'DEMO · '}
-                            {getCampusLocation(item.locationId)?.shortLabel}
-                          </small>
-                        </span>
-                      </button>
-                    );
+                {showBubbles &&
+                  visibleLocations.flatMap((location) => {
+                    const anchoredItems = filtered
+                      .filter((item) => item.locationId === location.id)
+                      .slice(0, 2);
+                    return anchoredItems.map((item, index) => {
+                      const meta = categoryMeta[item.category];
+                      const Icon = meta.icon;
+                      const opensLeft = location.x > 62;
+                      const rises = location.y > 67;
+                      const stackOffset = index * (rises ? -58 : 58);
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => setSelected(item)}
+                          className={`request-bubble anchored-bubble ${opensLeft ? 'opens-left' : 'opens-right'}`}
+                          style={
+                            {
+                              left: `${location.x}%`,
+                              top: `${location.y}%`,
+                              '--bubble-color': meta.color,
+                              '--anchor-radius': `${location.size / 2 + 16}px`,
+                              '--stack-offset': `${stackOffset}px`,
+                            } as React.CSSProperties
+                          }
+                        >
+                          <span
+                            className="bubble-connector"
+                            aria-hidden="true"
+                          />
+                          <span className="request-icon">
+                            <Icon />
+                          </span>
+                          <span>
+                            <strong>{item.title}</strong>
+                            <small>
+                              {item.demo && 'DEMO · '}
+                              {getCampusLocationLabel(location, locale)}
+                            </small>
+                          </span>
+                        </button>
+                      );
+                    });
                   })}
               </div>
               <div className="zoom-controls">
@@ -1107,7 +1276,12 @@ export function PlazaApp() {
                 </button>
               </div>
               <p className="canvas-tip">
-                点击地点查看这里的全部需求 · 所有数字由当前记录动态计算
+                {localize(
+                  locale,
+                  'Select a place to see every request there · Pop-ups stay anchored to their place',
+                  '点击地点查看全部需求 · 气泡始终锚定到对应地点',
+                  '點擊地點查看全部需求 · 氣泡始終錨定到對應地點',
+                )}
               </p>
             </div>
           ) : (
@@ -1117,6 +1291,7 @@ export function PlazaApp() {
                   <RequestRow
                     key={item.id}
                     item={item}
+                    locale={locale}
                     onClick={() =>
                       activeSection === 'chats'
                         ? openChat(item)
@@ -1129,21 +1304,61 @@ export function PlazaApp() {
                   <Sparkles />
                   <strong>
                     {activeSection === 'matches'
-                      ? '暂时没有双向宿舍匹配'
+                      ? localize(
+                          locale,
+                          'No reciprocal housing matches yet',
+                          '暂时没有双向宿舍匹配',
+                          '暫時沒有雙向宿舍配對',
+                        )
                       : activeSection === 'chats'
-                        ? '还没有匿名会话'
+                        ? localize(
+                            locale,
+                            'No anonymous chats yet',
+                            '还没有匿名会话',
+                            '還沒有匿名會話',
+                          )
                         : activeSection === 'saved'
-                          ? '还没有收藏'
-                          : '这个分区暂时没有符合条件的需求'}
+                          ? localize(
+                              locale,
+                              'Nothing saved yet',
+                              '还没有收藏',
+                              '還沒有收藏',
+                            )
+                          : localize(
+                              locale,
+                              'No matching requests in this area',
+                              '这个分区暂时没有符合条件的需求',
+                              '這個分區暫時沒有符合條件的需求',
+                            )}
                   </strong>
                   <span>
                     {activeSection === 'matches'
-                      ? '发布或调整需求后，系统会自动计算路线互补的对象。'
+                      ? localize(
+                          locale,
+                          'Publish or update a request and NODE will check for reciprocal routes.',
+                          '发布或调整需求后，系统会自动计算路线互补的对象。',
+                          '發佈或調整需求後，系統會自動計算路線互補的對象。',
+                        )
                       : activeSection === 'chats'
-                        ? '打开任意需求并开始沟通后，会显示在这里。'
+                        ? localize(
+                            locale,
+                            'Start a conversation from any request and it will appear here.',
+                            '打开任意需求并开始沟通后，会显示在这里。',
+                            '打開任意需求並開始溝通後，會顯示在這裡。',
+                          )
                         : activeSection === 'saved'
-                          ? '打开需求详情，即可加入收藏。'
-                          : '切换分区或清除筛选条件后再看看。'}
+                          ? localize(
+                              locale,
+                              'Open a request to save it.',
+                              '打开需求详情，即可加入收藏。',
+                              '打開需求詳情，即可加入收藏。',
+                            )
+                          : localize(
+                              locale,
+                              'Try another area or clear the filters.',
+                              '切换分区或清除筛选条件后再看看。',
+                              '切換分區或清除篩選條件後再看看。',
+                            )}
                   </span>
                 </div>
               )}
@@ -1157,18 +1372,28 @@ export function PlazaApp() {
               <span className="pulse-dot" /> LIVE
             </div>
             <button onClick={() => setView('list')}>
-              查看全部 <ChevronDown />
+              {localize(locale, 'View all', '查看全部', '查看全部')}{' '}
+              <ChevronDown />
             </button>
           </div>
+          <AnnouncementBoard announcements={announcements} locale={locale} />
           <div className="panel-title">
-            <h2>正在发生</h2>
-            <span>{filtered.length} 个相关需求</span>
+            <h2>{localize(locale, 'Happening now', '正在发生', '正在發生')}</h2>
+            <span>
+              {localize(
+                locale,
+                `${filtered.length} related requests`,
+                `${filtered.length} 个相关需求`,
+                `${filtered.length} 個相關需求`,
+              )}
+            </span>
           </div>
           <div className="activity-list">
             {filtered.slice(0, 4).map((item) => (
               <ActivityCard
                 key={item.id}
                 item={item}
+                locale={locale}
                 onClick={() => setSelected(item)}
               />
             ))}
@@ -1179,12 +1404,34 @@ export function PlazaApp() {
             </div>
             <Badge>{matchItems.length ? 'MATCH FOUND' : 'MATCHING'}</Badge>
             <h3>
-              {matchItems.length ? '发现双向宿舍匹配' : '正在寻找路线互补需求'}
+              {matchItems.length
+                ? localize(
+                    locale,
+                    'Reciprocal housing match found',
+                    '发现双向宿舍匹配',
+                    '發現雙向宿舍配對',
+                  )
+                : localize(
+                    locale,
+                    'Checking reciprocal routes',
+                    '正在寻找路线互补需求',
+                    '正在尋找路線互補需求',
+                  )}
             </h3>
             <p>
               {matchItems.length
-                ? `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`
-                : '有新的互补路线时，会自动出现在“我的匹配”。'}
+                ? localize(
+                    locale,
+                    `${matchItems[0].from} → ${matchItems[0].to} has a reciprocal request.`,
+                    `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
+                    `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
+                  )
+                : localize(
+                    locale,
+                    'New reciprocal routes appear automatically in My matches.',
+                    '有新的互补路线时，会自动出现在“我的匹配”。',
+                    '有新的互補路線時，會自動出現在「我的配對」。',
+                  )}
             </p>
             <Button
               onClick={() => {
@@ -1192,7 +1439,7 @@ export function PlazaApp() {
                 setView('list');
               }}
             >
-              查看匹配
+              {localize(locale, 'View matches', '查看匹配', '查看配對')}
             </Button>
           </div>
           <a href="/rules" className="policy-note">
@@ -1249,6 +1496,7 @@ export function PlazaApp() {
             <RequestDetail
               item={selected}
               t={t}
+              locale={locale}
               onChat={() => {
                 openChat(selected);
                 setSelected(null);
@@ -1256,7 +1504,14 @@ export function PlazaApp() {
               saved={savedIds.has(String(selected.id))}
               onSave={() => toggleSaved(selected)}
               onReport={() => {
-                setNotice('举报已提交到管理员队列。');
+                setNotice(
+                  localize(
+                    locale,
+                    'Report submitted to the moderation queue.',
+                    '举报已提交到管理员队列。',
+                    '舉報已提交到管理員隊列。',
+                  ),
+                );
                 setSelected(null);
               }}
             />
@@ -1273,17 +1528,30 @@ export function PlazaApp() {
               <SheetHeader className="location-sheet-header">
                 <div className="detail-category">
                   <MapPin />{' '}
-                  {
+                  {getLocationGroupLabel(
                     locationGroups.find(
                       (entry) => entry.id === selectedLocation.group,
-                    )?.label
-                  }
+                    )!,
+                    locale,
+                  )}
                 </div>
-                <SheetTitle>{selectedLocation.label}</SheetTitle>
+                <SheetTitle>
+                  {getCampusLocationLabel(selectedLocation, locale, false)}
+                </SheetTitle>
                 <SheetDescription>
                   {selectedLocationItems.length
-                    ? `这里共有 ${selectedLocationItems.length} 条当前记录；演示内容均标有 DEMO。`
-                    : '这里暂时没有需求；你可以成为第一个发布者。'}
+                    ? localize(
+                        locale,
+                        `${selectedLocationItems.length} current records here. Demo content is labelled DEMO.`,
+                        `这里共有 ${selectedLocationItems.length} 条当前记录；演示内容均标有 DEMO。`,
+                        `這裡共有 ${selectedLocationItems.length} 條目前記錄；演示內容均標有 DEMO。`,
+                      )
+                    : localize(
+                        locale,
+                        'No requests here yet. You can be the first to post.',
+                        '这里暂时没有需求；你可以成为第一个发布者。',
+                        '這裡暫時沒有需求；你可以成為第一個發佈者。',
+                      )}
                 </SheetDescription>
               </SheetHeader>
               <div className="location-request-list">
@@ -1292,6 +1560,7 @@ export function PlazaApp() {
                     <RequestRow
                       key={item.id}
                       item={item}
+                      locale={locale}
                       onClick={() => {
                         setSelectedLocationId(null);
                         setSelected(item);
@@ -1301,8 +1570,17 @@ export function PlazaApp() {
                 ) : (
                   <div className="section-empty compact">
                     <MapPin />
-                    <strong>暂无需求</strong>
-                    <span>地点计数为 0；不会用占位数字填充。</span>
+                    <strong>
+                      {localize(locale, 'No requests', '暂无需求', '暫無需求')}
+                    </strong>
+                    <span>
+                      {localize(
+                        locale,
+                        'The count is zero; NODE never fills it with placeholder numbers.',
+                        '地点计数为 0；不会用占位数字填充。',
+                        '地點計數為 0；不會用佔位數字填充。',
+                      )}
+                    </span>
                   </div>
                 )}
               </div>
@@ -1314,7 +1592,13 @@ export function PlazaApp() {
                   setCreateOpen(true);
                 }}
               >
-                <Plus /> 在这里发布需求
+                <Plus />{' '}
+                {localize(
+                  locale,
+                  'Post from this place',
+                  '在这里发布需求',
+                  '在這裡發佈需求',
+                )}
               </Button>
             </>
           )}
@@ -1325,29 +1609,90 @@ export function PlazaApp() {
         onOpenChange={(open) => !open && setChatPost(null)}
       >
         <SheetContent className="chat-sheet">
-          {chatPost && <ChatPanel item={chatPost} />}
+          {chatPost && <ChatPanel item={chatPost} locale={locale} />}
         </SheetContent>
       </Sheet>
       <Sheet open={adminOpen} onOpenChange={setAdminOpen}>
         <SheetContent className="admin-sheet">
-          <AdminPanel />
+          <AdminPanel
+            locale={locale}
+            onAnnouncementPublished={(announcement) =>
+              setAnnouncements((current) => [announcement, ...current])
+            }
+          />
         </SheetContent>
       </Sheet>
       <Sheet open={profileOpen} onOpenChange={setProfileOpen}>
         <SheetContent className="profile-sheet">
-          <ProfilePanel />
+          <ProfilePanel locale={locale} />
         </SheetContent>
       </Sheet>
       {notice && (
         <output className="app-notice" aria-live="polite">
           <CheckCircle2 />
           {notice}
-          <button onClick={() => setNotice('')} aria-label="关闭">
+          <button
+            onClick={() => setNotice('')}
+            aria-label={localize(locale, 'Close', '关闭', '關閉')}
+          >
             <X />
           </button>
         </output>
       )}
     </main>
+  );
+}
+
+function AnnouncementBoard({
+  announcements,
+  locale,
+}: {
+  announcements: Announcement[];
+  locale: Locale;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? announcements : announcements.slice(0, 1);
+  return (
+    <section className="announcement-board" aria-label="Announcements">
+      <div className="announcement-heading">
+        <span>
+          <Megaphone /> {localize(locale, 'Announcements', '公告栏', '公告欄')}
+        </span>
+        {announcements.length > 1 && (
+          <button onClick={() => setExpanded((value) => !value)}>
+            {expanded
+              ? localize(locale, 'Collapse', '收起', '收起')
+              : localize(
+                  locale,
+                  `View all ${announcements.length}`,
+                  `查看全部 ${announcements.length} 条`,
+                  `查看全部 ${announcements.length} 條`,
+                )}
+          </button>
+        )}
+      </div>
+      {visible.length ? (
+        visible.map((announcement) => (
+          <article
+            key={announcement.id}
+            className={`announcement-item announcement-${announcement.kind}`}
+          >
+            <Badge variant="secondary">{announcement.kind}</Badge>
+            <strong>{announcement.title}</strong>
+            <p>{announcement.body}</p>
+          </article>
+        ))
+      ) : (
+        <p className="announcement-empty">
+          {localize(
+            locale,
+            'No active announcements.',
+            '当前没有公告。',
+            '目前沒有公告。',
+          )}
+        </p>
+      )}
+    </section>
   );
 }
 
@@ -1400,9 +1745,11 @@ function FilterButton({
 
 function ActivityCard({
   item,
+  locale,
   onClick,
 }: {
   item: RequestItem;
+  locale: Locale;
   onClick: () => void;
 }) {
   const meta = categoryMeta[item.category];
@@ -1419,7 +1766,11 @@ function ActivityCard({
         <strong>{item.title}</strong>
         <small>
           {item.demo && 'DEMO · '}
-          {getCampusLocation(item.locationId)?.shortLabel} · {item.age}
+          {getCampusLocationLabel(
+            getCampusLocation(item.locationId),
+            locale,
+          )} ·{' '}
+          {item.age}
         </small>
       </span>
       <span className="reply-count">
@@ -1430,9 +1781,11 @@ function ActivityCard({
 }
 function RequestRow({
   item,
+  locale,
   onClick,
 }: {
   item: RequestItem;
+  locale: Locale;
   onClick: () => void;
 }) {
   const meta = categoryMeta[item.category];
@@ -1447,8 +1800,11 @@ function RequestRow({
         <p>{item.detail}</p>
         <small>
           {item.demo && 'DEMO · '}
-          {getCampusLocation(item.locationId)?.shortLabel} · {item.author} ·{' '}
-          {item.age} · {item.replies} replies
+          {getCampusLocationLabel(
+            getCampusLocation(item.locationId),
+            locale,
+          )} ·{' '}
+          {item.author} · {item.age} · {item.replies} replies
         </small>
       </div>
       <ChevronDown />
@@ -1459,6 +1815,7 @@ function RequestRow({
 function RequestDetail({
   item,
   t,
+  locale,
   onChat,
   saved,
   onSave,
@@ -1466,6 +1823,7 @@ function RequestDetail({
 }: {
   item: RequestItem;
   t: (typeof copy)[Locale];
+  locale: Locale;
   onChat: () => void;
   saved: boolean;
   onSave: () => void;
@@ -1481,19 +1839,24 @@ function RequestDetail({
         </div>
         <SheetTitle>{item.title}</SheetTitle>
         <SheetDescription>
-          由 {item.author} 发布 · {item.age} 前
+          {localize(
+            locale,
+            `Posted by ${item.author} · ${item.age} ago`,
+            `由 ${item.author} 发布 · ${item.age} 前`,
+            `由 ${item.author} 發佈 · ${item.age} 前`,
+          )}
         </SheetDescription>
       </SheetHeader>
       <div className="detail-body">
         {item.category === 'hall' && (
           <div className="swap-route">
             <div>
-              <small>当前</small>
+              <small>{localize(locale, 'Current', '当前', '目前')}</small>
               <strong>{item.from}</strong>
             </div>
             <ArrowLeftRight />
             <div>
-              <small>目标</small>
+              <small>{localize(locale, 'Wanted', '目标', '目標')}</small>
               <strong>{item.to}</strong>
             </div>
           </div>
@@ -1501,9 +1864,15 @@ function RequestDetail({
         <div className="request-location-card">
           <MapPin />
           <div>
-            <small>发布地点</small>
+            <small>
+              {localize(locale, 'Posted from', '发布地点', '發佈地點')}
+            </small>
             <strong>
-              {getCampusLocation(item.locationId)?.label ?? '未设置地点'}
+              {getCampusLocationLabel(
+                getCampusLocation(item.locationId),
+                locale,
+                false,
+              ) || localize(locale, 'No location', '未设置地点', '未設定地點')}
             </strong>
           </div>
           {item.demo && <Badge variant="secondary">DEMO</Badge>}
@@ -1512,8 +1881,22 @@ function RequestDetail({
         <div className="safety-box">
           <ShieldCheck />
           <div>
-            <strong>隐私保护已开启</strong>
-            <p>双方同意前，真实姓名、邮箱及联系方式都不会展示。</p>
+            <strong>
+              {localize(
+                locale,
+                'Privacy protection is on',
+                '隐私保护已开启',
+                '私隱保護已開啟',
+              )}
+            </strong>
+            <p>
+              {localize(
+                locale,
+                'Real names, email addresses and contact details stay hidden until both people consent.',
+                '双方同意前，真实姓名、邮箱及联系方式都不会展示。',
+                '雙方同意前，真實姓名、電郵及聯絡方式都不會展示。',
+              )}
+            </p>
           </div>
         </div>
         <div className="detail-actions">
@@ -1522,7 +1905,9 @@ function RequestDetail({
           </Button>
           <Button variant="outline" size="lg" onClick={onSave}>
             <Bookmark fill={saved ? 'currentColor' : 'none'} />
-            {saved ? '已收藏' : '收藏'}
+            {saved
+              ? localize(locale, 'Saved', '已收藏', '已收藏')
+              : localize(locale, 'Save', '收藏', '收藏')}
           </Button>
           <Button variant="outline" size="lg" onClick={onReport}>
             <Flag /> {t.report}
@@ -1535,10 +1920,12 @@ function RequestDetail({
 
 function CreatePostDialog({
   t,
+  locale,
   onCreated,
   currentLocationId,
 }: {
   t: (typeof copy)[Locale];
+  locale: Locale;
   onCreated: (item: RequestItem) => void;
   currentLocationId: string;
 }) {
@@ -1549,7 +1936,12 @@ function CreatePostDialog({
       <DialogHeader>
         <DialogTitle>{t.post}</DialogTitle>
         <DialogDescription>
-          只填写匹配所需信息；房号、学号和联系方式请勿公开。
+          {localize(
+            locale,
+            'Share only what a match needs. Do not post room numbers, student IDs or contact details.',
+            '只填写匹配所需信息；房号、学号和联系方式请勿公开。',
+            '只填寫配對所需資訊；房號、學號和聯絡方式請勿公開。',
+          )}
         </DialogDescription>
       </DialogHeader>
       <form
@@ -1565,12 +1957,20 @@ function CreatePostDialog({
           const to = typeof toValue === 'string' ? toValue : '';
           onCreated({
             id: Date.now(),
-            author: '雾鲸 017',
+            author: 'Misty Whale 017',
             category: postCategory,
             from,
             to,
             hall: from.replace('Hall ', '') || 'I',
-            title: typeof titleValue === 'string' ? titleValue : '新的匿名需求',
+            title:
+              typeof titleValue === 'string'
+                ? titleValue
+                : localize(
+                    locale,
+                    'New anonymous request',
+                    '新的匿名需求',
+                    '新的匿名需求',
+                  ),
             detail: typeof detailValue === 'string' ? detailValue : '',
             age: 'now',
             replies: 0,
@@ -1584,7 +1984,9 @@ function CreatePostDialog({
       >
         <div className="create-form">
           <div className="form-field">
-            <label htmlFor="post-category">需求类型</label>
+            <label htmlFor="post-category">
+              {localize(locale, 'Request type', '需求类型', '需求類型')}
+            </label>
             <Select
               value={postCategory}
               onValueChange={(value) =>
@@ -1603,7 +2005,9 @@ function CreatePostDialog({
             </Select>
           </div>
           <div className="form-field">
-            <label htmlFor="post-location">发布地点</label>
+            <label htmlFor="post-location">
+              {localize(locale, 'Location', '发布地点', '發佈地點')}
+            </label>
             <Select name="locationId" defaultValue={currentLocationId}>
               <SelectTrigger id="post-location">
                 <SelectValue />
@@ -1611,22 +2015,32 @@ function CreatePostDialog({
               <SelectContent>
                 {campusLocations.map((location) => (
                   <SelectItem key={location.id} value={location.id}>
-                    {location.shortLabel} ·{' '}
-                    {
+                    {getCampusLocationLabel(location, locale)} ·{' '}
+                    {getLocationGroupLabel(
                       locationGroups.find(
                         (entry) => entry.id === location.group,
-                      )?.label
-                    }
+                      )!,
+                      locale,
+                    )}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <small className="field-hint">手动地点标签，不读取 GPS。</small>
+            <small className="field-hint">
+              {localize(
+                locale,
+                'Manual location tag; GPS is never used.',
+                '手动地点标签，不读取 GPS。',
+                '手動地點標籤，不讀取 GPS。',
+              )}
+            </small>
           </div>
           {postCategory === 'hall' && (
             <div className="form-grid">
               <div className="form-field">
-                <label htmlFor="post-from">当前宿舍</label>
+                <label htmlFor="post-from">
+                  {localize(locale, 'Current hall', '当前宿舍', '目前宿舍')}
+                </label>
                 <Input
                   id="post-from"
                   name="from"
@@ -1635,47 +2049,82 @@ function CreatePostDialog({
                 />
               </div>
               <div className="form-field">
-                <label htmlFor="post-to">目标宿舍</label>
+                <label htmlFor="post-to">
+                  {localize(locale, 'Wanted hall', '目标宿舍', '目標宿舍')}
+                </label>
                 <Input id="post-to" name="to" required placeholder="Hall III" />
               </div>
             </div>
           )}
           <div className="form-field">
-            <label htmlFor="post-title">标题</label>
+            <label htmlFor="post-title">
+              {localize(locale, 'Title', '标题', '標題')}
+            </label>
             <Input
               id="post-title"
               name="title"
               required
               maxLength={100}
-              placeholder="一句话说明你的需求"
+              placeholder={localize(
+                locale,
+                'Describe your request in one line',
+                '一句话说明你的需求',
+                '一句話說明你的需求',
+              )}
             />
           </div>
           <div className="form-field">
-            <label htmlFor="post-detail">补充说明</label>
+            <label htmlFor="post-detail">
+              {localize(locale, 'Details', '补充说明', '補充說明')}
+            </label>
             <Textarea
               id="post-detail"
               name="detail"
               required
               maxLength={2000}
-              placeholder="房型、时间与其他必要条件…"
+              placeholder={localize(
+                locale,
+                'Room type, timing and other essential conditions…',
+                '房型、时间与其他必要条件…',
+                '房型、時間與其他必要條件…',
+              )}
             />
           </div>
           <div className="rules-reminder">
             <ShieldCheck />
             <p>
-              <strong>发布即表示同意社区规则</strong>
+              <strong>
+                {localize(
+                  locale,
+                  'Publishing means you accept the community rules',
+                  '发布即表示同意社区规则',
+                  '發佈即表示同意社群規則',
+                )}
+              </strong>
               <br />
-              禁止违法违规、床位交易、诈骗、骚扰、仇恨、色情、泄露隐私及未经许可的商业推广。
-              <a href="/rules">查看完整规则</a>
+              {localize(
+                locale,
+                'Illegal content, bedspace trading, fraud, harassment, hate, sexual content, privacy leaks and unauthorised promotion are prohibited.',
+                '禁止违法违规、床位交易、诈骗、骚扰、仇恨、色情、泄露隐私及未经许可的商业推广。',
+                '禁止違法違規、床位交易、詐騙、騷擾、仇恨、色情、洩露私隱及未經許可的商業推廣。',
+              )}{' '}
+              <a href="/rules">
+                {localize(
+                  locale,
+                  'Read all rules',
+                  '查看完整规则',
+                  '查看完整規則',
+                )}
+              </a>
             </p>
           </div>
         </div>
         <DialogFooter>
           <Button type="button" variant="outline">
-            保存草稿
+            {localize(locale, 'Save draft', '保存草稿', '儲存草稿')}
           </Button>
           <Button type="submit">
-            <Plus /> 发布到广场
+            <Plus /> {localize(locale, 'Publish', '发布到广场', '發佈到廣場')}
           </Button>
         </DialogFooter>
       </form>
@@ -1683,13 +2132,18 @@ function CreatePostDialog({
   );
 }
 
-function ChatPanel({ item }: { item: RequestItem }) {
+function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
   const [draft, setDraft] = useState('');
   const [messages, setMessages] = useState([
     {
       id: 1,
       mine: false,
-      body: `你好，我是 ${item.author}。可以先聊一下具体条件。`,
+      body: localize(
+        locale,
+        `Hi, I’m ${item.author}. We can discuss the details here first.`,
+        `你好，我是 ${item.author}。可以先聊一下具体条件。`,
+        `你好，我是 ${item.author}。可以先談談具體條件。`,
+      ),
       time: '15:24',
     },
   ]);
@@ -1718,7 +2172,13 @@ function ChatPanel({ item }: { item: RequestItem }) {
           <div>
             <SheetTitle>{item.author}</SheetTitle>
             <SheetDescription>
-              <span className="pulse-dot" /> 匿名会话 · 在线
+              <span className="pulse-dot" />{' '}
+              {localize(
+                locale,
+                'Anonymous chat · Online',
+                '匿名会话 · 在线',
+                '匿名會話 · 在線',
+              )}
             </SheetDescription>
           </div>
         </div>
@@ -1726,13 +2186,26 @@ function ChatPanel({ item }: { item: RequestItem }) {
       <div className="chat-context">
         <ArrowLeftRight />
         <span>
-          <small>讨论中的需求</small>
+          <small>
+            {localize(
+              locale,
+              'Request in this chat',
+              '讨论中的需求',
+              '討論中的需求',
+            )}
+          </small>
           <strong>{item.title}</strong>
         </span>
       </div>
       <div className="message-stream">
         <div className="system-message">
-          <ShieldCheck /> 双方同意前，平台不会显示任何真实资料
+          <ShieldCheck />{' '}
+          {localize(
+            locale,
+            'NODE keeps real identities hidden until both people consent.',
+            '双方同意前，平台不会显示任何真实资料',
+            '雙方同意前，平台不會顯示任何真實資料',
+          )}
         </div>
         {messages.map((message) => (
           <div
@@ -1749,23 +2222,46 @@ function ChatPanel({ item }: { item: RequestItem }) {
           <>
             <CheckCircle2 />
             <span>
-              <strong>请求已发送</strong>
-              <small>对方同意后，双方才会看到联系方式。</small>
+              <strong>
+                {localize(locale, 'Request sent', '请求已发送', '請求已發送')}
+              </strong>
+              <small>
+                {localize(
+                  locale,
+                  'Contact details appear only after the other person agrees.',
+                  '对方同意后，双方才会看到联系方式。',
+                  '對方同意後，雙方才會看到聯絡方式。',
+                )}
+              </small>
             </span>
           </>
         ) : (
           <>
             <UserPlus />
             <span>
-              <strong>需要转到校外联系？</strong>
-              <small>必须双方分别确认。</small>
+              <strong>
+                {localize(
+                  locale,
+                  'Continue outside NODE?',
+                  '需要转到校外联系？',
+                  '需要轉到站外聯絡？',
+                )}
+              </strong>
+              <small>
+                {localize(
+                  locale,
+                  'Both people must confirm separately.',
+                  '必须双方分别确认。',
+                  '必須雙方分別確認。',
+                )}
+              </small>
             </span>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setContactRequested(true)}
             >
-              发起交换
+              {localize(locale, 'Request exchange', '发起交换', '發起交換')}
             </Button>
           </>
         )}
@@ -1780,9 +2276,18 @@ function ChatPanel({ item }: { item: RequestItem }) {
               send();
             }
           }}
-          placeholder="输入匿名消息…"
+          placeholder={localize(
+            locale,
+            'Write an anonymous message…',
+            '输入匿名消息…',
+            '輸入匿名訊息…',
+          )}
         />
-        <Button size="icon-lg" onClick={send} aria-label="发送">
+        <Button
+          size="icon-lg"
+          onClick={send}
+          aria-label={localize(locale, 'Send', '发送', '發送')}
+        >
           <Send />
         </Button>
       </div>
@@ -1790,60 +2295,200 @@ function ChatPanel({ item }: { item: RequestItem }) {
   );
 }
 
-function AdminPanel() {
+function AdminPanel({
+  locale,
+  onAnnouncementPublished,
+}: {
+  locale: Locale;
+  onAnnouncementPublished: (announcement: Announcement) => void;
+}) {
   const [queue, setQueue] = useState([
     {
       id: 1,
-      reason: '疑似宿位交易',
-      target: 'Hall place，价钱可议',
-      reporter: '3 人举报',
-      risk: '高风险',
+      reason: 'Suspected bedspace trading',
+      target: 'Hall place, price negotiable',
+      reporter: '3 reports',
+      risk: 'High risk',
     },
     {
       id: 2,
-      reason: '公开个人联系方式',
-      target: '帖子正文包含电话号码',
-      reporter: '自动检测',
-      risk: '隐私',
+      reason: 'Public contact details',
+      target: 'Phone number included in a public post',
+      reporter: 'Automatic check',
+      risk: 'Privacy',
     },
     {
       id: 3,
-      reason: '重复推广',
-      target: '补习广告重复发布 6 次',
-      reporter: '1 人举报',
-      risk: '垃圾信息',
+      reason: 'Repeated promotion',
+      target: 'The same advert was posted six times',
+      reporter: '1 report',
+      risk: 'Spam',
     },
   ]);
   const [inviteSent, setInviteSent] = useState(false);
+  const [announcementTitle, setAnnouncementTitle] = useState('');
+  const [announcementBody, setAnnouncementBody] = useState('');
+  const [announcementKind, setAnnouncementKind] =
+    useState<Announcement['kind']>('info');
+  const [announcementStatus, setAnnouncementStatus] = useState('');
   const resolve = (id: number) =>
     setQueue((items) => items.filter((item) => item.id !== id));
+  const publishAnnouncement = async () => {
+    if (!announcementTitle.trim() || !announcementBody.trim()) return;
+    setAnnouncementStatus('publishing');
+    try {
+      const response = await fetch('/api/announcements', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          title: announcementTitle,
+          body: announcementBody,
+          kind: announcementKind,
+        }),
+      });
+      const result = (await response.json()) as { id?: string; error?: string };
+      if (!response.ok || !result.id) throw new Error(result.error);
+      onAnnouncementPublished({
+        id: result.id,
+        title: announcementTitle.trim(),
+        body: announcementBody.trim(),
+        kind: announcementKind,
+        publishedAt: new Date().toISOString(),
+        authorAlias: 'NODE Team',
+      });
+      setAnnouncementTitle('');
+      setAnnouncementBody('');
+      setAnnouncementStatus('published');
+    } catch {
+      setAnnouncementStatus('error');
+    }
+  };
   return (
     <>
       <SheetHeader className="admin-header">
         <div className="detail-category">
           <Gavel /> OWNER CONSOLE
         </div>
-        <SheetTitle>管理中心</SheetTitle>
+        <SheetTitle>
+          {localize(locale, 'Moderation', '管理中心', '管理中心')}
+        </SheetTitle>
         <SheetDescription>
-          你是首位 Owner，可邀请管理员并处理帖子和账号。
+          {localize(
+            locale,
+            'You are the founding Owner. Publish notices, invite moderators and manage reports.',
+            '你是首位 Owner，可发布公告、邀请管理员并处理举报。',
+            '你是首位 Owner，可發佈公告、邀請管理員並處理舉報。',
+          )}
         </SheetDescription>
       </SheetHeader>
       <div className="admin-metrics">
         <div>
           <strong>{queue.length}</strong>
-          <span>待处理举报</span>
+          <span>
+            {localize(locale, 'Open reports', '待处理举报', '待處理舉報')}
+          </span>
         </div>
         <div>
           <strong>2</strong>
-          <span>自动拦截</span>
+          <span>
+            {localize(locale, 'Auto-blocked', '自动拦截', '自動攔截')}
+          </span>
         </div>
         <div>
           <strong>18m</strong>
-          <span>平均处理时间</span>
+          <span>
+            {localize(
+              locale,
+              'Average response',
+              '平均处理时间',
+              '平均處理時間',
+            )}
+          </span>
         </div>
       </div>
+      <section className="announcement-admin-card">
+        <div className="admin-section-title">
+          <h3>
+            <Megaphone />{' '}
+            {localize(
+              locale,
+              'Publish an announcement',
+              '发布公告',
+              '發佈公告',
+            )}
+          </h3>
+          <Badge>LIVE BOARD</Badge>
+        </div>
+        <Select
+          value={announcementKind}
+          onValueChange={(value) => {
+            if (value) setAnnouncementKind(value as Announcement['kind']);
+          }}
+        >
+          <SelectTrigger aria-label="Announcement type">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="info">Information</SelectItem>
+            <SelectItem value="upgrade">Upgrade</SelectItem>
+            <SelectItem value="maintenance">Maintenance</SelectItem>
+          </SelectContent>
+        </Select>
+        <Input
+          value={announcementTitle}
+          onChange={(event) => setAnnouncementTitle(event.target.value)}
+          maxLength={100}
+          placeholder={localize(
+            locale,
+            'Announcement title',
+            '公告标题',
+            '公告標題',
+          )}
+        />
+        <Textarea
+          value={announcementBody}
+          onChange={(event) => setAnnouncementBody(event.target.value)}
+          maxLength={800}
+          placeholder={localize(
+            locale,
+            'What does the community need to know?',
+            '需要向社区说明什么？',
+            '需要向社群說明甚麼？',
+          )}
+        />
+        <div className="announcement-admin-actions">
+          <Button
+            onClick={publishAnnouncement}
+            disabled={
+              announcementStatus === 'publishing' ||
+              !announcementTitle.trim() ||
+              !announcementBody.trim()
+            }
+          >
+            <Megaphone />{' '}
+            {announcementStatus === 'publishing'
+              ? localize(locale, 'Publishing…', '发布中…', '發佈中…')
+              : localize(locale, 'Publish now', '立即发布', '立即發佈')}
+          </Button>
+          {announcementStatus === 'published' && (
+            <span>
+              {localize(locale, 'Published.', '已发布。', '已發佈。')}
+            </span>
+          )}
+          {announcementStatus === 'error' && (
+            <span className="error">
+              {localize(
+                locale,
+                'Could not publish.',
+                '发布失败。',
+                '發佈失敗。',
+              )}
+            </span>
+          )}
+        </div>
+      </section>
       <div className="admin-section-title">
-        <h3>审核队列</h3>
+        <h3>{localize(locale, 'Review queue', '审核队列', '審核隊列')}</h3>
         <Badge>{queue.length} OPEN</Badge>
       </div>
       <div className="moderation-queue">
@@ -1864,14 +2509,20 @@ function AdminPanel() {
                   variant="destructive"
                   onClick={() => resolve(report.id)}
                 >
-                  <Ban /> 移除并警告
+                  <Ban />{' '}
+                  {localize(
+                    locale,
+                    'Remove & warn',
+                    '移除并警告',
+                    '移除並警告',
+                  )}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => resolve(report.id)}
                 >
-                  忽略
+                  {localize(locale, 'Dismiss', '忽略', '忽略')}
                 </Button>
               </div>
             </article>
@@ -1879,30 +2530,48 @@ function AdminPanel() {
         ) : (
           <div className="queue-empty">
             <CheckCircle2 />
-            <strong>队列已清空</strong>
-            <span>新的举报会显示在这里。</span>
+            <strong>
+              {localize(locale, 'Queue cleared', '队列已清空', '隊列已清空')}
+            </strong>
+            <span>
+              {localize(
+                locale,
+                'New reports will appear here.',
+                '新的举报会显示在这里。',
+                '新的舉報會顯示在這裡。',
+              )}
+            </span>
           </div>
         )}
       </div>
       <div className="team-card">
         <UserPlus />
         <div>
-          <strong>管理员团队</strong>
+          <strong>
+            {localize(locale, 'Moderation team', '管理员团队', '管理員團隊')}
+          </strong>
           <p>
             {inviteSent
-              ? '邀请已建立 · 等待对方首次 ITSO 登录'
+              ? localize(
+                  locale,
+                  'Invitation created · awaiting first ITSO sign-in',
+                  '邀请已建立 · 等待对方首次 ITSO 登录',
+                  '邀請已建立 · 等待對方首次 ITSO 登入',
+                )
               : 'Owner 1 · Moderator 0'}
           </p>
         </div>
         <Button size="sm" variant="outline" onClick={() => setInviteSent(true)}>
-          {inviteSent ? '已邀请' : '邀请管理员'}
+          {inviteSent
+            ? localize(locale, 'Invited', '已邀请', '已邀請')
+            : localize(locale, 'Invite moderator', '邀请管理员', '邀請管理員')}
         </Button>
       </div>
     </>
   );
 }
 
-function ProfilePanel() {
+function ProfilePanel({ locale }: { locale: Locale }) {
   const [editing, setEditing] = useState(false);
   const [profile, setProfile] = useState({
     nickname: 'Winston',
@@ -1923,7 +2592,7 @@ function ProfilePanel() {
         contactMethod: 'Telegram',
         contactValue: profile.contact,
         profileVisibility: 'private',
-        preferredLanguage: 'zh-CN',
+        preferredLanguage: locale,
       }),
     });
   };
@@ -1933,21 +2602,43 @@ function ProfilePanel() {
         <div className="profile-avatar">W</div>
         <SheetTitle>Local Demo Owner</SheetTitle>
         <SheetDescription>
-          <ShieldCheck /> HKUST 身份已验证 · Owner
+          <ShieldCheck />{' '}
+          {localize(
+            locale,
+            'HKUST identity verified · Owner',
+            'HKUST 身份已验证 · Owner',
+            'HKUST 身份已驗證 · Owner',
+          )}
         </SheetDescription>
       </SheetHeader>
       <div className="profile-body">
         <div className="privacy-banner">
           <ShieldCheck />
           <div>
-            <strong>默认匿名已开启</strong>
-            <p>以下真实资料只有你和获授权的管理员能够查看。</p>
+            <strong>
+              {localize(
+                locale,
+                'Anonymous by default',
+                '默认匿名已开启',
+                '預設匿名已開啟',
+              )}
+            </strong>
+            <p>
+              {localize(
+                locale,
+                'Only you and authorised moderators can view the private details below.',
+                '以下真实资料只有你和获授权的管理员能够查看。',
+                '以下真實資料只有你和獲授權的管理員能夠查看。',
+              )}
+            </p>
           </div>
         </div>
         {editing ? (
           <div className="profile-form">
             <div className="form-field">
-              <label htmlFor="profile-nickname">个人昵称</label>
+              <label htmlFor="profile-nickname">
+                {localize(locale, 'Personal nickname', '个人昵称', '個人暱稱')}
+              </label>
               <Input
                 id="profile-nickname"
                 value={profile.nickname}
@@ -1957,7 +2648,9 @@ function ProfilePanel() {
               />
             </div>
             <div className="form-field">
-              <label htmlFor="profile-department">院系</label>
+              <label htmlFor="profile-department">
+                {localize(locale, 'Department', '院系', '院系')}
+              </label>
               <Input
                 id="profile-department"
                 value={profile.department}
@@ -1967,7 +2660,14 @@ function ProfilePanel() {
               />
             </div>
             <div className="form-field">
-              <label htmlFor="profile-programme">课程／年级</label>
+              <label htmlFor="profile-programme">
+                {localize(
+                  locale,
+                  'Programme / year',
+                  '课程／年级',
+                  '課程／年級',
+                )}
+              </label>
               <Input
                 id="profile-programme"
                 value={profile.programme}
@@ -1977,7 +2677,14 @@ function ProfilePanel() {
               />
             </div>
             <div className="form-field">
-              <label htmlFor="profile-contact">双方同意后显示的联系方式</label>
+              <label htmlFor="profile-contact">
+                {localize(
+                  locale,
+                  'Contact shown after mutual consent',
+                  '双方同意后显示的联系方式',
+                  '雙方同意後顯示的聯絡方式',
+                )}
+              </label>
               <Input
                 id="profile-contact"
                 value={profile.contact}
@@ -1986,61 +2693,106 @@ function ProfilePanel() {
                 }
               />
             </div>
-            <Button onClick={save}>保存个人资料</Button>
+            <Button onClick={save}>
+              {localize(locale, 'Save profile', '保存个人资料', '儲存個人資料')}
+            </Button>
             <Button variant="ghost" onClick={() => setEditing(false)}>
-              取消
+              {localize(locale, 'Cancel', '取消', '取消')}
             </Button>
           </div>
         ) : (
           <>
             <dl>
               <div>
-                <dt>公开匿名昵称</dt>
-                <dd>雾鲸 017</dd>
+                <dt>
+                  {localize(
+                    locale,
+                    'Public anonymous alias',
+                    '公开匿名昵称',
+                    '公開匿名暱稱',
+                  )}
+                </dt>
+                <dd>Misty Whale 017</dd>
               </div>
               <div>
-                <dt>个人昵称</dt>
+                <dt>
+                  {localize(
+                    locale,
+                    'Personal nickname',
+                    '个人昵称',
+                    '個人暱稱',
+                  )}
+                </dt>
                 <dd>
-                  {profile.nickname} <span>隐藏</span>
+                  {profile.nickname}{' '}
+                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
                 </dd>
               </div>
               <div>
-                <dt>真实姓名</dt>
+                <dt>{localize(locale, 'Real name', '真实姓名', '真實姓名')}</dt>
                 <dd>
-                  Local Demo Owner <span>隐藏</span>
+                  Local Demo Owner{' '}
+                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
                 </dd>
               </div>
               <div>
-                <dt>ITSO 邮箱</dt>
+                <dt>
+                  {localize(locale, 'ITSO email', 'ITSO 邮箱', 'ITSO 電郵')}
+                </dt>
                 <dd>
-                  demo@connect.ust.hk <span>隐藏</span>
+                  demo@connect.ust.hk{' '}
+                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
                 </dd>
               </div>
               <div>
-                <dt>院系／课程</dt>
+                <dt>
+                  {localize(
+                    locale,
+                    'Department / programme',
+                    '院系／课程',
+                    '院系／課程',
+                  )}
+                </dt>
                 <dd>
-                  {profile.department} · {profile.programme} <span>隐藏</span>
+                  {profile.department} · {profile.programme}{' '}
+                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
                 </dd>
               </div>
               <div>
-                <dt>联系方式</dt>
+                <dt>{localize(locale, 'Contact', '联系方式', '聯絡方式')}</dt>
                 <dd>
-                  Telegram {profile.contact} <span>双向同意后</span>
+                  Telegram {profile.contact}{' '}
+                  <span>
+                    {localize(
+                      locale,
+                      'After mutual consent',
+                      '双向同意后',
+                      '雙向同意後',
+                    )}
+                  </span>
                 </dd>
               </div>
               <div>
-                <dt>身份</dt>
+                <dt>{localize(locale, 'Identity', '身份', '身份')}</dt>
                 <dd>
-                  Student · Owner <span>隐藏</span>
+                  Student · Owner{' '}
+                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
                 </dd>
               </div>
             </dl>
             <Button variant="outline" onClick={() => setEditing(true)}>
-              编辑个人资料
+              {localize(locale, 'Edit profile', '编辑个人资料', '編輯個人資料')}
             </Button>
           </>
         )}
-        <a href="/rules">社区规则与隐私说明</a>
+        <a href="/rules">
+          {localize(
+            locale,
+            'Community rules and privacy',
+            '社区规则与隐私说明',
+            '社群規則與私隱說明',
+          )}
+        </a>
       </div>
     </>
   );

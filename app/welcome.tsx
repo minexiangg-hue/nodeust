@@ -14,7 +14,7 @@ export function Welcome() {
           <span>NODE</span>
           <span className="welcome-beta">HKUST COMMUNITY</span>
         </div>
-        <Link href="/rules">社区规则</Link>
+        <Link href="/rules">Community rules</Link>
       </header>
       <section className="welcome-main">
         <div className="welcome-copy">
@@ -23,13 +23,14 @@ export function Welcome() {
             DEFAULT
           </div>
           <h1>
-            找到那个刚好
+            Find the person
             <br />
-            需要彼此的人。
+            whose need fits yours.
           </h1>
           <p>
-            面向 HKUST
-            学生与教职员工的匿名交换广场。看见需求、寻找双向匹配，在双方同意之前保持匿名。
+            An anonymous exchange map for HKUST students, faculty and staff.
+            Discover nearby needs, find reciprocal matches and stay anonymous
+            until both people choose otherwise.
           </p>
           <Button
             render={
@@ -37,16 +38,17 @@ export function Welcome() {
                 href="/auth/hkust"
                 prefetch={false}
                 target="_top"
-                aria-label="使用 HKUST ITSO 登录"
+                aria-label="Sign in with HKUST ITSO"
               >
-                <ShieldCheck /> 使用 HKUST ITSO 登录 <ArrowRight />
+                <ShieldCheck /> Sign in with HKUST ITSO <ArrowRight />
               </Link>
             }
             size="lg"
             className="sso-button"
           />
           <small>
-            登录只用于验证成员身份。真实姓名与邮箱默认不会向其他用户展示。
+            Sign-in verifies community membership only. Your real name and email
+            stay private by default.
           </small>
         </div>
         <div
@@ -55,19 +57,19 @@ export function Welcome() {
         >
           <div className="welcome-node node-a">
             <strong>Hall VII</strong>
-            <span>18 requests</span>
+            <span>UG HOUSING</span>
           </div>
           <div className="welcome-node node-b">
             <strong>Hall III</strong>
-            <span>15 requests</span>
+            <span>UG HOUSING</span>
           </div>
           <div className="welcome-node node-c">
             <strong>GGT</strong>
-            <span>13 requests</span>
+            <span>PG HOUSING</span>
           </div>
           <div className="welcome-connection">
             <ArrowRight />
-            <span>双向匹配</span>
+            <span>RECIPROCAL MATCH</span>
           </div>
           <div className="welcome-request">
             <span>
@@ -75,7 +77,7 @@ export function Welcome() {
             </span>
             <div>
               <strong>Hall VII → Hall III</strong>
-              <small>蓝鲸 271 · 匿名</small>
+              <small>Blue Whale 271 · Anonymous</small>
             </div>
           </div>
         </div>
@@ -84,24 +86,27 @@ export function Welcome() {
         <div>
           <ShieldCheck />
           <span>
-            <strong>仅限科大成员</strong>ITSO SSO 与 MFA 验证
+            <strong>HKUST members only</strong>Verified through ITSO SSO and MFA
           </span>
         </div>
         <div>
           <EyeOff />
           <span>
-            <strong>个人资料默认隐藏</strong>双方同意后才交换联系方式
+            <strong>Private by default</strong>Contact details require mutual
+            consent
           </span>
         </div>
         <div>
           <Network />
           <span>
-            <strong>为匹配而设计</strong>不是另一条无尽信息流
+            <strong>Designed for matching</strong>Not another endless social
+            feed
           </span>
         </div>
       </section>
       <footer className="welcome-footer">
-        NODE 是独立社区项目，并非 HKUST 官方服务。换宿须通过 SHRLO 正式流程。
+        NODE is an independent community project, not an official HKUST service.
+        Hall changes must follow the formal SHRLO process.
       </footer>
     </main>
   );

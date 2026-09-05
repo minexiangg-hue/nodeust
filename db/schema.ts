@@ -97,6 +97,37 @@ export const posts = sqliteTable(
   ],
 );
 
+export const announcements = sqliteTable(
+  'announcements',
+  {
+    id: text('id').primaryKey(),
+    authorId: text('author_id')
+      .notNull()
+      .references(() => users.id),
+    title: text('title').notNull(),
+    body: text('body').notNull(),
+    kind: text('kind', { enum: ['info', 'maintenance', 'upgrade'] })
+      .notNull()
+      .default('info'),
+    status: text('status', { enum: ['draft', 'published', 'archived'] })
+      .notNull()
+      .default('published'),
+    startsAt: integer('starts_at', { mode: 'timestamp_ms' }),
+    endsAt: integer('ends_at', { mode: 'timestamp_ms' }),
+    publishedAt: integer('published_at', { mode: 'timestamp_ms' }),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [
+    index('idx_announcements_status_window').on(
+      table.status,
+      table.startsAt,
+      table.endsAt,
+    ),
+    index('idx_announcements_published').on(table.status, table.publishedAt),
+  ],
+);
+
 export const conversations = sqliteTable(
   'conversations',
   {

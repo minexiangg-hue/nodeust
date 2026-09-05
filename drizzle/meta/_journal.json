@@ -29,6 +29,13 @@
       "when": 1788521005497,
       "tag": "0003_luxuriant_doorman",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1788605724203,
+      "tag": "0004_ambitious_yellow_claw",
+      "breakpoints": true
     }
   ]
 }
