@@ -873,7 +873,6 @@ export function PlazaApp() {
               <X />
             </button>
           )}
-          <kbd>⌘ K</kbd>
         </label>
         <div className="header-actions">
           <Button

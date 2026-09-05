@@ -176,14 +176,6 @@ button {
 .search-box button svg {
   width: 14px;
 }
-.search-box kbd {
-  font-size: 0.68rem;
-  color: #737b9d;
-  border: 1px solid rgba(143, 153, 191, 0.2);
-  border-radius: 6px;
-  padding: 3px 6px;
-  background: rgba(255, 255, 255, 0.035);
-}
 .header-actions {
   justify-self: end;
   display: flex;
@@ -663,8 +655,14 @@ button {
 .request-icon svg {
   width: 14px;
 }
+.request-bubble > span:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
 .request-bubble strong {
   display: block;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -673,6 +671,10 @@ button {
 .request-bubble small {
   display: block;
   margin-top: 3px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #717b9f;
   font-size: 0.56rem;
 }
@@ -1666,9 +1668,6 @@ button {
   }
   .search-box {
     grid-column: 2;
-  }
-  .search-box kbd {
-    display: none;
   }
   .language-switch,
   .header-icon,

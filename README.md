@@ -56,6 +56,7 @@ Never collect an ITSO password inside NODE. The application must redirect to HKU
 
 ```bash
 npm run build
+npm run check:backend # with the local dev server running
 npx oxlint app lib db
 npx tsc --noEmit
 ```
