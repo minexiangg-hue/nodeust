@@ -1661,6 +1661,9 @@ button {
   font-size: 0.65rem;
   text-underline-offset: 3px;
 }
+.profile-body > .profile-signout {
+  margin-top: 16px;
+}
 
 @media (max-width: 1180px) {
   .app-header {
@@ -2850,4 +2853,84 @@ button {
   display: flex;
   gap: 8px;
   margin-top: 4px;
+}
+
+/* Owner console · feedback / 意见箱 */
+
+.feedback-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 18px 10px;
+}
+.feedback-toolbar button {
+  height: 25px;
+  padding: 0 11px;
+  border: 1px solid rgba(145, 154, 196, 0.16);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #8a94b4;
+  font-size: 0.58rem;
+  cursor: pointer;
+}
+.feedback-toolbar button.active {
+  color: #12162c;
+  background: #b6ff75;
+  border-color: #b6ff75;
+  font-weight: 700;
+}
+.feedback-list {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 0 18px 6px;
+}
+.feedback-card {
+  display: grid;
+  gap: 8px;
+  padding: 13px;
+  border: 1px solid rgba(141, 154, 198, 0.14);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.025);
+}
+.feedback-card.resolved {
+  opacity: 0.62;
+  border-color: rgba(101, 230, 172, 0.22);
+}
+.feedback-card .fc-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.feedback-card .fc-head strong {
+  font-size: 0.66rem;
+  color: #dde2f4;
+}
+.feedback-card .fc-head span {
+  color: #687395;
+  font-size: 0.55rem;
+}
+.feedback-card .fc-body {
+  margin: 0;
+  color: #c6ccdf;
+  font-size: 0.66rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.feedback-card .fc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.feedback-card .fc-foot small {
+  color: #5f698b;
+  font-size: 0.52rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.feedback-card .fc-foot button {
+  font-size: 0.6rem;
 }

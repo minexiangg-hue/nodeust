@@ -17,10 +17,12 @@ import {
   Flag,
   Gavel,
   List,
+  LogOut,
   Map,
   MapPin,
   Megaphone,
   MessageCircle,
+  MessageSquarePlus,
   MoreHorizontal,
   Plus,
   Search,
@@ -169,6 +171,38 @@ type AdminReport = {
   targetAlias: string;
   reporterAlias: string;
 };
+
+type FeedbackCategory = 'bug' | 'suggestion' | 'other';
+type FeedbackStatus = 'open' | 'resolved';
+
+// A member-submitted feedback row (GET /api/feedback, Owner only), enriched
+// server-side with the submitter's username (users.identity_id) + anonymous alias.
+type AdminFeedback = {
+  id: string;
+  category: FeedbackCategory;
+  body: string;
+  status: FeedbackStatus;
+  createdAt: string;
+  resolvedAt: string | null;
+  username: string;
+  alias: string;
+};
+
+function feedbackCategoryLabel(category: FeedbackCategory, locale: Locale) {
+  const labels: Record<FeedbackCategory, [string, string, string]> = {
+    bug: ['Bug', '故障', '故障'],
+    suggestion: ['Suggestion', '建议', '建議'],
+    other: ['Other', '其他', '其他'],
+  };
+  const label = labels[category];
+  return localize(locale, label[0], label[1], label[2]);
+}
+
+function feedbackStatusLabel(status: FeedbackStatus, locale: Locale) {
+  return status === 'open'
+    ? localize(locale, 'Open', '待处理', '待處理')
+    : localize(locale, 'Resolved', '已处理', '已處理');
+}
 
 // Bilingual labels for the report `reason` enum (mirrors lib/content-policy.ts).
 function reportReasonLabel(reason: string, locale: Locale): string {
@@ -506,6 +540,7 @@ export function PlazaApp() {
   const [adminOpen, setAdminOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [notice, setNotice] = useState('');
   const [zoom, setZoom] = useState(1);
   const t = copy[locale];
@@ -926,6 +961,33 @@ export function PlazaApp() {
           >
             <Bell />
           </Button>
+          <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+            <DialogTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={localize(
+                    locale,
+                    'Send feedback',
+                    '发送反馈',
+                    '發送反饋',
+                  )}
+                  className="header-icon"
+                />
+              }
+            >
+              <MessageSquarePlus />
+            </DialogTrigger>
+            <FeedbackDialog
+              locale={locale}
+              onClose={() => setFeedbackOpen(false)}
+              onSent={(message) => {
+                setFeedbackOpen(false);
+                setNotice(message);
+              }}
+            />
+          </Dialog>
           <button
             className="language-switch"
             onClick={() =>
@@ -1716,6 +1778,7 @@ export function PlazaApp() {
         <SheetContent className="admin-sheet">
           <AdminPanel
             locale={locale}
+            isOwner={profile?.role === 'owner'}
             onAnnouncementPublished={(announcement) =>
               setAnnouncements((current) => [announcement, ...current])
             }
@@ -2077,6 +2140,135 @@ function RequestDetail({
         </div>
       </div>
     </>
+  );
+}
+
+function FeedbackDialog({
+  locale,
+  onClose,
+  onSent,
+}: {
+  locale: Locale;
+  onClose: () => void;
+  onSent: (message: string) => void;
+}) {
+  const [category, setCategory] = useState<FeedbackCategory>('suggestion');
+  const [body, setBody] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+
+  const submit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    const text = body.trim();
+    if (!text || sending) return;
+    setSending(true);
+    setError('');
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ category, body: text }),
+      });
+      if (!response.ok) throw new Error('send failed');
+      onSent(
+        localize(
+          locale,
+          'Feedback sent. Thank you!',
+          '反馈已发送，谢谢！',
+          '反饋已送出，多謝！',
+        ),
+      );
+    } catch {
+      setError(
+        localize(
+          locale,
+          'Could not send feedback. Please try again.',
+          '发送失败，请稍后再试。',
+          '傳送失敗，請稍後再試。',
+        ),
+      );
+    } finally {
+      setSending(false);
+    }
+  };
+
+  return (
+    <DialogContent className="create-dialog">
+      <DialogHeader>
+        <DialogTitle>
+          {localize(locale, 'Send feedback', '发送反馈', '發送反饋')}
+        </DialogTitle>
+        <DialogDescription>
+          {localize(
+            locale,
+            'Tell the NODE team what to fix or improve. Your username is visible to the Owner only — other members stay anonymous.',
+            '告诉我们如何改进 NODE。你的用户名只对 Owner 可见，对其他成员保持匿名。',
+            '話畀我哋知點樣改進 NODE。你嘅用戶名只對 Owner 可見，其他成員保持匿名。',
+          )}
+        </DialogDescription>
+      </DialogHeader>
+      <form onSubmit={(event) => void submit(event)}>
+        <div className="create-form">
+          <div className="form-field">
+            <label htmlFor="feedback-category">
+              {localize(locale, 'Type', '类型', '類型')}
+            </label>
+            <Select
+              value={category}
+              onValueChange={(value) =>
+                setCategory(value as FeedbackCategory)
+              }
+            >
+              <SelectTrigger id="feedback-category">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bug">
+                  {feedbackCategoryLabel('bug', locale)}
+                </SelectItem>
+                <SelectItem value="suggestion">
+                  {feedbackCategoryLabel('suggestion', locale)}
+                </SelectItem>
+                <SelectItem value="other">
+                  {feedbackCategoryLabel('other', locale)}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="form-field">
+            <label htmlFor="feedback-body">
+              {localize(locale, 'Feedback', '反馈内容', '反饋內容')}
+            </label>
+            <Textarea
+              id="feedback-body"
+              required
+              rows={5}
+              maxLength={2000}
+              value={body}
+              onChange={(event) => setBody(event.target.value)}
+              placeholder={localize(
+                locale,
+                'Describe the issue or your suggestion…',
+                '描述问题或建议…',
+                '描述問題或建議…',
+              )}
+            />
+            <small className="field-hint">{body.length}/2000</small>
+          </div>
+          {error && <div className="queue-error">{error}</div>}
+        </div>
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={onClose}>
+            {localize(locale, 'Cancel', '取消', '取消')}
+          </Button>
+          <Button type="submit" disabled={!body.trim() || sending}>
+            {sending
+              ? localize(locale, 'Sending…', '发送中…', '傳送中…')
+              : localize(locale, 'Send feedback', '发送反馈', '發送反饋')}
+          </Button>
+        </DialogFooter>
+      </form>
+    </DialogContent>
   );
 }
 
@@ -2666,9 +2858,11 @@ function ChatPanel({
 
 function AdminPanel({
   locale,
+  isOwner,
   onAnnouncementPublished,
 }: {
   locale: Locale;
+  isOwner: boolean;
   onAnnouncementPublished: (announcement: Announcement) => void;
 }) {
   const [queue, setQueue] = useState<AdminReport[]>([]);
@@ -2681,6 +2875,13 @@ function AdminPanel({
   const [announcementKind, setAnnouncementKind] =
     useState<Announcement['kind']>('info');
   const [announcementStatus, setAnnouncementStatus] = useState('');
+  const [feedbackItems, setFeedbackItems] = useState<AdminFeedback[]>([]);
+  const [feedbackLoading, setFeedbackLoading] = useState(true);
+  const [feedbackFilter, setFeedbackFilter] = useState<
+    'all' | 'open' | 'resolved'
+  >('all');
+  const [feedbackError, setFeedbackError] = useState('');
+  const [feedbackActingId, setFeedbackActingId] = useState<string | null>(null);
 
   const loadReports = async () => {
     try {
@@ -2703,10 +2904,75 @@ function AdminPanel({
     }
   };
 
+  const loadFeedback = async () => {
+    try {
+      const response = await fetch('/api/feedback');
+      if (!response.ok) throw new Error('load failed');
+      const result = (await response.json()) as { items?: AdminFeedback[] };
+      setFeedbackItems(result.items ?? []);
+      setFeedbackError('');
+    } catch {
+      setFeedbackError(
+        localize(
+          locale,
+          'Could not load feedback.',
+          '无法读取反馈。',
+          '無法讀取反饋。',
+        ),
+      );
+    } finally {
+      setFeedbackLoading(false);
+    }
+  };
+
+  const toggleFeedback = async (item: AdminFeedback) => {
+    const action = item.status === 'open' ? 'resolve' : 'reopen';
+    setFeedbackActingId(item.id);
+    setFeedbackError('');
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ id: item.id, action }),
+      });
+      if (!response.ok) throw new Error('toggle failed');
+      setFeedbackItems((items) =>
+        items.map((entry) =>
+          entry.id === item.id
+            ? {
+                ...entry,
+                status: action === 'resolve' ? 'resolved' : 'open',
+                resolvedAt:
+                  action === 'resolve' ? new Date().toISOString() : null,
+              }
+            : entry,
+        ),
+      );
+    } catch {
+      setFeedbackError(
+        localize(
+          locale,
+          'Could not update that feedback.',
+          '更新失败，请稍后再试。',
+          '更新失敗，請稍後再試。',
+        ),
+      );
+    } finally {
+      setFeedbackActingId(null);
+    }
+  };
+
   useEffect(() => {
     void loadReports();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isOwner) {
+      void loadFeedback();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOwner]);
 
   const act = async (report: AdminReport, action: 'remove' | 'dismiss') => {
     setActingId(report.id);
@@ -2990,6 +3256,122 @@ function AdminPanel({
           </div>
         )}
       </div>
+      {isOwner && (
+        <>
+          <div className="admin-section-title">
+            <h3>
+              <MessageSquarePlus />{' '}
+              {localize(locale, 'Feedback', '反馈', '反饋')}
+            </h3>
+            <Badge>
+              {feedbackItems.filter((item) => item.status === 'open').length}{' '}
+              {localize(locale, 'OPEN', '待处理', '待處理')}
+            </Badge>
+          </div>
+          <div className="feedback-toolbar">
+            {(['all', 'open', 'resolved'] as const).map((value) => (
+              <button
+                key={value}
+                className={feedbackFilter === value ? 'active' : ''}
+                onClick={() => setFeedbackFilter(value)}
+              >
+                {value === 'all'
+                  ? localize(locale, 'All', '全部', '全部')
+                  : value === 'open'
+                    ? localize(locale, 'Open', '待处理', '待處理')
+                    : localize(locale, 'Resolved', '已处理', '已處理')}
+              </button>
+            ))}
+          </div>
+          {feedbackError && <div className="queue-error">{feedbackError}</div>}
+          <div className="feedback-list">
+            {feedbackLoading ? (
+              <div className="queue-empty">
+                <strong>
+                  {localize(locale, 'Loading…', '加载中…', '載入中…')}
+                </strong>
+              </div>
+            ) : (
+              feedbackItems
+                .filter(
+                  (item) =>
+                    feedbackFilter === 'all' ||
+                    item.status === feedbackFilter,
+                )
+                .map((item) => (
+                  <article
+                    key={item.id}
+                    className={`feedback-card ${item.status === 'resolved' ? 'resolved' : ''}`}
+                  >
+                    <div className="fc-head">
+                      <Badge
+                        variant={
+                          item.status === 'open' ? 'secondary' : 'outline'
+                        }
+                      >
+                        {feedbackCategoryLabel(item.category, locale)}
+                      </Badge>
+                      <strong>{item.username}</strong>
+                      <span>
+                        {item.alias} · {formatAge(item.createdAt)}
+                      </span>
+                    </div>
+                    <p className="fc-body">{item.body}</p>
+                    <div className="fc-foot">
+                      <small>
+                        {feedbackStatusLabel(item.status, locale)}
+                        {item.status === 'resolved' && item.resolvedAt
+                          ? ` · ${formatAge(item.resolvedAt)}`
+                          : ''}
+                      </small>
+                      <Button
+                        size="sm"
+                        variant={item.status === 'open' ? 'outline' : 'ghost'}
+                        disabled={feedbackActingId === item.id}
+                        onClick={() => void toggleFeedback(item)}
+                      >
+                        {item.status === 'open'
+                          ? localize(
+                              locale,
+                              'Mark resolved',
+                              '标记为已处理',
+                              '標記為已處理',
+                            )
+                          : localize(
+                              locale,
+                              'Reopen',
+                              '重新打开',
+                              '重新開啟',
+                            )}
+                      </Button>
+                    </div>
+                  </article>
+                ))
+            )}
+            {!feedbackLoading && feedbackItems.length === 0 && (
+              <div className="queue-empty">
+                <CheckCircle2 />
+                <strong>
+                  {localize(
+                    locale,
+                    'No feedback yet.',
+                    '还没有反馈。',
+                    '還沒有反饋。',
+                  )}
+                </strong>
+                <span>
+                  {localize(
+                    locale,
+                    'New member feedback will appear here.',
+                    '成员的新反馈会显示在这里。',
+                    '成員嘅新反饋會顯示喺度。',
+                  )}
+                </span>
+              </div>
+            )}
+          </div>
+        </>
+      )}
       <div className="team-card">
         <UserPlus />
         <div>
@@ -3313,6 +3695,16 @@ function ProfilePanel({
             '社群規則與私隱說明',
           )}
         </a>
+        <Button
+          variant="destructive"
+          className="profile-signout"
+          onClick={() => {
+            window.location.href = '/__gateway/logout';
+          }}
+        >
+          <LogOut />
+          {localize(locale, 'Sign out', '退出登录', '登出')}
+        </Button>
       </div>
     </>
   );

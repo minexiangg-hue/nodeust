@@ -311,3 +311,25 @@ export const moderationActions = mysqlTable(
     ),
   ],
 );
+
+// Member-submitted feedback / suggestions, read by the Owner in the admin
+// console. Deliberately NOT passed through content-policy: testers may
+// legitimately include contact details in their message.
+export const feedback = mysqlTable(
+  'feedback',
+  {
+    id: id('id').primaryKey(),
+    authorId: id('author_id')
+      .notNull()
+      .references(() => users.id),
+    category: mysqlEnum('category', ['bug', 'suggestion', 'other']).notNull(),
+    body: text('body').notNull(),
+    status: mysqlEnum('status', ['open', 'resolved']).notNull().default('open'),
+    createdAt: instant('created_at').notNull(),
+    resolvedAt: instant('resolved_at'),
+    resolvedById: id('resolved_by_id').references(() => users.id),
+  },
+  (table) => [
+    index('idx_feedback_status_created').on(table.status, table.createdAt),
+  ],
+);

@@ -8,6 +8,13 @@
       "when": 1788621125577,
       "tag": "0000_free_doctor_octopus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1788719087133,
+      "tag": "0001_jazzy_spectrum",
+      "breakpoints": true
     }
   ]
 }
