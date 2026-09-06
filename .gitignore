@@ -28,6 +28,9 @@ yarn-error.log*
 
 # local environment
 .env*
+
+# local tooling
+.claude/
 !.env.example
 
 # deployment and generated files

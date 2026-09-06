@@ -1,7 +1,7 @@
 'use client';
 /* oxlint-disable next/no-html-link-for-pages */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeftRight,
   Ban,
@@ -99,6 +99,180 @@ type RequestItem = {
   mine?: boolean;
   persisted?: boolean;
 };
+
+type Role = 'member' | 'moderator' | 'admin' | 'owner';
+
+// The verified identity returned by GET /api/profile. Everything the old demo
+// shell hard-coded (alias, avatar, role, real name/email) now comes from here.
+type ProfileMember = {
+  id: string;
+  anonymousAlias: string;
+  nickname: string;
+  fullName: string;
+  email: string;
+  affiliation: 'student' | 'staff' | 'faculty';
+  role: Role;
+  department: string | null;
+  programme: string | null;
+  yearOfStudy: string | null;
+  contactMethod: string | null;
+  contactValue: string | null;
+  preferredLanguage: Locale;
+  currentLocationId?: string | null;
+};
+
+type ChatSession = {
+  conversationId: string;
+  peerAlias: string;
+  postId: string | null;
+  postTitle: string;
+};
+
+type ConversationItem = {
+  id: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  postId: string | null;
+  post: { id: string; title: string; category: Exclude<Category, 'all'> } | null;
+  peerId: string;
+  peerAlias: string;
+  lastMessage: {
+    id: string;
+    body: string;
+    kind: string;
+    createdAt: string;
+    isMine: boolean;
+  } | null;
+};
+
+type WireMessage = {
+  id: string;
+  body: string;
+  kind: 'message' | 'system' | 'contact_request' | 'contact_reveal';
+  createdAt: string;
+  alias: string;
+  isMine: boolean;
+};
+
+// An open report from the moderation queue (GET /api/admin/reports), enriched
+// server-side with the human-readable target and the reporter's alias.
+type AdminReport = {
+  id: string;
+  targetType: 'post' | 'message' | 'user';
+  targetId: string;
+  reason: string;
+  details: string | null;
+  status: string;
+  createdAt: string;
+  targetLabel: string;
+  targetAlias: string;
+  reporterAlias: string;
+};
+
+// Bilingual labels for the report `reason` enum (mirrors lib/content-policy.ts).
+function reportReasonLabel(reason: string, locale: Locale): string {
+  const labels: Record<string, [string, string, string]> = {
+    illegal: ['Illegal activity', '违法或违规信息', '違法或違規信息'],
+    hall_trade: ['Hall-place trading', '宿位交易', '宿位交易'],
+    fraud: ['Fraud / impersonation', '诈骗与冒充', '詐騙與冒充'],
+    harassment: ['Harassment', '骚扰与威胁', '騷擾與威脅'],
+    hate: ['Hate / discrimination', '仇恨与歧视', '仇恨與歧視'],
+    sexual: ['Sexual content', '色情与性交易', '色情與性交易'],
+    privacy: ['Privacy violation', '隐私泄露', '私隱洩漏'],
+    spam: ['Spam / promotion', '垃圾信息与推广', '垃圾信息與推廣'],
+    other: ['Other', '其他', '其他'],
+  };
+  const label = labels[reason] ?? labels.other;
+  return localize(locale, label[0], label[1], label[2]);
+}
+
+function targetTypeLabel(targetType: AdminReport['targetType'], locale: Locale): string {
+  return targetType === 'post'
+    ? localize(locale, 'Post', '帖子', '帖子')
+    : targetType === 'user'
+      ? localize(locale, 'User', '用户', '用戶')
+      : localize(locale, 'Message', '消息', '消息');
+}
+
+function roleLabel(role: Role): string {
+  return role === 'owner'
+    ? 'Owner'
+    : role === 'admin'
+      ? 'Admin'
+      : role === 'moderator'
+        ? 'Moderator'
+        : 'Member';
+}
+
+function canModerateRole(role: Role): boolean {
+  return role === 'owner' || role === 'admin' || role === 'moderator';
+}
+
+function formatClock(iso: string): string {
+  const date = new Date(iso);
+  return Number.isNaN(date.getTime())
+    ? ''
+    : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// Coarse "2 h ago"-style label derived from the server createdAt on each poll.
+function formatAge(iso: string): string {
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return '';
+  const minutes = Math.max(0, Math.floor((Date.now() - then) / 60000));
+  if (minutes < 1) return 'now';
+  if (minutes < 60) return `${minutes} min`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hr`;
+  return `${Math.floor(hours / 24)} d`;
+}
+
+function contactLine(method: string | null, value: string | null): string {
+  return [method, value].filter(Boolean).join(' · ') || '';
+}
+
+type PostPayload = {
+  id: string;
+  category: string;
+  title: string;
+  body: string;
+  locationId: string | null;
+  currentHall: string | null;
+  targetHall: string | null;
+  replyCount: number;
+  createdAt: string;
+  anonymousAlias: string;
+  isMine: boolean;
+};
+
+// The feed is server-authoritative: demo placeholders are gone and everything
+// rendered comes from GET /api/posts (or a freshly published post).
+function mapPost(payload: PostPayload): RequestItem {
+  return {
+    id: payload.id,
+    author: payload.anonymousAlias,
+    category:
+      payload.category === 'service'
+        ? 'other'
+        : (payload.category as Exclude<Category, 'all'>),
+    from: payload.currentHall ?? '',
+    to: payload.targetHall ?? '',
+    title: payload.title,
+    detail: payload.body,
+    age: formatAge(payload.createdAt),
+    replies: payload.replyCount,
+    hall: (payload.currentHall ?? '').replace('Hall ', ''),
+    locationId:
+      payload.locationId ||
+      campusLocations.find(
+        (location) => location.shortLabel === payload.currentHall,
+      )?.id ||
+      'academic-building',
+    mine: payload.isMine,
+    persisted: true,
+  };
+}
 
 const copy = {
   'zh-CN': {
@@ -298,158 +472,6 @@ const halls = [
 ] as const;
 */
 
-const initialRequests: RequestItem[] = [
-  {
-    id: 1,
-    author: 'Blue Whale 271',
-    category: 'hall',
-    from: 'Hall VII',
-    to: 'Hall III',
-    title: 'Hall VII single room → Hall III',
-    detail:
-      'Looking for a Fall-term swap with the same eligible room type. Timing is flexible.',
-    age: '3 min',
-    replies: 4,
-    hall: 'VII',
-    locationId: 'ug-hall-vii',
-    demo: true,
-  },
-  {
-    id: 2,
-    author: 'Red Squirrel 084',
-    category: 'goods',
-    from: 'Hall I',
-    to: '',
-    title: 'Monitor arm in excellent condition',
-    detail:
-      'Meet near North Gate or the halls. Open to swapping for desk organisers.',
-    age: '8 min',
-    replies: 2,
-    hall: 'I',
-    locationId: 'ug-hall-i',
-    demo: true,
-  },
-  {
-    id: 3,
-    author: 'Sea Otter 619',
-    category: 'study',
-    from: 'Hall III',
-    to: '',
-    title: 'COMP 2011 study partner',
-    detail:
-      'Twice a week for practice questions and explaining concepts to each other.',
-    age: '12 min',
-    replies: 6,
-    hall: 'III',
-    locationId: 'ug-hall-iii',
-    demo: true,
-  },
-  {
-    id: 4,
-    author: 'Night Heron 402',
-    category: 'hall',
-    from: 'Hall V',
-    to: 'Hall VII',
-    title: 'Hall V double room → Hall VII',
-    detail:
-      'Seeking an eligible partner for the official SHRLO process. No payment involved.',
-    age: '18 min',
-    replies: 1,
-    hall: 'V',
-    locationId: 'ug-hall-v',
-    demo: true,
-  },
-  {
-    id: 5,
-    author: 'Starfish 933',
-    category: 'other',
-    from: 'Academic Building',
-    to: '',
-    title: 'Python beginner study partner',
-    detail:
-      'Weekend practice from the basics, paced around current coursework.',
-    age: '24 min',
-    replies: 3,
-    hall: '',
-    locationId: 'academic-building',
-    demo: true,
-  },
-  {
-    id: 6,
-    author: 'Silver Fox 118',
-    category: 'hall',
-    from: 'GGT',
-    to: 'UA Tower A',
-    title: 'GGT single room → UA Tower A',
-    detail:
-      'RPG with a valid hall offer, looking to apply during the official swapping period.',
-    age: '31 min',
-    replies: 5,
-    hall: 'GGT',
-    locationId: 'ggt',
-    demo: true,
-  },
-  {
-    id: 7,
-    author: 'Misty Whale 017',
-    category: 'hall',
-    from: 'Hall III',
-    to: 'Hall VII',
-    title: 'Hall III → Hall VII',
-    detail: 'For the official swapping period and the same eligible room type.',
-    age: '36 min',
-    replies: 2,
-    hall: 'III',
-    locationId: 'ug-hall-iii',
-    demo: true,
-    mine: true,
-  },
-  {
-    id: 8,
-    author: 'Clouded Leopard 741',
-    category: 'goods',
-    from: 'Lee Shau Kee Business Building',
-    to: '',
-    title: 'Financial calculator exchange',
-    detail:
-      'Available to meet in a public area of the Business Building on weekday afternoons.',
-    age: '41 min',
-    replies: 1,
-    hall: '',
-    locationId: 'lsk-business-building',
-    demo: true,
-  },
-  {
-    id: 9,
-    author: 'Night Heron 552',
-    category: 'goods',
-    from: 'Staff Quarters Towers 5–7',
-    to: '',
-    title: 'Looking to borrow a small trolley',
-    detail:
-      'For moving two storage boxes tonight. Will return it immediately afterwards.',
-    age: '49 min',
-    replies: 0,
-    hall: '',
-    locationId: 'sq-5-7',
-    demo: true,
-  },
-  {
-    id: 10,
-    author: 'Starfish 033',
-    category: 'other',
-    from: 'North Bus Station',
-    to: '',
-    title: 'Heading towards Hang Hau around 20:30',
-    detail:
-      'Leaving from North Gate. Looking for company only; no money collection.',
-    age: '1 hr',
-    replies: 3,
-    hall: '',
-    locationId: 'north-bus-station',
-    demo: true,
-  },
-];
 
 const localeLabels: Record<Locale, string> = {
   'zh-CN': '简',
@@ -473,10 +495,11 @@ export function PlazaApp() {
   );
   const [currentLocationId, setCurrentLocationId] =
     useState('academic-building');
-  const [items, setItems] = useState<RequestItem[]>(initialRequests);
+  const [items, setItems] = useState<RequestItem[]>([]);
   const [selected, setSelected] = useState<RequestItem | null>(null);
-  const [chatPost, setChatPost] = useState<RequestItem | null>(null);
-  const [chatIds, setChatIds] = useState<Set<string>>(new Set());
+  const [profile, setProfile] = useState<ProfileMember | null>(null);
+  const [conversations, setConversations] = useState<ConversationItem[]>([]);
+  const [chatSession, setChatSession] = useState<ChatSession | null>(null);
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
   const [showBubbles, setShowBubbles] = useState(true);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -522,20 +545,99 @@ export function PlazaApp() {
         (mine) => mine.from === item.to && mine.to === item.from,
       ),
   );
-  const chatItems = items.filter((item) => chatIds.has(String(item.id)));
   const savedItems = items.filter((item) => savedIds.has(String(item.id)));
   const sectionItems =
     activeSection === 'matches'
       ? matchItems
-      : activeSection === 'chats'
-        ? chatItems
-        : activeSection === 'saved'
-          ? savedItems
-          : filtered;
+      : activeSection === 'saved'
+        ? savedItems
+        : filtered;
 
-  const openChat = (item: RequestItem) => {
-    setChatIds((current) => new Set(current).add(String(item.id)));
-    setChatPost(item);
+  const loadPosts = async () => {
+    try {
+      const response = await fetch('/api/posts');
+      if (!response.ok) return;
+      const result = (await response.json()) as { items?: PostPayload[] };
+      setItems((result.items ?? []).map((payload) => mapPost(payload)));
+    } catch {
+      /* Keep the current feed on transient errors. */
+    }
+  };
+
+  const loadConversations = async () => {
+    try {
+      const response = await fetch('/api/conversations');
+      if (!response.ok) return;
+      const result = (await response.json()) as { items?: ConversationItem[] };
+      setConversations(result.items ?? []);
+    } catch {
+      /* Ignore transient failures; the next poll retries. */
+    }
+  };
+
+  const openSession = (session: ChatSession) => {
+    setChatSession(session);
+    void loadConversations();
+  };
+
+  // From a post detail: open a thread with its author (creating or reusing the
+  // conversation). For the poster's own request, jump to their inbox instead.
+  const ensureThread = async (item: RequestItem) => {
+    if (item.mine) {
+      setSelected(null);
+      setActiveSection('chats');
+      setView('list');
+      void loadConversations();
+      return;
+    }
+    try {
+      const response = await fetch('/api/conversations', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ postId: String(item.id) }),
+      });
+      const result = (await response.json()) as {
+        id?: string;
+        error?: string;
+      };
+      if (!response.ok || !result.id)
+        throw new Error(result.error || 'unavailable');
+      setSelected(null);
+      openSession({
+        conversationId: result.id,
+        peerAlias: item.author,
+        postId: String(item.id),
+        postTitle: item.title,
+      });
+    } catch {
+      setNotice(
+        localize(
+          locale,
+          'Could not start the conversation. Please try again.',
+          '暂时无法发起会话，请稍后再试。',
+          '暫時無法發起會話，請稍後再試。',
+        ),
+      );
+    }
+  };
+
+  const reloadProfile = async () => {
+    try {
+      const response = await fetch('/api/profile');
+      if (!response.ok) return;
+      const result = (await response.json()) as { profile?: ProfileMember };
+      if (!result.profile) return;
+      setProfile(result.profile);
+      if (
+        result.profile.currentLocationId &&
+        getCampusLocation(result.profile.currentLocationId)
+      )
+        setCurrentLocationId(result.profile.currentLocationId);
+      if (['en', 'zh-CN', 'zh-HK'].includes(result.profile.preferredLanguage))
+        setLocale(result.profile.preferredLanguage);
+    } catch {
+      /* Profile is non-critical on first paint. */
+    }
   };
 
   const toggleSaved = (item: RequestItem) => {
@@ -605,17 +707,14 @@ export function PlazaApp() {
         );
         return;
       }
-      setItems((current) => [
-        { ...item, id: result.id!, mine: true, persisted: true },
-        ...current,
-      ]);
+      await loadPosts();
       setCreateOpen(false);
       setNotice(
         localize(
           locale,
           'Your request is now live.',
-          '需求已安全写入本地数据库并发布到广场。',
-          '需求已安全寫入本地資料庫並發佈到廣場。',
+          '需求已发布到广场。',
+          '需求已發佈到廣場。',
         ),
       );
     } catch {
@@ -631,78 +730,27 @@ export function PlazaApp() {
   };
 
   useEffect(() => {
-    let active = true;
-    void fetch('/api/posts')
-      .then(async (response) => {
-        if (!response.ok) return [];
-        const result = (await response.json()) as {
-          items?: Array<{
-            id: string;
-            category: string;
-            title: string;
-            body: string;
-            locationId: string | null;
-            currentHall: string | null;
-            targetHall: string | null;
-            replyCount: number;
-            anonymousAlias: string;
-            isMine: boolean;
-          }>;
-        };
-        return result.items ?? [];
-      })
-      .then((saved) => {
-        if (!active || !saved.length) return;
-        const mapped: RequestItem[] = saved.map((item) => ({
-          id: item.id,
-          author: item.anonymousAlias,
-          category:
-            item.category === 'service'
-              ? 'other'
-              : (item.category as Exclude<Category, 'all'>),
-          from: item.currentHall ?? '',
-          to: item.targetHall ?? '',
-          title: item.title,
-          detail: item.body,
-          age: 'saved',
-          replies: item.replyCount,
-          hall: (item.currentHall ?? '').replace('Hall ', ''),
-          locationId:
-            item.locationId ||
-            campusLocations.find(
-              (location) => location.shortLabel === item.currentHall,
-            )?.id ||
-            'academic-building',
-          mine: item.isMine,
-          persisted: true,
-        }));
-        setItems((current) => [
-          ...mapped,
-          ...current.filter(
-            (item) => !mapped.some((savedItem) => savedItem.id === item.id),
-          ),
-        ]);
-      })
-      .catch(() => undefined);
-    return () => {
-      active = false;
-    };
+    void loadPosts();
   }, []);
 
   useEffect(() => {
-    void fetch('/api/profile')
-      .then(async (response) => {
-        if (!response.ok) return null;
-        return (await response.json()) as {
-          profile?: { currentLocationId?: string | null };
-        };
-      })
-      .then((result) => {
-        const locationId = result?.profile?.currentLocationId;
-        if (locationId && getCampusLocation(locationId))
-          setCurrentLocationId(locationId);
-      })
-      .catch(() => undefined);
+    void loadConversations();
+  }, []);
+
+  useEffect(() => {
+    void reloadProfile();
+  }, []);
+
+  // Lightweight polling so a second browser sees new posts / inbound chats
+  // without a manual refresh.
+  useEffect(() => {
+    const poll = () => {
+      if (document.visibilityState === 'hidden') return;
+      void loadPosts();
+      void loadConversations();
+    };
+    const id = setInterval(poll, 5000);
+    return () => clearInterval(id);
   }, []);
 
   useEffect(() => {
@@ -723,31 +771,22 @@ export function PlazaApp() {
       const storedSaved = JSON.parse(
         localStorage.getItem('node:saved') || '[]',
       ) as string[];
-      const storedChats = JSON.parse(
-        localStorage.getItem('node:chats') || '[]',
-      ) as string[];
       const storedLocale = localStorage.getItem('node:locale') as Locale | null;
       const storedBubbleSetting = localStorage.getItem('node:show-bubbles');
       queueMicrotask(() => {
         setSavedIds(new Set(storedSaved));
-        setChatIds(new Set(storedChats));
         if (storedLocale && ['en', 'zh-CN', 'zh-HK'].includes(storedLocale))
           setLocale(storedLocale);
         if (storedBubbleSetting === 'false') setShowBubbles(false);
       });
     } catch {
       localStorage.removeItem('node:saved');
-      localStorage.removeItem('node:chats');
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('node:saved', JSON.stringify([...savedIds]));
   }, [savedIds]);
-
-  useEffect(() => {
-    localStorage.setItem('node:chats', JSON.stringify([...chatIds]));
-  }, [chatIds]);
 
   useEffect(() => {
     localStorage.setItem('node:locale', locale);
@@ -850,6 +889,10 @@ export function PlazaApp() {
     return () => lifecycle.abort();
   }, []);
 
+  const aliasInitial =
+    profile?.anonymousAlias?.trim().charAt(0).toUpperCase() ?? '?';
+  const canModerate = profile ? canModerateRole(profile.role) : false;
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <header className="app-header">
@@ -908,6 +951,7 @@ export function PlazaApp() {
               locale={locale}
               onCreated={publishPost}
               currentLocationId={currentLocationId}
+              authorAlias={profile?.anonymousAlias ?? ''}
             />
           </Dialog>
           <button
@@ -915,7 +959,7 @@ export function PlazaApp() {
             aria-label="Account"
             onClick={() => setProfileOpen(true)}
           >
-            <span>W</span>
+            <span>{aliasInitial}</span>
             <i />
           </button>
         </div>
@@ -940,7 +984,7 @@ export function PlazaApp() {
             <RailLink
               icon={MessageCircle}
               label={t.chats}
-              count={chatItems.length || undefined}
+              count={conversations.length || undefined}
               active={activeSection === 'chats'}
               onClick={() => setActiveSection('chats')}
             />
@@ -982,16 +1026,21 @@ export function PlazaApp() {
               },
             )}
           </section>
-          <button className="admin-link" onClick={() => setAdminOpen(true)}>
-            <ShieldCheck /> {t.moderation}
-            <Badge>ADMIN</Badge>
-          </button>
+          {canModerate && (
+            <button className="admin-link" onClick={() => setAdminOpen(true)}>
+              <ShieldCheck /> {t.moderation}
+              <Badge>{roleLabel(profile!.role)}</Badge>
+            </button>
+          )}
           <div className="identity-card">
-            <div className="mini-avatar">W</div>
+            <div className="mini-avatar">{aliasInitial}</div>
             <div>
-              <strong>Misty Whale 017</strong>
+              <strong>{profile?.anonymousAlias ?? '…'}</strong>
               <span>
-                <ShieldCheck /> {t.profile}
+                <ShieldCheck />{' '}
+                {profile
+                  ? `${roleLabel(profile.role)} · ${t.profile}`
+                  : t.profile}
               </span>
             </div>
             <MoreHorizontal />
@@ -1285,17 +1334,51 @@ export function PlazaApp() {
             </div>
           ) : (
             <div className="request-list">
-              {sectionItems.length ? (
+              {activeSection === 'chats' ? (
+                conversations.length ? (
+                  conversations.map((conversation) => (
+                    <ConversationRow
+                      key={conversation.id}
+                      conversation={conversation}
+                      locale={locale}
+                      onClick={() =>
+                        openSession({
+                          conversationId: conversation.id,
+                          peerAlias: conversation.peerAlias,
+                          postId: conversation.postId,
+                          postTitle: conversation.post?.title ?? '',
+                        })
+                      }
+                    />
+                  ))
+                ) : (
+                  <div className="section-empty">
+                    <MessageCircle />
+                    <strong>
+                      {localize(
+                        locale,
+                        'No conversations yet',
+                        '还没有会话',
+                        '還沒有會話',
+                      )}
+                    </strong>
+                    <span>
+                      {localize(
+                        locale,
+                        'Open a request and start chatting; messages you receive appear here.',
+                        '打开任意需求发起沟通，收到的消息会出现在这里。',
+                        '打開任意需求發起溝通，收到的訊息會出現在這裡。',
+                      )}
+                    </span>
+                  </div>
+                )
+              ) : sectionItems.length ? (
                 sectionItems.map((item) => (
                   <RequestRow
                     key={item.id}
                     item={item}
                     locale={locale}
-                    onClick={() =>
-                      activeSection === 'chats'
-                        ? openChat(item)
-                        : setSelected(item)
-                    }
+                    onClick={() => setSelected(item)}
                   />
                 ))
               ) : (
@@ -1309,26 +1392,19 @@ export function PlazaApp() {
                           '暂时没有双向宿舍匹配',
                           '暫時沒有雙向宿舍配對',
                         )
-                      : activeSection === 'chats'
+                      : activeSection === 'saved'
                         ? localize(
                             locale,
-                            'No anonymous chats yet',
-                            '还没有匿名会话',
-                            '還沒有匿名會話',
+                            'Nothing saved yet',
+                            '还没有收藏',
+                            '還沒有收藏',
                           )
-                        : activeSection === 'saved'
-                          ? localize(
-                              locale,
-                              'Nothing saved yet',
-                              '还没有收藏',
-                              '還沒有收藏',
-                            )
-                          : localize(
-                              locale,
-                              'No matching requests in this area',
-                              '这个分区暂时没有符合条件的需求',
-                              '這個分區暫時沒有符合條件的需求',
-                            )}
+                        : localize(
+                            locale,
+                            'No matching requests in this area',
+                            '这个分区暂时没有符合条件的需求',
+                            '這個分區暫時沒有符合條件的需求',
+                          )}
                   </strong>
                   <span>
                     {activeSection === 'matches'
@@ -1338,26 +1414,19 @@ export function PlazaApp() {
                           '发布或调整需求后，系统会自动计算路线互补的对象。',
                           '發佈或調整需求後，系統會自動計算路線互補的對象。',
                         )
-                      : activeSection === 'chats'
+                      : activeSection === 'saved'
                         ? localize(
                             locale,
-                            'Start a conversation from any request and it will appear here.',
-                            '打开任意需求并开始沟通后，会显示在这里。',
-                            '打開任意需求並開始溝通後，會顯示在這裡。',
+                            'Open a request to save it.',
+                            '打开需求详情，即可加入收藏。',
+                            '打開需求詳情，即可加入收藏。',
                           )
-                        : activeSection === 'saved'
-                          ? localize(
-                              locale,
-                              'Open a request to save it.',
-                              '打开需求详情，即可加入收藏。',
-                              '打開需求詳情，即可加入收藏。',
-                            )
-                          : localize(
-                              locale,
-                              'Try another area or clear the filters.',
-                              '切换分区或清除筛选条件后再看看。',
-                              '切換分區或清除篩選條件後再看看。',
-                            )}
+                        : localize(
+                            locale,
+                            'Try another area or clear the filters.',
+                            '切换分区或清除筛选条件后再看看。',
+                            '切換分區或清除篩選條件後再看看。',
+                          )}
                   </span>
                 </div>
               )}
@@ -1474,7 +1543,7 @@ export function PlazaApp() {
         <RailLink
           icon={MessageCircle}
           label={t.chats}
-          count={chatItems.length || undefined}
+          count={conversations.length || undefined}
           active={activeSection === 'chats'}
           onClick={() => {
             setActiveSection('chats');
@@ -1496,21 +1565,40 @@ export function PlazaApp() {
               item={selected}
               t={t}
               locale={locale}
-              onChat={() => {
-                openChat(selected);
-                setSelected(null);
-              }}
+              onChat={() => void ensureThread(selected)}
               saved={savedIds.has(String(selected.id))}
               onSave={() => toggleSaved(selected)}
-              onReport={() => {
-                setNotice(
-                  localize(
-                    locale,
-                    'Report submitted to the moderation queue.',
-                    '举报已提交到管理员队列。',
-                    '舉報已提交到管理員隊列。',
-                  ),
-                );
+              onReport={async () => {
+                try {
+                  const response = await fetch('/api/reports', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify({
+                      targetType: 'post',
+                      targetId: String(selected.id),
+                      reason: 'other',
+                      details: null,
+                    }),
+                  });
+                  if (!response.ok) throw new Error('report failed');
+                  setNotice(
+                    localize(
+                      locale,
+                      'Report submitted to the moderation queue.',
+                      '举报已提交到管理员队列。',
+                      '舉報已提交到管理員隊列。',
+                    ),
+                  );
+                } catch {
+                  setNotice(
+                    localize(
+                      locale,
+                      'Could not submit the report. Please try again.',
+                      '举报提交失败，请稍后再试。',
+                      '舉報提交失敗，請稍後再試。',
+                    ),
+                  );
+                }
                 setSelected(null);
               }}
             />
@@ -1604,11 +1692,24 @@ export function PlazaApp() {
         </SheetContent>
       </Sheet>
       <Sheet
-        open={Boolean(chatPost)}
-        onOpenChange={(open) => !open && setChatPost(null)}
+        open={Boolean(chatSession)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setChatSession(null);
+            void loadConversations();
+          }
+        }}
       >
         <SheetContent className="chat-sheet">
-          {chatPost && <ChatPanel item={chatPost} locale={locale} />}
+          {chatSession && (
+            <ChatPanel
+              key={chatSession.conversationId}
+              session={chatSession}
+              myAlias={profile?.anonymousAlias ?? ''}
+              onConversationChanged={() => void loadConversations()}
+              locale={locale}
+            />
+          )}
         </SheetContent>
       </Sheet>
       <Sheet open={adminOpen} onOpenChange={setAdminOpen}>
@@ -1623,7 +1724,11 @@ export function PlazaApp() {
       </Sheet>
       <Sheet open={profileOpen} onOpenChange={setProfileOpen}>
         <SheetContent className="profile-sheet">
-          <ProfilePanel locale={locale} />
+          <ProfilePanel
+            locale={locale}
+            profile={profile}
+            onSaved={() => void reloadProfile()}
+          />
         </SheetContent>
       </Sheet>
       {notice && (
@@ -1811,6 +1916,64 @@ function RequestRow({
   );
 }
 
+function ConversationRow({
+  conversation,
+  locale,
+  onClick,
+}: {
+  conversation: ConversationItem;
+  locale: Locale;
+  onClick: () => void;
+}) {
+  const last = conversation.lastMessage;
+  const preview = !last
+    ? localize(locale, 'No messages yet', '还没有消息', '還沒有訊息')
+    : last.kind === 'contact_reveal'
+      ? localize(
+          locale,
+          'Contact exchanged · details shared in chat',
+          '已互相交换联系方式，详情见会话',
+          '已互相交換聯絡方式，詳情見會話',
+        )
+      : last.kind === 'contact_request'
+        ? localize(
+            locale,
+            last.isMine
+              ? 'Contact exchange request sent · waiting for reply'
+              : 'They want to exchange contact details',
+            last.isMine
+              ? '已发送联系方式交换请求 · 等待对方确认'
+              : '对方请求交换联系方式',
+            last.isMine
+              ? '已發送聯絡方式交換請求 · 等待對方確認'
+              : '對方請求交換聯絡方式',
+          )
+        : last.body;
+  const context = conversation.post?.title
+    ? ` · ${conversation.post.title}`
+    : '';
+  return (
+    <button className="request-row" onClick={onClick}>
+      <span style={{ color: '#96a6ff' }}>
+        <MessageCircle />
+      </span>
+      <div>
+        <strong>
+          {conversation.peerAlias}
+          {context}
+        </strong>
+        <p>{preview}</p>
+        <small>
+          {last
+            ? `${last.isMine ? localize(locale, 'You', '我', '我') + ' · ' : ''}${formatClock(last.createdAt)}`
+            : ''}
+        </small>
+      </div>
+      <ChevronDown />
+    </button>
+  );
+}
+
 function RequestDetail({
   item,
   t,
@@ -1922,11 +2085,13 @@ function CreatePostDialog({
   locale,
   onCreated,
   currentLocationId,
+  authorAlias,
 }: {
   t: (typeof copy)[Locale];
   locale: Locale;
   onCreated: (item: RequestItem) => void;
   currentLocationId: string;
+  authorAlias: string;
 }) {
   const [postCategory, setPostCategory] =
     useState<Exclude<Category, 'all'>>('hall');
@@ -1956,7 +2121,7 @@ function CreatePostDialog({
           const to = typeof toValue === 'string' ? toValue : '';
           onCreated({
             id: Date.now(),
-            author: 'Misty Whale 017',
+            author: authorAlias,
             category: postCategory,
             from,
             to,
@@ -2131,45 +2296,152 @@ function CreatePostDialog({
   );
 }
 
-function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
+function ChatPanel({
+  session,
+  myAlias,
+  onConversationChanged,
+  locale,
+}: {
+  session: ChatSession;
+  myAlias: string;
+  onConversationChanged: () => void;
+  locale: Locale;
+}) {
   const [draft, setDraft] = useState('');
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      mine: false,
-      body: localize(
-        locale,
-        `Hi, I’m ${item.author}. We can discuss the details here first.`,
-        `你好，我是 ${item.author}。可以先聊一下具体条件。`,
-        `你好，我是 ${item.author}。可以先談談具體條件。`,
-      ),
-      time: '15:24',
-    },
-  ]);
-  const [contactRequested, setContactRequested] = useState(false);
-  const send = () => {
-    if (!draft.trim()) return;
-    setMessages((current) => [
-      ...current,
-      {
-        id: Date.now(),
-        mine: true,
-        body: draft.trim(),
-        time: new Date().toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-      },
-    ]);
-    setDraft('');
+  const [messages, setMessages] = useState<WireMessage[]>([]);
+  const [busy, setBusy] = useState<'sending' | 'requesting' | 'accepting' | null>(
+    null,
+  );
+  const [actionError, setActionError] = useState('');
+  const streamRef = useRef<HTMLDivElement | null>(null);
+
+  const load = async () => {
+    try {
+      const response = await fetch(
+        `/api/conversations/${session.conversationId}/messages`,
+      );
+      if (!response.ok) return;
+      const result = (await response.json()) as { items?: WireMessage[] };
+      setMessages(result.items ?? []);
+    } catch {
+      /* Keep what we have; the next poll retries. */
+    }
   };
+
+  useEffect(() => {
+    void load();
+    const id = setInterval(() => void load(), 4000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session.conversationId]);
+
+  // Keep the newest message in view as the other side replies.
+  useEffect(() => {
+    const el = streamRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages]);
+
+  const send = async () => {
+    const body = draft.trim();
+    if (!body || busy) return;
+    setBusy('sending');
+    setActionError('');
+    try {
+      const response = await fetch(
+        `/api/conversations/${session.conversationId}/messages`,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ body }),
+        },
+      );
+      if (!response.ok) throw new Error('send failed');
+      setDraft('');
+      onConversationChanged();
+      await load();
+    } catch {
+      setActionError(
+        localize(
+          locale,
+          'Could not send the message. Please try again.',
+          '消息发送失败，请重试。',
+          '訊息發送失敗，請重試。',
+        ),
+      );
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const requestExchange = async () => {
+    if (busy) return;
+    setBusy('requesting');
+    setActionError('');
+    try {
+      const response = await fetch(
+        `/api/conversations/${session.conversationId}/contact`,
+        { method: 'POST', headers: { 'content-type': 'application/json' } },
+      );
+      if (!response.ok) throw new Error('request failed');
+      onConversationChanged();
+      await load();
+    } catch {
+      setActionError(
+        localize(
+          locale,
+          'Could not send the exchange request.',
+          '暂时无法发起交换请求。',
+          '暫時無法發起交換請求。',
+        ),
+      );
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const acceptExchange = async () => {
+    if (busy) return;
+    setBusy('accepting');
+    setActionError('');
+    try {
+      const response = await fetch(
+        `/api/conversations/${session.conversationId}/contact`,
+        { method: 'PATCH', headers: { 'content-type': 'application/json' } },
+      );
+      if (!response.ok) throw new Error('accept failed');
+      onConversationChanged();
+      await load();
+    } catch {
+      setActionError(
+        localize(
+          locale,
+          'Could not accept the exchange request.',
+          '暂时无法确认交换请求。',
+          '暫時無法確認交換請求。',
+        ),
+      );
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const reveals = messages.filter((message) => message.kind === 'contact_reveal');
+  const inboundRequest = messages.find(
+    (message) => message.kind === 'contact_request' && !message.isMine,
+  );
+  const outboundRequest = messages.find(
+    (message) => message.kind === 'contact_request' && message.isMine,
+  );
+  const revealed = reveals.length > 0;
+  const thread = messages.filter((message) => message.kind === 'message');
+
   return (
     <>
       <SheetHeader className="chat-header">
         <div className="chat-peer">
-          <div className="mini-avatar">{item.author.slice(0, 1)}</div>
+          <div className="mini-avatar">{session.peerAlias.slice(0, 1)}</div>
           <div>
-            <SheetTitle>{item.author}</SheetTitle>
+            <SheetTitle>{session.peerAlias}</SheetTitle>
             <SheetDescription>
               <span className="pulse-dot" />{' '}
               {localize(
@@ -2193,10 +2465,10 @@ function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
               '討論中的需求',
             )}
           </small>
-          <strong>{item.title}</strong>
+          <strong>{session.postTitle}</strong>
         </span>
       </div>
-      <div className="message-stream">
+      <div className="message-stream" ref={streamRef}>
         <div className="system-message">
           <ShieldCheck />{' '}
           {localize(
@@ -2206,20 +2478,113 @@ function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
             '雙方同意前，平台不會顯示任何真實資料',
           )}
         </div>
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`message-bubble ${message.mine ? 'mine' : ''}`}
-          >
-            <p>{message.body}</p>
-            <span>{message.time}</span>
+        {revealed && (
+          <div className="system-message">
+            <CheckCircle2 />{' '}
+            {localize(
+              locale,
+              'Contact details have been exchanged.',
+              '双方已互相交换联系方式。',
+              '雙方已互相交換聯絡方式。',
+            )}
           </div>
-        ))}
+        )}
+        {thread.length === 0 ? (
+          <div className="section-empty compact">
+            <MessageCircle />
+            <strong>
+              {localize(
+                locale,
+                'No messages yet',
+                '还没有消息',
+                '還沒有訊息',
+              )}
+            </strong>
+            <span>
+              {localize(
+                locale,
+                'Say hello to start the conversation.',
+                '发一条消息开始对话吧。',
+                '發一則訊息開始對話吧。',
+              )}
+            </span>
+          </div>
+        ) : (
+          thread.map((message) => (
+            <div
+              key={message.id}
+              className={`message-bubble ${message.isMine ? 'mine' : ''}`}
+            >
+              <p>{message.body}</p>
+              <span>{formatClock(message.createdAt)}</span>
+            </div>
+          ))
+        )}
       </div>
       <div className="contact-consent">
-        {contactRequested ? (
+        {revealed ? (
           <>
             <CheckCircle2 />
+            <span>
+              <strong>
+                {localize(
+                  locale,
+                  'Contact details shared',
+                  '联系方式已互相公开',
+                  '聯絡方式已互相公開',
+                )}
+              </strong>
+              <small>
+                {localize(
+                  locale,
+                  'You can now reach each other outside NODE.',
+                  '现在可以在平台外直接联系对方。',
+                  '現在可以在平台外直接聯絡對方。',
+                )}
+              </small>
+              {reveals.map((message) => (
+                <code key={message.id} className="reveal-block">
+                  <b>{message.alias}</b>
+                  <span>{message.body}</span>
+                </code>
+              ))}
+            </span>
+          </>
+        ) : inboundRequest ? (
+          <>
+            <UserPlus />
+            <span>
+              <strong>
+                {localize(
+                  locale,
+                  'They want to exchange contact details',
+                  '对方请求交换联系方式',
+                  '對方請求交換聯絡方式',
+                )}
+              </strong>
+              <small>
+                {localize(
+                  locale,
+                  'Accepting reveals both sides’ contact details.',
+                  '确认后双方将互相看到联系方式。',
+                  '確認後雙方將互相看到聯絡方式。',
+                )}
+              </small>
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={busy === 'accepting'}
+              onClick={() => void acceptExchange()}
+            >
+              {busy === 'accepting'
+                ? localize(locale, 'Accepting…', '确认中…', '確認中…')
+                : localize(locale, 'Accept', '同意交换', '同意交換')}
+            </Button>
+          </>
+        ) : outboundRequest ? (
+          <>
+            <Clock3 />
             <span>
               <strong>
                 {localize(locale, 'Request sent', '请求已发送', '請求已發送')}
@@ -2227,9 +2592,9 @@ function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
               <small>
                 {localize(
                   locale,
-                  'Contact details appear only after the other person agrees.',
-                  '对方同意后，双方才会看到联系方式。',
-                  '對方同意後，雙方才會看到聯絡方式。',
+                  'Waiting for the other person to confirm.',
+                  `等待 ${session.peerAlias} 确认。`,
+                  `等待 ${session.peerAlias} 確認。`,
                 )}
               </small>
             </span>
@@ -2249,21 +2614,25 @@ function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
               <small>
                 {localize(
                   locale,
-                  'Both people must confirm separately.',
-                  '必须双方分别确认。',
-                  '必須雙方分別確認。',
+                  'Both people must confirm separately. Save your contact in your profile first.',
+                  '必须双方分别确认。请先在个人资料里填写你的联系方式。',
+                  '必須雙方分別確認。請先在個人資料裡填寫你的聯絡方式。',
                 )}
               </small>
             </span>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setContactRequested(true)}
+              disabled={busy === 'requesting' || !myAlias}
+              onClick={() => void requestExchange()}
             >
-              {localize(locale, 'Request exchange', '发起交换', '發起交換')}
+              {busy === 'requesting'
+                ? localize(locale, 'Sending…', '发送中…', '傳送中…')
+                : localize(locale, 'Request exchange', '发起交换', '發起交換')}
             </Button>
           </>
         )}
+        {actionError && <span className="consent-error">{actionError}</span>}
       </div>
       <div className="chat-composer">
         <Textarea
@@ -2272,7 +2641,7 @@ function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
           onKeyDown={(event) => {
             if (event.key === 'Enter' && !event.shiftKey) {
               event.preventDefault();
-              send();
+              void send();
             }
           }}
           placeholder={localize(
@@ -2284,7 +2653,8 @@ function ChatPanel({ item, locale }: { item: RequestItem; locale: Locale }) {
         />
         <Button
           size="icon-lg"
-          onClick={send}
+          onClick={() => void send()}
+          disabled={busy === 'sending' || !draft.trim()}
           aria-label={localize(locale, 'Send', '发送', '發送')}
         >
           <Send />
@@ -2301,37 +2671,74 @@ function AdminPanel({
   locale: Locale;
   onAnnouncementPublished: (announcement: Announcement) => void;
 }) {
-  const [queue, setQueue] = useState([
-    {
-      id: 1,
-      reason: 'Suspected bedspace trading',
-      target: 'Hall place, price negotiable',
-      reporter: '3 reports',
-      risk: 'High risk',
-    },
-    {
-      id: 2,
-      reason: 'Public contact details',
-      target: 'Phone number included in a public post',
-      reporter: 'Automatic check',
-      risk: 'Privacy',
-    },
-    {
-      id: 3,
-      reason: 'Repeated promotion',
-      target: 'The same advert was posted six times',
-      reporter: '1 report',
-      risk: 'Spam',
-    },
-  ]);
+  const [queue, setQueue] = useState<AdminReport[]>([]);
+  const [queueLoading, setQueueLoading] = useState(true);
+  const [actingId, setActingId] = useState<string | null>(null);
+  const [queueError, setQueueError] = useState('');
   const [inviteSent, setInviteSent] = useState(false);
   const [announcementTitle, setAnnouncementTitle] = useState('');
   const [announcementBody, setAnnouncementBody] = useState('');
   const [announcementKind, setAnnouncementKind] =
     useState<Announcement['kind']>('info');
   const [announcementStatus, setAnnouncementStatus] = useState('');
-  const resolve = (id: number) =>
-    setQueue((items) => items.filter((item) => item.id !== id));
+
+  const loadReports = async () => {
+    try {
+      const response = await fetch('/api/admin/reports');
+      if (!response.ok) throw new Error('load failed');
+      const result = (await response.json()) as { items?: AdminReport[] };
+      setQueue(result.items ?? []);
+      setQueueError('');
+    } catch {
+      setQueueError(
+        localize(
+          locale,
+          'Could not load the review queue.',
+          '无法读取审核队列。',
+          '無法讀取審核隊列。',
+        ),
+      );
+    } finally {
+      setQueueLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void loadReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const act = async (report: AdminReport, action: 'remove' | 'dismiss') => {
+    setActingId(report.id);
+    setQueueError('');
+    try {
+      const response = await fetch('/api/admin/reports', {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          reportId: report.id,
+          action,
+          reason:
+            action === 'remove'
+              ? 'Owner removed this content for a community-standards violation.'
+              : 'No action needed — report dismissed by the moderation team.',
+        }),
+      });
+      if (!response.ok) throw new Error('action failed');
+      setQueue((items) => items.filter((item) => item.id !== report.id));
+    } catch {
+      setQueueError(
+        localize(
+          locale,
+          'Could not process that report. Please try again.',
+          '处理失败，请稍后再试。',
+          '處理失敗，請稍後再試。',
+        ),
+      );
+    } finally {
+      setActingId(null);
+    }
+  };
   const publishAnnouncement = async () => {
     if (!announcementTitle.trim() || !announcementBody.trim()) return;
     setAnnouncementStatus('publishing');
@@ -2363,7 +2770,7 @@ function AdminPanel({
     }
   };
   return (
-    <>
+    <div className="admin-scroll">
       <SheetHeader className="admin-header">
         <div className="detail-category">
           <Gavel /> OWNER CONSOLE
@@ -2490,42 +2897,82 @@ function AdminPanel({
         <h3>{localize(locale, 'Review queue', '审核队列', '審核隊列')}</h3>
         <Badge>{queue.length} OPEN</Badge>
       </div>
+      {queueError && <div className="queue-error">{queueError}</div>}
       <div className="moderation-queue">
-        {queue.length ? (
-          queue.map((report) => (
-            <article key={report.id} className="moderation-card">
-              <div>
-                <Badge variant={report.id === 1 ? 'destructive' : 'secondary'}>
-                  {report.risk}
-                </Badge>
-                <span>{report.reporter}</span>
-              </div>
-              <h4>{report.reason}</h4>
-              <p>“{report.target}”</p>
-              <div>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => resolve(report.id)}
-                >
-                  <Ban />{' '}
-                  {localize(
-                    locale,
-                    'Remove & warn',
-                    '移除并警告',
-                    '移除並警告',
-                  )}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => resolve(report.id)}
-                >
-                  {localize(locale, 'Dismiss', '忽略', '忽略')}
-                </Button>
-              </div>
-            </article>
-          ))
+        {queueLoading ? (
+          <div className="queue-empty">
+            <strong>
+              {localize(locale, 'Loading…', '加载中…', '載入中…')}
+            </strong>
+          </div>
+        ) : queue.length ? (
+          queue.map((report) => {
+            const severe = [
+              'illegal',
+              'hall_trade',
+              'fraud',
+              'sexual',
+              'harassment',
+              'hate',
+            ].includes(report.reason);
+            const target =
+              report.targetLabel ||
+              report.targetAlias ||
+              localize(
+                locale,
+                '(removed content)',
+                '(已移除内容)',
+                '(已移除內容)',
+              );
+            return (
+              <article key={report.id} className="moderation-card">
+                <div>
+                  <Badge variant={severe ? 'destructive' : 'secondary'}>
+                    {reportReasonLabel(report.reason, locale)}
+                  </Badge>
+                  <span>
+                    {report.reporterAlias ||
+                      localize(
+                        locale,
+                        'Anonymous reporter',
+                        '匿名举报',
+                        '匿名舉報',
+                      )}{' '}
+                    · {formatAge(report.createdAt)}
+                  </span>
+                </div>
+                <h4>{target}</h4>
+                <p>
+                  {targetTypeLabel(report.targetType, locale)}
+                  {report.details ? ` — ${report.details}` : ''}
+                </p>
+                <div>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    disabled={actingId === report.id}
+                    onClick={() => void act(report, 'remove')}
+                  >
+                    <Ban />{' '}
+                    {localize(
+                      locale,
+                      'Remove & warn',
+                      '移除并警告',
+                      '移除並警告',
+                    )}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={actingId === report.id}
+                    onClick={() => void act(report, 'dismiss')}
+                  >
+                    {localize(locale, 'Dismiss', '忽略', '忽略')}
+                  </Button>
+                </div>
+              </article>
+            );
+          })
         ) : (
           <div className="queue-empty">
             <CheckCircle2 />
@@ -2566,48 +3013,116 @@ function AdminPanel({
             : localize(locale, 'Invite moderator', '邀请管理员', '邀請管理員')}
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 
-function ProfilePanel({ locale }: { locale: Locale }) {
+function ProfilePanel({
+  locale,
+  profile,
+  onSaved,
+}: {
+  locale: Locale;
+  profile: ProfileMember | null;
+  onSaved: () => void;
+}) {
   const [editing, setEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    nickname: 'Winston',
-    department: 'Computer Science',
-    programme: 'BEng · Year 2',
-    contact: '@node_demo',
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [form, setForm] = useState({
+    nickname: '',
+    department: '',
+    programme: '',
+    contactMethod: '',
+    contactValue: '',
   });
-  const save = () => {
-    setEditing(false);
-    void fetch('/api/profile', {
-      method: 'PATCH',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        nickname: profile.nickname,
-        department: profile.department,
-        programme: profile.programme,
-        yearOfStudy: 'Year 2',
-        contactMethod: 'Telegram',
-        contactValue: profile.contact,
-        profileVisibility: 'private',
-        preferredLanguage: locale,
-      }),
+
+  useEffect(() => {
+    if (!profile) return;
+    setForm({
+      nickname: profile.nickname ?? '',
+      department: profile.department ?? '',
+      programme: profile.programme ?? '',
+      contactMethod: profile.contactMethod ?? '',
+      contactValue: profile.contactValue ?? '',
     });
+    setError('');
+  }, [profile]);
+
+  const save = async () => {
+    if (!profile) return;
+    setSaving(true);
+    setError('');
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          nickname: form.nickname,
+          department: form.department,
+          programme: form.programme,
+          contactMethod: form.contactMethod,
+          contactValue: form.contactValue,
+          profileVisibility: 'private',
+          preferredLanguage: locale,
+        }),
+      });
+      if (!response.ok) throw new Error('save failed');
+      setEditing(false);
+      onSaved();
+    } catch {
+      setError(
+        localize(
+          locale,
+          'Could not save. Please try again.',
+          '保存失败，请稍后再试。',
+          '儲存失敗，請稍後再試。',
+        ),
+      );
+    } finally {
+      setSaving(false);
+    }
   };
+
+  if (!profile) {
+    return (
+      <SheetHeader className="profile-header">
+        <SheetTitle>
+          {localize(
+            locale,
+            'Loading profile…',
+            '正在读取个人资料…',
+            '正在讀取個人資料…',
+          )}
+        </SheetTitle>
+      </SheetHeader>
+    );
+  }
+
+  const initial =
+    profile.anonymousAlias.trim().charAt(0).toUpperCase() || '?';
+  const affiliationLabel =
+    profile.affiliation === 'staff'
+      ? localize(locale, 'Staff', '教职员', '教職員')
+      : profile.affiliation === 'faculty'
+        ? localize(locale, 'Faculty', '教员', '教員')
+        : localize(locale, 'Student', '学生', '學生');
+  const savedContact = contactLine(form.contactMethod, form.contactValue);
+
   return (
     <>
       <SheetHeader className="profile-header">
-        <div className="profile-avatar">W</div>
-        <SheetTitle>Local Demo Owner</SheetTitle>
+        <div className="profile-avatar">{initial}</div>
+        <SheetTitle>{profile.anonymousAlias}</SheetTitle>
         <SheetDescription>
           <ShieldCheck />{' '}
           {localize(
             locale,
-            'HKUST identity verified · Owner',
-            'HKUST 身份已验证 · Owner',
-            'HKUST 身份已驗證 · Owner',
-          )}
+            'HKUST identity verified',
+            'HKUST 身份已验证',
+            'HKUST 身份已驗證',
+          )}{' '}
+          · {roleLabel(profile.role)}
         </SheetDescription>
       </SheetHeader>
       <div className="profile-body">
@@ -2625,9 +3140,9 @@ function ProfilePanel({ locale }: { locale: Locale }) {
             <p>
               {localize(
                 locale,
-                'Only you and authorised moderators can view the private details below.',
-                '以下真实资料只有你和获授权的管理员能够查看。',
-                '以下真實資料只有你和獲授權的管理員能夠查看。',
+                'Only you can see the private details below; other members only see your anonymous alias.',
+                '下面的真实资料仅你自己可见；其他成员只能看到你的匿名昵称。',
+                '下面的真實資料僅你自己可見；其他成員只能看到你的匿名暱稱。',
               )}
             </p>
           </div>
@@ -2636,13 +3151,13 @@ function ProfilePanel({ locale }: { locale: Locale }) {
           <div className="profile-form">
             <div className="form-field">
               <label htmlFor="profile-nickname">
-                {localize(locale, 'Personal nickname', '个人昵称', '個人暱稱')}
+                {localize(locale, 'Nickname', '昵称', '暱稱')}
               </label>
               <Input
                 id="profile-nickname"
-                value={profile.nickname}
+                value={form.nickname}
                 onChange={(event) =>
-                  setProfile({ ...profile, nickname: event.target.value })
+                  setForm({ ...form, nickname: event.target.value })
                 }
               />
             </div>
@@ -2652,26 +3167,39 @@ function ProfilePanel({ locale }: { locale: Locale }) {
               </label>
               <Input
                 id="profile-department"
-                value={profile.department}
+                value={form.department}
                 onChange={(event) =>
-                  setProfile({ ...profile, department: event.target.value })
+                  setForm({ ...form, department: event.target.value })
                 }
               />
             </div>
             <div className="form-field">
               <label htmlFor="profile-programme">
-                {localize(
-                  locale,
-                  'Programme / year',
-                  '课程／年级',
-                  '課程／年級',
-                )}
+                {localize(locale, 'Programme / year', '课程／年级', '課程／年級')}
               </label>
               <Input
                 id="profile-programme"
-                value={profile.programme}
+                value={form.programme}
                 onChange={(event) =>
-                  setProfile({ ...profile, programme: event.target.value })
+                  setForm({ ...form, programme: event.target.value })
+                }
+              />
+            </div>
+            <div className="form-field">
+              <label htmlFor="profile-contact-method">
+                {localize(locale, 'Contact method', '联系方式平台', '聯絡方式平台')}
+              </label>
+              <Input
+                id="profile-contact-method"
+                placeholder={localize(
+                  locale,
+                  'Telegram · WhatsApp · 邮箱',
+                  'Telegram · WhatsApp · 邮箱',
+                  'Telegram · WhatsApp · 郵箱',
+                )}
+                value={form.contactMethod}
+                onChange={(event) =>
+                  setForm({ ...form, contactMethod: event.target.value })
                 }
               />
             </div>
@@ -2679,25 +3207,38 @@ function ProfilePanel({ locale }: { locale: Locale }) {
               <label htmlFor="profile-contact">
                 {localize(
                   locale,
-                  'Contact shown after mutual consent',
-                  '双方同意后显示的联系方式',
-                  '雙方同意後顯示的聯絡方式',
+                  'Contact handle / number',
+                  '账号或号码',
+                  '帳號或號碼',
                 )}
               </label>
               <Input
                 id="profile-contact"
-                value={profile.contact}
+                value={form.contactValue}
                 onChange={(event) =>
-                  setProfile({ ...profile, contact: event.target.value })
+                  setForm({ ...form, contactValue: event.target.value })
                 }
               />
+              <small className="field-hint">
+                {localize(
+                  locale,
+                  'Only revealed to the other side after a mutual exchange.',
+                  '只有在双方同意交换后才会向对方展示。',
+                  '只有在雙方同意交換後才會向對方展示。',
+                )}
+              </small>
             </div>
-            <Button onClick={save}>
-              {localize(locale, 'Save profile', '保存个人资料', '儲存個人資料')}
-            </Button>
-            <Button variant="ghost" onClick={() => setEditing(false)}>
-              {localize(locale, 'Cancel', '取消', '取消')}
-            </Button>
+            {error && <span className="consent-error">{error}</span>}
+            <div className="profile-form-actions">
+              <Button onClick={() => void save()} disabled={saving}>
+                {saving
+                  ? localize(locale, 'Saving…', '保存中…', '儲存中…')
+                  : localize(locale, 'Save profile', '保存个人资料', '儲存個人資料')}
+              </Button>
+              <Button variant="ghost" onClick={() => setEditing(false)}>
+                {localize(locale, 'Cancel', '取消', '取消')}
+              </Button>
+            </div>
           </div>
         ) : (
           <>
@@ -2711,36 +3252,26 @@ function ProfilePanel({ locale }: { locale: Locale }) {
                     '公開匿名暱稱',
                   )}
                 </dt>
-                <dd>Misty Whale 017</dd>
+                <dd>{profile.anonymousAlias}</dd>
               </div>
               <div>
                 <dt>
-                  {localize(
-                    locale,
-                    'Personal nickname',
-                    '个人昵称',
-                    '個人暱稱',
-                  )}
+                  {localize(locale, 'Nickname', '昵称', '暱稱')}
                 </dt>
-                <dd>
-                  {profile.nickname}{' '}
-                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
-                </dd>
+                <dd>{form.nickname || '—'}</dd>
               </div>
               <div>
                 <dt>{localize(locale, 'Real name', '真实姓名', '真實姓名')}</dt>
-                <dd>
-                  Local Demo Owner{' '}
-                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
-                </dd>
+                <dd>{profile.fullName}</dd>
               </div>
               <div>
-                <dt>
-                  {localize(locale, 'ITSO email', 'ITSO 邮箱', 'ITSO 電郵')}
-                </dt>
+                <dt>{localize(locale, 'ITSO email', 'ITSO 邮箱', 'ITSO 電郵')}</dt>
+                <dd>{profile.email}</dd>
+              </div>
+              <div>
+                <dt>{localize(locale, 'Affiliation', '身份', '身份')}</dt>
                 <dd>
-                  demo@connect.ust.hk{' '}
-                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
+                  {affiliationLabel} · {roleLabel(profile.role)}
                 </dd>
               </div>
               <div>
@@ -2753,30 +3284,20 @@ function ProfilePanel({ locale }: { locale: Locale }) {
                   )}
                 </dt>
                 <dd>
-                  {profile.department} · {profile.programme}{' '}
-                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
+                  {[form.department, form.programme].filter(Boolean).join(' · ') ||
+                    '—'}
                 </dd>
               </div>
               <div>
-                <dt>{localize(locale, 'Contact', '联系方式', '聯絡方式')}</dt>
-                <dd>
-                  Telegram {profile.contact}{' '}
-                  <span>
-                    {localize(
-                      locale,
-                      'After mutual consent',
-                      '双向同意后',
-                      '雙向同意後',
-                    )}
-                  </span>
-                </dd>
-              </div>
-              <div>
-                <dt>{localize(locale, 'Identity', '身份', '身份')}</dt>
-                <dd>
-                  Student · Owner{' '}
-                  <span>{localize(locale, 'Hidden', '隐藏', '隱藏')}</span>
-                </dd>
+                <dt>
+                  {localize(
+                    locale,
+                    'Contact (after mutual consent)',
+                    '联系方式（双向同意后）',
+                    '聯絡方式（雙向同意後）',
+                  )}
+                </dt>
+                <dd>{savedContact || '—'}</dd>
               </div>
             </dl>
             <Button variant="outline" onClick={() => setEditing(true)}>

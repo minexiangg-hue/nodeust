@@ -1259,6 +1259,24 @@ button {
   border-color: rgba(145, 159, 204, 0.18);
   background: #171a35;
 }
+/* The admin console is a full-height column: clip the sheet edge and let the
+   .admin-scroll body scroll so a long review queue or tall announcement card
+   never leaves content past an unreachable fold. */
+.admin-sheet {
+  overflow: hidden;
+}
+.admin-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.queue-error {
+  margin: 0 18px 6px;
+  color: #ff967c;
+  font-size: 0.62rem;
+}
 .chat-header {
   padding: 20px;
   border-bottom: 1px solid rgba(143, 155, 196, 0.13);
@@ -2792,4 +2810,44 @@ button {
   .zone-context span {
     display: none;
   }
+}
+
+/* Wired preview additions: real chat contact reveal, profile edit actions */
+.contact-consent .reveal-block {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(29, 122, 79, 0.08);
+  color: #1d7a4f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.contact-consent .reveal-block b {
+  white-space: nowrap;
+  color: #145c3a;
+  font-weight: 600;
+}
+.contact-consent .reveal-block span {
+  word-break: break-all;
+}
+.contact-consent .consent-error {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  color: #c0392b;
+  font-size: 12px;
+}
+.message-stream .section-empty.compact {
+  padding: 14px 6px;
+  text-align: center;
+}
+.profile-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
 }

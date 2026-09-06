@@ -5,6 +5,7 @@ import { getDb } from '@/db';
 import {
   contactExchangeRequests,
   conversationParticipants,
+  messages,
   users,
 } from '@/db/schema';
 import { requireMember } from '@/lib/current-member';
@@ -35,19 +36,7 @@ export async function POST(_request: NextRequest, context: Context) {
         { status: 409 },
       );
 
-    const requestId = crypto.randomUUID();
     const now = new Date();
-    await getDb()
-      .insert(contactExchangeRequests)
-      .values({
-        id: requestId,
-        conversationId: id,
-        requesterId: member.id,
-        recipientId: recipient.userId,
-        createdAt: now,
-        updatedAt: now,
-      })
-      .onDuplicateKeyUpdate({ set: { updatedAt: now } });
     const [exchange] = await getDb()
       .select()
       .from(contactExchangeRequests)
@@ -59,8 +48,47 @@ export async function POST(_request: NextRequest, context: Context) {
         ),
       )
       .limit(1);
+
+    // Request already exists — surface its current state without spamming the
+    // thread with a duplicate request notice.
+    if (exchange)
+      return NextResponse.json({ id: exchange.id, status: exchange.status });
+
+    await getDb()
+      .insert(contactExchangeRequests)
+      .values({
+        id: crypto.randomUUID(),
+        conversationId: id,
+        requesterId: member.id,
+        recipientId: recipient.userId,
+        createdAt: now,
+        updatedAt: now,
+      });
+
+    // A request row in the message stream is how the recipient learns (without
+    // polling a separate endpoint) that an exchange is waiting on them.
+    await getDb().insert(messages).values({
+      id: crypto.randomUUID(),
+      conversationId: id,
+      senderId: member.id,
+      kind: 'contact_request',
+      body: '',
+      createdAt: now,
+    });
+
+    const [fresh] = await getDb()
+      .select()
+      .from(contactExchangeRequests)
+      .where(
+        and(
+          eq(contactExchangeRequests.conversationId, id),
+          eq(contactExchangeRequests.requesterId, member.id),
+          eq(contactExchangeRequests.recipientId, recipient.userId),
+        ),
+      )
+      .limit(1);
     return NextResponse.json(
-      { id: exchange.id, status: exchange.status },
+      { id: fresh.id, status: fresh.status },
       { status: 201 },
     );
   } catch {
@@ -108,6 +136,35 @@ export async function PATCH(_request: NextRequest, context: Context) {
       })
       .from(users)
       .where(inArray(users.id, [exchange.requesterId, exchange.recipientId]));
+
+    // Persist the reveal inside the thread (one row per member, visible to both
+    // participants) so the requester — who never sees the PATCH response — can
+    // also read the other side's contact through the normal message feed.
+    const now = new Date();
+    const contactById = new Map(contacts.map((contact) => [contact.id, contact]));
+    const revealBody = (contact: (typeof contacts)[number]) => {
+      const line = [contact.method, contact.value].filter(Boolean).join(' · ');
+      return line || '(未设置联系方式 / no contact saved)';
+    };
+    const revealRows = [exchange.requesterId, exchange.recipientId].map(
+      (userId) => ({
+        id: crypto.randomUUID(),
+        conversationId: id,
+        senderId: userId,
+        kind: 'contact_reveal' as const,
+        body: revealBody(
+          contactById.get(userId) ?? {
+            id: userId,
+            alias: '',
+            method: null,
+            value: null,
+          },
+        ),
+        createdAt: now,
+      }),
+    );
+    await getDb().insert(messages).values(revealRows);
+
     return NextResponse.json({ id: exchange.id, status: 'accepted', contacts });
   } catch {
     return NextResponse.json(

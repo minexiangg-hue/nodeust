@@ -1,8 +1,14 @@
-import { and, asc, eq } from 'drizzle-orm';
+import { and, asc, eq, inArray } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getDb } from '@/db';
-import { moderationActions, posts, reports, users } from '@/db/schema';
+import {
+  messages,
+  moderationActions,
+  posts,
+  reports,
+  users,
+} from '@/db/schema';
 import { canModerate } from '@/lib/auth';
 import { requireMember } from '@/lib/current-member';
 
@@ -19,10 +25,75 @@ export async function GET() {
       .where(orOpen())
       .orderBy(asc(reports.createdAt))
       .limit(100);
-    return NextResponse.json({ items });
+
+    // Attach human-readable context (post title / user alias / message snippet)
+    // plus the reporter's alias so the moderation cards can show what was
+    // reported without the moderator hunting for ids.
+    const itemsWithContext = await attachContext(items);
+    return NextResponse.json({ items: itemsWithContext });
   } catch {
     return NextResponse.json({ error: '无法读取审核队列。' }, { status: 500 });
   }
+}
+
+async function attachContext(items: (typeof reports.$inferSelect)[]) {
+  if (items.length === 0) return items;
+  const targetIds = items.map((report) => report.targetId);
+  const reporterIds = items.map((report) => report.reporterId);
+
+  const [postRows, userRows, messageRows, reporterRows] = await Promise.all([
+    getDb()
+      .select({ id: posts.id, title: posts.title })
+      .from(posts)
+      .where(inArray(posts.id, targetIds)),
+    getDb()
+      .select({ id: users.id, alias: users.anonymousAlias })
+      .from(users)
+      .where(inArray(users.id, targetIds)),
+    getDb()
+      .select({
+        id: messages.id,
+        body: messages.body,
+        senderId: messages.senderId,
+        alias: users.anonymousAlias,
+      })
+      .from(messages)
+      .innerJoin(users, eq(messages.senderId, users.id))
+      .where(inArray(messages.id, targetIds)),
+    getDb()
+      .select({ id: users.id, alias: users.anonymousAlias })
+      .from(users)
+      .where(inArray(users.id, reporterIds)),
+  ]);
+
+  const postTitle = new Map(postRows.map((row) => [row.id, row.title]));
+  const userAlias = new Map(userRows.map((row) => [row.id, row.alias]));
+  const messageById = new Map(messageRows.map((row) => [row.id, row]));
+  const reporterAlias = new Map(
+    reporterRows.map((row) => [row.id, row.alias]),
+  );
+
+  return items.map((report) => {
+    let targetLabel = '';
+    let targetAlias = '';
+    if (report.targetType === 'post') {
+      targetLabel = postTitle.get(report.targetId) ?? '';
+    } else if (report.targetType === 'user') {
+      targetLabel = userAlias.get(report.targetId) ?? '';
+    } else if (report.targetType === 'message') {
+      const message = messageById.get(report.targetId);
+      if (message) {
+        targetAlias = message.alias;
+        targetLabel = message.body;
+      }
+    }
+    return {
+      ...report,
+      targetLabel,
+      targetAlias,
+      reporterAlias: reporterAlias.get(report.reporterId) ?? '',
+    };
+  });
 }
 
 export async function PATCH(request: NextRequest) {
