@@ -16,6 +16,7 @@ import {
   EyeOff,
   Flag,
   Gavel,
+  Languages,
   List,
   LogOut,
   Map,
@@ -539,6 +540,7 @@ export function PlazaApp() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [adminOpen, setAdminOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [announceOpen, setAnnounceOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [notice, setNotice] = useState('');
@@ -956,10 +958,17 @@ export function PlazaApp() {
           <Button
             variant="ghost"
             size="icon"
-            aria-label="Notifications"
+            aria-label={localize(
+              locale,
+              'Announcements',
+              '公告',
+              '公告',
+            )}
             className="header-icon"
+            onClick={() => setAnnounceOpen(true)}
           >
             <Bell />
+            {announcements.length > 0 && <i className="header-dot" />}
           </Button>
           <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
             <DialogTrigger
@@ -973,7 +982,7 @@ export function PlazaApp() {
                     '发送反馈',
                     '發送反饋',
                   )}
-                  className="header-icon"
+                  className="header-icon header-feedback"
                 />
               }
             >
@@ -1495,87 +1504,6 @@ export function PlazaApp() {
             </div>
           )}
         </section>
-
-        <aside className="right-panel">
-          <div className="panel-heading">
-            <div>
-              <span className="pulse-dot" /> LIVE
-            </div>
-            <button onClick={() => setView('list')}>
-              {localize(locale, 'View all', '查看全部', '查看全部')}{' '}
-              <ChevronDown />
-            </button>
-          </div>
-          <AnnouncementBoard announcements={announcements} locale={locale} />
-          <div className="panel-title">
-            <h2>{localize(locale, 'Happening now', '正在发生', '正在發生')}</h2>
-            <span>
-              {localize(
-                locale,
-                `${filtered.length} related requests`,
-                `${filtered.length} 个相关需求`,
-                `${filtered.length} 個相關需求`,
-              )}
-            </span>
-          </div>
-          <div className="activity-list">
-            {filtered.slice(0, 4).map((item) => (
-              <ActivityCard
-                key={item.id}
-                item={item}
-                locale={locale}
-                onClick={() => setSelected(item)}
-              />
-            ))}
-          </div>
-          <div className="match-card">
-            <div className="match-orbit">
-              <ArrowLeftRight />
-            </div>
-            <Badge>{matchItems.length ? 'MATCH FOUND' : 'MATCHING'}</Badge>
-            <h3>
-              {matchItems.length
-                ? localize(
-                    locale,
-                    'Reciprocal housing match found',
-                    '发现双向宿舍匹配',
-                    '發現雙向宿舍配對',
-                  )
-                : localize(
-                    locale,
-                    'Checking reciprocal routes',
-                    '正在寻找路线互补需求',
-                    '正在尋找路線互補需求',
-                  )}
-            </h3>
-            <p>
-              {matchItems.length
-                ? localize(
-                    locale,
-                    `${matchItems[0].from} → ${matchItems[0].to} has a reciprocal request.`,
-                    `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
-                    `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
-                  )
-                : localize(
-                    locale,
-                    'New reciprocal routes appear automatically in My matches.',
-                    '有新的互补路线时，会自动出现在“我的匹配”。',
-                    '有新的互補路線時，會自動出現在「我的配對」。',
-                  )}
-            </p>
-            <Button
-              onClick={() => {
-                setActiveSection('matches');
-                setView('list');
-              }}
-            >
-              {localize(locale, 'View matches', '查看匹配', '查看配對')}
-            </Button>
-          </div>
-          <a href="/rules" className="policy-note">
-            <ShieldCheck /> {t.notice}
-          </a>
-        </aside>
       </div>
 
       <nav className="mobile-nav">
@@ -1791,7 +1719,111 @@ export function PlazaApp() {
             locale={locale}
             profile={profile}
             onSaved={() => void reloadProfile()}
+            onSetLocale={setLocale}
+            onOpenFeedback={() => {
+              setProfileOpen(false);
+              window.setTimeout(() => setFeedbackOpen(true), 120);
+            }}
           />
+        </SheetContent>
+      </Sheet>
+      <Sheet open={announceOpen} onOpenChange={setAnnounceOpen}>
+        <SheetContent className="announce-sheet">
+          <SheetHeader className="announce-head">
+            <SheetTitle>
+              <Bell />
+              {localize(locale, 'Live updates', '实时动态', '實時動態')}
+            </SheetTitle>
+            <SheetDescription>
+              {localize(
+                locale,
+                'Owner announcements, recent requests and reciprocal-match alerts.',
+                'Owner 公告、最新需求与智能配对提醒。',
+                'Owner 公告、最新需求與智能配對提醒。',
+              )}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="announce-scroll">
+            <AnnouncementBoard
+              announcements={announcements}
+              locale={locale}
+              expandedByDefault
+            />
+            <div className="panel-title">
+              <h2>{localize(locale, 'Happening now', '正在发生', '正在發生')}</h2>
+              <span>
+                {localize(
+                  locale,
+                  `${filtered.length} related requests`,
+                  `${filtered.length} 个相关需求`,
+                  `${filtered.length} 個相關需求`,
+                )}
+              </span>
+            </div>
+            <div className="activity-list">
+              {filtered.slice(0, 4).map((item) => (
+                <ActivityCard
+                  key={item.id}
+                  item={item}
+                  locale={locale}
+                  onClick={() => {
+                    setAnnounceOpen(false);
+                    window.setTimeout(() => setSelected(item), 150);
+                  }}
+                />
+              ))}
+            </div>
+            <div className="match-card">
+              <div className="match-orbit">
+                <ArrowLeftRight />
+              </div>
+              <Badge>{matchItems.length ? 'MATCH FOUND' : 'MATCHING'}</Badge>
+              <h3>
+                {matchItems.length
+                  ? localize(
+                      locale,
+                      'Reciprocal housing match found',
+                      '发现双向宿舍匹配',
+                      '發現雙向宿舍配對',
+                    )
+                  : localize(
+                      locale,
+                      'Checking reciprocal routes',
+                      '正在寻找路线互补需求',
+                      '正在尋找路線互補需求',
+                    )}
+              </h3>
+              <p>
+                {matchItems.length
+                  ? localize(
+                      locale,
+                      `${matchItems[0].from} → ${matchItems[0].to} has a reciprocal request.`,
+                      `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
+                      `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
+                    )
+                  : localize(
+                      locale,
+                      'New reciprocal routes appear automatically in My matches.',
+                      '有新的互补路线时，会自动出现在“我的匹配”。',
+                      '有新的互補路線時，會自動出現在「我的配對」。',
+                    )}
+              </p>
+              <Button
+                onClick={() => {
+                  setAnnounceOpen(false);
+                  window.setTimeout(() => {
+                    setActiveSection('matches');
+                    setView('list');
+                  }, 120);
+                }}
+              >
+                {localize(locale, 'View matches', '查看匹配', '查看配對')}
+              </Button>
+            </div>
+            <a href="/rules" className="policy-note">
+              <ShieldCheck /> {t.notice}
+            </a>
+          </div>
         </SheetContent>
       </Sheet>
       {notice && (
@@ -1810,14 +1842,53 @@ export function PlazaApp() {
   );
 }
 
+function ActivityCard({
+  item,
+  locale,
+  onClick,
+}: {
+  item: RequestItem;
+  locale: Locale;
+  onClick: () => void;
+}) {
+  const meta = categoryMeta[item.category];
+  const Icon = meta.icon;
+  return (
+    <button className="activity-card" onClick={onClick}>
+      <span
+        className="activity-icon"
+        style={{ background: `${meta.color}20`, color: meta.color }}
+      >
+        <Icon />
+      </span>
+      <span className="activity-copy">
+        <strong>{item.title}</strong>
+        <small>
+          {item.demo && 'DEMO · '}
+          {getCampusLocationLabel(
+            getCampusLocation(item.locationId),
+            locale,
+          )}{' '}
+          · {item.age}
+        </small>
+      </span>
+      <span className="reply-count">
+        <MessageCircle /> {item.replies}
+      </span>
+    </button>
+  );
+}
+
 function AnnouncementBoard({
   announcements,
   locale,
+  expandedByDefault = false,
 }: {
   announcements: Announcement[];
   locale: Locale;
+  expandedByDefault?: boolean;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(expandedByDefault);
   const visible = expanded ? announcements : announcements.slice(0, 1);
   return (
     <section className="announcement-board" aria-label="Announcements">
@@ -1910,42 +1981,6 @@ function FilterButton({
   );
 }
 
-function ActivityCard({
-  item,
-  locale,
-  onClick,
-}: {
-  item: RequestItem;
-  locale: Locale;
-  onClick: () => void;
-}) {
-  const meta = categoryMeta[item.category];
-  const Icon = meta.icon;
-  return (
-    <button className="activity-card" onClick={onClick}>
-      <span
-        className="activity-icon"
-        style={{ background: `${meta.color}20`, color: meta.color }}
-      >
-        <Icon />
-      </span>
-      <span className="activity-copy">
-        <strong>{item.title}</strong>
-        <small>
-          {item.demo && 'DEMO · '}
-          {getCampusLocationLabel(
-            getCampusLocation(item.locationId),
-            locale,
-          )} ·{' '}
-          {item.age}
-        </small>
-      </span>
-      <span className="reply-count">
-        <MessageCircle /> {item.replies}
-      </span>
-    </button>
-  );
-}
 function RequestRow({
   item,
   locale,
@@ -3403,10 +3438,14 @@ function ProfilePanel({
   locale,
   profile,
   onSaved,
+  onSetLocale,
+  onOpenFeedback,
 }: {
   locale: Locale;
   profile: ProfileMember | null;
   onSaved: () => void;
+  onSetLocale: (next: Locale) => void;
+  onOpenFeedback: () => void;
 }) {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -3687,6 +3726,46 @@ function ProfilePanel({
             </Button>
           </>
         )}
+        <div className="profile-tools">
+          <div className="profile-tool profile-tool-row">
+            <span className="profile-tool-icon">
+              <Languages />
+            </span>
+            <div className="profile-lang">
+              <span className="profile-lang-label">
+                {localize(locale, 'Interface language', '界面语言', '介面語言')}
+              </span>
+              <div className="profile-lang-options">
+                {(['en', 'zh-CN', 'zh-HK'] as const).map((code) => (
+                  <button
+                    key={code}
+                    className={locale === code ? 'active' : ''}
+                    onClick={() => onSetLocale(code)}
+                  >
+                    {code === 'en'
+                      ? 'English'
+                      : code === 'zh-CN'
+                        ? '简体中文'
+                        : '繁體中文'}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="profile-tool profile-tool-row profile-tool-btn"
+            onClick={onOpenFeedback}
+          >
+            <MessageSquarePlus />
+            {localize(
+              locale,
+              'Send feedback',
+              '意见箱 · 发送反馈',
+              '意見箱 · 傳送反饋',
+            )}
+          </button>
+        </div>
         <a href="/rules">
           {localize(
             locale,
