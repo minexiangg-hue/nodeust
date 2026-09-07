@@ -1265,6 +1265,12 @@ button {
 .admin-sheet {
   overflow: hidden;
 }
+/* The profile panel is the same full-height column: keep the header pinned and
+   let .profile-body scroll so a long profile (or the sign-out row) is always
+   reachable on short viewports. */
+.profile-sheet {
+  overflow: hidden;
+}
 .admin-scroll {
   flex: 1 1 auto;
   min-height: 0;
@@ -1573,6 +1579,7 @@ button {
 }
 
 .profile-header {
+  flex: 0 0 auto;
   align-items: center;
   padding: 30px 22px 22px;
   text-align: center;
@@ -1600,6 +1607,11 @@ button {
   color: #65e6ac;
 }
 .profile-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   padding: 18px 22px;
 }
 .privacy-banner {
@@ -1848,6 +1860,19 @@ button {
   }
   .form-grid {
     grid-template-columns: 1fr;
+  }
+  /* Map toolbar on phones: the location row (min-width 260px) plus the popup
+     toggle and the map/list switch together exceed a 360–430px screen and used
+     to be clipped by .workspace overflow. Give the location row its own line
+     and let the two switches wrap beside it instead of overflowing. */
+  .location-status {
+    flex: 1 1 100%;
+    min-width: 0;
+    grid-template-columns: auto minmax(0, 180px);
+  }
+  .toolbar-controls {
+    flex-wrap: wrap;
+    row-gap: 8px;
   }
 }
 
