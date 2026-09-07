@@ -78,10 +78,13 @@ const blockedPatterns = [
 export function validatePublicContent(
   title: string,
   body: string,
+  limits?: { maxTitle?: number; maxBody?: number },
 ): string | null {
+  const maxTitle = limits?.maxTitle ?? 100;
+  const maxBody = limits?.maxBody ?? 2000;
   const value = `${title}\n${body}`.trim();
   if (!title.trim() || !body.trim()) return 'Title and details are required.';
-  if (title.length > 100 || body.length > 2000)
+  if (title.length > maxTitle || body.length > maxBody)
     return 'The content is too long. Please shorten it before publishing.';
   if (blockedPatterns.some((pattern) => pattern.test(value))) {
     return 'The content may include hall-place trading, account credentials or personal contact details. Remove them before publishing.';

@@ -3144,7 +3144,7 @@ function AdminPanel({
         <Input
           value={announcementTitle}
           onChange={(event) => setAnnouncementTitle(event.target.value)}
-          maxLength={100}
+          maxLength={160}
           placeholder={localize(
             locale,
             'Announcement title',
@@ -3155,7 +3155,6 @@ function AdminPanel({
         <Textarea
           value={announcementBody}
           onChange={(event) => setAnnouncementBody(event.target.value)}
-          maxLength={800}
           placeholder={localize(
             locale,
             'What does the community need to know?',

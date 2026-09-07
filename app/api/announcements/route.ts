@@ -45,8 +45,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 });
 
     const input = (await request.json()) as Record<string, unknown>;
-    const title = clean(input.title, 100);
-    const body = clean(input.body, 800);
+    // Title is bounded only by the DB column width (varchar 160), not by a
+    // display limit. Body is `text` and intentionally has no length cap.
+    const title = clean(input.title, 160);
+    const body = cleanLong(input.body);
     const kind = typeof input.kind === 'string' ? input.kind : 'info';
     if (!title || !body)
       return NextResponse.json(
@@ -58,7 +60,21 @@ export async function POST(request: NextRequest) {
         { error: 'Invalid announcement type.' },
         { status: 400 },
       );
-    const policyError = validatePublicContent(title, body);
+    // Announcements are not subject to the post length caps (title 100 /
+    // body 2000) — only to the DB column limits. Title is already bounded to
+    // varchar(160) above; body is TEXT (~65,535 bytes), so we keep just a
+    // byte-level guard so a pathological paste can't overflow the column.
+    // Content moderation (blocked patterns) still applies.
+    const bodyBytes = Buffer.byteLength(body, 'utf8');
+    if (bodyBytes > 60_000)
+      return NextResponse.json(
+        { error: 'The content is too long to store. Please shorten it.' },
+        { status: 413 },
+      );
+    const policyError = validatePublicContent(title, body, {
+      maxTitle: 160,
+      maxBody: 60_000,
+    });
     if (policyError)
       return NextResponse.json({ error: policyError }, { status: 422 });
 
@@ -86,6 +102,10 @@ export async function POST(request: NextRequest) {
 function clean(value: unknown, max: number) {
   if (typeof value !== 'string') return '';
   return value.trim().slice(0, max);
+}
+function cleanLong(value: unknown) {
+  if (typeof value !== 'string') return '';
+  return value.trim();
 }
 
 function apiError(error: unknown) {
