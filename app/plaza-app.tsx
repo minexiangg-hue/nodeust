@@ -2,9 +2,12 @@
 /* oxlint-disable next/no-html-link-for-pages */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
+import { ManagementConsole } from '@/components/management-console';
+import { MyPosts } from '@/components/my-posts';
+import { localize, type Locale } from '@/lib/locale';
 import {
   ArrowLeftRight,
-  Ban,
   Bell,
   BookOpen,
   Bookmark,
@@ -15,7 +18,6 @@ import {
   Eye,
   EyeOff,
   Flag,
-  Gavel,
   Languages,
   List,
   LogOut,
@@ -75,9 +77,8 @@ import {
   type LocationGroupId,
 } from '@/lib/campus-locations';
 
-type Locale = 'zh-CN' | 'zh-HK' | 'en';
 type Category = 'all' | 'hall' | 'goods' | 'study' | 'other';
-type ActiveSection = 'explore' | 'matches' | 'chats' | 'saved';
+type ActiveSection = 'explore' | 'matches' | 'chats' | 'saved' | 'posts';
 type Announcement = {
   id: string;
   title: string;
@@ -137,7 +138,11 @@ type ConversationItem = {
   createdAt: string;
   updatedAt: string;
   postId: string | null;
-  post: { id: string; title: string; category: Exclude<Category, 'all'> } | null;
+  post: {
+    id: string;
+    title: string;
+    category: Exclude<Category, 'all'>;
+  } | null;
   peerId: string;
   peerAlias: string;
   lastMessage: {
@@ -158,36 +163,7 @@ type WireMessage = {
   isMine: boolean;
 };
 
-// An open report from the moderation queue (GET /api/admin/reports), enriched
-// server-side with the human-readable target and the reporter's alias.
-type AdminReport = {
-  id: string;
-  targetType: 'post' | 'message' | 'user';
-  targetId: string;
-  reason: string;
-  details: string | null;
-  status: string;
-  createdAt: string;
-  targetLabel: string;
-  targetAlias: string;
-  reporterAlias: string;
-};
-
 type FeedbackCategory = 'bug' | 'suggestion' | 'other';
-type FeedbackStatus = 'open' | 'resolved';
-
-// A member-submitted feedback row (GET /api/feedback, Owner only), enriched
-// server-side with the submitter's username (users.identity_id) + anonymous alias.
-type AdminFeedback = {
-  id: string;
-  category: FeedbackCategory;
-  body: string;
-  status: FeedbackStatus;
-  createdAt: string;
-  resolvedAt: string | null;
-  username: string;
-  alias: string;
-};
 
 function feedbackCategoryLabel(category: FeedbackCategory, locale: Locale) {
   const labels: Record<FeedbackCategory, [string, string, string]> = {
@@ -197,37 +173,6 @@ function feedbackCategoryLabel(category: FeedbackCategory, locale: Locale) {
   };
   const label = labels[category];
   return localize(locale, label[0], label[1], label[2]);
-}
-
-function feedbackStatusLabel(status: FeedbackStatus, locale: Locale) {
-  return status === 'open'
-    ? localize(locale, 'Open', '待处理', '待處理')
-    : localize(locale, 'Resolved', '已处理', '已處理');
-}
-
-// Bilingual labels for the report `reason` enum (mirrors lib/content-policy.ts).
-function reportReasonLabel(reason: string, locale: Locale): string {
-  const labels: Record<string, [string, string, string]> = {
-    illegal: ['Illegal activity', '违法或违规信息', '違法或違規信息'],
-    hall_trade: ['Hall-place trading', '宿位交易', '宿位交易'],
-    fraud: ['Fraud / impersonation', '诈骗与冒充', '詐騙與冒充'],
-    harassment: ['Harassment', '骚扰与威胁', '騷擾與威脅'],
-    hate: ['Hate / discrimination', '仇恨与歧视', '仇恨與歧視'],
-    sexual: ['Sexual content', '色情与性交易', '色情與性交易'],
-    privacy: ['Privacy violation', '隐私泄露', '私隱洩漏'],
-    spam: ['Spam / promotion', '垃圾信息与推广', '垃圾信息與推廣'],
-    other: ['Other', '其他', '其他'],
-  };
-  const label = labels[reason] ?? labels.other;
-  return localize(locale, label[0], label[1], label[2]);
-}
-
-function targetTypeLabel(targetType: AdminReport['targetType'], locale: Locale): string {
-  return targetType === 'post'
-    ? localize(locale, 'Post', '帖子', '帖子')
-    : targetType === 'user'
-      ? localize(locale, 'User', '用户', '用戶')
-      : localize(locale, 'Message', '消息', '消息');
 }
 
 function roleLabel(role: Role): string {
@@ -507,16 +452,11 @@ const halls = [
 ] as const;
 */
 
-
 const localeLabels: Record<Locale, string> = {
   'zh-CN': '简',
   'zh-HK': '繁',
   en: 'EN',
 };
-
-function localize(locale: Locale, en: string, zhCn: string, zhHk: string) {
-  return locale === 'en' ? en : locale === 'zh-HK' ? zhHk : zhCn;
-}
 
 export function PlazaApp() {
   const [locale, setLocale] = useState<Locale>('en');
@@ -542,6 +482,7 @@ export function PlazaApp() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [announceOpen, setAnnounceOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const [myPostsVersion, setMyPostsVersion] = useState(0);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [notice, setNotice] = useState('');
   const [zoom, setZoom] = useState(1);
@@ -609,6 +550,17 @@ export function PlazaApp() {
       setConversations(result.items ?? []);
     } catch {
       /* Ignore transient failures; the next poll retries. */
+    }
+  };
+
+  const loadAnnouncements = async () => {
+    try {
+      const response = await fetch('/api/announcements', { cache: 'no-store' });
+      if (!response.ok) return;
+      const result = (await response.json()) as { items?: Announcement[] };
+      setAnnouncements(result.items ?? []);
+    } catch {
+      /* Keep the current board until the next refresh. */
     }
   };
 
@@ -746,6 +698,7 @@ export function PlazaApp() {
       }
       await loadPosts();
       setCreateOpen(false);
+      setMyPostsVersion((version) => version + 1);
       setNotice(
         localize(
           locale,
@@ -791,16 +744,9 @@ export function PlazaApp() {
   }, []);
 
   useEffect(() => {
-    void fetch('/api/announcements')
-      .then(async (response) => {
-        if (!response.ok) return [];
-        const result = (await response.json()) as {
-          items?: Announcement[];
-        };
-        return result.items ?? [];
-      })
-      .then(setAnnouncements)
-      .catch(() => undefined);
+    void loadAnnouncements();
+    const timer = setInterval(() => void loadAnnouncements(), 30000);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -934,9 +880,14 @@ export function PlazaApp() {
     <main className="min-h-screen bg-background text-foreground">
       <header className="app-header">
         <div className="brand" aria-label="NODE home">
-          <span className="brand-mark">
-            <span />
-          </span>
+          <Image
+            className="brand-icon"
+            src="/node-brand-icon.png"
+            alt=""
+            width={38}
+            height={38}
+            priority
+          />
           <span>NODE</span>
           <Badge className="beta-badge">HKUST · BETA</Badge>
         </div>
@@ -958,12 +909,7 @@ export function PlazaApp() {
           <Button
             variant="ghost"
             size="icon"
-            aria-label={localize(
-              locale,
-              'Announcements',
-              '公告',
-              '公告',
-            )}
+            aria-label={localize(locale, 'Announcements', '公告', '公告')}
             className="header-icon"
             onClick={() => setAnnounceOpen(true)}
           >
@@ -1066,6 +1012,12 @@ export function PlazaApp() {
               active={activeSection === 'saved'}
               onClick={() => setActiveSection('saved')}
             />
+            <RailLink
+              icon={List}
+              label={localize(locale, 'My posts', '我的帖子', '我的帖子')}
+              active={activeSection === 'posts'}
+              onClick={() => setActiveSection('posts')}
+            />
           </nav>
           <section className="filter-section">
             <p>{t.filters}</p>
@@ -1133,7 +1085,9 @@ export function PlazaApp() {
                     ? 'RECIPROCAL ROUTES'
                     : activeSection === 'chats'
                       ? 'PRIVATE CHANNELS'
-                      : 'YOUR COLLECTION'}
+                      : activeSection === 'posts'
+                        ? 'YOUR REQUESTS'
+                        : 'YOUR COLLECTION'}
               </div>
               <h1>
                 {activeSection === 'explore'
@@ -1142,10 +1096,42 @@ export function PlazaApp() {
                     ? t.matches
                     : activeSection === 'chats'
                       ? t.chats
-                      : t.saved}
+                      : activeSection === 'posts'
+                        ? localize(locale, 'My posts', '我的帖子', '我的帖子')
+                        : t.saved}
               </h1>
             </div>
             <div className="toolbar-controls">
+              {activeSection === 'explore' && (
+                <div className="category-picker">
+                  <Select
+                    value={category}
+                    onValueChange={(value) => {
+                      if (value) setCategory(value as Category);
+                    }}
+                  >
+                    <SelectTrigger
+                      aria-label={localize(
+                        locale,
+                        'Request category',
+                        '需求分类',
+                        '需求分類',
+                      )}
+                    >
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(
+                        ['all', 'hall', 'goods', 'study', 'other'] as const
+                      ).map((value) => (
+                        <SelectItem key={value} value={value}>
+                          {t[value]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               {activeSection === 'explore' ? (
                 <div className="location-status">
                   <span>
@@ -1260,7 +1246,14 @@ export function PlazaApp() {
             </div>
           )}
 
-          {view === 'plaza' && activeSection === 'explore' ? (
+          {activeSection === 'posts' ? (
+            <MyPosts
+              key={myPostsVersion}
+              locale={locale}
+              onChanged={() => void loadPosts()}
+              onCreate={() => setCreateOpen(true)}
+            />
+          ) : view === 'plaza' && activeSection === 'explore' ? (
             <div
               className="plaza-canvas"
               aria-label={localize(
@@ -1544,6 +1537,12 @@ export function PlazaApp() {
           <UserRound />
           <span>Me</span>
         </button>
+        <RailLink
+          icon={List}
+          label={localize(locale, 'My posts', '我的帖子', '我的帖子')}
+          active={activeSection === 'posts'}
+          onClick={() => setActiveSection('posts')}
+        />
       </nav>
       <Sheet
         open={Boolean(selected)}
@@ -1704,13 +1703,18 @@ export function PlazaApp() {
       </Sheet>
       <Sheet open={adminOpen} onOpenChange={setAdminOpen}>
         <SheetContent className="admin-sheet">
-          <AdminPanel
-            locale={locale}
-            isOwner={profile?.role === 'owner'}
-            onAnnouncementPublished={(announcement) =>
-              setAnnouncements((current) => [announcement, ...current])
-            }
-          />
+          {canModerate && (
+            <ManagementConsole
+              locale={locale}
+              isOwner={profile?.role === 'owner'}
+              onAnnouncementsChanged={() => void loadAnnouncements()}
+              onPostsChanged={() => {
+                setSelected(null);
+                setMyPostsVersion((version) => version + 1);
+                void loadPosts();
+              }}
+            />
+          )}
         </SheetContent>
       </Sheet>
       <Sheet open={profileOpen} onOpenChange={setProfileOpen}>
@@ -1750,7 +1754,9 @@ export function PlazaApp() {
               expandedByDefault
             />
             <div className="panel-title">
-              <h2>{localize(locale, 'Happening now', '正在发生', '正在發生')}</h2>
+              <h2>
+                {localize(locale, 'Happening now', '正在发生', '正在發生')}
+              </h2>
               <span>
                 {localize(
                   locale,
@@ -1868,8 +1874,8 @@ function ActivityCard({
           {getCampusLocationLabel(
             getCampusLocation(item.locationId),
             locale,
-          )}{' '}
-          · {item.age}
+          )} ·{' '}
+          {item.age}
         </small>
       </span>
       <span className="reply-count">
@@ -2250,9 +2256,7 @@ function FeedbackDialog({
             </label>
             <Select
               value={category}
-              onValueChange={(value) =>
-                setCategory(value as FeedbackCategory)
-              }
+              onValueChange={(value) => setCategory(value as FeedbackCategory)}
             >
               <SelectTrigger id="feedback-category">
                 <SelectValue />
@@ -2536,9 +2540,9 @@ function ChatPanel({
 }) {
   const [draft, setDraft] = useState('');
   const [messages, setMessages] = useState<WireMessage[]>([]);
-  const [busy, setBusy] = useState<'sending' | 'requesting' | 'accepting' | null>(
-    null,
-  );
+  const [busy, setBusy] = useState<
+    'sending' | 'requesting' | 'accepting' | null
+  >(null);
   const [actionError, setActionError] = useState('');
   const streamRef = useRef<HTMLDivElement | null>(null);
 
@@ -2652,7 +2656,9 @@ function ChatPanel({
     }
   };
 
-  const reveals = messages.filter((message) => message.kind === 'contact_reveal');
+  const reveals = messages.filter(
+    (message) => message.kind === 'contact_reveal',
+  );
   const inboundRequest = messages.find(
     (message) => message.kind === 'contact_request' && !message.isMine,
   );
@@ -2720,12 +2726,7 @@ function ChatPanel({
           <div className="section-empty compact">
             <MessageCircle />
             <strong>
-              {localize(
-                locale,
-                'No messages yet',
-                '还没有消息',
-                '還沒有訊息',
-              )}
+              {localize(locale, 'No messages yet', '还没有消息', '還沒有訊息')}
             </strong>
             <span>
               {localize(
@@ -2891,548 +2892,6 @@ function ChatPanel({
   );
 }
 
-function AdminPanel({
-  locale,
-  isOwner,
-  onAnnouncementPublished,
-}: {
-  locale: Locale;
-  isOwner: boolean;
-  onAnnouncementPublished: (announcement: Announcement) => void;
-}) {
-  const [queue, setQueue] = useState<AdminReport[]>([]);
-  const [queueLoading, setQueueLoading] = useState(true);
-  const [actingId, setActingId] = useState<string | null>(null);
-  const [queueError, setQueueError] = useState('');
-  const [inviteSent, setInviteSent] = useState(false);
-  const [announcementTitle, setAnnouncementTitle] = useState('');
-  const [announcementBody, setAnnouncementBody] = useState('');
-  const [announcementKind, setAnnouncementKind] =
-    useState<Announcement['kind']>('info');
-  const [announcementStatus, setAnnouncementStatus] = useState('');
-  const [feedbackItems, setFeedbackItems] = useState<AdminFeedback[]>([]);
-  const [feedbackLoading, setFeedbackLoading] = useState(true);
-  const [feedbackFilter, setFeedbackFilter] = useState<
-    'all' | 'open' | 'resolved'
-  >('all');
-  const [feedbackError, setFeedbackError] = useState('');
-  const [feedbackActingId, setFeedbackActingId] = useState<string | null>(null);
-
-  const loadReports = async () => {
-    try {
-      const response = await fetch('/api/admin/reports');
-      if (!response.ok) throw new Error('load failed');
-      const result = (await response.json()) as { items?: AdminReport[] };
-      setQueue(result.items ?? []);
-      setQueueError('');
-    } catch {
-      setQueueError(
-        localize(
-          locale,
-          'Could not load the review queue.',
-          '无法读取审核队列。',
-          '無法讀取審核隊列。',
-        ),
-      );
-    } finally {
-      setQueueLoading(false);
-    }
-  };
-
-  const loadFeedback = async () => {
-    try {
-      const response = await fetch('/api/feedback');
-      if (!response.ok) throw new Error('load failed');
-      const result = (await response.json()) as { items?: AdminFeedback[] };
-      setFeedbackItems(result.items ?? []);
-      setFeedbackError('');
-    } catch {
-      setFeedbackError(
-        localize(
-          locale,
-          'Could not load feedback.',
-          '无法读取反馈。',
-          '無法讀取反饋。',
-        ),
-      );
-    } finally {
-      setFeedbackLoading(false);
-    }
-  };
-
-  const toggleFeedback = async (item: AdminFeedback) => {
-    const action = item.status === 'open' ? 'resolve' : 'reopen';
-    setFeedbackActingId(item.id);
-    setFeedbackError('');
-    try {
-      const response = await fetch('/api/feedback', {
-        method: 'PATCH',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ id: item.id, action }),
-      });
-      if (!response.ok) throw new Error('toggle failed');
-      setFeedbackItems((items) =>
-        items.map((entry) =>
-          entry.id === item.id
-            ? {
-                ...entry,
-                status: action === 'resolve' ? 'resolved' : 'open',
-                resolvedAt:
-                  action === 'resolve' ? new Date().toISOString() : null,
-              }
-            : entry,
-        ),
-      );
-    } catch {
-      setFeedbackError(
-        localize(
-          locale,
-          'Could not update that feedback.',
-          '更新失败，请稍后再试。',
-          '更新失敗，請稍後再試。',
-        ),
-      );
-    } finally {
-      setFeedbackActingId(null);
-    }
-  };
-
-  useEffect(() => {
-    void loadReports();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (isOwner) {
-      void loadFeedback();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOwner]);
-
-  const act = async (report: AdminReport, action: 'remove' | 'dismiss') => {
-    setActingId(report.id);
-    setQueueError('');
-    try {
-      const response = await fetch('/api/admin/reports', {
-        method: 'PATCH',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          reportId: report.id,
-          action,
-          reason:
-            action === 'remove'
-              ? 'Owner removed this content for a community-standards violation.'
-              : 'No action needed — report dismissed by the moderation team.',
-        }),
-      });
-      if (!response.ok) throw new Error('action failed');
-      setQueue((items) => items.filter((item) => item.id !== report.id));
-    } catch {
-      setQueueError(
-        localize(
-          locale,
-          'Could not process that report. Please try again.',
-          '处理失败，请稍后再试。',
-          '處理失敗，請稍後再試。',
-        ),
-      );
-    } finally {
-      setActingId(null);
-    }
-  };
-  const publishAnnouncement = async () => {
-    if (!announcementTitle.trim() || !announcementBody.trim()) return;
-    setAnnouncementStatus('publishing');
-    try {
-      const response = await fetch('/api/announcements', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          title: announcementTitle,
-          body: announcementBody,
-          kind: announcementKind,
-        }),
-      });
-      const result = (await response.json()) as { id?: string; error?: string };
-      if (!response.ok || !result.id) throw new Error(result.error);
-      onAnnouncementPublished({
-        id: result.id,
-        title: announcementTitle.trim(),
-        body: announcementBody.trim(),
-        kind: announcementKind,
-        publishedAt: new Date().toISOString(),
-        authorAlias: 'NODE Team',
-      });
-      setAnnouncementTitle('');
-      setAnnouncementBody('');
-      setAnnouncementStatus('published');
-    } catch {
-      setAnnouncementStatus('error');
-    }
-  };
-  return (
-    <div className="admin-scroll">
-      <SheetHeader className="admin-header">
-        <div className="detail-category">
-          <Gavel /> OWNER CONSOLE
-        </div>
-        <SheetTitle>
-          {localize(locale, 'Moderation', '管理中心', '管理中心')}
-        </SheetTitle>
-        <SheetDescription>
-          {localize(
-            locale,
-            'You are the founding Owner. Publish notices, invite moderators and manage reports.',
-            '你是首位 Owner，可发布公告、邀请管理员并处理举报。',
-            '你是首位 Owner，可發佈公告、邀請管理員並處理舉報。',
-          )}
-        </SheetDescription>
-      </SheetHeader>
-      <div className="admin-metrics">
-        <div>
-          <strong>{queue.length}</strong>
-          <span>
-            {localize(locale, 'Open reports', '待处理举报', '待處理舉報')}
-          </span>
-        </div>
-        <div>
-          <strong>2</strong>
-          <span>
-            {localize(locale, 'Auto-blocked', '自动拦截', '自動攔截')}
-          </span>
-        </div>
-        <div>
-          <strong>18m</strong>
-          <span>
-            {localize(
-              locale,
-              'Average response',
-              '平均处理时间',
-              '平均處理時間',
-            )}
-          </span>
-        </div>
-      </div>
-      <section className="announcement-admin-card">
-        <div className="admin-section-title">
-          <h3>
-            <Megaphone />{' '}
-            {localize(
-              locale,
-              'Publish an announcement',
-              '发布公告',
-              '發佈公告',
-            )}
-          </h3>
-          <Badge>LIVE BOARD</Badge>
-        </div>
-        <Select
-          value={announcementKind}
-          onValueChange={(value) => {
-            if (value) setAnnouncementKind(value as Announcement['kind']);
-          }}
-        >
-          <SelectTrigger aria-label="Announcement type">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="info">Information</SelectItem>
-            <SelectItem value="upgrade">Upgrade</SelectItem>
-            <SelectItem value="maintenance">Maintenance</SelectItem>
-          </SelectContent>
-        </Select>
-        <Input
-          value={announcementTitle}
-          onChange={(event) => setAnnouncementTitle(event.target.value)}
-          maxLength={160}
-          placeholder={localize(
-            locale,
-            'Announcement title',
-            '公告标题',
-            '公告標題',
-          )}
-        />
-        <Textarea
-          value={announcementBody}
-          onChange={(event) => setAnnouncementBody(event.target.value)}
-          placeholder={localize(
-            locale,
-            'What does the community need to know?',
-            '需要向社区说明什么？',
-            '需要向社群說明甚麼？',
-          )}
-        />
-        <div className="announcement-admin-actions">
-          <Button
-            onClick={publishAnnouncement}
-            disabled={
-              announcementStatus === 'publishing' ||
-              !announcementTitle.trim() ||
-              !announcementBody.trim()
-            }
-          >
-            <Megaphone />{' '}
-            {announcementStatus === 'publishing'
-              ? localize(locale, 'Publishing…', '发布中…', '發佈中…')
-              : localize(locale, 'Publish now', '立即发布', '立即發佈')}
-          </Button>
-          {announcementStatus === 'published' && (
-            <span>
-              {localize(locale, 'Published.', '已发布。', '已發佈。')}
-            </span>
-          )}
-          {announcementStatus === 'error' && (
-            <span className="error">
-              {localize(
-                locale,
-                'Could not publish.',
-                '发布失败。',
-                '發佈失敗。',
-              )}
-            </span>
-          )}
-        </div>
-      </section>
-      <div className="admin-section-title">
-        <h3>{localize(locale, 'Review queue', '审核队列', '審核隊列')}</h3>
-        <Badge>{queue.length} OPEN</Badge>
-      </div>
-      {queueError && <div className="queue-error">{queueError}</div>}
-      <div className="moderation-queue">
-        {queueLoading ? (
-          <div className="queue-empty">
-            <strong>
-              {localize(locale, 'Loading…', '加载中…', '載入中…')}
-            </strong>
-          </div>
-        ) : queue.length ? (
-          queue.map((report) => {
-            const severe = [
-              'illegal',
-              'hall_trade',
-              'fraud',
-              'sexual',
-              'harassment',
-              'hate',
-            ].includes(report.reason);
-            const target =
-              report.targetLabel ||
-              report.targetAlias ||
-              localize(
-                locale,
-                '(removed content)',
-                '(已移除内容)',
-                '(已移除內容)',
-              );
-            return (
-              <article key={report.id} className="moderation-card">
-                <div>
-                  <Badge variant={severe ? 'destructive' : 'secondary'}>
-                    {reportReasonLabel(report.reason, locale)}
-                  </Badge>
-                  <span>
-                    {report.reporterAlias ||
-                      localize(
-                        locale,
-                        'Anonymous reporter',
-                        '匿名举报',
-                        '匿名舉報',
-                      )}{' '}
-                    · {formatAge(report.createdAt)}
-                  </span>
-                </div>
-                <h4>{target}</h4>
-                <p>
-                  {targetTypeLabel(report.targetType, locale)}
-                  {report.details ? ` — ${report.details}` : ''}
-                </p>
-                <div>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    disabled={actingId === report.id}
-                    onClick={() => void act(report, 'remove')}
-                  >
-                    <Ban />{' '}
-                    {localize(
-                      locale,
-                      'Remove & warn',
-                      '移除并警告',
-                      '移除並警告',
-                    )}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    disabled={actingId === report.id}
-                    onClick={() => void act(report, 'dismiss')}
-                  >
-                    {localize(locale, 'Dismiss', '忽略', '忽略')}
-                  </Button>
-                </div>
-              </article>
-            );
-          })
-        ) : (
-          <div className="queue-empty">
-            <CheckCircle2 />
-            <strong>
-              {localize(locale, 'Queue cleared', '队列已清空', '隊列已清空')}
-            </strong>
-            <span>
-              {localize(
-                locale,
-                'New reports will appear here.',
-                '新的举报会显示在这里。',
-                '新的舉報會顯示在這裡。',
-              )}
-            </span>
-          </div>
-        )}
-      </div>
-      {isOwner && (
-        <>
-          <div className="admin-section-title">
-            <h3>
-              <MessageSquarePlus />{' '}
-              {localize(locale, 'Feedback', '反馈', '反饋')}
-            </h3>
-            <Badge>
-              {feedbackItems.filter((item) => item.status === 'open').length}{' '}
-              {localize(locale, 'OPEN', '待处理', '待處理')}
-            </Badge>
-          </div>
-          <div className="feedback-toolbar">
-            {(['all', 'open', 'resolved'] as const).map((value) => (
-              <button
-                key={value}
-                className={feedbackFilter === value ? 'active' : ''}
-                onClick={() => setFeedbackFilter(value)}
-              >
-                {value === 'all'
-                  ? localize(locale, 'All', '全部', '全部')
-                  : value === 'open'
-                    ? localize(locale, 'Open', '待处理', '待處理')
-                    : localize(locale, 'Resolved', '已处理', '已處理')}
-              </button>
-            ))}
-          </div>
-          {feedbackError && <div className="queue-error">{feedbackError}</div>}
-          <div className="feedback-list">
-            {feedbackLoading ? (
-              <div className="queue-empty">
-                <strong>
-                  {localize(locale, 'Loading…', '加载中…', '載入中…')}
-                </strong>
-              </div>
-            ) : (
-              feedbackItems
-                .filter(
-                  (item) =>
-                    feedbackFilter === 'all' ||
-                    item.status === feedbackFilter,
-                )
-                .map((item) => (
-                  <article
-                    key={item.id}
-                    className={`feedback-card ${item.status === 'resolved' ? 'resolved' : ''}`}
-                  >
-                    <div className="fc-head">
-                      <Badge
-                        variant={
-                          item.status === 'open' ? 'secondary' : 'outline'
-                        }
-                      >
-                        {feedbackCategoryLabel(item.category, locale)}
-                      </Badge>
-                      <strong>{item.username}</strong>
-                      <span>
-                        {item.alias} · {formatAge(item.createdAt)}
-                      </span>
-                    </div>
-                    <p className="fc-body">{item.body}</p>
-                    <div className="fc-foot">
-                      <small>
-                        {feedbackStatusLabel(item.status, locale)}
-                        {item.status === 'resolved' && item.resolvedAt
-                          ? ` · ${formatAge(item.resolvedAt)}`
-                          : ''}
-                      </small>
-                      <Button
-                        size="sm"
-                        variant={item.status === 'open' ? 'outline' : 'ghost'}
-                        disabled={feedbackActingId === item.id}
-                        onClick={() => void toggleFeedback(item)}
-                      >
-                        {item.status === 'open'
-                          ? localize(
-                              locale,
-                              'Mark resolved',
-                              '标记为已处理',
-                              '標記為已處理',
-                            )
-                          : localize(
-                              locale,
-                              'Reopen',
-                              '重新打开',
-                              '重新開啟',
-                            )}
-                      </Button>
-                    </div>
-                  </article>
-                ))
-            )}
-            {!feedbackLoading && feedbackItems.length === 0 && (
-              <div className="queue-empty">
-                <CheckCircle2 />
-                <strong>
-                  {localize(
-                    locale,
-                    'No feedback yet.',
-                    '还没有反馈。',
-                    '還沒有反饋。',
-                  )}
-                </strong>
-                <span>
-                  {localize(
-                    locale,
-                    'New member feedback will appear here.',
-                    '成员的新反馈会显示在这里。',
-                    '成員嘅新反饋會顯示喺度。',
-                  )}
-                </span>
-              </div>
-            )}
-          </div>
-        </>
-      )}
-      <div className="team-card">
-        <UserPlus />
-        <div>
-          <strong>
-            {localize(locale, 'Moderation team', '管理员团队', '管理員團隊')}
-          </strong>
-          <p>
-            {inviteSent
-              ? localize(
-                  locale,
-                  'Invitation created · awaiting first ITSO sign-in',
-                  '邀请已建立 · 等待对方首次 ITSO 登录',
-                  '邀請已建立 · 等待對方首次 ITSO 登入',
-                )
-              : 'Owner 1 · Moderator 0'}
-          </p>
-        </div>
-        <Button size="sm" variant="outline" onClick={() => setInviteSent(true)}>
-          {inviteSent
-            ? localize(locale, 'Invited', '已邀请', '已邀請')
-            : localize(locale, 'Invite moderator', '邀请管理员', '邀請管理員')}
-        </Button>
-      </div>
-    </div>
-  );
-}
-
 function ProfilePanel({
   locale,
   profile,
@@ -3519,8 +2978,7 @@ function ProfilePanel({
     );
   }
 
-  const initial =
-    profile.anonymousAlias.trim().charAt(0).toUpperCase() || '?';
+  const initial = profile.anonymousAlias.trim().charAt(0).toUpperCase() || '?';
   const affiliationLabel =
     profile.affiliation === 'staff'
       ? localize(locale, 'Staff', '教职员', '教職員')
@@ -3595,7 +3053,12 @@ function ProfilePanel({
             </div>
             <div className="form-field">
               <label htmlFor="profile-programme">
-                {localize(locale, 'Programme / year', '课程／年级', '課程／年級')}
+                {localize(
+                  locale,
+                  'Programme / year',
+                  '课程／年级',
+                  '課程／年級',
+                )}
               </label>
               <Input
                 id="profile-programme"
@@ -3607,7 +3070,12 @@ function ProfilePanel({
             </div>
             <div className="form-field">
               <label htmlFor="profile-contact-method">
-                {localize(locale, 'Contact method', '联系方式平台', '聯絡方式平台')}
+                {localize(
+                  locale,
+                  'Contact method',
+                  '联系方式平台',
+                  '聯絡方式平台',
+                )}
               </label>
               <Input
                 id="profile-contact-method"
@@ -3653,7 +3121,12 @@ function ProfilePanel({
               <Button onClick={() => void save()} disabled={saving}>
                 {saving
                   ? localize(locale, 'Saving…', '保存中…', '儲存中…')
-                  : localize(locale, 'Save profile', '保存个人资料', '儲存個人資料')}
+                  : localize(
+                      locale,
+                      'Save profile',
+                      '保存个人资料',
+                      '儲存個人資料',
+                    )}
               </Button>
               <Button variant="ghost" onClick={() => setEditing(false)}>
                 {localize(locale, 'Cancel', '取消', '取消')}
@@ -3675,9 +3148,7 @@ function ProfilePanel({
                 <dd>{profile.anonymousAlias}</dd>
               </div>
               <div>
-                <dt>
-                  {localize(locale, 'Nickname', '昵称', '暱稱')}
-                </dt>
+                <dt>{localize(locale, 'Nickname', '昵称', '暱稱')}</dt>
                 <dd>{form.nickname || '—'}</dd>
               </div>
               <div>
@@ -3685,7 +3156,9 @@ function ProfilePanel({
                 <dd>{profile.fullName}</dd>
               </div>
               <div>
-                <dt>{localize(locale, 'ITSO email', 'ITSO 邮箱', 'ITSO 電郵')}</dt>
+                <dt>
+                  {localize(locale, 'ITSO email', 'ITSO 邮箱', 'ITSO 電郵')}
+                </dt>
                 <dd>{profile.email}</dd>
               </div>
               <div>
@@ -3704,8 +3177,9 @@ function ProfilePanel({
                   )}
                 </dt>
                 <dd>
-                  {[form.department, form.programme].filter(Boolean).join(' · ') ||
-                    '—'}
+                  {[form.department, form.programme]
+                    .filter(Boolean)
+                    .join(' · ') || '—'}
                 </dd>
               </div>
               <div>

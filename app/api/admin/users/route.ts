@@ -3,20 +3,25 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getDb } from '@/db';
 import { moderationActions, users } from '@/db/schema';
+import { apiError, readJsonObject } from '@/lib/api-response';
 import { canModerate } from '@/lib/auth';
 import { requireMember } from '@/lib/current-member';
+import { canManageUser, isUserAction } from '@/lib/moderation-policy';
 
 export async function PATCH(request: NextRequest) {
   try {
     const actor = await requireMember();
     if (!canModerate(actor))
       return NextResponse.json({ error: '需要管理员权限。' }, { status: 403 });
-    const input = (await request.json()) as {
-      userId?: string;
-      action?: 'activate' | 'suspend' | 'ban' | 'make_moderator' | 'make_admin';
-      reason?: string;
-    };
-    if (!input.userId || !input.action || !input.reason?.trim())
+    const input = await readJsonObject(request);
+    if (
+      typeof input.userId !== 'string' ||
+      !input.userId ||
+      !isUserAction(input.action) ||
+      typeof input.reason !== 'string' ||
+      !input.reason.trim() ||
+      input.reason.trim().length > 500
+    )
       return NextResponse.json({ error: '处置参数不完整。' }, { status: 400 });
     const reason = input.reason.trim();
     const [target] = await getDb()
@@ -26,10 +31,10 @@ export async function PATCH(request: NextRequest) {
       .limit(1);
     if (!target)
       return NextResponse.json({ error: '账号不存在。' }, { status: 404 });
-    if (target.role === 'owner')
+    if (!canManageUser(actor.role, target.role, input.action))
       return NextResponse.json(
-        { error: '不能通过此接口修改 Owner。' },
-        { status: 409 },
+        { error: '无权修改此账号或授予此角色。' },
+        { status: 403 },
       );
     const now = new Date();
     const action = input.action;
@@ -68,7 +73,7 @@ export async function PATCH(request: NextRequest) {
       });
     });
     return NextResponse.json({ userId: target.id, action, status: 'updated' });
-  } catch {
-    return NextResponse.json({ error: '账号操作失败。' }, { status: 500 });
+  } catch (error) {
+    return apiError(error, '账号操作失败。');
   }
 }

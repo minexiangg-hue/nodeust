@@ -12,6 +12,8 @@
     "start:standalone": "node .next/standalone/server.js",
     "check:backend": "node scripts/smoke-backend.mjs",
     "check:health": "node scripts/healthcheck.mjs",
+    "check:unit": "node --experimental-strip-types --test scripts/check-unit.mjs",
+    "check:management": "node --test scripts/check-management.mjs",
     "lint": "oxlint",
     "format": "oxfmt",
     "db:generate": "drizzle-kit generate",

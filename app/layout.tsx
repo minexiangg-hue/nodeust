@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './management.css';
 
 export const metadata: Metadata = {
   title: 'NODE — HKUST anonymous exchange map',

@@ -6,6 +6,7 @@ import { posts, users } from '@/db/schema';
 import { validatePublicContent } from '@/lib/content-policy';
 import { requireMember } from '@/lib/current-member';
 import { campusLocationIds } from '@/lib/campus-locations';
+import { PAGE_SIZE, pageOffset, pagedItems } from '@/lib/pagination';
 
 const categories = new Set(['hall', 'goods', 'study', 'other']);
 
@@ -15,7 +16,19 @@ export async function GET(request: NextRequest) {
     const category = request.nextUrl.searchParams.get('category');
     const location = request.nextUrl.searchParams.get('location');
     const query = request.nextUrl.searchParams.get('q');
-    const conditions = [eq(posts.status, 'active')];
+    const mine = request.nextUrl.searchParams.get('mine') === '1';
+    const conditions = [
+      mine ? eq(posts.ownerId, member.id) : eq(posts.status, 'active'),
+    ];
+    const status = request.nextUrl.searchParams.get('status');
+    if (
+      mine &&
+      (status === 'active' ||
+        status === 'closed' ||
+        status === 'matched' ||
+        status === 'removed')
+    )
+      conditions.push(eq(posts.status, status));
     if (category && categories.has(category))
       conditions.push(
         eq(
@@ -35,6 +48,7 @@ export async function GET(request: NextRequest) {
         id: posts.id,
         category: posts.category,
         title: posts.title,
+        status: posts.status,
         body: posts.body,
         locationId: posts.locationId,
         currentHall: posts.currentHall,
@@ -49,14 +63,16 @@ export async function GET(request: NextRequest) {
       .from(posts)
       .innerJoin(users, eq(posts.ownerId, users.id))
       .where(and(...conditions))
-      .orderBy(desc(posts.createdAt))
-      .limit(100);
-    return NextResponse.json({
-      items: items.map(({ ownerId, ...item }) => ({
-        ...item,
-        isMine: ownerId === member.id,
-      })),
-    });
+      .orderBy(desc(posts.createdAt), desc(posts.id))
+      .limit(mine ? PAGE_SIZE + 1 : 100)
+      .offset(mine ? pageOffset(request.nextUrl.searchParams) : 0);
+    const safeItems = items.map(({ ownerId, ...item }) => ({
+      ...item,
+      isMine: ownerId === member.id,
+    }));
+    return NextResponse.json(
+      mine ? pagedItems(safeItems) : { items: safeItems },
+    );
   } catch (error) {
     return apiError(error);
   }

@@ -5,12 +5,17 @@ import { getDb } from '@/db';
 import { announcements, users } from '@/db/schema';
 import { validatePublicContent } from '@/lib/content-policy';
 import { requireMember } from '@/lib/current-member';
+import { apiError, readJsonObject } from '@/lib/api-response';
+import { PAGE_SIZE, pageOffset, pagedItems } from '@/lib/pagination';
 
 const kinds = new Set(['info', 'maintenance', 'upgrade']);
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    await requireMember();
+    const member = await requireMember();
+    const manage = request.nextUrl.searchParams.get('manage') === '1';
+    if (manage && member.role !== 'owner')
+      return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 });
     const now = new Date();
     const items = await getDb()
       .select({
@@ -18,23 +23,30 @@ export async function GET() {
         title: announcements.title,
         body: announcements.body,
         kind: announcements.kind,
+        status: announcements.status,
         publishedAt: announcements.publishedAt,
         authorAlias: users.anonymousAlias,
       })
       .from(announcements)
       .innerJoin(users, eq(announcements.authorId, users.id))
       .where(
-        and(
-          eq(announcements.status, 'published'),
-          or(isNull(announcements.startsAt), lte(announcements.startsAt, now)),
-          or(isNull(announcements.endsAt), gt(announcements.endsAt, now)),
-        ),
+        manage
+          ? undefined
+          : and(
+              eq(announcements.status, 'published'),
+              or(
+                isNull(announcements.startsAt),
+                lte(announcements.startsAt, now),
+              ),
+              or(isNull(announcements.endsAt), gt(announcements.endsAt, now)),
+            ),
       )
-      .orderBy(desc(announcements.publishedAt))
-      .limit(20);
-    return NextResponse.json({ items });
+      .orderBy(desc(announcements.createdAt), desc(announcements.id))
+      .limit(manage ? PAGE_SIZE + 1 : 20)
+      .offset(manage ? pageOffset(request.nextUrl.searchParams) : 0);
+    return NextResponse.json(manage ? pagedItems(items) : { items });
   } catch (error) {
-    return apiError(error);
+    return apiError(error, 'Unable to load announcements.');
   }
 }
 
@@ -44,7 +56,7 @@ export async function POST(request: NextRequest) {
     if (!['owner', 'admin', 'moderator'].includes(member.role))
       return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 });
 
-    const input = (await request.json()) as Record<string, unknown>;
+    const input = await readJsonObject(request);
     // Title is bounded only by the DB column width (varchar 160), not by a
     // display limit. Body is `text` and intentionally has no length cap.
     const title = clean(input.title, 160);
@@ -95,7 +107,7 @@ export async function POST(request: NextRequest) {
       });
     return NextResponse.json({ id, status: 'published' }, { status: 201 });
   } catch (error) {
-    return apiError(error);
+    return apiError(error, 'Unable to publish the announcement.');
   }
 }
 
@@ -108,11 +120,27 @@ function cleanLong(value: unknown) {
   return value.trim();
 }
 
-function apiError(error: unknown) {
-  const message = error instanceof Error ? error.message : 'UNKNOWN';
-  const status = message === 'UNAUTHENTICATED' ? 401 : 500;
-  return NextResponse.json(
-    { error: status === 500 ? 'Unable to process the request.' : message },
-    { status },
-  );
+export async function DELETE(request: NextRequest) {
+  try {
+    const member = await requireMember();
+    if (member.role !== 'owner')
+      return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 });
+    const input = await readJsonObject(request);
+    if (typeof input.id !== 'string' || !input.id)
+      return NextResponse.json(
+        { error: 'An announcement id is required.' },
+        { status: 400 },
+      );
+    const [result] = await getDb()
+      .delete(announcements)
+      .where(eq(announcements.id, input.id));
+    if (!result.affectedRows)
+      return NextResponse.json(
+        { error: 'Announcement not found.' },
+        { status: 404 },
+      );
+    return NextResponse.json({ id: input.id, status: 'deleted' });
+  } catch (error) {
+    return apiError(error, 'Unable to delete the announcement.');
+  }
 }
