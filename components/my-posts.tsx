@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -45,6 +45,13 @@ export function MyPosts({
 }) {
   const [status, setStatus] = useState('all');
   const [query, setQuery] = useState('');
+  // Debounce the search input: the list remounts (and refetches) only after the
+  // user pauses ~300ms, instead of firing a request on every keystroke.
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedQuery(query), 300);
+    return () => clearTimeout(id);
+  }, [query]);
   return (
     <section className="my-posts-panel">
       <p>
@@ -98,8 +105,8 @@ export function MyPosts({
         </Button>
       </div>
       <MyPostList
-        key={`${status}:${query}`}
-        url={`/api/posts?mine=1&status=${status}&q=${encodeURIComponent(query)}`}
+        key={`${status}:${debouncedQuery}`}
+        url={`/api/posts?mine=1&status=${status}&q=${encodeURIComponent(debouncedQuery)}`}
         locale={locale}
         onChanged={onChanged}
       />
