@@ -1930,7 +1930,7 @@ button.profile-tool-row:hover {
     height: 48px;
     display: grid;
     place-items: center;
-    margin: -20px auto 0;
+    margin: 0 auto;
     border: 0;
     border-radius: 16px;
     background: #b6ff75;
@@ -1939,6 +1939,16 @@ button.profile-tool-row:hover {
   }
   .mobile-create svg {
     width: 20px;
+  }
+}
+@media (max-width: 560px) {
+  /* Phone-only: center each bottom-nav label and stack the two English words
+     (e.g. "Explore plaza") onto their own centered lines, instead of leaving
+     the wrapped text ragged-left while shorter labels stay on one line. */
+  .mobile-nav .rail-link span {
+    text-align: center;
+    word-spacing: 3rem;
+    line-height: 1.1;
   }
 }
 @media (max-width: 560px) {

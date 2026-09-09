@@ -1500,6 +1500,13 @@ export function PlazaApp() {
       </div>
 
       <nav className="mobile-nav">
+        <button
+          className="mobile-create"
+          aria-label={t.post}
+          onClick={() => setCreateOpen(true)}
+        >
+          <Plus />
+        </button>
         <RailLink
           icon={Map}
           label={t.explore}
@@ -1516,13 +1523,6 @@ export function PlazaApp() {
             setView('list');
           }}
         />
-        <button
-          className="mobile-create"
-          aria-label={t.post}
-          onClick={() => setCreateOpen(true)}
-        >
-          <Plus />
-        </button>
         <RailLink
           icon={MessageCircle}
           label={t.chats}
