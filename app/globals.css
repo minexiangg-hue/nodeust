@@ -584,7 +584,7 @@ button {
   font-size: 0.8rem;
   letter-spacing: -0.02em;
 }
-.hall-node > span:last-child {
+.hall-node > .location-requests {
   margin-top: 4px;
   color: #7b84aa;
   font-size: 0.58rem;
@@ -3100,3 +3100,19 @@ button.profile-tool-row:hover {
 .feedback-card .fc-foot button {
   font-size: 0.6rem;
 }
+
+/* Beta feedback: drafts and real read states, scoped to their components. */
+.draft-dialog { width: min(560px, calc(100vw - 32px)); max-width: 560px; }
+.draft-list { max-height: 60dvh; overflow-y: auto; }
+.draft-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.draft-row > button:first-child { flex: 1; min-width: 0; text-align: start; }
+.draft-row strong, .draft-row small { display: block; overflow-wrap: anywhere; }
+.draft-row small, .draft-row p { color: var(--muted-foreground); font-size: 12px; }
+.draft-row p { overflow-wrap: anywhere; margin-top: 6px; }
+.create-form { min-width: 0; border: 0; }
+.form-error { color: #b42318; padding: 8px 0; }
+.unread-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #20a772; margin-inline-end: 4px; }
+.request-row .unread-badge { display: inline-flex; justify-content: center; align-items: center; flex: 0 0 auto; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: #16865c; color: white; font-size: 11px; }
+.message-bubble .message-receipt { display: inline; }
+.hall-node .location-people { max-width: 100%; font-size: 9px; line-height: 1.25; padding: 0 4px; }
+.location-count-note { padding: 8px 20px; color: var(--muted-foreground); font-size: 12px; }

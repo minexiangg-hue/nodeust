@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getDb } from '@/db';
 import { posts, users } from '@/db/schema';
-import { validatePublicContent } from '@/lib/content-policy';
+import { parsePostInput } from '@/lib/post-input';
 import { requireMember } from '@/lib/current-member';
 import { campusLocationIds } from '@/lib/campus-locations';
 import { PAGE_SIZE, pageOffset, pagedItems } from '@/lib/pagination';
@@ -82,26 +82,7 @@ export async function POST(request: NextRequest) {
   try {
     const member = await requireMember();
     const input = (await request.json()) as Record<string, unknown>;
-    const category = typeof input.category === 'string' ? input.category : '';
-    const title = typeof input.title === 'string' ? input.title.trim() : '';
-    const body = typeof input.body === 'string' ? input.body.trim() : '';
-    const locationId =
-      typeof input.locationId === 'string' ? input.locationId : '';
-    if (!categories.has(category))
-      return NextResponse.json({ error: '无效的需求类型。' }, { status: 400 });
-    if (!campusLocationIds.has(locationId))
-      return NextResponse.json(
-        { error: '请选择一个有效的校园地点。' },
-        { status: 422 },
-      );
-    const policyError = validatePublicContent(title, body);
-    if (policyError)
-      return NextResponse.json({ error: policyError }, { status: 422 });
-    if (category === 'hall' && (!input.currentHall || !input.targetHall))
-      return NextResponse.json(
-        { error: '换宿需求必须填写当前及目标宿舍。' },
-        { status: 422 },
-      );
+    const values = parsePostInput(input);
 
     const id = crypto.randomUUID();
     const now = new Date();
@@ -110,12 +91,7 @@ export async function POST(request: NextRequest) {
       .values({
         id,
         ownerId: member.id,
-        category: category as (typeof posts.category.enumValues)[number],
-        title,
-        body,
-        locationId,
-        currentHall: optionalString(input.currentHall),
-        targetHall: optionalString(input.targetHall),
+        ...values,
         roomType: optionalString(input.roomType),
         genderEligibility: optionalString(input.genderEligibility),
         availableFrom: optionalString(input.availableFrom),
@@ -138,6 +114,8 @@ function optionalString(value: unknown) {
 
 function apiError(error: unknown) {
   const message = error instanceof Error ? error.message : 'UNKNOWN';
+  if (message.startsWith('INVALID_POST:'))
+    return NextResponse.json({ error: message.slice(13) }, { status: 422 });
   const status =
     message === 'UNAUTHENTICATED'
       ? 401

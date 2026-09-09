@@ -1,4 +1,4 @@
-import { and, desc, eq, ne } from 'drizzle-orm';
+import { and, desc, eq, ne, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/mysql-core';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -33,6 +33,12 @@ export async function GET() {
         postCategory: posts.category,
         peerId: users.id,
         peerAlias: users.anonymousAlias,
+        unreadCount: sql<number>`(select count(*) from messages unread
+          where unread.conversation_id = ${conversations.id}
+          and unread.sender_id <> ${member.id} and unread.kind <> 'system'
+          and (${mine.lastReadAt} is null or unread.created_at > ${mine.lastReadAt}))`.mapWith(
+          Number,
+        ),
       })
       .from(conversations)
       .innerJoin(
@@ -51,9 +57,7 @@ export async function GET() {
       )
       .innerJoin(users, eq(peer.userId, users.id))
       .leftJoin(posts, eq(conversations.postId, posts.id))
-      .where(
-        and(eq(mine.isBlocked, false), eq(conversations.status, 'active')),
-      )
+      .where(and(eq(mine.isBlocked, false), eq(conversations.status, 'active')))
       .orderBy(desc(conversations.updatedAt))
       .limit(200);
 
@@ -69,11 +73,12 @@ export async function GET() {
           })
           .from(messages)
           .where(eq(messages.conversationId, row.id))
-          .orderBy(desc(messages.createdAt))
+          .orderBy(desc(messages.createdAt), desc(messages.id))
           .limit(1);
         return {
           id: row.id,
           status: row.status,
+          unreadCount: row.unreadCount,
           createdAt: row.createdAt,
           updatedAt: row.updatedAt,
           postId: row.postId,
@@ -100,10 +105,7 @@ export async function GET() {
     );
     return NextResponse.json({ items });
   } catch {
-    return NextResponse.json(
-      { error: '无法读取会话列表。' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: '无法读取会话列表。' }, { status: 500 });
   }
 }
 
@@ -149,7 +151,10 @@ export async function POST(request: NextRequest) {
         ),
       )
       .where(
-        and(eq(conversations.postId, postId), eq(conversations.status, 'active')),
+        and(
+          eq(conversations.postId, postId),
+          eq(conversations.status, 'active'),
+        ),
       )
       .limit(1);
     if (existing)

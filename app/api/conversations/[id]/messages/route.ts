@@ -1,4 +1,4 @@
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getDb } from '@/db';
@@ -33,7 +33,20 @@ export async function GET(_request: NextRequest, context: Context) {
       .where(eq(messages.conversationId, id))
       .orderBy(desc(messages.createdAt), desc(messages.id))
       .limit(300);
+    const participants = await getDb()
+      .select({
+        userId: conversationParticipants.userId,
+        lastReadAt: conversationParticipants.lastReadAt,
+      })
+      .from(conversationParticipants)
+      .where(eq(conversationParticipants.conversationId, id));
     return NextResponse.json({
+      peerReadAt:
+        participants.find((item) => item.userId !== member.id)?.lastReadAt ??
+        null,
+      myReadAt:
+        participants.find((item) => item.userId === member.id)?.lastReadAt ??
+        null,
       items: items.reverse().map(({ senderId, ...message }) => ({
         ...message,
         isMine: senderId === member.id,
@@ -41,6 +54,47 @@ export async function GET(_request: NextRequest, context: Context) {
     });
   } catch (error) {
     return apiError(error, '无法读取会话。');
+  }
+}
+
+// Explicit acknowledgement after the open, visible chat has rendered messages.
+// Resolve the message on the server: clients cannot mark future messages read.
+export async function PATCH(request: NextRequest, context: Context) {
+  try {
+    const member = await requireMember();
+    const { id } = await context.params;
+    if (!(await isParticipant(id, member.id)))
+      return NextResponse.json({ error: '无权查看此会话。' }, { status: 403 });
+    const input = await readJsonObject(request);
+    if (typeof input.messageId !== 'string')
+      return NextResponse.json({ error: 'Missing message.' }, { status: 400 });
+    const [message] = await getDb()
+      .select({ createdAt: messages.createdAt })
+      .from(messages)
+      .where(
+        and(eq(messages.conversationId, id), eq(messages.id, input.messageId)),
+      )
+      .limit(1);
+    if (!message)
+      return NextResponse.json(
+        { error: 'Message not found.' },
+        { status: 404 },
+      );
+    await getDb()
+      .update(conversationParticipants)
+      .set({
+        lastReadAt: sql`greatest(coalesce(${conversationParticipants.lastReadAt}, ${message.createdAt}), ${message.createdAt})`,
+      })
+      .where(
+        and(
+          eq(conversationParticipants.conversationId, id),
+          eq(conversationParticipants.userId, member.id),
+          eq(conversationParticipants.isBlocked, false),
+        ),
+      );
+    return NextResponse.json({ status: 'read' });
+  } catch (error) {
+    return apiError(error, 'Unable to mark messages read.');
   }
 }
 

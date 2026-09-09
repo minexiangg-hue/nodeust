@@ -4,7 +4,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ManagementConsole } from '@/components/management-console';
-import { MyPosts } from '@/components/my-posts';
+import { MyPosts, type MyPost } from '@/components/my-posts';
+import { parseDrafts, type PostDraft } from '@/lib/drafts';
 import { localize, type Locale } from '@/lib/locale';
 import {
   ArrowLeftRight,
@@ -18,6 +19,7 @@ import {
   Eye,
   EyeOff,
   Flag,
+  Trash2,
   Languages,
   List,
   LogOut,
@@ -133,6 +135,7 @@ type ChatSession = {
 };
 
 type ConversationItem = {
+  unreadCount: number;
   id: string;
   status: string;
   createdAt: string;
@@ -470,9 +473,14 @@ export function PlazaApp() {
   );
   const [currentLocationId, setCurrentLocationId] =
     useState('academic-building');
+  const [locationSaving, setLocationSaving] = useState(false);
   const [items, setItems] = useState<RequestItem[]>([]);
+  const [locationCounts, setLocationCounts] = useState<
+    Record<string, { requestCount: number; peopleCount: number }>
+  >({});
   const [selected, setSelected] = useState<RequestItem | null>(null);
   const [profile, setProfile] = useState<ProfileMember | null>(null);
+  const conversationLoad = useRef(0);
   const [conversations, setConversations] = useState<ConversationItem[]>([]);
   const [chatSession, setChatSession] = useState<ChatSession | null>(null);
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
@@ -484,7 +492,150 @@ export function PlazaApp() {
   const [createOpen, setCreateOpen] = useState(false);
   const [myPostsVersion, setMyPostsVersion] = useState(0);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [notice, setNotice] = useState('');
+  const [noticeState, setNoticeState] = useState({ text: '' });
+  const notice = noticeState.text;
+  const setNotice = (text: string) => setNoticeState({ text });
+  const [drafts, setDrafts] = useState<PostDraft[]>([]);
+  const [draftsOpen, setDraftsOpen] = useState(false);
+  const [editorItem, setEditorItem] = useState<RequestItem | undefined>();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [draftId, setDraftId] = useState<string | null>(null);
+  const [announcementReads, setAnnouncementReads] = useState<
+    Record<string, string>
+  >({});
+  const draftKey = profile ? `node:drafts:${profile.id}` : null;
+  const announcementKey = profile
+    ? `node:announcement-reads:${profile.id}`
+    : null;
+  const announcementVersion = (item: Announcement) =>
+    JSON.stringify([item.publishedAt, item.title, item.body, item.kind]);
+  const hasUnreadAnnouncements = announcements.some(
+    (item) => announcementReads[item.id] !== announcementVersion(item),
+  );
+  const unreadChats = conversations.reduce(
+    (sum, item) => sum + (item.unreadCount || 0),
+    0,
+  );
+
+  useEffect(() => {
+    if (!noticeState.text) return;
+    const timer = setTimeout(() => setNoticeState({ text: '' }), 4500);
+    return () => clearTimeout(timer);
+  }, [noticeState]);
+
+  useEffect(() => {
+    const hydrate = () => {
+      try {
+        setDrafts(draftKey ? parseDrafts(localStorage.getItem(draftKey)) : []);
+      } catch {
+        setDrafts([]);
+      }
+      try {
+        const stored = announcementKey
+          ? JSON.parse(localStorage.getItem(announcementKey) || '{}')
+          : {};
+        setAnnouncementReads(
+          stored && typeof stored === 'object' && !Array.isArray(stored)
+            ? stored
+            : {},
+        );
+      } catch {
+        setAnnouncementReads({});
+      }
+    };
+    const timer = setTimeout(hydrate, 0);
+    const changed = (event: StorageEvent) => {
+      if (event.key === draftKey || event.key === announcementKey) hydrate();
+    };
+    window.addEventListener('storage', changed);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('storage', changed);
+    };
+  }, [draftKey, announcementKey]);
+
+  const storeDrafts = (next: PostDraft[]) => {
+    if (!draftKey)
+      throw new Error(
+        localize(
+          locale,
+          'Wait for your account to load.',
+          '请等待账号加载完成。',
+          '請等待帳號載入完成。',
+        ),
+      );
+    localStorage.setItem(draftKey, JSON.stringify(next));
+    setDrafts(next);
+  };
+  const openCreate = (
+    item?: RequestItem,
+    sourceDraftId: string | null = null,
+    postId: string | null = null,
+  ) => {
+    setEditorItem(item);
+    setDraftId(sourceDraftId);
+    setEditingId(postId);
+    setCreateOpen(true);
+  };
+  const editPost = (post: MyPost) =>
+    openCreate(
+      {
+        id: post.id,
+        author: profile?.anonymousAlias ?? '',
+        category: post.category,
+        title: post.title,
+        detail: post.body,
+        from: post.currentHall ?? '',
+        to: post.targetHall ?? '',
+        locationId: post.locationId ?? currentLocationId,
+        hall: '',
+        age: '',
+        replies: 0,
+        mine: true,
+      },
+      null,
+      post.id,
+    );
+  const saveDraft = (item: RequestItem) => {
+    const entry: PostDraft = {
+      id: draftId ?? crypto.randomUUID(),
+      updatedAt: new Date().toISOString(),
+      title: item.title,
+      detail: item.detail,
+      category: item.category,
+      from: item.from,
+      to: item.to,
+      locationId: item.locationId,
+    };
+    // Read at mutation time so another tab's saved drafts are preserved.
+    storeDrafts([
+      entry,
+      ...parseDrafts(localStorage.getItem(draftKey!)).filter(
+        (draft) => draft.id !== entry.id,
+      ),
+    ]);
+    setCreateOpen(false);
+    setNotice(
+      localize(
+        locale,
+        'Draft saved to My posts.',
+        '草稿已保存到“我的帖子”的草稿箱。',
+        '草稿已儲存到「我的帖子」的草稿箱。',
+      ),
+    );
+  };
+  const markAnnouncementsRead = (visible: Announcement[]) => {
+    const next = { ...announcementReads };
+    for (const item of visible) next[item.id] = announcementVersion(item);
+    setAnnouncementReads(next);
+    if (announcementKey) {
+      try {
+        localStorage.setItem(announcementKey, JSON.stringify(next));
+      } catch {
+        /* Session reads still work. */
+      }
+    }
+  };
   const [zoom, setZoom] = useState(1);
   const t = copy[locale];
 
@@ -529,7 +680,39 @@ export function PlazaApp() {
       ? matchItems
       : activeSection === 'saved'
         ? savedItems
-        : filtered;
+        : filtered.filter(
+            (item) => getCampusLocation(item.locationId)?.group === group,
+          );
+
+  const loadLocationCounts = async () => {
+    try {
+      const response = await fetch('/api/location', { cache: 'no-store' });
+      if (!response.ok) return;
+      const result = (await response.json()) as {
+        items: {
+          locationId: string;
+          requestCount: number;
+          peopleCount: number;
+        }[];
+      };
+      setLocationCounts(
+        Object.fromEntries(result.items.map((item) => [item.locationId, item])),
+      );
+    } catch {
+      /* Keep the last successful count. */
+    }
+  };
+  const peopleLabel = (id: string, compact = false) => {
+    const count = locationCounts[id]?.peopleCount;
+    return count === undefined
+      ? localize(locale, 'People: —', '人数：—', '人數：—')
+      : localize(
+          locale,
+          `${count} ${count === 1 ? 'person' : 'people'}${compact ? '' : ' tagged here'}`,
+          compact ? `${count} 人` : `${count} 人选择此地点`,
+          compact ? `${count} 人` : `${count} 人選擇此地點`,
+        );
+  };
 
   const loadPosts = async () => {
     try {
@@ -543,11 +726,13 @@ export function PlazaApp() {
   };
 
   const loadConversations = async () => {
+    const version = ++conversationLoad.current;
     try {
       const response = await fetch('/api/conversations');
       if (!response.ok) return;
       const result = (await response.json()) as { items?: ConversationItem[] };
-      setConversations(result.items ?? []);
+      if (version === conversationLoad.current)
+        setConversations(result.items ?? []);
     } catch {
       /* Ignore transient failures; the next poll retries. */
     }
@@ -575,7 +760,6 @@ export function PlazaApp() {
     if (item.mine) {
       setSelected(null);
       setActiveSection('chats');
-      setView('list');
       void loadConversations();
       return;
     }
@@ -640,7 +824,7 @@ export function PlazaApp() {
   };
 
   const updateLocation = async (locationId: string) => {
-    setCurrentLocationId(locationId);
+    setLocationSaving(true);
     try {
       const response = await fetch('/api/location', {
         method: 'PATCH',
@@ -649,6 +833,8 @@ export function PlazaApp() {
       });
       const result = (await response.json()) as { error?: string };
       if (!response.ok) throw new Error(result.error);
+      setCurrentLocationId(locationId);
+      void loadLocationCounts();
       setNotice(
         localize(
           locale,
@@ -657,24 +843,42 @@ export function PlazaApp() {
           `地點標籤已更新為 ${getCampusLocationLabel(getCampusLocation(locationId), locale)}。`,
         ),
       );
+      return true;
     } catch {
       setNotice(
         localize(
           locale,
-          'The tag changed on this page, but could not sync to the database.',
-          '地点已在本页更新，但暂时无法同步到本地数据库。',
-          '地點已在本頁更新，但暫時無法同步到本地資料庫。',
+          'Could not update the location. Please try again.',
+          '地点更新失败，请重试。',
+          '地點更新失敗，請重試。',
         ),
       );
+      return false;
+    } finally {
+      setLocationSaving(false);
     }
   };
 
   const publishPost = async (item: RequestItem) => {
-    try {
-      const response = await fetch('/api/posts', {
-        method: 'POST',
+    if (
+      item.locationId !== currentLocationId &&
+      !(await updateLocation(item.locationId))
+    )
+      throw new Error(
+        localize(
+          locale,
+          'Could not sync location. Try again.',
+          '地点同步失败，请重试。',
+          '地點同步失敗，請重試。',
+        ),
+      );
+    const response = await fetch(
+      editingId ? `/api/posts/${encodeURIComponent(editingId)}` : '/api/posts',
+      {
+        method: editingId ? 'PATCH' : 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
+          action: editingId ? 'edit' : undefined,
           category: item.category,
           title: item.title,
           body: item.detail,
@@ -682,45 +886,48 @@ export function PlazaApp() {
           currentHall: item.from || null,
           targetHall: item.to || null,
         }),
-      });
-      const result = (await response.json()) as { id?: string; error?: string };
-      if (!response.ok || !result.id) {
-        setNotice(
-          result.error ??
-            localize(
-              locale,
-              'Could not publish. Please try again.',
-              '发布失败，请稍后再试。',
-              '發佈失敗，請稍後再試。',
-            ),
+      },
+    );
+    const result = (await response.json()) as { id?: string; error?: string };
+    if (!response.ok || !result.id)
+      throw new Error(
+        result.error ||
+          localize(
+            locale,
+            'Could not save. Try again.',
+            '保存失败，请重试。',
+            '儲存失敗，請重試。',
+          ),
+      );
+    if (draftId && draftKey) {
+      try {
+        storeDrafts(
+          parseDrafts(localStorage.getItem(draftKey)).filter(
+            (item) => item.id !== draftId,
+          ),
         );
-        return;
+      } catch {
+        /* Publishing succeeded; retain the draft if storage is unavailable. */
       }
-      await loadPosts();
-      setCreateOpen(false);
-      setMyPostsVersion((version) => version + 1);
-      setNotice(
-        localize(
-          locale,
-          'Your request is now live.',
-          '需求已发布到广场。',
-          '需求已發佈到廣場。',
-        ),
-      );
-    } catch {
-      setNotice(
-        localize(
-          locale,
-          'Could not publish. Check the local service and try again.',
-          '发布失败，请检查本地服务后重试。',
-          '發佈失敗，請檢查本地服務後重試。',
-        ),
-      );
     }
+    await Promise.all([loadPosts(), loadLocationCounts()]);
+    setCreateOpen(false);
+    setMyPostsVersion((version) => version + 1);
+    setNotice(
+      editingId
+        ? localize(locale, 'Post updated.', '帖子已更新。', '帖子已更新。')
+        : localize(
+            locale,
+            'Your request is now live.',
+            '需求已发布到广场。',
+            '需求已發佈到廣場。',
+          ),
+    );
   };
 
   useEffect(() => {
     void loadPosts();
+    void loadLocationCounts();
   }, []);
 
   useEffect(() => {
@@ -737,6 +944,7 @@ export function PlazaApp() {
     const poll = () => {
       if (document.visibilityState === 'hidden') return;
       void loadPosts();
+      void loadLocationCounts();
       void loadConversations();
     };
     const id = setInterval(poll, 5000);
@@ -865,7 +1073,7 @@ export function PlazaApp() {
       },
       annotations: { readOnlyHint: false, untrustedContentHint: false },
       execute() {
-        setCreateOpen(true);
+        openCreate();
         return { status: 'form_opened' };
       },
     });
@@ -914,7 +1122,7 @@ export function PlazaApp() {
             onClick={() => setAnnounceOpen(true)}
           >
             <Bell />
-            {announcements.length > 0 && <i className="header-dot" />}
+            {hasUnreadAnnouncements && <i className="header-dot" />}
           </Button>
           <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
             <DialogTrigger
@@ -957,19 +1165,31 @@ export function PlazaApp() {
           >
             {localeLabels[locale]} <ChevronDown />
           </button>
-          <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+          <Dialog
+            open={createOpen}
+            onOpenChange={(open) =>
+              open ? openCreate() : setCreateOpen(false)
+            }
+          >
             <DialogTrigger
               render={<Button className="post-button" size="lg" />}
             >
               <Plus /> {t.post}
             </DialogTrigger>
-            <CreatePostDialog
-              t={t}
-              locale={locale}
-              onCreated={publishPost}
-              currentLocationId={currentLocationId}
-              authorAlias={profile?.anonymousAlias ?? ''}
-            />
+            {createOpen && (
+              <CreatePostDialog
+                t={t}
+                locale={locale}
+                onCreated={publishPost}
+                currentLocationId={currentLocationId}
+                authorAlias={profile?.anonymousAlias ?? ''}
+                initial={editorItem}
+                editing={Boolean(editingId)}
+                onSaveDraft={saveDraft}
+                onLocationChange={updateLocation}
+                locationSaving={locationSaving}
+              />
+            )}
           </Dialog>
           <button
             className="avatar-button"
@@ -1001,7 +1221,7 @@ export function PlazaApp() {
             <RailLink
               icon={MessageCircle}
               label={t.chats}
-              count={conversations.length || undefined}
+              count={unreadChats || undefined}
               active={activeSection === 'chats'}
               onClick={() => setActiveSection('chats')}
             />
@@ -1118,7 +1338,7 @@ export function PlazaApp() {
                         '需求分類',
                       )}
                     >
-                      <SelectValue />
+                      <SelectValue>{t[category]}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {(
@@ -1144,6 +1364,7 @@ export function PlazaApp() {
                     )}
                   </span>
                   <Select
+                    disabled={locationSaving}
                     value={currentLocationId}
                     onValueChange={(value) => {
                       if (value) void updateLocation(value);
@@ -1157,7 +1378,9 @@ export function PlazaApp() {
                         '手動設定位置標籤',
                       )}
                     >
-                      <SelectValue />
+                      <SelectValue>
+                        {getCampusLocationLabel(currentLocation, locale)}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {campusLocations.map((location) => (
@@ -1177,15 +1400,7 @@ export function PlazaApp() {
                     )}
                   </small>
                 </div>
-              ) : (
-                <Button
-                  variant="outline"
-                  onClick={() => setActiveSection('explore')}
-                >
-                  <Map />{' '}
-                  {localize(locale, 'Back to map', '返回地图', '返回地圖')}
-                </Button>
-              )}
+              ) : null}
               {activeSection === 'explore' && (
                 <Button
                   variant="ghost"
@@ -1250,8 +1465,21 @@ export function PlazaApp() {
             <MyPosts
               key={myPostsVersion}
               locale={locale}
-              onChanged={() => void loadPosts()}
-              onCreate={() => setCreateOpen(true)}
+              onChanged={() => {
+                void loadPosts();
+                void loadLocationCounts();
+              }}
+              onCreate={() => openCreate()}
+              onEdit={editPost}
+              onDrafts={() => {
+                try {
+                  setDrafts(parseDrafts(localStorage.getItem(draftKey!)));
+                } catch {
+                  /* Retain loaded drafts. */
+                }
+                setDraftsOpen(true);
+              }}
+              draftCount={drafts.length}
             />
           ) : view === 'plaza' && activeSection === 'explore' ? (
             <div
@@ -1282,30 +1510,16 @@ export function PlazaApp() {
                 style={{ transform: `scale(${zoom})` }}
               >
                 {visibleLocations.map((location, index) => {
-                  const locationItems = items.filter(
-                    (item) => item.locationId === location.id,
-                  );
-                  const realCount = locationItems.filter(
-                    (item) => !item.demo,
-                  ).length;
-                  const demoCount = locationItems.length - realCount;
-                  const countLabel = realCount
-                    ? demoCount
-                      ? localize(
-                          locale,
-                          `${realCount} live · ${demoCount} DEMO`,
-                          `${realCount} 实际 · ${demoCount} DEMO`,
-                          `${realCount} 實際 · ${demoCount} DEMO`,
-                        )
+                  const count = locationCounts[location.id]?.requestCount;
+                  const countLabel =
+                    count === undefined
+                      ? localize(locale, 'Requests: —', '需求：—', '需求：—')
                       : localize(
                           locale,
-                          `${realCount} requests`,
-                          `${realCount} 条需求`,
-                          `${realCount} 條需求`,
-                        )
-                    : demoCount
-                      ? `${demoCount} DEMO`
-                      : localize(locale, 'No requests', '暂无需求', '暫無需求');
+                          `${count} ${count === 1 ? 'request' : 'requests'}`,
+                          `${count} 条需求`,
+                          `${count} 條需求`,
+                        );
                   return (
                     <button
                       key={location.id}
@@ -1317,13 +1531,19 @@ export function PlazaApp() {
                         height: location.size,
                       }}
                       onClick={() => setSelectedLocationId(location.id)}
-                      aria-label={`${location.label}，${countLabel}`}
+                      aria-label={`${location.label}，${countLabel}，${peopleLabel(location.id)}`}
                     >
                       <span className="node-orbit" />
                       <strong>
                         {getCampusLocationLabel(location, locale)}
                       </strong>
-                      <span>{countLabel}</span>
+                      <span className="location-requests">{countLabel}</span>
+                      <small
+                        className="location-people"
+                        title={peopleLabel(location.id)}
+                      >
+                        {peopleLabel(location.id, true)}
+                      </small>
                     </button>
                   );
                 })}
@@ -1503,7 +1723,7 @@ export function PlazaApp() {
         <button
           className="mobile-create"
           aria-label={t.post}
-          onClick={() => setCreateOpen(true)}
+          onClick={() => openCreate()}
         >
           <Plus />
         </button>
@@ -1520,17 +1740,15 @@ export function PlazaApp() {
           active={activeSection === 'matches'}
           onClick={() => {
             setActiveSection('matches');
-            setView('list');
           }}
         />
         <RailLink
           icon={MessageCircle}
           label={t.chats}
-          count={conversations.length || undefined}
+          count={unreadChats || undefined}
           active={activeSection === 'chats'}
           onClick={() => {
             setActiveSection('chats');
-            setView('list');
           }}
         />
         <button className="rail-link" onClick={() => setProfileOpen(true)}>
@@ -1544,6 +1762,92 @@ export function PlazaApp() {
           onClick={() => setActiveSection('posts')}
         />
       </nav>
+      <Dialog open={draftsOpen} onOpenChange={setDraftsOpen}>
+        <DialogContent className="draft-dialog">
+          <DialogHeader>
+            <DialogTitle>
+              {localize(locale, 'Draft box', '草稿箱', '草稿箱')}
+            </DialogTitle>
+            <DialogDescription>
+              {localize(
+                locale,
+                'Drafts are saved for this account in this browser. Select one to continue writing.',
+                '草稿保存在当前浏览器中，按账号分开。点击草稿继续编辑。',
+                '草稿儲存在目前瀏覽器中，按帳號分開。點擊草稿繼續編輯。',
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="draft-list">
+            {!drafts.length && (
+              <p>
+                {localize(
+                  locale,
+                  'No saved drafts.',
+                  '还没有保存的草稿。',
+                  '還沒有儲存的草稿。',
+                )}
+              </p>
+            )}
+            {drafts.map((draft) => (
+              <div className="draft-row" key={draft.id}>
+                <button
+                  onClick={() => {
+                    setDraftsOpen(false);
+                    openCreate(
+                      { ...draft, author: '', age: '', replies: 0, hall: '' },
+                      draft.id,
+                    );
+                  }}
+                >
+                  <strong>
+                    {draft.title ||
+                      localize(
+                        locale,
+                        'Untitled draft',
+                        '未命名草稿',
+                        '未命名草稿',
+                      )}
+                  </strong>
+                  <small>
+                    {new Date(draft.updatedAt).toLocaleString(locale)}
+                  </small>
+                  <p>{draft.detail.slice(0, 100)}</p>
+                </button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={localize(
+                    locale,
+                    'Delete draft',
+                    '删除草稿',
+                    '刪除草稿',
+                  )}
+                  onClick={() => {
+                    try {
+                      storeDrafts(
+                        parseDrafts(localStorage.getItem(draftKey!)).filter(
+                          (item) => item.id !== draft.id,
+                        ),
+                      );
+                    } catch {
+                      setNotice(
+                        localize(
+                          locale,
+                          'Could not delete draft.',
+                          '草稿删除失败。',
+                          '草稿刪除失敗。',
+                        ),
+                      );
+                    }
+                  }}
+                >
+                  <Trash2 />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
       <Sheet
         open={Boolean(selected)}
         onOpenChange={(open) => !open && setSelected(null)}
@@ -1630,6 +1934,15 @@ export function PlazaApp() {
                       )}
                 </SheetDescription>
               </SheetHeader>
+              <p className="location-count-note">
+                {peopleLabel(selectedLocation.id)} ·{' '}
+                {localize(
+                  locale,
+                  'Manual tags, not live presence.',
+                  '按个人手动标签统计，非实时在线人数。',
+                  '按個人手動標籤統計，非即時在線人數。',
+                )}
+              </p>
               <div className="location-request-list">
                 {selectedLocationItems.length ? (
                   selectedLocationItems.map((item) => (
@@ -1663,9 +1976,22 @@ export function PlazaApp() {
               <Button
                 className="location-post-button"
                 onClick={() => {
-                  void updateLocation(selectedLocation.id);
+                  const locationId = selectedLocation.id;
                   setSelectedLocationId(null);
-                  setCreateOpen(true);
+                  openCreate({
+                    id: '',
+                    author: '',
+                    category: 'hall',
+                    from: '',
+                    to: '',
+                    title: '',
+                    detail: '',
+                    hall: '',
+                    age: '',
+                    replies: 0,
+                    locationId,
+                  });
+                  void updateLocation(locationId);
                 }}
               >
                 <Plus />{' '}
@@ -1748,11 +2074,14 @@ export function PlazaApp() {
             </SheetDescription>
           </SheetHeader>
           <div className="announce-scroll">
-            <AnnouncementBoard
-              announcements={announcements}
-              locale={locale}
-              expandedByDefault
-            />
+            {announceOpen && (
+              <AnnouncementBoard
+                announcements={announcements}
+                locale={locale}
+                onRead={markAnnouncementsRead}
+                open={announceOpen}
+              />
+            )}
             <div className="panel-title">
               <h2>
                 {localize(locale, 'Happening now', '正在发生', '正在發生')}
@@ -1819,7 +2148,6 @@ export function PlazaApp() {
                   setAnnounceOpen(false);
                   window.setTimeout(() => {
                     setActiveSection('matches');
-                    setView('list');
                   }, 120);
                 }}
               >
@@ -1888,22 +2216,36 @@ function ActivityCard({
 function AnnouncementBoard({
   announcements,
   locale,
-  expandedByDefault = false,
+  onRead,
+  open,
 }: {
   announcements: Announcement[];
   locale: Locale;
-  expandedByDefault?: boolean;
+  onRead: (items: Announcement[]) => void;
+  open: boolean;
 }) {
-  const [expanded, setExpanded] = useState(expandedByDefault);
-  const visible = expanded ? announcements : announcements.slice(0, 1);
+  const [expanded, setExpanded] = useState(false);
+  const readRef = useRef(onRead);
+  useEffect(() => {
+    readRef.current = onRead;
+  }, [onRead]);
+  useEffect(() => {
+    if (!open) return;
+    if (expanded && document.visibilityState === 'visible')
+      readRef.current(announcements);
+  }, [open, expanded, announcements]);
+  const visible = expanded ? announcements : [];
   return (
     <section className="announcement-board" aria-label="Announcements">
       <div className="announcement-heading">
         <span>
           <Megaphone /> {localize(locale, 'Announcements', '公告栏', '公告欄')}
         </span>
-        {announcements.length > 1 && (
-          <button onClick={() => setExpanded((value) => !value)}>
+        {announcements.length > 0 && (
+          <button
+            aria-expanded={expanded}
+            onClick={() => setExpanded((value) => !value)}
+          >
             {expanded
               ? localize(locale, 'Collapse', '收起', '收起')
               : localize(
@@ -1926,7 +2268,7 @@ function AnnouncementBoard({
             <p>{announcement.body}</p>
           </article>
         ))
-      ) : (
+      ) : announcements.length === 0 ? (
         <p className="announcement-empty">
           {localize(
             locale,
@@ -1935,7 +2277,7 @@ function AnnouncementBoard({
             '目前沒有公告。',
           )}
         </p>
-      )}
+      ) : null}
     </section>
   );
 }
@@ -2073,6 +2415,19 @@ function ConversationRow({
             : ''}
         </small>
       </div>
+      {conversation.unreadCount > 0 && (
+        <span
+          className="unread-badge"
+          aria-label={localize(
+            locale,
+            `${conversation.unreadCount} unread messages`,
+            `${conversation.unreadCount} 条未读消息`,
+            `${conversation.unreadCount} 則未讀訊息`,
+          )}
+        >
+          {conversation.unreadCount}
+        </span>
+      )}
       <ChevronDown />
     </button>
   );
@@ -2317,19 +2672,73 @@ function CreatePostDialog({
   onCreated,
   currentLocationId,
   authorAlias,
+  initial,
+  editing,
+  onSaveDraft,
+  onLocationChange,
+  locationSaving,
 }: {
   t: (typeof copy)[Locale];
   locale: Locale;
-  onCreated: (item: RequestItem) => void;
+  onCreated: (item: RequestItem) => Promise<void>;
   currentLocationId: string;
   authorAlias: string;
+  initial?: RequestItem;
+  editing: boolean;
+  locationSaving: boolean;
+  onSaveDraft: (item: RequestItem) => void;
+  onLocationChange: (id: string) => Promise<boolean>;
 }) {
-  const [postCategory, setPostCategory] =
-    useState<Exclude<Category, 'all'>>('hall');
+  const [postCategory, setPostCategory] = useState<Exclude<Category, 'all'>>(
+    initial?.category ?? 'hall',
+  );
+  const [form, setForm] = useState({
+    title: initial?.title ?? '',
+    detail: initial?.detail ?? '',
+    from: initial?.from ?? '',
+    to: initial?.to ?? '',
+    locationId: initial?.locationId ?? currentLocationId,
+  });
+  const [busy, setBusy] = useState(false);
+  const [locationBusy, setLocationBusy] = useState(false);
+  const [error, setError] = useState('');
+  const item = (): RequestItem => ({
+    ...form,
+    id: initial?.id ?? '',
+    category: postCategory,
+    author: authorAlias,
+    age: 'now',
+    replies: 0,
+    mine: true,
+    hall: form.from,
+  });
+  const changeLocation = async (locationId: string) => {
+    setLocationBusy(true);
+    setError('');
+    try {
+      if (await onLocationChange(locationId))
+        setForm((current) => ({ ...current, locationId }));
+      else
+        setError(
+          localize(
+            locale,
+            'Could not update location. Try again.',
+            '地点更新失败，请重试。',
+            '地點更新失敗，請重試。',
+          ),
+        );
+    } finally {
+      setLocationBusy(false);
+    }
+  };
   return (
     <DialogContent className="create-dialog">
       <DialogHeader>
-        <DialogTitle>{t.post}</DialogTitle>
+        <DialogTitle>
+          {editing
+            ? localize(locale, 'Edit post', '编辑帖子', '編輯帖子')
+            : t.post}
+        </DialogTitle>
         <DialogDescription>
           {localize(
             locale,
@@ -2340,44 +2749,33 @@ function CreatePostDialog({
         </DialogDescription>
       </DialogHeader>
       <form
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
-          const data = new FormData(event.currentTarget);
-          const fromValue = data.get('from');
-          const toValue = data.get('to');
-          const titleValue = data.get('title');
-          const detailValue = data.get('detail');
-          const locationValue = data.get('locationId');
-          const from = typeof fromValue === 'string' ? fromValue : '';
-          const to = typeof toValue === 'string' ? toValue : '';
-          onCreated({
-            id: Date.now(),
-            author: authorAlias,
-            category: postCategory,
-            from,
-            to,
-            hall: from.replace('Hall ', '') || 'I',
-            title:
-              typeof titleValue === 'string'
-                ? titleValue
+          if (busy || locationBusy || locationSaving) return;
+          setBusy(true);
+          setError('');
+          try {
+            await onCreated(item());
+          } catch (error) {
+            setError(
+              error instanceof Error
+                ? error.message
                 : localize(
                     locale,
-                    'New anonymous request',
-                    '新的匿名需求',
-                    '新的匿名需求',
+                    'Could not save. Try again.',
+                    '保存失败，请重试。',
+                    '儲存失敗，請重試。',
                   ),
-            detail: typeof detailValue === 'string' ? detailValue : '',
-            age: 'now',
-            replies: 0,
-            mine: true,
-            locationId:
-              typeof locationValue === 'string'
-                ? locationValue
-                : currentLocationId,
-          });
+            );
+          } finally {
+            setBusy(false);
+          }
         }}
       >
-        <div className="create-form">
+        <fieldset
+          className="create-form"
+          disabled={busy || locationBusy || locationSaving}
+        >
           <div className="form-field">
             <label htmlFor="post-category">
               {localize(locale, 'Request type', '需求类型', '需求類型')}
@@ -2389,7 +2787,7 @@ function CreatePostDialog({
               }
             >
               <SelectTrigger id="post-category">
-                <SelectValue />
+                <SelectValue>{t[postCategory]}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="hall">{t.hall}</SelectItem>
@@ -2403,9 +2801,22 @@ function CreatePostDialog({
             <label htmlFor="post-location">
               {localize(locale, 'Location', '发布地点', '發佈地點')}
             </label>
-            <Select name="locationId" defaultValue={currentLocationId}>
+            <Select
+              name="locationId"
+              value={form.locationId}
+              disabled={busy || locationBusy || locationSaving}
+              onValueChange={(value) => {
+                if (value && value !== form.locationId)
+                  void changeLocation(value);
+              }}
+            >
               <SelectTrigger id="post-location">
-                <SelectValue />
+                <SelectValue>
+                  {getCampusLocationLabel(
+                    getCampusLocation(form.locationId),
+                    locale,
+                  )}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {campusLocations.map((location) => (
@@ -2424,9 +2835,9 @@ function CreatePostDialog({
             <small className="field-hint">
               {localize(
                 locale,
-                'Manual location tag; GPS is never used.',
-                '手动地点标签，不读取 GPS。',
-                '手動地點標籤，不讀取 GPS。',
+                'Changing this also updates your location tag on the plaza. No GPS.',
+                '更改这里也会同步更新广场中的个人地点标签，不读取 GPS。',
+                '更改這裡也會同步更新廣場中的個人地點標籤，不讀取 GPS。',
               )}
             </small>
           </div>
@@ -2439,6 +2850,11 @@ function CreatePostDialog({
                 <Input
                   id="post-from"
                   name="from"
+                  value={form.from}
+                  maxLength={80}
+                  onChange={(event) =>
+                    setForm({ ...form, from: event.target.value })
+                  }
                   required
                   placeholder="Hall VII"
                 />
@@ -2447,7 +2863,17 @@ function CreatePostDialog({
                 <label htmlFor="post-to">
                   {localize(locale, 'Wanted hall', '目标宿舍', '目標宿舍')}
                 </label>
-                <Input id="post-to" name="to" required placeholder="Hall III" />
+                <Input
+                  id="post-to"
+                  name="to"
+                  required
+                  placeholder="Hall III"
+                  maxLength={80}
+                  value={form.to}
+                  onChange={(event) =>
+                    setForm({ ...form, to: event.target.value })
+                  }
+                />
               </div>
             </div>
           )}
@@ -2458,6 +2884,10 @@ function CreatePostDialog({
             <Input
               id="post-title"
               name="title"
+              value={form.title}
+              onChange={(event) =>
+                setForm({ ...form, title: event.target.value })
+              }
               required
               maxLength={100}
               placeholder={localize(
@@ -2475,6 +2905,10 @@ function CreatePostDialog({
             <Textarea
               id="post-detail"
               name="detail"
+              value={form.detail}
+              onChange={(event) =>
+                setForm({ ...form, detail: event.target.value })
+              }
               required
               maxLength={2000}
               placeholder={localize(
@@ -2513,13 +2947,46 @@ function CreatePostDialog({
               </a>
             </p>
           </div>
-        </div>
+        </fieldset>
+        {error && (
+          <p className="form-error" role="alert">
+            {error}
+          </p>
+        )}
         <DialogFooter>
-          <Button type="button" variant="outline">
-            {localize(locale, 'Save draft', '保存草稿', '儲存草稿')}
-          </Button>
-          <Button type="submit">
-            <Plus /> {localize(locale, 'Publish', '发布到广场', '發佈到廣場')}
+          {!editing && (
+            <Button
+              type="button"
+              variant="outline"
+              disabled={busy || locationBusy || locationSaving}
+              onClick={() => {
+                try {
+                  onSaveDraft(item());
+                } catch {
+                  setError(
+                    localize(
+                      locale,
+                      'Could not save the draft. Check browser storage and try again.',
+                      '草稿保存失败，请检查浏览器存储后重试。',
+                      '草稿儲存失敗，請檢查瀏覽器儲存空間後重試。',
+                    ),
+                  );
+                }
+              }}
+            >
+              {localize(locale, 'Save draft', '保存草稿', '儲存草稿')}
+            </Button>
+          )}
+          <Button
+            type="submit"
+            disabled={busy || locationBusy || locationSaving}
+          >
+            <Plus />{' '}
+            {busy
+              ? localize(locale, 'Saving…', '保存中…', '儲存中…')
+              : editing
+                ? localize(locale, 'Save changes', '保存修改', '儲存修改')
+                : localize(locale, 'Publish', '发布到广场', '發佈到廣場')}
           </Button>
         </DialogFooter>
       </form>
@@ -2538,6 +3005,16 @@ function ChatPanel({
   onConversationChanged: () => void;
   locale: Locale;
 }) {
+  const [peerReadAt, setPeerReadAt] = useState<string | null>(null);
+  const [myReadAt, setMyReadAt] = useState<string | null>(null);
+  const acknowledged = useRef('');
+  const reading = useRef(false);
+  const mounted = useRef(true);
+  const followNewest = useRef(true);
+  const changedRef = useRef(onConversationChanged);
+  useEffect(() => {
+    changedRef.current = onConversationChanged;
+  }, [onConversationChanged]);
   const [draft, setDraft] = useState('');
   const [messages, setMessages] = useState<WireMessage[]>([]);
   const [busy, setBusy] = useState<
@@ -2547,30 +3024,96 @@ function ChatPanel({
   const streamRef = useRef<HTMLDivElement | null>(null);
 
   const load = async () => {
+    if (document.visibilityState !== 'visible') return;
     try {
       const response = await fetch(
         `/api/conversations/${session.conversationId}/messages`,
       );
       if (!response.ok) return;
-      const result = (await response.json()) as { items?: WireMessage[] };
+      const result = (await response.json()) as {
+        items?: WireMessage[];
+        peerReadAt: string | null;
+        myReadAt: string | null;
+      };
+      if (!mounted.current) return;
       setMessages(result.items ?? []);
+      setPeerReadAt(result.peerReadAt);
+      setMyReadAt((current) =>
+        current && (!result.myReadAt || current > result.myReadAt)
+          ? current
+          : result.myReadAt,
+      );
     } catch {
       /* Keep what we have; the next poll retries. */
     }
   };
 
   useEffect(() => {
+    mounted.current = true;
     void load();
     const id = setInterval(() => void load(), 4000);
-    return () => clearInterval(id);
+    const visible = () => {
+      if (document.visibilityState === 'visible') void load();
+    };
+    document.addEventListener('visibilitychange', visible);
+    return () => {
+      mounted.current = false;
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', visible);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session.conversationId]);
 
-  // Keep the newest message in view as the other side replies.
+  const newestId = messages.at(-1)?.id;
   useEffect(() => {
     const el = streamRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [messages]);
+    if (el && followNewest.current) el.scrollTop = el.scrollHeight;
+  }, [newestId]);
+
+  useEffect(() => {
+    const stream = streamRef.current;
+    const newest = messages.at(-1);
+    if (!stream || !newest) return;
+    const markVisible = async () => {
+      if (
+        !mounted.current ||
+        document.visibilityState !== 'visible' ||
+        reading.current ||
+        acknowledged.current === newest.id ||
+        stream.scrollHeight - stream.scrollTop - stream.clientHeight > 24
+      )
+        return;
+      reading.current = true;
+      try {
+        const response = await fetch(
+          `/api/conversations/${session.conversationId}/messages`,
+          {
+            method: 'PATCH',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ messageId: newest.id }),
+          },
+        );
+        if (response.ok && mounted.current) {
+          acknowledged.current = newest.id;
+          setMyReadAt((current) =>
+            current && current > newest.createdAt ? current : newest.createdAt,
+          );
+          changedRef.current();
+        }
+      } catch {
+        /* Retry on the next visible poll. */
+      } finally {
+        reading.current = false;
+      }
+    };
+    void markVisible();
+    stream.addEventListener('scroll', markVisible);
+    document.addEventListener('visibilitychange', markVisible);
+    return () => {
+      stream.removeEventListener('scroll', markVisible);
+      document.removeEventListener('visibilitychange', markVisible);
+    };
+  }, [messages, session.conversationId]);
 
   const send = async () => {
     const body = draft.trim();
@@ -2701,7 +3244,16 @@ function ChatPanel({
           <strong>{session.postTitle}</strong>
         </span>
       </div>
-      <div className="message-stream" ref={streamRef}>
+      <div
+        className="message-stream"
+        ref={streamRef}
+        onScroll={() => {
+          const el = streamRef.current;
+          if (el)
+            followNewest.current =
+              el.scrollHeight - el.scrollTop - el.clientHeight < 48;
+        }}
+      >
         <div className="system-message">
           <ShieldCheck />{' '}
           {localize(
@@ -2744,7 +3296,21 @@ function ChatPanel({
               className={`message-bubble ${message.isMine ? 'mine' : ''}`}
             >
               <p>{message.body}</p>
-              <span>{formatClock(message.createdAt)}</span>
+              <span>
+                {formatClock(message.createdAt)} ·{' '}
+                {(() => {
+                  const readAt = message.isMine ? peerReadAt : myReadAt;
+                  const read = Boolean(readAt && message.createdAt <= readAt);
+                  return (
+                    <span className="message-receipt">
+                      {!read && <i className="unread-dot" aria-hidden="true" />}
+                      {read
+                        ? localize(locale, 'Read', '已读', '已讀')
+                        : localize(locale, 'Unread', '未读', '未讀')}
+                    </span>
+                  );
+                })()}
+              </span>
             </div>
           ))
         )}

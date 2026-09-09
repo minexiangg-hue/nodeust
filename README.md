@@ -64,3 +64,15 @@ npx tsc --noEmit
 ```
 
 For the Ubuntu 24.04 production handoff, follow `deploy/README.md`. NODE binds to `127.0.0.1:3000`; the existing Nginx instance owns the public domain and TLS connection.
+
+## Private account statistics
+
+Owner can open `/owner/stats` directly; it is not linked from the main interface.
+Other roles receive a not-found page. Each page request reads aggregate counts
+from the existing MySQL users table; no tracking scripts or schema changes are
+required. The page shows cumulative accounts, new accounts today / over 7 and
+30 calendar days, account status counts, and a 30-day trend in Hong Kong time.
+Known `local-demo-owner` and `node-smoke-*` test identities are reported separately.
+Counts reflect first creation of a NODE profile, not gateway-only registrations,
+page views, unique visitors, online presence, or unique real people. Manually
+created test identities are not automatically excluded.

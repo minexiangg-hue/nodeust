@@ -1,9 +1,11 @@
-import { and, eq, ne } from 'drizzle-orm';
+import { and, eq, ne, inArray } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/db';
 import { posts, users } from '@/db/schema';
 import { apiError, readJsonObject } from '@/lib/api-response';
 import { requireMember } from '@/lib/current-member';
+
+import { parsePostInput } from '@/lib/post-input';
 
 type Context = { params: Promise<{ id: string }> };
 
@@ -32,14 +34,17 @@ export async function GET(_request: NextRequest, context: Context) {
       .innerJoin(users, eq(posts.ownerId, users.id))
       .where(eq(posts.id, id))
       .limit(1);
-    if (!row) return NextResponse.json({ error: 'Post not found.' }, { status: 404 });
+    if (!row)
+      return NextResponse.json({ error: 'Post not found.' }, { status: 404 });
     // The author may open their own post in any state; everyone else may only
     // view posts still live in the plaza. Both cases surface as 404 so the
     // existence of a non-active post is not disclosed.
     if (row.ownerId !== member.id && row.status !== 'active')
       return NextResponse.json({ error: 'Post not found.' }, { status: 404 });
     const { ownerId, ...post } = row;
-    return NextResponse.json({ post: { ...post, isMine: ownerId === member.id } });
+    return NextResponse.json({
+      post: { ...post, isMine: ownerId === member.id },
+    });
   } catch (error) {
     return apiError(error, 'Unable to load the post.');
   }
@@ -76,6 +81,28 @@ export async function PATCH(request: NextRequest, context: Context) {
     const member = await requireMember();
     const { id } = await context.params;
     const input = await readJsonObject(request);
+    if (input.action === 'edit') {
+      const values = parsePostInput(input);
+      const [result] = await getDb()
+        .update(posts)
+        .set({ ...values, updatedAt: new Date() })
+        .where(
+          and(
+            eq(posts.id, id),
+            eq(posts.ownerId, member.id),
+            inArray(posts.status, ['active', 'closed']),
+          ),
+        );
+      if (!result.affectedRows)
+        return NextResponse.json(
+          {
+            error:
+              'Post unavailable or its status changed. Refresh and try again.',
+          },
+          { status: 409 },
+        );
+      return NextResponse.json({ id });
+    }
     if (input.action !== 'close' && input.action !== 'reopen')
       return NextResponse.json(
         { error: 'Invalid post action.' },
@@ -102,6 +129,11 @@ export async function PATCH(request: NextRequest, context: Context) {
       );
     return NextResponse.json({ id, status });
   } catch (error) {
+    if (error instanceof Error && error.message.startsWith('INVALID_POST:'))
+      return NextResponse.json(
+        { error: error.message.slice(13) },
+        { status: 422 },
+      );
     return apiError(error, 'Unable to update the post.');
   }
 }

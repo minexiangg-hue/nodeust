@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { FilePenLine } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,7 +26,10 @@ import {
   type Locale,
 } from '@/lib/locale';
 
-type MyPost = {
+export type MyPost = {
+  locationId: string | null;
+  currentHall: string | null;
+  targetHall: string | null;
   id: string;
   title: string;
   body: string;
@@ -38,10 +42,16 @@ export function MyPosts({
   locale,
   onChanged,
   onCreate,
+  onEdit,
+  onDrafts,
+  draftCount,
 }: {
   locale: Locale;
   onChanged: () => void;
   onCreate: () => void;
+  onEdit: (post: MyPost) => void;
+  onDrafts: () => void;
+  draftCount: number;
 }) {
   const [status, setStatus] = useState('all');
   const [query, setQuery] = useState('');
@@ -100,6 +110,25 @@ export function MyPosts({
             ))}
           </SelectContent>
         </Select>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={onDrafts}
+          title={localize(
+            locale,
+            `Draft box (${draftCount})`,
+            `草稿箱（${draftCount}）`,
+            `草稿箱（${draftCount}）`,
+          )}
+          aria-label={localize(
+            locale,
+            `Draft box (${draftCount})`,
+            `草稿箱（${draftCount}）`,
+            `草稿箱（${draftCount}）`,
+          )}
+        >
+          <FilePenLine />
+        </Button>
         <Button onClick={onCreate}>
           {localize(locale, 'New request', '发布需求', '發佈需求')}
         </Button>
@@ -109,6 +138,7 @@ export function MyPosts({
         url={`/api/posts?mine=1&status=${status}&q=${encodeURIComponent(debouncedQuery)}`}
         locale={locale}
         onChanged={onChanged}
+        onEdit={onEdit}
       />
     </section>
   );
@@ -118,10 +148,12 @@ function MyPostList({
   url,
   locale,
   onChanged,
+  onEdit,
 }: {
   url: string;
   locale: Locale;
   onChanged: () => void;
+  onEdit: (post: MyPost) => void;
 }) {
   const list = usePagedItems<MyPost>(url);
   const act = async (post: MyPost, action: 'close' | 'reopen' | 'delete') => {
@@ -164,6 +196,11 @@ function MyPostList({
             <h3>{post.title}</h3>
             <p className="record-body">{post.body}</p>
             <div className="record-actions">
+              {(post.status === 'active' || post.status === 'closed') && (
+                <Button variant="outline" onClick={() => onEdit(post)}>
+                  {localize(locale, 'Edit post', '编辑帖子', '編輯帖子')}
+                </Button>
+              )}
               {(post.status === 'active' || post.status === 'closed') && (
                 <ConfirmAction
                   locale={locale}

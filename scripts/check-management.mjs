@@ -19,20 +19,27 @@ function harness(role = 'owner', affectedRows = 1, selectRows = []) {
   const calls = [];
   const cache = new Map();
   const db = {
-    select: () => query('select'),
+    select: (selection) => query('select', undefined, selection),
     update: (table) => query('update', table),
     delete: (table) => query('delete', table),
     insert: (table) => query('insert', table),
     transaction: async (callback) => callback(db),
   };
-  function query(kind, table) {
-    const call = { kind, table: table ? getTableName(table) : undefined };
+  function query(kind, table, selection) {
+    const call = {
+      kind,
+      table: table ? getTableName(table) : undefined,
+      selection,
+    };
     const chain = {
       from(value) {
         call.table = getTableName(value);
         return chain;
       },
       innerJoin() {
+        return chain;
+      },
+      leftJoin() {
         return chain;
       },
       where(value) {
@@ -45,6 +52,9 @@ function harness(role = 'owner', affectedRows = 1, selectRows = []) {
       },
       values(value) {
         call.values = value;
+        return chain;
+      },
+      groupBy() {
         return chain;
       },
       orderBy() {
@@ -63,7 +73,11 @@ function harness(role = 'owner', affectedRows = 1, selectRows = []) {
       then(done, failed) {
         calls.push(call);
         return Promise.resolve(
-          kind === 'select' ? selectRows : [{ affectedRows }],
+          kind === 'select'
+            ? typeof selectRows === 'function'
+              ? selectRows(call)
+              : selectRows
+            : [{ affectedRows }],
         ).then(done, failed);
       },
     };
@@ -292,4 +306,229 @@ test('a stale review cannot remove content or write a duplicate moderation actio
     ],
   );
   assert.deepEqual(h.calls[1].condition.params, ['record-1', 'open']);
+});
+
+test('hidden account statistics reject every non-Owner before aggregate queries', async () => {
+  for (const role of [null, 'member', 'moderator', 'admin']) {
+    const h = harness(role);
+    await assert.rejects(h.load('lib/account-stats.ts').getAccountStats(), {
+      message: role ? 'FORBIDDEN' : 'UNAUTHENTICATED',
+    });
+    assert.equal(h.calls.length, 0);
+  }
+});
+
+test('statistics use Hong Kong calendar boundaries across UTC midnight and leap days', () => {
+  const { accountStatsWindow } = harness().load('lib/account-stats.ts');
+  const before = accountStatsWindow(new Date('2026-09-09T15:59:59Z'));
+  const after = accountStatsWindow(new Date('2026-09-09T16:00:00Z'));
+  assert.equal(before.today.toISOString(), '2026-09-08T16:00:00.000Z');
+  assert.equal(after.today.toISOString(), '2026-09-09T16:00:00.000Z');
+  assert.equal(after.week.toISOString(), '2026-09-03T16:00:00.000Z');
+  assert.equal(after.days.length, 30);
+  assert.equal(after.days[0], '2026-08-12');
+  assert.equal(after.days.at(-1), '2026-09-10');
+  const leap = accountStatsWindow(new Date('2024-02-29T16:00:00Z'));
+  assert.equal(leap.days.at(-2), '2024-02-29');
+  assert.equal(leap.days.at(-1), '2024-03-01');
+});
+
+test('Owner statistics only read users and fill zero-registration days', async () => {
+  const h = harness('owner', 1, [{ day: '2026-09-09', count: 2 }]);
+  const stats = await h
+    .load('lib/account-stats.ts')
+    .getAccountStats(new Date('2026-09-09T10:00:00Z'));
+  assert.equal(stats.daily.length, 30);
+  assert.deepEqual(stats.daily.at(-1), { day: '2026-09-09', count: 2 });
+  assert.deepEqual(stats.daily.at(-2), { day: '2026-09-08', count: 0 });
+  assert.deepEqual(
+    h.calls.map((call) => [call.kind, call.table]),
+    [
+      ['select', 'users'],
+      ['select', 'users'],
+    ],
+  );
+  const params = h.calls[1].condition.params;
+  assert.ok(params.includes('local-demo-owner'));
+  assert.ok(params.includes('node-smoke-%'));
+  assert.ok(h.calls[1].condition.sql.includes('not'));
+});
+
+const validPost = {
+  action: 'edit',
+  category: 'goods',
+  title: 'Desk lamp',
+  body: 'Available for pickup on campus.',
+  locationId: 'academic-building',
+};
+
+test('editing is atomic, author-only, and cannot restore removed or matched posts', async () => {
+  const h = harness('member');
+  const response = await h
+    .load('app/api/posts/[id]/route.ts')
+    .PATCH(
+      request('PATCH', {
+        ...validPost,
+        ownerId: 'attacker',
+        status: 'active',
+        replyCount: 999,
+      }),
+      context,
+    );
+  assert.equal(response.status, 200);
+  assert.equal(h.calls.length, 1);
+  assert.deepEqual(h.calls[0].condition.params, [
+    'post-1',
+    'member-a',
+    'active',
+    'closed',
+  ]);
+  assert.equal(h.calls[0].values.title, validPost.title);
+  for (const key of ['id', 'ownerId', 'status', 'replyCount', 'createdAt'])
+    assert.equal(h.calls[0].values[key], undefined);
+  const stale = harness('member', 0);
+  assert.equal(
+    (
+      await stale
+        .load('app/api/posts/[id]/route.ts')
+        .PATCH(request('PATCH', validPost), context)
+    ).status,
+    409,
+  );
+});
+
+test('create and edit share validation, including contact privacy and hall field types', async () => {
+  for (const input of [
+    { ...validPost, title: '' },
+    { ...validPost, body: 'Contact 91234567' },
+    { ...validPost, category: 'hall', currentHall: {}, targetHall: 'Hall I' },
+    { ...validPost, currentHall: 'x'.repeat(81) },
+    { ...validPost, locationId: 'unknown' },
+  ]) {
+    for (const edit of [false, true]) {
+      const h = harness('member');
+      const route = h.load(
+        edit ? 'app/api/posts/[id]/route.ts' : 'app/api/posts/route.ts',
+      );
+      const response = edit
+        ? await route.PATCH(request('PATCH', input), context)
+        : await route.POST(request('POST', input));
+      assert.equal(response.status, 422);
+      assert.equal(h.calls.length, 0);
+    }
+  }
+});
+
+test('read acknowledgement verifies participation and the message conversation before writing', async () => {
+  const denied = harness('member');
+  assert.equal(
+    (
+      await denied
+        .load('app/api/conversations/[id]/messages/route.ts')
+        .PATCH(request('PATCH', { messageId: 'message-1' }), context)
+    ).status,
+    403,
+  );
+  assert.equal(denied.calls.filter((call) => call.kind === 'update').length, 0);
+  const now = new Date('2026-09-10T10:00:00.123Z');
+  const h = harness('member', 1, (call) =>
+    call.table === 'messages'
+      ? [{ createdAt: now }]
+      : [{ id: 'participant-1', isBlocked: false, status: 'active' }],
+  );
+  assert.equal(
+    (
+      await h
+        .load('app/api/conversations/[id]/messages/route.ts')
+        .PATCH(
+          request('PATCH', {
+            messageId: 'message-1',
+            lastReadAt: '2099-01-01',
+          }),
+          context,
+        )
+    ).status,
+    200,
+  );
+  assert.deepEqual(h.calls[1].condition.params, ['post-1', 'message-1']);
+  assert.deepEqual(h.calls[2].condition.params, ['post-1', 'member-a', false]);
+  const update = dialect.sqlToQuery(h.calls[2].values.lastReadAt);
+  assert.match(update.sql, /greatest\(coalesce/);
+  assert.deepEqual(update.params, [now, now]);
+  const missing = harness('member', 1, (call) =>
+    call.table === 'messages' ? [] : [{ isBlocked: false, status: 'active' }],
+  );
+  assert.equal(
+    (
+      await missing
+        .load('app/api/conversations/[id]/messages/route.ts')
+        .PATCH(request('PATCH', { messageId: 'foreign-message' }), context)
+    ).status,
+    404,
+  );
+  assert.equal(
+    missing.calls.filter((call) => call.kind === 'update').length,
+    0,
+  );
+});
+
+test('unread count excludes own and system messages, and uses the persisted read boundary', async () => {
+  const h = harness('member');
+  assert.equal(
+    (await h.load('app/api/conversations/route.ts').GET()).status,
+    200,
+  );
+  const query = dialect.sqlToQuery(h.calls[0].selection.unreadCount);
+  assert.match(query.sql, /sender_id <>/);
+  assert.match(query.sql, /kind <> 'system'/);
+  assert.match(query.sql, /last_read_at/);
+  assert.ok(query.params.includes('member-a'));
+});
+
+test('location counts expose aggregates only and exclude inactive accounts and posts', async () => {
+  const denied = harness(null);
+  assert.equal(
+    (await denied.load('app/api/location/route.ts').GET()).status,
+    401,
+  );
+  assert.equal(denied.calls.length, 0);
+  const h = harness('member', 1, [
+    { locationId: 'academic-building', count: 3 },
+  ]);
+  const response = await h.load('app/api/location/route.ts').GET();
+  const data = await response.json();
+  assert.deepEqual(
+    data.items.find((item) => item.locationId === 'academic-building'),
+    { locationId: 'academic-building', peopleCount: 3, requestCount: 3 },
+  );
+  assert.equal(h.calls.length, 2);
+  for (const call of h.calls) {
+    assert.deepEqual(call.condition.params, ['active']);
+    assert.deepEqual(Object.keys(call.selection).sort(), [
+      'count',
+      'locationId',
+    ]);
+    assert.equal(call.limit, undefined);
+  }
+});
+
+test('draft parser preserves incomplete drafts and rejects corrupt entries', () => {
+  const { parseDrafts } = harness().load('lib/drafts.ts');
+  const draft = {
+    id: 'draft-1',
+    updatedAt: '2026-09-10T10:00:00Z',
+    title: '',
+    detail: 'Still writing',
+    category: 'hall',
+    from: '',
+    to: '',
+    locationId: 'academic-building',
+  };
+  assert.deepEqual(
+    parseDrafts(JSON.stringify([draft, null, {}, { ...draft, title: 3 }])),
+    [draft],
+  );
+  assert.deepEqual(parseDrafts(null), []);
+  assert.throws(() => parseDrafts('{broken'));
+  assert.throws(() => parseDrafts('{}'));
 });

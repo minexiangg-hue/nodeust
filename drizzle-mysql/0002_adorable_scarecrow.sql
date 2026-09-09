@@ -1,0 +1,1 @@
+ALTER TABLE `conversation_participants` ADD `last_read_at` datetime(3);

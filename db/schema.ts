@@ -166,6 +166,7 @@ export const conversationParticipants = mysqlTable(
       .references(() => users.id),
     isBlocked: boolean('is_blocked').notNull().default(false),
     joinedAt: instant('joined_at').notNull(),
+    lastReadAt: instant('last_read_at'),
   },
   (table) => [
     uniqueIndex('idx_participants_conversation_user').on(

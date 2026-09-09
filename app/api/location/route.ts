@@ -1,10 +1,43 @@
-import { eq } from 'drizzle-orm';
+import { eq, count } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getDb } from '@/db';
-import { users } from '@/db/schema';
-import { campusLocationIds } from '@/lib/campus-locations';
+import { users, posts } from '@/db/schema';
+import { campusLocationIds, campusLocations } from '@/lib/campus-locations';
 import { requireMember } from '@/lib/current-member';
+import { apiError } from '@/lib/api-response';
+
+// Aggregate only: no identities or individual location tags are exposed.
+export async function GET() {
+  try {
+    await requireMember();
+    const [people, requests] = await Promise.all([
+      getDb()
+        .select({ locationId: users.currentLocationId, count: count() })
+        .from(users)
+        .where(eq(users.status, 'active'))
+        .groupBy(users.currentLocationId),
+      getDb()
+        .select({ locationId: posts.locationId, count: count() })
+        .from(posts)
+        .where(eq(posts.status, 'active'))
+        .groupBy(posts.locationId),
+    ]);
+    return NextResponse.json({
+      items: campusLocations.map((location) => ({
+        locationId: location.id,
+        peopleCount: Number(
+          people.find((item) => item.locationId === location.id)?.count ?? 0,
+        ),
+        requestCount: Number(
+          requests.find((item) => item.locationId === location.id)?.count ?? 0,
+        ),
+      })),
+    });
+  } catch (error) {
+    return apiError(error, 'Unable to load location counts.');
+  }
+}
 
 export async function PATCH(request: NextRequest) {
   try {

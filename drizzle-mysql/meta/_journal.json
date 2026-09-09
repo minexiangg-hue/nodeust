@@ -15,6 +15,13 @@
       "when": 1788719087133,
       "tag": "0001_jazzy_spectrum",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1788974544151,
+      "tag": "0002_adorable_scarecrow",
+      "breakpoints": true
     }
   ]
 }
