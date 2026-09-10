@@ -17,7 +17,10 @@ Set a development MySQL `DATABASE_URL` in `.env.local`, then open `http://localh
 
 ## Architecture
 
-- `app/plaza-app.tsx`: responsive campus-location plaza, location-anchored pop-ups with a persistent visibility toggle, manual non-GPS location tag, working matching/chat/saved sections, search/filtering, posting, announcement board, profile, and Owner console.
+- `app/(community)/`: real App Router pages for the welcome home, exploration, matches, inbox/conversations, request details, posts/editor, saved requests, profile, settings, announcements and moderation. The shared layout enforces maintenance and the identity boundary.
+- `app/plaza-app.tsx`: persistent community shell and shared data/navigation state. Map filters, form caches, preferences and unread indicators survive navigation between member pages.
+- `components/community/`: independent welcome, settings, post editor, chat, profile, announcements and request presentation modules. Ordinary pages use document headings; only short contextual tasks retain dialogs/sheets.
+- `app/community-shell.css` and `app/community-pages.css`: shared responsive navigation and page design.
 - `app/api/`: MySQL-backed posts, announcements, reports, conversations/messages, private profile, mutual contact exchange, moderation, and health endpoints.
 - `db/schema.ts`: users, private profiles, posts, announcements, conversations, messages, contact consent, reports, and auditable moderation actions.
 - `drizzle-mysql/`: append-only MySQL migrations.
@@ -33,7 +36,7 @@ English is the default interface language and new automatic anonymous aliases ar
 
 Owners, administrators, and moderators can publish information, maintenance, or upgrade notices from the moderation console. Published notices appear in the plaza announcement board and can be scheduled with database start/end times through the API.
 
-For planned work, publish a maintenance announcement first. To replace the home page with the lightweight maintenance screen, set `NODE_MAINTENANCE_MODE=true`; `NODE_MAINTENANCE_RETURN` and `NODE_STATUS_URL` customize its return message and optional status link. `/maintenance` always provides a preview. A provider-level outage still requires an independently hosted status page or edge fallback in production.
+For planned work, publish a maintenance announcement first. To replace the welcome and member pages with the lightweight maintenance screen, set `NODE_MAINTENANCE_MODE=true`; `NODE_MAINTENANCE_RETURN` and `NODE_STATUS_URL` customize its return message and optional status link. `/maintenance` always provides a preview. A provider-level outage still requires an independently hosted status page or edge fallback in production.
 
 ## HKUST SSO production handoff
 
@@ -76,3 +79,27 @@ Known `local-demo-owner` and `node-smoke-*` test identities are reported separat
 Counts reflect first creation of a NODE profile, not gateway-only registrations,
 page views, unique visitors, online presence, or unique real people. Manually
 created test identities are not automatically excluded.
+
+## Page routes and preferences
+
+The public home is `/`; the campus map/list is `/explore`. Personal routes are
+`/matches`, `/messages`, `/saved`, `/posts`, `/profile` and `/settings`.
+A request has `/requests/[id]`; publishing uses `/posts/new` and editing uses
+`/posts/[id]/edit`. `/messages/[id]` loads its own authorized conversation metadata
+without depending on the inbox's result window. `/announcements` holds the
+collapsed notice board and recent activity; `/moderation` requires a moderator,
+admin or Owner account. `/owner/stats` remains hidden and Owner-only.
+
+Language and manual location follow the account. Map pop-ups, the default view
+and saved requests remain browser preferences. The current exploration state
+survives navigation and refresh within the tab. Drafts remain browser-local and
+account-scoped; their URLs contain only a draft ID. Unsaved editor input survives
+member-page navigation, while saving a draft provides persistence after reload.
+
+The existing preview gateway lives outside this repository. The reviewed
+`deploy/gateway-routing.patch` adds the public welcome and assets, preserves
+login return paths and updates its login presentation. The public sign-in link
+uses that gateway's `/__gateway/login?next=/explore`. Authentication remains the
+existing preview mechanism; the future SSO handoff remains a separate task.
+
+See `docs/architecture-rearrange.md` for the route map, verified backup and rollout.

@@ -24,12 +24,17 @@ export function ManagementConsole({
   isOwner,
   onAnnouncementsChanged,
   onPostsChanged,
+  page = false,
 }: {
   locale: Locale;
   isOwner: boolean;
   onAnnouncementsChanged: () => void;
   onPostsChanged: () => void;
+  page?: boolean;
 }) {
+  const Header = page ? 'header' : SheetHeader;
+  const Title = page ? 'h2' : SheetTitle;
+  const Description = page ? 'p' : SheetDescription;
   const [active, setActive] = useState<string | null>(null);
   const sections = [
     {
@@ -72,19 +77,17 @@ export function ManagementConsole({
   ];
   return (
     <div className="admin-scroll">
-      <SheetHeader className="admin-header">
-        <SheetTitle>
-          {localize(locale, 'Moderation', '管理中心', '管理中心')}
-        </SheetTitle>
-        <SheetDescription>
+      <Header className="admin-header">
+        <Title>{localize(locale, 'Moderation', '管理中心', '管理中心')}</Title>
+        <Description>
           {localize(
             locale,
             'Open a workspace to manage records. Actions are checked against your account permissions.',
             '打开独立工作区管理记录，所有操作均校验账号权限。',
             '打開獨立工作區管理記錄，所有操作均校驗帳號權限。',
           )}
-        </SheetDescription>
-      </SheetHeader>
+        </Description>
+      </Header>
       <div className="management-launchers">
         {sections.map((section) => (
           <Dialog

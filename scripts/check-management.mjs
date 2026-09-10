@@ -36,10 +36,20 @@ function harness(role = 'owner', affectedRows = 1, selectRows = []) {
         call.table = getTableName(value);
         return chain;
       },
-      innerJoin() {
+      innerJoin(value, condition) {
+        (call.joins ??= []).push({
+          kind: 'inner',
+          table: getTableName(value),
+          condition: dialect.sqlToQuery(condition),
+        });
         return chain;
       },
-      leftJoin() {
+      leftJoin(value, condition) {
+        (call.joins ??= []).push({
+          kind: 'left',
+          table: getTableName(value),
+          condition: dialect.sqlToQuery(condition),
+        });
         return chain;
       },
       where(value) {
@@ -364,17 +374,15 @@ const validPost = {
 
 test('editing is atomic, author-only, and cannot restore removed or matched posts', async () => {
   const h = harness('member');
-  const response = await h
-    .load('app/api/posts/[id]/route.ts')
-    .PATCH(
-      request('PATCH', {
-        ...validPost,
-        ownerId: 'attacker',
-        status: 'active',
-        replyCount: 999,
-      }),
-      context,
-    );
+  const response = await h.load('app/api/posts/[id]/route.ts').PATCH(
+    request('PATCH', {
+      ...validPost,
+      ownerId: 'attacker',
+      status: 'active',
+      replyCount: 999,
+    }),
+    context,
+  );
   assert.equal(response.status, 200);
   assert.equal(h.calls.length, 1);
   assert.deepEqual(h.calls[0].condition.params, [
@@ -438,15 +446,13 @@ test('read acknowledgement verifies participation and the message conversation b
   );
   assert.equal(
     (
-      await h
-        .load('app/api/conversations/[id]/messages/route.ts')
-        .PATCH(
-          request('PATCH', {
-            messageId: 'message-1',
-            lastReadAt: '2099-01-01',
-          }),
-          context,
-        )
+      await h.load('app/api/conversations/[id]/messages/route.ts').PATCH(
+        request('PATCH', {
+          messageId: 'message-1',
+          lastReadAt: '2099-01-01',
+        }),
+        context,
+      )
     ).status,
     200,
   );
@@ -483,6 +489,124 @@ test('unread count excludes own and system messages, and uses the persisted read
   assert.match(query.sql, /kind <> 'system'/);
   assert.match(query.sql, /last_read_at/);
   assert.ok(query.params.includes('member-a'));
+});
+
+test('conversation deep links do not disclose metadata without authenticated membership', async () => {
+  const routePath = 'app/api/conversations/[id]/route.ts';
+  const chatContext = { params: Promise.resolve({ id: 'thread-1' }) };
+  const anonymous = harness(null);
+  const denied = await anonymous
+    .load(routePath)
+    .GET(request('GET'), chatContext);
+  assert.equal(denied.status, 401);
+  assert.deepEqual(Object.keys(await denied.json()), ['error']);
+  assert.equal(anonymous.calls.length, 0);
+
+  // An absent membership and a nonexistent conversation both produce no joined
+  // row. The same generic response must hide existence and peer identity.
+  for (const id of ['another-members-thread', 'missing-thread']) {
+    const h = harness('member', 1, []);
+    const response = await h.load(routePath).GET(request('GET'), {
+      params: Promise.resolve({ id }),
+    });
+    assert.equal(response.status, 404);
+    assert.deepEqual(await response.json(), {
+      error: 'Conversation unavailable.',
+    });
+    assert.equal(h.calls.length, 1);
+    assert.equal(h.calls[0].kind, 'select');
+    assert.equal(h.calls[0].condition.params[0], id);
+  }
+});
+
+test('conversation metadata query binds the caller, peer and requested unblocked thread', async () => {
+  const h = harness('member', 1, []);
+  await h.load('app/api/conversations/[id]/route.ts').GET(request('GET'), {
+    params: Promise.resolve({ id: 'thread-1' }),
+  });
+  const [query] = h.calls;
+  assert.equal(query.table, 'conversations');
+  assert.equal(query.limit, 1);
+  assert.match(query.condition.sql, /`conversations`\.`id` = \?/);
+  assert.match(
+    query.condition.sql,
+    /`conversation_participants`\.`is_blocked` = \?/,
+  );
+  assert.match(query.condition.sql, /`conversations`\.`status` <> \?/);
+  assert.deepEqual(query.condition.params, ['thread-1', false, 'blocked']);
+
+  const mine = query.joins.find(
+    (join) => join.table === 'conversation_participants',
+  );
+  assert.equal(mine.kind, 'inner');
+  assert.match(
+    mine.condition.sql,
+    /`conversation_participants`\.`conversation_id` = `conversations`\.`id`/,
+  );
+  assert.match(
+    mine.condition.sql,
+    /`conversation_participants`\.`user_id` = \?/,
+  );
+  assert.deepEqual(mine.condition.params, ['member-a']);
+
+  const peer = query.joins.find((join) => join.table === 'peer');
+  assert.equal(peer.kind, 'inner');
+  assert.match(
+    peer.condition.sql,
+    /`peer`\.`conversation_id` = `conversations`\.`id`/,
+  );
+  assert.match(peer.condition.sql, /`peer`\.`user_id` <> \?/);
+  assert.deepEqual(peer.condition.params, ['member-a']);
+
+  const user = query.joins.find((join) => join.table === 'users');
+  assert.equal(user.kind, 'inner');
+  assert.match(user.condition.sql, /`users`\.`id` = `peer`\.`user_id`/);
+  const post = query.joins.find((join) => join.table === 'posts');
+  assert.equal(post.kind, 'left');
+  assert.match(
+    post.condition.sql,
+    /`posts`\.`id` = `conversations`\.`post_id`/,
+  );
+});
+
+test('conversation deep links select only anonymous metadata and tolerate a missing post', async () => {
+  for (const postTitle of ['A campus request', null]) {
+    const row = {
+      conversationId: 'thread-1',
+      peerAlias: 'Sea Otter 123',
+      postId: postTitle ? 'post-1' : null,
+      postTitle,
+    };
+    const h = harness('member', 1, [row]);
+    const response = await h
+      .load('app/api/conversations/[id]/route.ts')
+      .GET(request('GET'), { params: Promise.resolve({ id: 'thread-1' }) });
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), {
+      session: { ...row, postTitle: postTitle ?? '' },
+    });
+    const [query] = h.calls;
+    // Assert the actual selected columns, so a real name aliased as peerAlias
+    // or an added private identity/contact column fails this privacy boundary.
+    assert.deepEqual(
+      Object.fromEntries(
+        Object.entries(query.selection).map(([key, column]) => [
+          key,
+          [getTableName(column.table), column.name],
+        ]),
+      ),
+      {
+        conversationId: ['conversations', 'id'],
+        peerAlias: ['users', 'anonymous_alias'],
+        postId: ['conversations', 'post_id'],
+        postTitle: ['posts', 'title'],
+      },
+    );
+    assert.equal(
+      h.calls.every((call) => call.kind === 'select'),
+      true,
+    );
+  }
 });
 
 test('location counts expose aggregates only and exclude inactive accounts and posts', async () => {

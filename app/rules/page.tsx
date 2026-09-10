@@ -8,7 +8,7 @@ export default function CommunityRulesPage() {
     <main className="rules-page">
       <header className="rules-header">
         <Link href="/">
-          <ArrowLeft /> Back to plaza
+          <ArrowLeft /> Back to home
         </Link>
         <div className="brand">
           <span className="brand-mark">
