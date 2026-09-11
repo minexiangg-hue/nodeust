@@ -1,10 +1,10 @@
 import type { MatchIntent, MatchPost, ParsedPost, PairMatch } from './types.ts';
 import { parseHousing, parseGoods } from './housing-goods.ts';
 import { parseTransport, parseStudy, parseSocial } from './mobility-study.ts';
-import { compareResidencePeriods, compareRoomAcceptance, parseResidenceLabel } from './constraints.ts';
+import { compareResidencePeriods, compareRoomAcceptance, parseResidenceLabel, compareMoney } from './constraints.ts';
 import type { RoomType } from './constraints.ts';
 
-export const MATCH_VERSION = 'reciprocal-intents-v3';
+export const MATCH_VERSION = 'reciprocal-intents-v5';
 export const TIME_TOLERANCE_MINUTES = 30;
 
 export function parseMatchPost(post: MatchPost): ParsedPost {
@@ -101,7 +101,22 @@ export function compareIntents(
   const required = (key: keyof MatchIntent, code: string) => {
     if (a[key] === undefined || b[key] === undefined) missing.add(code);
   };
+  const feesFit = (offer: MatchIntent, seek: MatchIntent): boolean => {
+    if (!offer.fee && !seek.fee) return true;
+    const asking = offer.fee?.amount, maximum = seek.fee?.amount;
+    // Free provision also fits a request that imposes no financial limit.
+    if (asking === 0 && !seek.fee) return true;
+    if (typeof asking === 'number' && asking > 0 && maximum === 0) return false;
+    const comparison = compareMoney(offer.fee, seek.fee);
+    if (comparison.status === 'conflict') return false;
+    if (comparison.status === 'unknown') missing.add(a.kind === 'study' ? 'study-fee' : 'fare');
+    else reasons.push({code:'fee-compatible'});
+    return true;
+  };
   if (a.kind === 'hall') {
+    if ([a, b].some(intent => intent.allocation === 'denied' || intent.exchangeEligibility === 'ineligible')) return null;
+    if ([a, b].some(intent => intent.allocation === 'pending')) missing.add('allocation');
+    if ([a, b].some(intent => intent.exchangeEligibility === 'pending')) missing.add('exchange-eligibility');
     if (
       !a.from ||
       !a.to ||
@@ -156,22 +171,39 @@ export function compareIntents(
         return null;
       const offer = a.side === 'offer' ? a : b,
         seek = a.side === 'seek' ? a : b;
-      const sameCurrency =
-        (offer.currency || 'HKD') === (seek.currency || 'HKD');
-      const sameBasis =
-        (offer.priceBasis || 'unit') === (seek.priceBasis || 'unit');
-      if (!sameCurrency) missing.add('currency');
-      if (!sameBasis) missing.add('price-basis');
-      if (offer.priceBasis === 'total' && offer.quantity !== seek.quantity)
+      const sameCurrency = Boolean(offer.currency && seek.currency && offer.currency === seek.currency);
+      const offeredBasis = offer.priceBasis === 'unit' ? 'item' : offer.priceBasis === 'total' ? 'bundle' : undefined;
+      const wantedBasis = seek.priceBasis === 'unit' ? 'item' : seek.priceBasis === 'total' ? 'bundle' : undefined;
+      const multipleItems = (offer.quantity ?? 0) > 1 || (seek.quantity ?? 0) > 1;
+      // Unqualified quotes can describe one listing. Once quantities or units are
+      // explicitly different, compare only a known common transaction scope.
+      const unqualifiedQuotes = !offeredBasis && !wantedBasis && !multipleItems;
+      const sameBundle = offeredBasis !== 'bundle' || (offer.quantity !== undefined && offer.quantity === seek.quantity);
+      let budgetFits = false;
+      if (offer.price === 0 && seek.price !== undefined) {
+        budgetFits = compareMoney({ amount: 0 }, { amount: seek.price }).status === 'compatible';
+      } else if (unqualifiedQuotes) {
+        if (!sameCurrency) missing.add('currency');
+        if (sameCurrency && offer.price !== undefined && seek.price !== undefined) {
+          if (offer.price > seek.price) return null;
+          budgetFits = true;
+        }
+      } else if (!sameBundle) {
         missing.add('bundle_price');
-      if (
-        sameCurrency &&
-        sameBasis &&
-        offer.price !== undefined &&
-        seek.price !== undefined &&
-        offer.price > seek.price
-      )
-        return null;
+      } else {
+        const comparison = compareMoney(
+          { amount: offer.price, currency: offer.currency, basis: offeredBasis, scope: 'asking' },
+          { amount: seek.price, currency: seek.currency, basis: wantedBasis, scope: 'maximum' },
+          { itemQuantity: seek.quantity },
+        );
+        if (comparison.status === 'conflict') return null;
+        if (comparison.status === 'unknown') {
+          if (!sameCurrency) missing.add('currency');
+          if (!offeredBasis || !wantedBasis) missing.add('price-basis');
+          if (offeredBasis && wantedBasis && offeredBasis !== wantedBasis && !seek.quantity) missing.add('quantity');
+          missing.add('price-comparison');
+        } else budgetFits = true;
+      }
       if (differs(a.model, b.model) || differs(a.edition, b.edition))
         return null;
       if (
@@ -205,8 +237,6 @@ export function compareIntents(
         !seek.colors.some((color) => offer.colors!.includes(color))
       )
         return null;
-      if (a.priceBasis && b.priceBasis && a.priceBasis !== b.priceBasis)
-        missing.add('price-basis');
       if (differs(a.place, b.place) || differs(a.date, b.date)) return null;
       for (const key of ['place', 'date', 'minute'] as const)
         if ((a[key] !== undefined) !== (b[key] !== undefined))
@@ -234,12 +264,7 @@ export function compareIntents(
         return null;
       required('price', 'price');
       reasons.push({ code: 'supply-demand', values: [a.entity] });
-      if (
-        sameCurrency &&
-        sameBasis &&
-        offer.price !== undefined &&
-        seek.price !== undefined
-      )
+      if (budgetFits)
         reasons.push({
           code: 'within-budget',
           values: [String(offer.price), String(seek.price)],
@@ -273,6 +298,7 @@ export function compareIntents(
         )
           return null;
         if (a.side === 'share' && b.side === 'share') {
+          if (a.fee || b.fee) missing.add('fare');
           required('party', 'party');
           required('capacity', 'capacity');
           if (
@@ -293,6 +319,7 @@ export function compareIntents(
             return null;
           const driver = a.side === 'driver' ? a : b,
             rider = a.side === 'rider' ? a : b;
+          if (!feesFit(driver, rider)) return null;
           if (driver.seats === undefined) missing.add('seats');
           if (rider.party === undefined) missing.add('party');
           if (
@@ -301,6 +328,15 @@ export function compareIntents(
             driver.seats < rider.party
           )
             return null;
+        }
+        for (const [offer, seek] of [[a,b],[b,a]]) {
+          if (offer.luggageLimit === undefined) continue;
+          if (seek.luggage === 0) continue;
+          if (seek.luggage === undefined) { missing.add('luggage'); continue; }
+          if (!offer.luggageLimitKind || !seek.luggageKind || (seek.luggageKind === 'bag' && offer.luggageLimitKind !== 'any')) {
+            missing.add('luggage-type'); continue;
+          }
+          if ((offer.luggageLimitKind === 'any' || offer.luggageLimitKind === seek.luggageKind) && seek.luggage > offer.luggageLimit) return null;
         }
         reasons.push(
           { code: 'same-route', values: [a.from, a.to] },
@@ -325,6 +361,9 @@ export function compareIntents(
             .some((language) => b.communication!.split('|').includes(language))
         )
           return null;
+        if (a.side === 'offer' && !feesFit(a, b)) return null;
+        if (b.side === 'offer' && !feesFit(b, a)) return null;
+        if (a.side === 'peer' && (a.fee || b.fee)) missing.add('study-fee');
         required('communication', 'communication');
         if (differs(a.place, b.place)) return null;
         if (Boolean(a.place) !== Boolean(b.place)) missing.add('place');
@@ -356,8 +395,25 @@ export function compareIntents(
         }
         reasons.push({ code: 'study-partners', values: [a.entity] });
       } else {
-        if (a.side !== 'peer' || b.side !== 'peer' || differs(a.place, b.place))
-          return null;
+        const peers = a.side === 'peer' && b.side === 'peer';
+        const hostAndGuest = (a.side === 'offer' && b.side === 'seek') || (b.side === 'offer' && a.side === 'seek');
+        if ((!peers && !hostAndGuest) || differs(a.place, b.place)) return null;
+        if (hostAndGuest) {
+          const host = a.side === 'offer' ? a : b, guest = a.side === 'seek' ? a : b;
+          if (host.seats === undefined) missing.add('activity-places');
+          if (guest.party === undefined) missing.add('participants');
+          if (host.seats !== undefined && guest.party !== undefined && host.seats < guest.party) return null;
+        }
+        for (const [request, peer] of [[a,b],[b,a]]) {
+          if (request.seats !== undefined && peer.party !== undefined && request.seats < peer.party) return null;
+          if (request.requiredEquipment?.length) {
+            if (!peer.equipment?.length) missing.add('equipment');
+            else if (!request.requiredEquipment.every(item => peer.equipment!.includes(item))) missing.add('equipment');
+          }
+        }
+        if (a.communication && b.communication && a.communication !== 'any' && b.communication !== 'any'
+          && !a.communication.split('|').some(language => b.communication!.split('|').includes(language))) return null;
+        if (Boolean(a.communication) !== Boolean(b.communication)) missing.add('communication');
         required('place', 'place');
         if (a.requiredSkill && b.skill && a.requiredSkill !== b.skill)
           return null;

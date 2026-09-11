@@ -3,9 +3,11 @@ import test from 'node:test';
 import { SEMANTIC_RESPONSE_SCHEMA, SEMANTIC_SYSTEM_PROMPT, semanticPublicInput, semanticMessages, validateSemanticResponse } from '../../lib/match/semantic-schema.ts';
 const post = (body, extra = {}) => ({ id:'synthetic-post', ownerId:'private-owner-marker', category:'other', title:'', body, createdAt:'2026-09-11T10:00:00Z', ...extra });
 const coreUnknowns = {
- hall:{from:null,to:null,term:null,room:null,wantedRoom:null,eligibility:null},
- goods:{}, study:{date:null,minute:null,communication:null},
- transport:{from:null,to:null,date:null,minute:null,party:null,seats:null,capacity:null}, other:{},
+ hall:{from:null,to:null,term:null,room:null,wantedRoom:null,eligibility:null,allocation:null,exchangeEligibility:null},
+ goods:{price:null,currency:null,priceBasis:null,quantity:null,transaction:null,model:null,condition:null,edition:null,colors:null,date:null,minute:null,endMinute:null,place:null},
+ study:{date:null,minute:null,endMinute:null,communication:null,topics:null,requiredTopics:null,studyFee:null,studyFeeBasis:null,currency:null,place:null},
+ transport:{from:null,to:null,date:null,minute:null,endMinute:null,party:null,seats:null,capacity:null,fare:null,fareBasis:null,currency:null,luggage:null,luggageKind:null,luggageLimit:null,luggageLimitKind:null},
+ other:{date:null,minute:null,endMinute:null,place:null,skill:null,requiredSkill:null,equipment:null,requiredEquipment:null,party:null,seats:null,communication:null},
 };
 // Fixtures explicitly acknowledge unknown core values, just as constrained model output must.
 const complete = intent => ({...coreUnknowns[intent.kind],...intent});
@@ -16,9 +18,9 @@ const rejection = result => { assert.equal(result.ok,false,JSON.stringify(result
 test('schema is bounded and does not solicit model confidence or free-form reasoning',()=>{
  assert.equal(SEMANTIC_RESPONSE_SCHEMA.properties.intents.maxItems,4);
  const branches=SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.anyOf;
- assert.equal(branches.length,5);
+ assert.equal(branches.length,8);
  for(const branch of branches){assert.equal(branch.additionalProperties,false);assert.equal('confidence' in branch.properties,false);}
- assert.deepEqual(branches.map(branch=>branch.properties.kind.const),['hall','goods','study','transport','other']);
+ assert.deepEqual([...new Set(branches.map(branch=>branch.properties.kind.const))],['hall','goods','study','transport','other']);
  assert.ok(SEMANTIC_SYSTEM_PROMPT.includes('UNTRUSTED POST DATA'));
 });
 test('semantic input allows only public post text and explicit post fields',()=>{
@@ -54,7 +56,7 @@ test('all evidence must be exact public substrings, including structured fields'
 test('numeric claims require a literal numeric witness, not just a real but unrelated evidence quote',()=>{
  const text='Selling a chair for HKD 100.';
  assert.ok(rejection(validate(text,goods(text,{price:500}))).some(e=>e.includes('number-not-in-evidence:price')));
- const free='Giving away a chair for free.';assert.equal(success(validate(free,goods(free,{price:0,transaction:'gift'}))).parsed.intents[0].price,0);
+ const free='Giving away a chair for free.';assert.equal(success(validate(free,goods(free,{price:0,currency:null,transaction:'gift'}))).parsed.intents[0].price,0);
  const words='Need a lift for two people.';assert.equal(success(validate(words,{kind:'transport',side:'rider',entity:'trip',party:2,evidence:[words]})).parsed.intents[0].party,2);
 });
 test('invalid numbers, calendar dates and reversed intervals fail validation',()=>{
@@ -88,12 +90,12 @@ test('transport fare and luggage are preserved and never silently discarded',()=
  const text='Driving HKUST to Airport tomorrow at 19:00, 2 spare seats, fare HKD 100, room for 1 suitcase.';
  const result=success(validate(text,{kind:'transport',side:'driver',entity:'trip',from:'hkust',to:'airport',seats:2,date:'2026-09-12',minute:1140,fare:100,currency:'HKD',luggage:1,evidence:[text]}));
  assert.equal(result.semantic[0].fare,100);assert.equal(result.semantic[0].luggage,1);
- assert.ok(result.parsed.intents[0].missing.includes('fare'));assert.ok(result.parsed.intents[0].missing.includes('luggage'));
+ assert.equal(result.parsed.intents[0].fee.amount,100);assert.equal(result.parsed.intents[0].luggage,1);
 });
 test('paid study and explicit extra requirements remain visible to the adapter caller',()=>{
  const text='Can teach COMP2011 recursion in English tomorrow at 19:00. Fee HKD 100. Bring your own laptop.';
  const result=success(validate(text,{kind:'study',side:'offer',entity:'comp 2011',topics:['recursion'],communication:'english',date:'2026-09-12',minute:1140,studyFee:100,currency:'HKD',otherRequirements:['Bring your own laptop.'],evidence:[text]}));
- assert.equal(result.parsed.intents[0].entity,'COMP2011');assert.ok(result.parsed.intents[0].missing.includes('study-fee'));assert.ok(result.parsed.intents[0].missing.includes('other-requirements'));
+ assert.equal(result.parsed.intents[0].entity,'COMP2011');assert.equal(result.parsed.intents[0].fee.amount,100);assert.ok(result.parsed.intents[0].missing.includes('other-requirements'));
 });
 test('extra requirements must themselves be copied literally',()=>{
  const text='Selling a chair for HKD 100.';
@@ -129,7 +131,9 @@ test('an empty model response is an explicit abstention',()=>{
 test('kind-discriminated schema prevents incompatible roles and unrelated fields, including null',()=>{
  const branches=Object.fromEntries(SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.anyOf.map(branch=>[branch.properties.kind.const,branch]));
  assert.deepEqual(branches.hall.properties.side.enum,['swap',null]);
- assert.deepEqual(branches.transport.properties.side.enum,['driver','rider','share',null]);
+ const transportBranches=SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.anyOf.filter(branch=>branch.properties.kind.const==='transport');
+ assert.deepEqual(transportBranches.map(branch=>branch.properties.side.const??null),['driver','rider','share',null]);
+ for(const branch of transportBranches.filter(branch=>['rider','share'].includes(branch.properties.side.const))) assert.deepEqual(branch.properties.seats,{type:'null'});
  assert.equal('party' in branches.hall.properties,false);
  assert.equal('room' in branches.transport.properties,false);
  assert.equal('transaction' in branches.study.properties,false);
@@ -163,4 +167,38 @@ test('normalizing evidence case or punctuation fails literal grounding',()=>{
  for(const quote of ['selling a Chair for HKD 100!','Selling a Chair for HKD 100.']){
   assert.ok(rejection(validate(body,goods(quote))).some(e=>e.includes('unverified-evidence')));
  }
+});
+
+
+test('allocation and exchange eligibility are independent facts, with unknowns retained', () => {
+ const text='Male UG, allocated double in UG Hall I for 2026/27, seeking UG Hall II double. Eligible for a room exchange.';
+ const intent={kind:'hall',side:'swap',entity:'housing-exchange',from:'ug-hall-1',to:'ug-hall-2',room:'double',wantedRoom:'double',term:'academic:2026-2027',eligibility:'male',allocation:'confirmed',exchangeEligibility:'eligible',evidence:[text]};
+ const known=success(validate(text,intent));
+ assert.deepEqual(known.parsed.intents[0].missing,[]);
+ assert.equal(known.parsed.intents[0].allocation,'confirmed');
+ assert.equal(known.parsed.intents[0].exchangeEligibility,'eligible');
+ const unknown=success(validate('Room exchange, allocation and permission are undecided.',{...intent,allocation:null,exchangeEligibility:'pending',evidence:['Room exchange, allocation and permission are undecided.']}));
+ assert.ok(unknown.parsed.intents[0].missing.includes('allocation'));
+ assert.ok(unknown.parsed.intents[0].missing.includes('exchange-eligibility'));
+});
+
+
+test('canonical item names preserve model detail and normalize formatting without conflating generations', () => {
+ const text='Selling iPad Air 5 for HKD 100.';
+ const a=success(validate(text,goods(text,{entity:'iPad Air 5',model:null}))).parsed.intents[0];
+ assert.equal(a.entity,'tablet'); assert.equal(a.model,'ipadair5');
+ const b=success(validate(text,goods(text,{entity:'tablet',model:'iPad-Air-5'}))).parsed.intents[0];
+ assert.equal(b.entity,a.entity); assert.equal(b.model,a.model);
+ const conflict=success(validate(text,goods(text,{entity:'iPad Air 5',model:'iPad Air 4'}))).parsed.intents[0];
+ assert.ok(conflict.missing.includes('model-conflict'));
+});
+
+
+test('model cannot supply a default currency absent from its public evidence', () => {
+  const text='Selling a chair for 100 dollars.';
+  assert.ok(rejection(validate(text,goods(text))).includes('intent-0:currency-not-in-evidence'));
+  success(validate(text,goods(text,{currency:null})));
+  const explicit='Selling a chair for US$100.';
+  success(validate(explicit,goods(explicit,{currency:'USD'})));
+  assert.ok(rejection(validate(explicit,goods(explicit))).includes('intent-0:currency-not-in-evidence'));
 });

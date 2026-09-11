@@ -28,6 +28,8 @@ const missingCopy: Record<string, Copy> = {
     '住宿资格要求',
     '住宿資格要求',
   ],
+  allocation: ['Room allocation stated by the author', '作者说明的宿位分配情况', '作者說明的宿位分配情況'],
+  'exchange-eligibility': ['Stated eligibility for a room exchange', '作者说明的换宿资格', '作者說明的換宿資格'],
   currency: [
     'Currency of the price and budget',
     '价格与预算使用的货币',
@@ -45,6 +47,11 @@ const missingCopy: Record<string, Copy> = {
     '价格按单件还是整套计算',
     '價格按單件還是整套計算',
   ],
+  'price-comparison': [
+    'Comparable price and budget for the same quantity',
+    '相同数量对应的价格与预算',
+    '相同數量對應的價格與預算',
+  ],
   date: ['Actual date', '具体日期', '具體日期'],
   time: ['Time or available time window', '时间或可用时段', '時間或可用時段'],
   schedule: ['Clarify the date and time', '确认日期与时间', '確認日期與時間'],
@@ -52,6 +59,13 @@ const missingCopy: Record<string, Copy> = {
   topic: ['Study topic or chapter', '学习主题或章节', '學習主題或章節'],
   course: ['Course code or subject', '课程代码或科目', '課程代碼或科目'],
   place: ['Meeting or collection place', '见面或交收地点', '見面或交收地點'],
+  'activity-places': ['Available places in the activity', '活动可加入的名额', '活動可加入的名額'],
+  participants: ['Number of joining participants', '参与人数', '參與人數'],
+  equipment: ['Required equipment', '所需装备', '所需裝備'],
+  luggage: ['Baggage count for the stated limit', '行李限制对应的行李数量', '行李限制對應的行李數量'],
+  'luggage-type': ['Baggage type covered by the limit', '行李限制适用的类型', '行李限制適用的類型'],
+  'study-fee': ['Lesson fee, budget and charging unit', '辅导费用、预算与计费单位', '輔導費用、預算與計費單位'],
+  fare: ['Travel fare, budget and charging unit', '交通费用、预算与计费单位', '交通費用、預算與計費單位'],
   seats: ['Available passenger seats', '可用乘客座位', '可用乘客座位'],
   party: ['Number of passengers', '同行人数', '同行人數'],
   capacity: ['Vehicle passenger capacity', '车辆可乘人数', '車輛可乘人數'],
@@ -109,6 +123,7 @@ export function matchMissingLabels(
 
 export function matchReasonLabel(reason: MatchReason, locale: Locale): string {
   const labels: Record<string, Copy> = {
+    'fee-compatible': ['The stated fee fits the budget', '已注明的费用符合预算', '已註明的費用符合預算'],
     'reverse-route': [
       'Your current and wanted halls complement each other.',
       '双方的当前宿舍与目标宿舍互补。',

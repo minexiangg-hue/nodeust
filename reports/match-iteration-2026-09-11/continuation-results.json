@@ -1,0 +1,763 @@
+{
+  "status": "development_only_not_ready_for_release",
+  "goal": "paused_by_user",
+  "production": {
+    "commit": "f32c923",
+    "build": "K-J2oPFCmJQOkDipbss3_",
+    "changed": false
+  },
+  "githubCheckpoint": "9413f533bca1a8ef8f81dac177d657816859545b",
+  "currentChanges": "included_in_rule_checkpoint_sync",
+  "corpus": {
+    "iteration-17-core-corpus": {
+      "version": "reciprocal-intents-v5",
+      "now": "2026-09-11T04:00:00.000Z",
+      "posts": 3746,
+      "students": 500,
+      "sourceSha256": "c04c4c47f9e5e1bea2468be2fe14c4e7c2022428f5cbd068288c5fc78859ec8b",
+      "indexMs": 2494.135567,
+      "totalMs": 4114.991939,
+      "meanCandidateCount": 500.468,
+      "byKind": {
+        "hall": {
+          "gold": 1362,
+          "returned": 1362,
+          "truePositive": 1362,
+          "top5Returned": 1171,
+          "top5True": 1171,
+          "eligible": 373,
+          "hit": 373,
+          "slots": 2500,
+          "attainable": 1171,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.4684,
+          "fillRate": 0.4684,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        },
+        "goods": {
+          "gold": 18835,
+          "returned": 10805,
+          "truePositive": 10805,
+          "top5Returned": 1527,
+          "top5True": 1527,
+          "eligible": 377,
+          "hit": 308,
+          "slots": 2500,
+          "attainable": 1881,
+          "precision": 1,
+          "recall": 0.5736660472524555,
+          "top5Precision": 1,
+          "pAt5": 0.6108,
+          "fillRate": 0.6108,
+          "hitRate": 0.8169761273209549,
+          "attainableTop5Recall": 0.8118022328548644
+        },
+        "study": {
+          "gold": 1099,
+          "returned": 1099,
+          "truePositive": 1099,
+          "top5Returned": 990,
+          "top5True": 990,
+          "eligible": 334,
+          "hit": 334,
+          "slots": 2500,
+          "attainable": 990,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.396,
+          "fillRate": 0.396,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        },
+        "transport": {
+          "gold": 908,
+          "returned": 908,
+          "truePositive": 908,
+          "top5Returned": 838,
+          "top5True": 838,
+          "eligible": 310,
+          "hit": 310,
+          "slots": 2500,
+          "attainable": 838,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.3352,
+          "fillRate": 0.3352,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        },
+        "other": {
+          "gold": 1549,
+          "returned": 1549,
+          "truePositive": 1549,
+          "top5Returned": 1121,
+          "top5True": 1121,
+          "eligible": 292,
+          "hit": 292,
+          "slots": 2500,
+          "attainable": 1121,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.4484,
+          "fillRate": 0.4484,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        }
+      },
+      "gates": {
+        "hall": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        },
+        "goods": {
+          "precision": true,
+          "recall": false,
+          "hitRate": true
+        },
+        "study": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        },
+        "transport": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        },
+        "other": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        }
+      }
+    },
+    "iteration-18-language-corpus": {
+      "version": "reciprocal-intents-v5",
+      "now": "2026-09-11T04:00:00.000Z",
+      "posts": 3746,
+      "students": 500,
+      "sourceSha256": "c04c4c47f9e5e1bea2468be2fe14c4e7c2022428f5cbd068288c5fc78859ec8b",
+      "indexMs": 2366.856684,
+      "totalMs": 3991.277774,
+      "meanCandidateCount": 500.468,
+      "byKind": {
+        "hall": {
+          "gold": 1362,
+          "returned": 1362,
+          "truePositive": 1362,
+          "top5Returned": 1171,
+          "top5True": 1171,
+          "eligible": 373,
+          "hit": 373,
+          "slots": 2500,
+          "attainable": 1171,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.4684,
+          "fillRate": 0.4684,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        },
+        "goods": {
+          "gold": 18835,
+          "returned": 10805,
+          "truePositive": 10805,
+          "top5Returned": 1527,
+          "top5True": 1527,
+          "eligible": 377,
+          "hit": 308,
+          "slots": 2500,
+          "attainable": 1881,
+          "precision": 1,
+          "recall": 0.5736660472524555,
+          "top5Precision": 1,
+          "pAt5": 0.6108,
+          "fillRate": 0.6108,
+          "hitRate": 0.8169761273209549,
+          "attainableTop5Recall": 0.8118022328548644
+        },
+        "study": {
+          "gold": 1099,
+          "returned": 1099,
+          "truePositive": 1099,
+          "top5Returned": 990,
+          "top5True": 990,
+          "eligible": 334,
+          "hit": 334,
+          "slots": 2500,
+          "attainable": 990,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.396,
+          "fillRate": 0.396,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        },
+        "transport": {
+          "gold": 908,
+          "returned": 908,
+          "truePositive": 908,
+          "top5Returned": 838,
+          "top5True": 838,
+          "eligible": 310,
+          "hit": 310,
+          "slots": 2500,
+          "attainable": 838,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.3352,
+          "fillRate": 0.3352,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        },
+        "other": {
+          "gold": 1549,
+          "returned": 1549,
+          "truePositive": 1549,
+          "top5Returned": 1121,
+          "top5True": 1121,
+          "eligible": 292,
+          "hit": 292,
+          "slots": 2500,
+          "attainable": 1121,
+          "precision": 1,
+          "recall": 1,
+          "top5Precision": 1,
+          "pAt5": 0.4484,
+          "fillRate": 0.4484,
+          "hitRate": 1,
+          "attainableTop5Recall": 1
+        }
+      },
+      "gates": {
+        "hall": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        },
+        "goods": {
+          "precision": true,
+          "recall": false,
+          "hitRate": true
+        },
+        "study": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        },
+        "transport": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        },
+        "other": {
+          "precision": true,
+          "recall": true,
+          "hitRate": true
+        }
+      }
+    }
+  },
+  "developmentValidation": {
+    "iteration-17-core-corpus": {
+      "sourceSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+      "cases": 150,
+      "byKind": {
+        "hall": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 0,
+          "fp": 0,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        "goods": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 6,
+          "fp": 0,
+          "precision": 1,
+          "recall": 0.5,
+          "falsePositiveRate": 0
+        },
+        "study": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 3,
+          "fp": 1,
+          "precision": 0.75,
+          "recall": 0.25,
+          "falsePositiveRate": 0.05555555555555555
+        },
+        "transport": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 1,
+          "fp": 0,
+          "precision": 1,
+          "recall": 0.08333333333333333,
+          "falsePositiveRate": 0
+        },
+        "other": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 0,
+          "fp": 0,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        }
+      },
+      "failures": [
+        "v2-hall-m01",
+        "v2-hall-m02",
+        "v2-hall-m03",
+        "v2-hall-m04",
+        "v2-hall-m05",
+        "v2-hall-m06",
+        "v2-hall-m07",
+        "v2-hall-m08",
+        "v2-hall-m09",
+        "v2-hall-m10",
+        "v2-hall-m11",
+        "v2-hall-m12",
+        "v2-goods-m02",
+        "v2-goods-m03",
+        "v2-goods-m06",
+        "v2-goods-m07",
+        "v2-goods-m09",
+        "v2-goods-m11",
+        "v2-study-m01",
+        "v2-study-m02",
+        "v2-study-m04",
+        "v2-study-m05",
+        "v2-study-m06",
+        "v2-study-m07",
+        "v2-study-m08",
+        "v2-study-m10",
+        "v2-study-m11",
+        "v2-study-r04",
+        "v2-transport-m01",
+        "v2-transport-m02",
+        "v2-transport-m03",
+        "v2-transport-m04",
+        "v2-transport-m05",
+        "v2-transport-m06",
+        "v2-transport-m07",
+        "v2-transport-m09",
+        "v2-transport-m10",
+        "v2-transport-m11",
+        "v2-transport-m12",
+        "v2-other-m01",
+        "v2-other-m02",
+        "v2-other-m03",
+        "v2-other-m04",
+        "v2-other-m05",
+        "v2-other-m06",
+        "v2-other-m07",
+        "v2-other-m08",
+        "v2-other-m09",
+        "v2-other-m10",
+        "v2-other-m11",
+        "v2-other-m12"
+      ],
+      "gates": {
+        "hall": {
+          "precision": false,
+          "recall": false
+        },
+        "goods": {
+          "precision": true,
+          "recall": false
+        },
+        "study": {
+          "precision": false,
+          "recall": false
+        },
+        "transport": {
+          "precision": true,
+          "recall": false
+        },
+        "other": {
+          "precision": false,
+          "recall": false
+        }
+      },
+      "falsePositiveRate": 0.011111111111111112
+    },
+    "iteration-18-language-corpus": {
+      "sourceSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+      "cases": 150,
+      "byKind": {
+        "hall": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 0,
+          "fp": 0,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        "goods": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 6,
+          "fp": 0,
+          "precision": 1,
+          "recall": 0.5,
+          "falsePositiveRate": 0
+        },
+        "study": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 4,
+          "fp": 0,
+          "precision": 1,
+          "recall": 0.3333333333333333,
+          "falsePositiveRate": 0
+        },
+        "transport": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 1,
+          "fp": 0,
+          "precision": 1,
+          "recall": 0.08333333333333333,
+          "falsePositiveRate": 0
+        },
+        "other": {
+          "positive": 12,
+          "negative": 18,
+          "tp": 0,
+          "fp": 0,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        }
+      },
+      "failures": [
+        "v2-hall-m01",
+        "v2-hall-m02",
+        "v2-hall-m03",
+        "v2-hall-m04",
+        "v2-hall-m05",
+        "v2-hall-m06",
+        "v2-hall-m07",
+        "v2-hall-m08",
+        "v2-hall-m09",
+        "v2-hall-m10",
+        "v2-hall-m11",
+        "v2-hall-m12",
+        "v2-goods-m02",
+        "v2-goods-m03",
+        "v2-goods-m06",
+        "v2-goods-m07",
+        "v2-goods-m09",
+        "v2-goods-m11",
+        "v2-study-m02",
+        "v2-study-m04",
+        "v2-study-m05",
+        "v2-study-m06",
+        "v2-study-m07",
+        "v2-study-m08",
+        "v2-study-m10",
+        "v2-study-m11",
+        "v2-transport-m01",
+        "v2-transport-m02",
+        "v2-transport-m03",
+        "v2-transport-m04",
+        "v2-transport-m05",
+        "v2-transport-m06",
+        "v2-transport-m07",
+        "v2-transport-m09",
+        "v2-transport-m10",
+        "v2-transport-m11",
+        "v2-transport-m12",
+        "v2-other-m01",
+        "v2-other-m02",
+        "v2-other-m03",
+        "v2-other-m04",
+        "v2-other-m05",
+        "v2-other-m06",
+        "v2-other-m07",
+        "v2-other-m08",
+        "v2-other-m09",
+        "v2-other-m10",
+        "v2-other-m11",
+        "v2-other-m12"
+      ],
+      "gates": {
+        "hall": {
+          "precision": false,
+          "recall": false
+        },
+        "goods": {
+          "precision": true,
+          "recall": false
+        },
+        "study": {
+          "precision": true,
+          "recall": false
+        },
+        "transport": {
+          "precision": true,
+          "recall": false
+        },
+        "other": {
+          "precision": false,
+          "recall": false
+        }
+      },
+      "falsePositiveRate": 0
+    }
+  },
+  "verification": {
+    "matchingTests": 165,
+    "unitTests": 10,
+    "managementTests": 22,
+    "typecheck": "pass",
+    "targetedLint": "pass",
+    "isolatedBuild": "pass",
+    "api": {
+      "students": 500,
+      "requests": 891,
+      "failures": 0,
+      "totalMs": 19887.007536,
+      "p50ms": 60.12377500000002,
+      "p95ms": 102.54789900000014,
+      "maxMs": 2988.0160490000017,
+      "method": "Actual authenticated endpoint and pagination compared with public-input engine predictions for every archived student; restricted MySQL replay"
+    },
+    "lifecycle": {
+      "schema": "nodeust_matchstudy_767aa33b",
+      "checks": [
+        "unauthenticated rejected",
+        "untrusted identity headers rejected",
+        "post creation appears immediately across route bundles, including overlapping GET",
+        "self excluded",
+        "nonowner edit rejected",
+        "price edit removes incompatible result immediately",
+        "compatible edit restores result immediately",
+        "closed post excluded",
+        "reopened post indexed immediately",
+        "suspended account hidden and access denied",
+        "reactivated account eligible immediately",
+        "peer-side block excludes candidate",
+        "blocked conversation excludes candidate",
+        "explicit expired trip excluded",
+        "missing price appears only when possible results requested",
+        "removed result excluded",
+        "closed own request no longer drives matching"
+      ],
+      "passed": 17,
+      "method": "Actual production-build HTTP writes/reads; explicit block fixtures written only into restricted test schema"
+    },
+    "isolatedBuildId": "6-uikZQr-_2T_iQGDlFcg",
+    "buildSourceSha256": {
+      "lib/match/engine.ts": "bd4501fd898c154fcb0cd516a49454050f760f3776b04df66e7cd8eb8fe6af51",
+      "lib/match/cache-state.ts": "aa84bc9f7e31a713688177e1ba3ed326e057a5dc5f7ff78769df834ebade4cbf",
+      "lib/match/semantic-schema.ts": "185a9c5e676de734eb4800e465b9a68d7ede85d7b02382e435f8aaeb1b1301f1",
+      "lib/match/types.ts": "556053dafeff4ecfb049187f44e0f45b0ac3b88442da0aac3d53dacf5b8ab50c",
+      "lib/match/service.ts": "533d25e5894d34ff5bf9e6410d10909368b532319f0870d2129d17daf21d39ea",
+      "lib/match/constraints.ts": "7567732fc7b1ccce5d091f2462522a7d3f4300d7e034940067e0474296a22c13",
+      "lib/match/housing-goods.ts": "dbbbf19093ca8d2b520ab0c5d09ef176947eebd53d7b12af65d711ff63e1ae87",
+      "lib/match/text.ts": "ddce98766f7b8c2a987dcc8bf16ba897d84ee58b751c7598dc6896347f26ca6e",
+      "lib/match/mobility-study.ts": "a1652830ed2681aca6bb4d38c1ffba5a64c8f9c99034c88b549aae7a3db57ae2"
+    },
+    "browser": {
+      "roles": 500,
+      "passed": 500,
+      "mobile": 250,
+      "desktop": 250,
+      "failures": [],
+      "representativeInteractions": [
+        {
+          "studentId": "student-052",
+          "kind": "other",
+          "checks": [
+            "actual-next-page",
+            "independent-category-and-page-reset",
+            "detail-navigation-id-title-body-and-back",
+            "possible-toggle-actual-pagination-missing-details",
+            "explore-search-does-not-filter-matches"
+          ],
+          "passed": true
+        },
+        {
+          "studentId": "student-167",
+          "kind": "transport",
+          "checks": [
+            "actual-next-page",
+            "independent-category-and-page-reset",
+            "detail-navigation-id-title-body-and-back",
+            "possible-toggle-actual-pagination-missing-details",
+            "explore-search-does-not-filter-matches"
+          ],
+          "passed": true
+        },
+        {
+          "studentId": "student-190",
+          "kind": "hall",
+          "checks": [
+            "actual-next-page",
+            "independent-category-and-page-reset",
+            "detail-navigation-id-title-body-and-back",
+            "possible-toggle-actual-pagination-missing-details",
+            "explore-search-does-not-filter-matches"
+          ],
+          "passed": true
+        },
+        {
+          "studentId": "student-280",
+          "kind": "goods",
+          "checks": [
+            "actual-next-page",
+            "independent-category-and-page-reset",
+            "detail-navigation-id-title-body-and-back",
+            "possible-toggle-actual-pagination-missing-details",
+            "explore-search-does-not-filter-matches"
+          ],
+          "passed": true
+        },
+        {
+          "studentId": "student-479",
+          "kind": "study",
+          "checks": [
+            "actual-next-page",
+            "independent-category-and-page-reset",
+            "detail-navigation-id-title-body-and-back",
+            "possible-toggle-actual-pagination-missing-details",
+            "explore-search-does-not-filter-matches"
+          ],
+          "passed": true
+        }
+      ],
+      "totalMs": 253794.05687,
+      "renderedFirstPageCards": 9402,
+      "apiErrors": 0,
+      "runtimeErrors": 0,
+      "cancelledResponseBodies": 0,
+      "versions": [
+        "reciprocal-intents-v5"
+      ],
+      "method": "Real authenticated isolated API; no network mocks. For every role, ordered API IDs are compared with the frozen predictions and each corresponding rendered card is checked against the archived complete title, body, own-post link and confidence; displayed totals and document/card overflow are checked. Representative detail navigation confirms the candidate ID in the actual route. Candidate IDs are not exposed as DOM attributes in this build."
+    },
+    "postBuildExperimentalChange": "Added evidence-only currency validation in the unintegrated semantic module; all 165 matching tests, lint and types pass after this change. Application matching code is unchanged from the isolated build.",
+    "finalExperimentalSchemaSha256": "965c824066cec9c000792e4a5dbd223bf70fad82067f9a763217d6df61d4026f"
+  },
+  "limitations": [
+    "Original synthetic corpus and validation-v2 are exposed development sets.",
+    "The semantic extractor is experimental and not connected to production.",
+    "Currency not explicitly specified remains unknown pending product policy.",
+    "A new frozen independent validation and current integration/rollback checks are required before deployment."
+  ],
+  "latestSemanticDiagnostic": {
+    "trial": "iteration-16-core-facts",
+    "method": "Qwen3.5 cold per-post extraction; required nullable core facts and exact public source references",
+    "posts": 10,
+    "invalid": 2,
+    "correctHighPairs": 0,
+    "pairs": 5,
+    "meanMs": 109059.52656470002,
+    "finalValidatorReplay": {
+      "method": "Offline revalidation of the exact frozen iteration-16 outputs; no new inference and no alteration of frozen trial results",
+      "schemaSha256": "965c824066cec9c000792e4a5dbd223bf70fad82067f9a763217d6df61d4026f",
+      "posts": 10,
+      "invalid": 6,
+      "rows": [
+        {
+          "id": "v2-hall-m01-a",
+          "originalOk": true,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "id": "v2-hall-m01-b",
+          "originalOk": true,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "id": "v2-goods-m01-a",
+          "originalOk": false,
+          "ok": false,
+          "errors": [
+            "intent-0:invalid-time-interval"
+          ]
+        },
+        {
+          "id": "v2-goods-m01-b",
+          "originalOk": false,
+          "ok": false,
+          "errors": [
+            "intent-0:number-not-in-evidence:quantity"
+          ]
+        },
+        {
+          "id": "v2-study-m01-a",
+          "originalOk": true,
+          "ok": false,
+          "errors": [
+            "intent-0:currency-not-in-evidence"
+          ]
+        },
+        {
+          "id": "v2-study-m01-b",
+          "originalOk": true,
+          "ok": false,
+          "errors": [
+            "intent-0:currency-not-in-evidence"
+          ]
+        },
+        {
+          "id": "v2-transport-m01-a",
+          "originalOk": true,
+          "ok": false,
+          "errors": [
+            "intent-0:currency-not-in-evidence",
+            "intent-1:currency-not-in-evidence"
+          ]
+        },
+        {
+          "id": "v2-transport-m01-b",
+          "originalOk": true,
+          "ok": false,
+          "errors": [
+            "intent-0:currency-not-in-evidence"
+          ]
+        },
+        {
+          "id": "v2-other-m01-a",
+          "originalOk": true,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "id": "v2-other-m01-b",
+          "originalOk": true,
+          "ok": true,
+          "errors": []
+        }
+      ]
+    },
+    "interpretation": "Failed positive-only diagnostic: 0/5 correct high pairs. Literal-reference validity improved but semantic errors remained: wrong clock minutes, ungrounded counts/currency, inconsistent course identity, wrong taxi role, and redundant unresolved conditions. No precision estimate or deployment acceptance claim."
+  },
+  "selectedCheckpoint": {
+    "algorithm": "reciprocal-intents-v5",
+    "mode": "deterministic_rules_without_model_inference",
+    "branch": "feat/tencent-node-mysql",
+    "deployment": "not_deployed",
+    "acceptance": "general_language_recall_gates_still_failed"
+  }
+}

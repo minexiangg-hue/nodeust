@@ -177,7 +177,11 @@ function communication(text: string): string | undefined {
   ] as const;
   const specified = languages.filter(([, re]) => {
     const occurrences = [...t.matchAll(new RegExp(re.source, 'g'))];
-    return occurrences.some(m => !/(?:\b(?:no|not|except|without|cannot(?: communicate)?(?: in)?)\s+|听不懂|聽唔明|不(?:用|要|会|會)|唔(?:用|要|識)|非)\s*$/.test(t.slice(Math.max(0, m.index! - 18), m.index)));
+    return occurrences.some(m => {
+      const before = t.slice(Math.max(0, m.index! - 100), m.index);
+      const denied = /(?:\b(?:no|not|except|without)\s+|\b(?:cannot|can'?t|couldn'?t|do not|don'?t)\s+(?:(?:communicate|speak|teach|tutor|explain|understand|follow|use|learn|study)(?:\s+(?:fluently|well))?\s+)?(?:(?:in|using)\s+)?|听不懂|聽唔明|不(?:用|要|会|會)|唔(?:用|要|識)|非)\s*$/.test(before);
+      return !denied;
+    });
   }).map(([name]) => name);
   return specified.length ? unique(specified).sort().join('|') : undefined;
 }
@@ -193,7 +197,7 @@ function studySide(text: string): MatchIntent['side'] | undefined {
 }
 function studyEntities(text: string): { entity: string; start: number; end: number }[] {
   const courses = [...text.matchAll(/\b([A-Za-z]{2,8})\s*[-_]?\s*(\d{3,5}[A-Za-z]?)\b(?![-/]\d)/g)]
-    .filter(m => !['HKD', 'USD', 'SEPT', 'YEAR', 'HALL', 'ROOM', 'BUS', 'FLIGHT', 'ON', 'AT', 'IN', 'FROM', 'UNTIL', 'BEFORE', 'AFTER'].includes(m[1].toUpperCase()))
+    .filter(m => !['HKD', 'USD', 'JAN', 'JANUARY', 'FEB', 'FEBRUARY', 'MAR', 'MARCH', 'APR', 'APRIL', 'MAY', 'JUN', 'JUNE', 'JUL', 'JULY', 'AUG', 'AUGUST', 'SEP', 'SEPT', 'SEPTEMBER', 'OCT', 'OCTOBER', 'NOV', 'NOVEMBER', 'DEC', 'DECEMBER', 'YEAR', 'HALL', 'ROOM', 'BUS', 'FLIGHT', 'ON', 'AT', 'IN', 'FROM', 'UNTIL', 'BEFORE', 'AFTER'].includes(m[1].toUpperCase()))
     .map(m => ({ entity: `${m[1]}${m[2]}`.toUpperCase(), start: m.index!, end: m.index! + m[0].length }));
   if (courses.length) return courses;
   const topics: [string, RegExp][] = [

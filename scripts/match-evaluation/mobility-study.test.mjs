@@ -1,4 +1,4 @@
-// Parser-owned regression cases. Independently authored; never reads the blind holdout.
+// Parser regression cases. Includes development failures; never acceptance evidence.
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { compareIntents } from '../../lib/match/engine.ts';
@@ -220,4 +220,22 @@ test('study compatibility: an unspecified teaching topic cannot imply knowledge 
   const seek = first(parseStudy, 'Need a tutor for COMP2011 pointers in English tomorrow at 19:00.');
   const result=compareIntents(offer,seek,new Date('2026-09-11T10:00:00Z'));
   assert.equal(result?.confidence,'possible');assert.ok(result.missing.includes('topic'));
+});
+
+
+test('study: month-year dates are never separate course identities', () => {
+  for (const month of ['Jan','February','Mar','Apr','May','Jun','July','Aug','Sep','Sept','October','Nov','December']) {
+    const rows = parseStudy(post(`Can teach COMP2012 in English for free online, 16 ${month} 2027 at 14:00.`));
+    assert.deepEqual([...new Set(rows.map(row => row.entity))], ['COMP2012'], month);
+  }
+});
+test('study: explicit inability with a language verb is not an accepted language', () => {
+  for (const phrase of ['cannot follow English','cannot teach in English',"can't understand English",'do not speak English',"don't communicate in English"]) {
+    const row = first(parseStudy, `Need a tutor for COMP2012. Cantonese only; I ${phrase}. Tomorrow at 14:00 on Zoom.`);
+    assert.equal(row.communication, 'cantonese', phrase);
+  }
+});
+test('study: a negated language does not erase a separately accepted one', () => {
+  const row = first(parseStudy, 'Can teach COMP2012 in English or Mandarin, but cannot teach in Cantonese. Tomorrow at 14:00 on Zoom.');
+  assert.equal(row.communication, 'english|mandarin');
 });

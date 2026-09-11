@@ -888,7 +888,8 @@ function additionalGoodsConstraints(text: string, post: MatchPost) {
     priceBasis,
     currency: /\busd\b|us\s*\$|美元|美金/.test(text) ? 'USD'
       : /\b(?:cny|rmb)\b|人民币|人民幣/.test(text) ? 'CNY'
-      : /\beur\b|€|欧元|歐元/.test(text) ? 'EUR' : 'HKD',
+      : /\beur\b|€|欧元|歐元/.test(text) ? 'EUR'
+      : /\bhkd\b|hk\s*\$|港币|港幣/.test(text) ? 'HKD' : undefined,
     missing: [
       ...(schedule.ambiguous ? ['handover_time_ambiguous'] : []),
       ...(places.length > 1 ? ['handover_place_ambiguous'] : []),
@@ -1080,4 +1081,15 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
     }
   }
   return results.slice(0, 12);
+}
+
+
+/** Canonicalize an already declared item identity without inventing a post or role. */
+export function canonicalGoodsIdentity(value: string): {entity:string;model?:string} {
+  const text=normalizeText(value).replace(/[_-]+/g,' ');
+  const course=/^(?:textbook[: ]+)?([a-z]{3,5})[ -]?(\d{3,4}[a-z]?)(?: textbook)?$/i.exec(text);
+  if (course && /textbook/i.test(text)) return {entity:`textbook:${course[1].toUpperCase()}${course[2].toUpperCase()}`};
+  const entities=[...new Set(goodsMentions(text).map(item=>item.entity))];
+  const entity=entities.length===1 ? entities[0] : normalizeText(value).trim();
+  return {entity,model:modelConstraint(text,entity)};
 }

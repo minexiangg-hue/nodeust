@@ -108,6 +108,259 @@
       ],
       "validatorPasses": 4,
       "interpretation": "Evidence-first fixed the positive housing pair and removed a false high on the uncertain pair, but called uncertainty a direction conflict with a wrong rationale. Only one of four three-way classifications was correct. Two exposed targeted cases cannot establish accuracy; unequal prompt-cache reuse and concurrent local preparation prevent a fair speed comparison."
+    },
+    {
+      "trial": "iteration-11",
+      "method": "Qwen3.5-4B Q4_K_M direct pair judgment, explicit non-thinking",
+      "fixtureSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+      "pairs": 15,
+      "model": "nodeust-qwen35-4b-q4-k-m",
+      "modelSha256": "4a742444a7106eb33ba5b1ae60ceabaf2d3a960cbe98bcf4ebbf30209dca8c52",
+      "truePositive": 5,
+      "falsePositive": 4,
+      "invalid": 0,
+      "meanMs": 25811.428277600004,
+      "byKind": {
+        "hall": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 1,
+          "invalid": 0,
+          "precision": 0.5,
+          "recall": 1
+        },
+        "goods": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 1,
+          "invalid": 0,
+          "precision": 0.5,
+          "recall": 1
+        },
+        "study": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 1,
+          "invalid": 0,
+          "precision": 0.5,
+          "recall": 1
+        },
+        "transport": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 0,
+          "invalid": 0,
+          "precision": 1,
+          "recall": 1
+        },
+        "other": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 1,
+          "invalid": 0,
+          "precision": 0.5,
+          "recall": 1
+        }
+      },
+      "interpretation": "Failed exposed development pilot; the model still invents satisfaction of missing or conflicting conditions. Literal quotation errors also reduce ledger coverage. These are not release or generalization results."
+    },
+    {
+      "trial": "iteration-13-ledger",
+      "method": "Qwen3.5-4B Q4_K_M six-check literal-evidence ledger",
+      "fixtureSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+      "pairs": 15,
+      "model": "nodeust-qwen35-4b-q4-k-m",
+      "modelSha256": "4a742444a7106eb33ba5b1ae60ceabaf2d3a960cbe98bcf4ebbf30209dca8c52",
+      "truePositive": 3,
+      "falsePositive": 1,
+      "invalid": 7,
+      "meanMs": 48847.33150746666,
+      "byKind": {
+        "hall": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 1,
+          "invalid": 1,
+          "precision": 0.5,
+          "recall": 1
+        },
+        "goods": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 0,
+          "invalid": 0,
+          "precision": 1,
+          "recall": 1
+        },
+        "study": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 0,
+          "fp": 0,
+          "invalid": 2,
+          "precision": null,
+          "recall": 0
+        },
+        "transport": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 0,
+          "fp": 0,
+          "invalid": 3,
+          "precision": null,
+          "recall": 0
+        },
+        "other": {
+          "positives": 1,
+          "negatives": 2,
+          "tp": 1,
+          "fp": 0,
+          "invalid": 1,
+          "precision": 1,
+          "recall": 1
+        }
+      },
+      "interpretation": "Failed exposed development pilot; the model still invents satisfaction of missing or conflicting conditions. Literal quotation errors also reduce ledger coverage. These are not release or generalization results."
+    },
+    {
+      "trial": "iteration-14-cache",
+      "method": "Cold/cached/cold literal-evidence ledger diagnostic",
+      "fixtureSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+      "sameRawOutput": false,
+      "sameParsedOutput": false,
+      "sameDecision": false,
+      "rows": [
+        {
+          "id": "v2-hall-m01",
+          "expected": "match",
+          "cachePrompt": false,
+          "decision": "compatible",
+          "ms": 105467.767983
+        },
+        {
+          "id": "v2-hall-r01",
+          "expected": "reject",
+          "cachePrompt": true,
+          "decision": "compatible",
+          "ms": 42618.76126099999
+        },
+        {
+          "id": "v2-hall-r01",
+          "expected": "reject",
+          "cachePrompt": false,
+          "decision": "conflict",
+          "ms": 91113.726661
+        }
+      ],
+      "interpretation": "The same rejected housing pair was incorrectly compatible with prefix reuse but conflict after full recomputation. This demonstrates configuration sensitivity, not proof of a specific runtime bug. Later validation disables prompt reuse."
+    },
+    {
+      "trial": "iteration-15-extraction-refs",
+      "method": "Qwen3.5 cold single-post extraction with evidence source references; original optional core schema",
+      "posts": 10,
+      "invalid": 8,
+      "correctHighPairs": 0,
+      "pairs": 5,
+      "meanMs": 73937.4058202,
+      "interpretation": "Failed positive-only extraction diagnostic. Hall direction/period/rooms were read correctly, but unrepresented permissions, copied extra-condition paraphrases, skipped optional fields and an irrelevant passenger seat count blocked results. No precision estimate is possible."
+    },
+    {
+      "trial": "iteration-16-core-facts",
+      "method": "Qwen3.5 cold per-post extraction; required nullable core facts and exact public source references",
+      "posts": 10,
+      "invalid": 2,
+      "correctHighPairs": 0,
+      "pairs": 5,
+      "meanMs": 109059.52656470002,
+      "finalValidatorReplay": {
+        "method": "Offline revalidation of the exact frozen iteration-16 outputs; no new inference and no alteration of frozen trial results",
+        "schemaSha256": "965c824066cec9c000792e4a5dbd223bf70fad82067f9a763217d6df61d4026f",
+        "posts": 10,
+        "invalid": 6,
+        "rows": [
+          {
+            "id": "v2-hall-m01-a",
+            "originalOk": true,
+            "ok": true,
+            "errors": []
+          },
+          {
+            "id": "v2-hall-m01-b",
+            "originalOk": true,
+            "ok": true,
+            "errors": []
+          },
+          {
+            "id": "v2-goods-m01-a",
+            "originalOk": false,
+            "ok": false,
+            "errors": [
+              "intent-0:invalid-time-interval"
+            ]
+          },
+          {
+            "id": "v2-goods-m01-b",
+            "originalOk": false,
+            "ok": false,
+            "errors": [
+              "intent-0:number-not-in-evidence:quantity"
+            ]
+          },
+          {
+            "id": "v2-study-m01-a",
+            "originalOk": true,
+            "ok": false,
+            "errors": [
+              "intent-0:currency-not-in-evidence"
+            ]
+          },
+          {
+            "id": "v2-study-m01-b",
+            "originalOk": true,
+            "ok": false,
+            "errors": [
+              "intent-0:currency-not-in-evidence"
+            ]
+          },
+          {
+            "id": "v2-transport-m01-a",
+            "originalOk": true,
+            "ok": false,
+            "errors": [
+              "intent-0:currency-not-in-evidence",
+              "intent-1:currency-not-in-evidence"
+            ]
+          },
+          {
+            "id": "v2-transport-m01-b",
+            "originalOk": true,
+            "ok": false,
+            "errors": [
+              "intent-0:currency-not-in-evidence"
+            ]
+          },
+          {
+            "id": "v2-other-m01-a",
+            "originalOk": true,
+            "ok": true,
+            "errors": []
+          },
+          {
+            "id": "v2-other-m01-b",
+            "originalOk": true,
+            "ok": true,
+            "errors": []
+          }
+        ]
+      },
+      "interpretation": "Failed positive-only diagnostic: 0/5 correct high pairs. Literal-reference validity improved but semantic errors remained: wrong clock minutes, ungrounded counts/currency, inconsistent course identity, wrong taxi role, and redundant unresolved conditions. No precision estimate or deployment acceptance claim."
     }
   ]
 }

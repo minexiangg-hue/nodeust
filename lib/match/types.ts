@@ -1,3 +1,5 @@
+import type { Money } from './constraints.ts';
+
 /** Public post content only. Owner IDs are used by the server for exclusion, never extraction. */
 export type MatchPost = {
   id: string;
@@ -32,7 +34,12 @@ export type MatchIntent = {
   wantedRoom?: string;
   wantedRooms?: string[];
   eligibility?: string;
+  /** Public author claims, not verification against university records. */
+  allocation?: 'confirmed' | 'pending' | 'denied';
+  exchangeEligibility?: 'eligible' | 'ineligible' | 'pending';
   price?: number;
+  /** Explicit lesson/travel charge or budget; no implied free service. */
+  fee?: Money;
   currency?: string;
   model?: string;
   condition?: string;
@@ -42,6 +49,12 @@ export type MatchIntent = {
   priceBasis?: 'unit' | 'total';
   skill?: string;
   requiredSkill?: string;
+  equipment?: string[];
+  requiredEquipment?: string[];
+  luggage?: number;
+  luggageKind?: 'backpack' | 'suitcase' | 'bag';
+  luggageLimit?: number;
+  luggageLimitKind?: 'backpack' | 'suitcase' | 'any';
   communication?: string;
   topics?: string[];
   requiredTopics?: string[];

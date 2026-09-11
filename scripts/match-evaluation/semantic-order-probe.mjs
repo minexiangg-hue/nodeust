@@ -25,6 +25,7 @@ export function buildSemanticOrderProbePlan(fixture, options = {}) {
   const commonOptions = {
     now: fixture.now, endpoint: options.endpoint, model: options.model, modelSha256: options.modelSha256,
     maxTokens: options.maxTokens ?? 650, timeoutMs: options.timeoutMs ?? 240000,
+    enableThinking: options.enableThinking,
   };
   const entries = selected.flatMap(item => orders.map(outputOrder => {
     const a = publicPost(item.a), b = publicPost(item.b);
@@ -38,10 +39,13 @@ async function main() {
   const args = process.argv.slice(2);
   if (args.some(arg => arg !== '--dry-run')) throw new Error('Only --dry-run is supported; output may be set with MATCH_EVAL_OUTPUT');
   const raw = readFileSync(fixturePath, 'utf8');
+  const thinking = process.env.MATCH_SEMANTIC_ENABLE_THINKING;
+  if (thinking !== undefined && !['true', 'false'].includes(thinking)) throw new Error('MATCH_SEMANTIC_ENABLE_THINKING must be true or false');
   const plan = buildSemanticOrderProbePlan(JSON.parse(raw), {
     endpoint: process.env.MATCH_SEMANTIC_ENDPOINT,
     model: process.env.MATCH_SEMANTIC_MODEL,
     modelSha256: process.env.MATCH_SEMANTIC_MODEL_SHA256,
+    enableThinking: thinking === undefined ? undefined : thinking === 'true',
     maxTokens: process.env.MATCH_SEMANTIC_MAX_TOKENS === undefined ? undefined : Number(process.env.MATCH_SEMANTIC_MAX_TOKENS),
     timeoutMs: process.env.MATCH_SEMANTIC_TIMEOUT_MS === undefined ? undefined : Number(process.env.MATCH_SEMANTIC_TIMEOUT_MS),
   });
@@ -61,7 +65,7 @@ async function main() {
       sequence: index + 1, pairId: entry.pairId, expected: entry.expected, outputOrder: entry.outputOrder,
       key: entry.built.key, endpoint: entry.built.endpoint, model: entry.built.model, modelSha256: entry.built.modelSha256,
       promptSha256: entry.built.promptSha256, schemaSha256: entry.built.schemaSha256,
-      generation: { temperature: entry.built.request.temperature, seed: entry.built.request.seed, maxTokens: entry.built.request.max_tokens, cachePrompt: entry.built.request.cache_prompt, timeoutMs: entry.built.timeoutMs },
+      generation: { temperature: entry.built.request.temperature, seed: entry.built.request.seed, maxTokens: entry.built.request.max_tokens, cachePrompt: entry.built.request.cache_prompt, timeoutMs: entry.built.timeoutMs, chatTemplateKwargs: entry.built.request.chat_template_kwargs },
     })),
   };
   if (args.includes('--dry-run')) {

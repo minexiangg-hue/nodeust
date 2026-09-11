@@ -4,6 +4,18 @@ import { performance } from 'node:perf_hooks';
 import { extractSemanticPost, SEMANTIC_MODEL, SEMANTIC_MODEL_SHA256 } from './semantic-client.mjs';
 import { comparePosts } from '../../lib/match/engine.ts';
 
+const thinking = process.env.MATCH_SEMANTIC_ENABLE_THINKING;
+if (thinking !== undefined && !['true','false'].includes(thinking)) throw new Error('MATCH_SEMANTIC_ENABLE_THINKING must be true or false');
+const cachePrompt = process.env.MATCH_SEMANTIC_CACHE_PROMPT;
+if (cachePrompt !== undefined && !['true','false'].includes(cachePrompt)) throw new Error('MATCH_SEMANTIC_CACHE_PROMPT must be true or false');
+const runtime = {
+  endpoint:process.env.MATCH_SEMANTIC_ENDPOINT,
+  model:process.env.MATCH_SEMANTIC_MODEL || SEMANTIC_MODEL,
+  modelSha256:process.env.MATCH_SEMANTIC_MODEL_SHA256 || SEMANTIC_MODEL_SHA256,
+  enableThinking:thinking === undefined ? undefined : thinking === 'true',
+  cachePrompt:cachePrompt === undefined ? undefined : cachePrompt === 'true',
+  format:process.env.MATCH_SEMANTIC_FORMAT || 'schema',
+};
 const fixturePath = process.env.MATCH_HOLDOUT || 'scripts/match-evaluation/validation-v2.json';
 const raw = readFileSync(fixturePath, 'utf8');
 const fixture = JSON.parse(raw);
@@ -14,8 +26,8 @@ const pilot = process.env.MATCH_SEMANTIC_PILOT === '1';
 const selected = pilot ? kinds.map(kind => cases.find(row => row.kind === kind)).filter(Boolean) : cases;
 const output = process.env.MATCH_EVAL_OUTPUT || 'reports/match-iteration-2026-09-11/iteration-04';
 mkdirSync(output, { recursive: true });
-writeFileSync(`${output}/semantic-posts.jsonl`, '');
-writeFileSync(`${output}/semantic-pairs.jsonl`, '');
+writeFileSync(`${output}/semantic-posts.jsonl`, '', {flag:'wx'});
+writeFileSync(`${output}/semantic-pairs.jsonl`, '', {flag:'wx'});
 const started = performance.now();
 const rows = [];
 let extractionCalls = 0, cacheHits = 0, invalid = 0;
@@ -32,7 +44,7 @@ for (const item of selected) {
       roomType: source.roomType, genderEligibility: source.genderEligibility, availableFrom: source.availableFrom,
     };
     const result = await extractSemanticPost(post, {
-      endpoint: process.env.MATCH_SEMANTIC_ENDPOINT,
+      ...runtime,
       cacheDirectory: 'reports/match-iteration-2026-09-11/artifacts/semantic-cache',
     });
     extractionCalls++;
@@ -53,7 +65,7 @@ for (const item of selected) {
   console.log(JSON.stringify({ pair: item.id, expected: item.expected, predicted: predicted?.confidence || 'none', correct }));
   const summary = {
     status: pilot ? 'development_pilot_not_acceptance_evidence' : 'development_evaluation',
-    model: SEMANTIC_MODEL, modelSha256: SEMANTIC_MODEL_SHA256,
+    model:runtime.model, modelSha256:runtime.modelSha256, format:runtime.format, enableThinking:runtime.enableThinking, cachePrompt:runtime.cachePrompt,
     fixturePath, fixtureSha256: createHash('sha256').update(raw).digest('hex'),
     selection: pilot ? 'First pair in each category, selected by order before inference' : 'All fixture pairs',
     selectedCases: selected.length, evaluatedCases: rows.length, extractionCalls, cacheHits, invalid,

@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { semanticPublicInput } from '../../lib/match/semantic-schema.ts';
 import { SEMANTIC_MODEL, SEMANTIC_MODEL_SHA256 } from './semantic-client.mjs';
+import { SEMANTIC_LEDGER_SCHEMA, SEMANTIC_LEDGER_PROMPT, SEMANTIC_LEDGER_REFERENCE_SCHEMA, SEMANTIC_LEDGER_REFERENCE_PROMPT, semanticLedgerReferenceInput, validateSemanticLedger } from './semantic-ledger.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const evidenceSchema = {
@@ -78,18 +79,28 @@ export function buildSemanticPairRequest(a, b, options = {}) {
   const modelSha256 = options.modelSha256 || SEMANTIC_MODEL_SHA256;
   if (typeof model !== 'string' || !model.trim() || model.length > 200) throw new TypeError('Invalid model identifier');
   if (!/^[a-f0-9]{64}$/.test(modelSha256)) throw new TypeError('A lowercase SHA-256 model digest is required');
-  const maxTokens = options.maxTokens ?? 650;
-  const timeoutMs = options.timeoutMs ?? 240000;
+  const protocol = options.protocol ?? 'direct';
+  if (!['direct', 'ledger', 'ledger-refs'].includes(protocol)) throw new TypeError('Invalid semantic protocol');
+  const maxTokens = options.maxTokens ?? (protocol !== 'direct' ? 1600 : 650);
+  const timeoutMs = options.timeoutMs ?? (protocol !== 'direct' ? 360000 : 240000);
   if (!Number.isInteger(maxTokens) || maxTokens < 1 || maxTokens > 4096) throw new RangeError('Invalid generation token limit');
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 900000) throw new RangeError('Invalid local request timeout');
-  const outputOrder = options.outputOrder ?? 'decision-first';
+  const outputOrder = options.outputOrder ?? (protocol === 'direct' ? 'decision-first' : 'evidence-first');
+  if (protocol !== 'direct' && outputOrder !== 'evidence-first') throw new TypeError('Ledger protocols require evidence-first ordering');
+  if (options.cachePrompt !== undefined && typeof options.cachePrompt !== 'boolean') throw new TypeError('cachePrompt must be boolean');
   if (!['decision-first', 'evidence-first'].includes(outputOrder)) throw new TypeError('Invalid semantic pair output order');
-  const prompt = outputOrder === 'evidence-first' ? SEMANTIC_PAIR_EVIDENCE_FIRST_PROMPT : SEMANTIC_PAIR_SYSTEM_PROMPT;
-  const schema = outputOrder === 'evidence-first' ? SEMANTIC_PAIR_EVIDENCE_FIRST_SCHEMA : SEMANTIC_PAIR_SCHEMA;
-  const responseFormat = outputOrder === 'decision-first' ? SEMANTIC_PAIR_RESPONSE_FORMAT : {
+  if (options.enableThinking !== undefined && typeof options.enableThinking !== 'boolean')
+    throw new TypeError('enableThinking must be a boolean when supplied');
+  if (options.reasoningBudget !== undefined && (!Number.isInteger(options.reasoningBudget) || options.reasoningBudget < 0 || options.reasoningBudget > 2048))
+    throw new TypeError('reasoningBudget must be an integer from 0 to 2048');
+  if (options.reasoningBudget > 0 && options.enableThinking !== true) throw new TypeError('A positive reasoning budget requires thinking enabled');
+  const prompt = protocol === 'ledger-refs' ? SEMANTIC_LEDGER_REFERENCE_PROMPT : protocol === 'ledger' ? SEMANTIC_LEDGER_PROMPT : outputOrder === 'evidence-first' ? SEMANTIC_PAIR_EVIDENCE_FIRST_PROMPT : SEMANTIC_PAIR_SYSTEM_PROMPT;
+  const schema = protocol === 'ledger-refs' ? SEMANTIC_LEDGER_REFERENCE_SCHEMA : protocol === 'ledger' ? SEMANTIC_LEDGER_SCHEMA : outputOrder === 'evidence-first' ? SEMANTIC_PAIR_EVIDENCE_FIRST_SCHEMA : SEMANTIC_PAIR_SCHEMA;
+  const responseFormat = protocol === 'direct' && outputOrder === 'decision-first' ? SEMANTIC_PAIR_RESPONSE_FORMAT : {
     type: 'json_schema', json_schema: { name: 'nodeust_pair_judgment', schema },
   };
-  const publicInput = semanticPairPublicInput(a, b, options.now);
+  const rawInput = semanticPairPublicInput(a, b, options.now);
+  const publicInput = protocol === 'ledger-refs' ? semanticLedgerReferenceInput(a, b, rawInput) : rawInput;
   const request = {
     model,
     messages: [
@@ -97,14 +108,18 @@ export function buildSemanticPairRequest(a, b, options = {}) {
       { role: 'user', content: JSON.stringify({ untrustedPairData: publicInput }) },
     ],
     response_format: responseFormat,
-    temperature: 0, seed: 20260911, max_tokens: maxTokens, cache_prompt: true,
+    temperature: 0, seed: 20260911, max_tokens: maxTokens, cache_prompt: options.cachePrompt ?? true,
+    ...(options.reasoningBudget === undefined ? {} : {reasoning_budget_tokens:options.reasoningBudget}),
+    ...(options.enableThinking === undefined ? {} : { chat_template_kwargs: { enable_thinking: options.enableThinking } }),
   };
   const provenance = {
     endpoint, model, modelSha256, outputOrder,
+    ...(protocol !== 'direct' ? { protocol } : {}),
+    ...(options.enableThinking === undefined ? {} : { chatTemplateKwargs: request.chat_template_kwargs }),
     promptSha256: hash(request.messages[0].content), schemaSha256: hash(JSON.stringify(request.response_format.json_schema.schema)),
   };
   const key = hash(JSON.stringify({ ...provenance, publicInput, request }));
-  return { key, ...provenance, publicInput, request, timeoutMs };
+  return { key, ...provenance, publicInput, request, timeoutMs, generation: {temperature:request.temperature,seed:request.seed,maxTokens:request.max_tokens,cachePrompt:request.cache_prompt,reasoningBudget:request.reasoning_budget_tokens} };
 }
 
 function plainObject(value) {
@@ -174,6 +189,8 @@ export async function judgeSemanticPair(a, b, options = {}) {
       const cached = JSON.parse(await readFile(cachePath, 'utf8'));
       for (const field of ['key', 'endpoint', 'model', 'modelSha256', 'outputOrder', 'promptSha256', 'schemaSha256'])
         if (cached[field] !== metadata[field]) throw new Error('Mismatched pair-judgment cache');
+      for (const field of ['protocol', 'chatTemplateKwargs'])
+        if (JSON.stringify(cached[field]) !== JSON.stringify(metadata[field])) throw new Error('Mismatched pair-judgment cache');
       if (JSON.stringify(cached.publicInput) !== JSON.stringify(metadata.publicInput) || typeof cached.output !== 'string')
         throw new Error('Invalid pair-judgment cache input/output');
       record = { ...cached, cacheHit: true };
@@ -194,6 +211,7 @@ export async function judgeSemanticPair(a, b, options = {}) {
       if (typeof choice?.message?.content !== 'string') throw new Error('Local pair response has no text content');
       record = {
         ...metadata, cacheHit: false, ms: performance.now() - started,
+        reasoningCharacters:typeof choice.message.reasoning_content === 'string' ? choice.message.reasoning_content.length : 0,
         output: choice.message.content, finishReason: choice.finish_reason,
         usage: body.usage ?? null, timings: body.timings ?? null, returnedModel: body.model ?? null,
       };
@@ -210,7 +228,7 @@ export async function judgeSemanticPair(a, b, options = {}) {
     }
   }
   const validation = record.finishReason === 'stop'
-    ? validateSemanticPairResponse(a, b, record.output)
+    ? (built.protocol?.startsWith('ledger') ? validateSemanticLedger(a, b, record.output, built.protocol === 'ledger-refs') : validateSemanticPairResponse(a, b, record.output))
     : { ok: false, errors: [`incomplete-generation:${record.finishReason}`] };
   const result = { ...record, validation };
   await appendLog(logPath, result);

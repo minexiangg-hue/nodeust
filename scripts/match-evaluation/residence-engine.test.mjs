@@ -44,3 +44,15 @@ test('explicitly finished residence periods cannot drive a current housing recom
  const lastYear={...a,term:'academic:2024-2025'};
  assert.equal(compareIntents(lastYear,{...b,term:lastYear.term},now),null);
 });
+
+
+test('denied allocations and ineligible swaps conflict, pending author claims stay possible', () => {
+ const a={kind:'hall',side:'swap',entity:'housing',from:'ug-hall-1',to:'ug-hall-2',room:'double',wantedRoom:'double',term:'fall:2026',eligibility:'male',allocation:'confirmed',exchangeEligibility:'eligible',evidence:['public author claim'],missing:[]};
+ const b={...a,from:'ug-hall-2',to:'ug-hall-1'};
+ const now=new Date('2026-09-11T04:00:00Z');
+ assert.equal(compareIntents(a,b,now)?.confidence,'high');
+ assert.equal(compareIntents(a,{...b,allocation:'pending'},now)?.confidence,'possible');
+ assert.equal(compareIntents(a,{...b,exchangeEligibility:'pending'},now)?.confidence,'possible');
+ assert.equal(compareIntents(a,{...b,allocation:'denied'},now),null);
+ assert.equal(compareIntents(a,{...b,exchangeEligibility:'ineligible'},now),null);
+});

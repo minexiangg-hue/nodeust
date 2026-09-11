@@ -192,3 +192,37 @@ test('order probe fixes the first hall match and uncertain cases without leaking
   assert.throws(() => buildSemanticOrderProbePlan({ now, cases: [] }), /Missing first hall match/);
   assert.equal(fetchGuard.mock.callCount(), 0);
 });
+
+
+test('explicit thinking mode reaches the template and cannot reuse another mode cache key', () => {
+  const base = buildSemanticPairRequest(a, b, { now });
+  const off = buildSemanticPairRequest(a, b, { now, enableThinking: false });
+  const on = buildSemanticPairRequest(a, b, { now, enableThinking: true });
+  assert.equal(Object.hasOwn(base.request, 'chat_template_kwargs'), false);
+  assert.deepEqual(off.request.chat_template_kwargs, { enable_thinking: false });
+  assert.deepEqual(off.chatTemplateKwargs, off.request.chat_template_kwargs);
+  assert.equal(new Set([base.key, off.key, on.key]).size, 3);
+  for (const enableThinking of ['false', 0, null])
+    assert.throws(() => buildSemanticPairRequest(a, b, { now, enableThinking }), /boolean/);
+});
+
+
+test('prompt cache reuse can be disabled for controlled recurrent-model comparisons', () => {
+  const cached = buildSemanticPairRequest(a, b, {now});
+  const uncached = buildSemanticPairRequest(a, b, {now, cachePrompt:false});
+  assert.equal(uncached.request.cache_prompt, false);
+  assert.notEqual(cached.key, uncached.key);
+  assert.throws(() => buildSemanticPairRequest(a, b, {now, cachePrompt:'false'}), /boolean/);
+});
+
+
+test('bounded thinking is explicit in the request and included in cache identity', () => {
+  const ordinary = buildSemanticPairRequest(a,b,{now,enableThinking:true});
+  const bounded = buildSemanticPairRequest(a,b,{now,enableThinking:true,reasoningBudget:512});
+  assert.equal(bounded.request.reasoning_budget_tokens,512);
+  assert.equal(bounded.generation.reasoningBudget,512);
+  assert.notEqual(bounded.key,ordinary.key);
+  assert.throws(() => buildSemanticPairRequest(a,b,{now,enableThinking:false,reasoningBudget:512}), /requires thinking/);
+  for (const reasoningBudget of [-1,0.5,'512',2049])
+    assert.throws(() => buildSemanticPairRequest(a,b,{now,enableThinking:true,reasoningBudget}), /integer/);
+});
