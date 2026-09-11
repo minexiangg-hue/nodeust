@@ -50,3 +50,6 @@ next-env.d.ts
 /reports/*/artifacts/
 /reports/*/logs.zip
 /reports/*/review.html
+
+# Recorded iteration payloads; final summaries and reports remain tracked
+/reports/*/iteration-*/

@@ -1,7 +1,6 @@
 'use client';
 /* oxlint-disable next/no-html-link-for-pages */
 
-import { findReciprocalHousingMatches } from '@/lib/matching';
 import {
   useCallback,
   useEffect,
@@ -22,6 +21,7 @@ import {
   ConversationRow,
   RequestDetail,
   FilterButton,
+  MatchesPanel,
 } from '@/components/community/request-cards';
 import { AnnouncementBoard } from '@/components/community/announcement-board';
 import { FeedbackDialog } from '@/components/community/feedback-dialog';
@@ -40,6 +40,7 @@ import {
   type ChatSession,
   type Announcement,
   type PostPayload,
+  type MatchesResponse,
 } from '@/lib/community-model';
 import {
   sectionFromPath,
@@ -168,6 +169,35 @@ export function PlazaApp({ children }: { children: ReactNode }) {
   >({});
   const [selected, setSelectedItem] = useState<RequestItem | null>(null);
   const [profile, setProfile] = useState<ProfileMember | null>(null);
+  const [matchOptions, setMatchOptions] = useState({
+    kind: 'all' as Category,
+    includePossible: false,
+    page: 0,
+  });
+  const [matchRevision, setMatchRevision] = useState(0);
+  const matchLoadVersion = useRef(0);
+  const [matchView, setMatchView] = useState<{
+    key: string;
+    data: MatchesResponse | null;
+    loading: boolean;
+    error: boolean;
+  }>({ key: '', data: null, loading: true, error: false });
+  const [matchSummary, setMatchSummary] = useState<{
+    memberId: string;
+    highConfidenceCount: number;
+    possibleCount: number;
+    disabled: boolean;
+  } | null>(null);
+  const matchQueryKey = `${profile?.id ?? ''}:${matchOptions.kind}:${matchOptions.includePossible}:${matchOptions.page}:${matchRevision}`;
+  const matchData = matchView.key === matchQueryKey ? matchView.data : null;
+  const matchLoading = matchView.key !== matchQueryKey || matchView.loading;
+  const matchError = matchView.key === matchQueryKey && matchView.error;
+  const matchingDisabled =
+    matchSummary?.memberId === profile?.id && Boolean(matchSummary?.disabled);
+  const matchCount =
+    matchSummary?.memberId === profile?.id && !matchingDisabled
+      ? matchSummary?.highConfidenceCount
+      : undefined;
   const conversationLoad = useRef(0);
   const [conversations, setConversations] = useState<ConversationItem[]>([]);
   const [chatSession, setChatSession] = useState<ChatSession | null>(null);
@@ -362,16 +392,13 @@ export function PlazaApp({ children }: { children: ReactNode }) {
   const selectedLocationItems = selectedLocationId
     ? items.filter((item) => item.locationId === selectedLocationId)
     : [];
-  const matchItems = findReciprocalHousingMatches(items);
   const savedItems = items.filter((item) => savedIds.has(String(item.id)));
   const sectionItems =
-    activeSection === 'matches'
-      ? matchItems
-      : activeSection === 'saved'
-        ? savedItems
-        : filtered.filter(
-            (item) => getCampusLocation(item.locationId)?.group === group,
-          );
+    activeSection === 'saved'
+      ? savedItems
+      : filtered.filter(
+          (item) => getCampusLocation(item.locationId)?.group === group,
+        );
 
   const loadLocationCounts = async () => {
     try {
@@ -600,6 +627,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
         /* Publishing succeeded; retain the draft if storage is unavailable. */
       }
     }
+    setMatchRevision((version) => version + 1);
     await Promise.all([loadPosts(), loadLocationCounts()]);
     delete editorCache.current[routeKey];
     setCreateOpen(false);
@@ -625,6 +653,104 @@ export function PlazaApp({ children }: { children: ReactNode }) {
     }, 0);
     return () => clearTimeout(timer);
   }, []);
+
+  // Matches have their own query, independent of the plaza's bounded feed and filters.
+  // Only the match/home/update views poll; other routes refresh their sidebar count once.
+  useEffect(() => {
+    const memberId = profile?.id;
+    if (!memberId) return;
+    const isMatchPage = activeSection === 'matches';
+    const polling =
+      isMatchPage ||
+      activeSection === 'home' ||
+      activeSection === 'announcements';
+    const version = ++matchLoadVersion.current;
+    let stopped = false;
+    let inFlight = false;
+    let timer: number | undefined;
+    let controller: AbortController | undefined;
+    const current = () => !stopped && version === matchLoadVersion.current;
+    const load = async () => {
+      if (!current() || inFlight || document.visibilityState !== 'visible')
+        return;
+      inFlight = true;
+      controller = new AbortController();
+      if (isMatchPage)
+        setMatchView((previous) => ({
+          key: matchQueryKey,
+          data: previous.key === matchQueryKey ? previous.data : null,
+          loading: true,
+          error: false,
+        }));
+      const params = new URLSearchParams({
+        page: String(isMatchPage ? matchOptions.page : 0),
+      });
+      if (isMatchPage && matchOptions.includePossible)
+        params.set('possible', '1');
+      if (isMatchPage && matchOptions.kind !== 'all')
+        params.set('kind', matchOptions.kind);
+      try {
+        const response = await fetch(`/api/matches?${params}`, {
+          signal: controller.signal,
+          cache: 'no-store',
+        });
+        if (!response.ok) throw new Error('matches-unavailable');
+        const result = (await response.json()) as MatchesResponse;
+        if (!Array.isArray(result.items) || !Array.isArray(result.needsDetails))
+          throw new Error('matches-unavailable');
+        if (!current()) return;
+        setMatchSummary({
+          memberId,
+          highConfidenceCount: result.highConfidenceCount,
+          possibleCount: result.possibleCount,
+          disabled: Boolean(result.disabled),
+        });
+        if (isMatchPage) {
+          setMatchView({
+            key: matchQueryKey,
+            data: result,
+            loading: false,
+            error: false,
+          });
+          // A removed/closed result can make the last page disappear.
+          if (!result.items.length && matchOptions.page > 0)
+            setMatchOptions((previous) => ({
+              ...previous,
+              page: Math.max(0, Math.ceil(result.total / 25) - 1),
+            }));
+        }
+      } catch {
+        if (!current()) return;
+        setMatchSummary(null);
+        if (isMatchPage)
+          setMatchView({
+            key: matchQueryKey,
+            data: null,
+            loading: false,
+            error: true,
+          });
+      } finally {
+        inFlight = false;
+        if (current() && polling && document.visibilityState === 'visible')
+          timer = window.setTimeout(
+            () => void load(),
+            isMatchPage ? 30000 : 60000,
+          );
+      }
+    };
+    const onVisibility = () => {
+      window.clearTimeout(timer);
+      if (document.visibilityState === 'visible') void load();
+    };
+    timer = window.setTimeout(() => void load(), 0);
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      stopped = true;
+      window.clearTimeout(timer);
+      controller?.abort();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [profile?.id, activeSection, matchOptions, matchQueryKey, matchRevision]);
 
   // Lightweight polling so a second browser sees new posts / inbound chats
   // without a manual refresh.
@@ -971,7 +1097,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
       section: 'matches' as const,
       icon: Sparkles,
       label: t.matches,
-      count: matchItems.length,
+      count: matchCount,
     },
     {
       section: 'chats' as const,
@@ -1047,7 +1173,38 @@ export function PlazaApp({ children }: { children: ReactNode }) {
         locale={locale}
         alias={profile?.anonymousAlias}
         unreadAnnouncements={hasUnreadAnnouncements}
+        matchCount={matchCount}
+        matchingDisabled={matchingDisabled}
       />
+    ) : activeSection === 'matches' ? (
+      <>
+        {pageHeading}
+        <MatchesPanel
+          locale={locale}
+          data={matchData}
+          loading={matchLoading}
+          error={matchError}
+          kind={matchOptions.kind}
+          includePossible={matchOptions.includePossible}
+          page={matchOptions.page}
+          onKindChange={(kind) =>
+            setMatchOptions((previous) => ({ ...previous, kind, page: 0 }))
+          }
+          onPossibleChange={(includePossible) =>
+            setMatchOptions((previous) => ({
+              ...previous,
+              includePossible,
+              page: 0,
+            }))
+          }
+          onPageChange={(page) =>
+            setMatchOptions((previous) => ({ ...previous, page }))
+          }
+          onReload={() => setMatchRevision((version) => version + 1)}
+          onOpen={setSelected}
+          onChat={ensureThread}
+        />
+      </>
     ) : activeSection === 'settings' ? (
       <>
         <SettingsPage
@@ -1106,6 +1263,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
             onPostsChanged={() => {
               setSelectedItem(null);
               setMyPostsVersion((v) => v + 1);
+              setMatchRevision((version) => version + 1);
               void loadPosts();
               void loadLocationCounts();
             }}
@@ -1272,35 +1430,44 @@ export function PlazaApp({ children }: { children: ReactNode }) {
             <div className="match-orbit">
               <ArrowLeftRight />
             </div>
-            <Badge>{matchItems.length ? 'MATCH FOUND' : 'MATCHING'}</Badge>
+            <Badge>
+              {localize(locale, 'MY MATCHES', '我的匹配', '我的配對')}
+            </Badge>
             <h3>
-              {matchItems.length
+              {matchingDisabled
                 ? localize(
                     locale,
-                    'Reciprocal housing match found',
-                    '发现双向宿舍匹配',
-                    '發現雙向宿舍配對',
+                    'Matching is temporarily paused',
+                    '匹配暂时暂停',
+                    '配對暫時暫停',
                   )
-                : localize(
-                    locale,
-                    'Checking reciprocal routes',
-                    '正在寻找路线互补需求',
-                    '正在尋找路線互補需求',
-                  )}
+                : matchCount
+                  ? localize(
+                      locale,
+                      `${matchCount} complementary requests`,
+                      `${matchCount} 条互补需求`,
+                      `${matchCount} 則互補需求`,
+                    )
+                  : localize(
+                      locale,
+                      'Find complementary requests',
+                      '寻找互补需求',
+                      '尋找互補需求',
+                    )}
             </h3>
             <p>
-              {matchItems.length
+              {matchingDisabled
                 ? localize(
                     locale,
-                    `${matchItems[0].from} → ${matchItems[0].to} has a reciprocal request.`,
-                    `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
-                    `${matchItems[0].from} → ${matchItems[0].to} 已找到反向需求。`,
+                    'Please check back later. Your posts remain available.',
+                    '请稍后再查看匹配，你的帖子仍可使用。',
+                    '請稍後再查看配對，你的帖子仍可使用。',
                   )
                 : localize(
                     locale,
-                    'New reciprocal routes appear automatically in My matches.',
-                    '有新的互补路线时，会自动出现在“我的匹配”。',
-                    '有新的互補路線時，會自動出現在「我的配對」。',
+                    'Housing, items, study, transport and activities: see which requests fit yours.',
+                    '宿舍、物品、学习、交通和活动，看看哪些需求与你互补。',
+                    '宿舍、物品、學習、交通和活動，看看哪些需求與你互補。',
                   )}
             </p>
             <Button
@@ -1525,6 +1692,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
             key={myPostsVersion}
             locale={locale}
             onChanged={() => {
+              setMatchRevision((version) => version + 1);
               void loadPosts();
               void loadLocationCounts();
             }}
@@ -1723,48 +1891,34 @@ export function PlazaApp({ children }: { children: ReactNode }) {
               <div className="section-empty">
                 <Sparkles />
                 <strong>
-                  {activeSection === 'matches'
+                  {activeSection === 'saved'
                     ? localize(
                         locale,
-                        'No reciprocal housing matches yet',
-                        '暂时没有双向宿舍匹配',
-                        '暫時沒有雙向宿舍配對',
+                        'Nothing saved yet',
+                        '还没有收藏',
+                        '還沒有收藏',
                       )
-                    : activeSection === 'saved'
-                      ? localize(
-                          locale,
-                          'Nothing saved yet',
-                          '还没有收藏',
-                          '還沒有收藏',
-                        )
-                      : localize(
-                          locale,
-                          'No matching requests in this area',
-                          '这个分区暂时没有符合条件的需求',
-                          '這個分區暫時沒有符合條件的需求',
-                        )}
+                    : localize(
+                        locale,
+                        'No matching requests in this area',
+                        '这个分区暂时没有符合条件的需求',
+                        '這個分區暫時沒有符合條件的需求',
+                      )}
                 </strong>
                 <span>
-                  {activeSection === 'matches'
+                  {activeSection === 'saved'
                     ? localize(
                         locale,
-                        'Publish or update a request and NODE will check for reciprocal routes.',
-                        '发布或调整需求后，系统会自动计算路线互补的对象。',
-                        '發佈或調整需求後，系統會自動計算路線互補的對象。',
+                        'Open a request to save it.',
+                        '打开需求详情，即可加入收藏。',
+                        '打開需求詳情，即可加入收藏。',
                       )
-                    : activeSection === 'saved'
-                      ? localize(
-                          locale,
-                          'Open a request to save it.',
-                          '打开需求详情，即可加入收藏。',
-                          '打開需求詳情，即可加入收藏。',
-                        )
-                      : localize(
-                          locale,
-                          'Try another area or clear the filters.',
-                          '切换分区或清除筛选条件后再看看。',
-                          '切換分區或清除篩選條件後再看看。',
-                        )}
+                    : localize(
+                        locale,
+                        'Try another area or clear the filters.',
+                        '切换分区或清除筛选条件后再看看。',
+                        '切換分區或清除篩選條件後再看看。',
+                      )}
                 </span>
               </div>
             )}

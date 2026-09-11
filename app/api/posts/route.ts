@@ -1,3 +1,4 @@
+import { invalidateMatchIndex } from '@/lib/match/cache-state';
 import { and, desc, eq, like, or } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -98,6 +99,7 @@ export async function POST(request: NextRequest) {
         createdAt: now,
         updatedAt: now,
       });
+    invalidateMatchIndex();
     return NextResponse.json(
       { id, status: 'active', anonymousAlias: member.anonymousAlias },
       { status: 201 },

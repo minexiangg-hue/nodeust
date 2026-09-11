@@ -7,7 +7,7 @@ import {
   ArrowUpRight,
   Bell,
   BookOpen,
-  Building2,
+  Sparkles,
   Compass,
   EyeOff,
   Plus,
@@ -23,6 +23,8 @@ export type HomePageProps = {
   alias?: string;
   signedIn?: boolean;
   unreadAnnouncements?: boolean;
+  matchCount?: number;
+  matchingDisabled?: boolean;
 };
 
 export function HomePage({
@@ -30,6 +32,8 @@ export function HomePage({
   alias,
   signedIn = true,
   unreadAnnouncements = false,
+  matchCount,
+  matchingDisabled = false,
 }: HomePageProps) {
   const t = (en: string, cn: string, hk: string) =>
     localize(locale, en, cn, hk);
@@ -252,21 +256,37 @@ export function HomePage({
           </article>
           <article className="home-feature">
             <span className="home-feature-icon home-feature-icon-clay">
-              <Building2 aria-hidden="true" />
+              <Sparkles aria-hidden="true" />
             </span>
             <div>
               <h3>
-                {t(
-                  'Find a housing match',
-                  '寻找合适的宿舍互换',
-                  '尋找合適的宿舍互換',
-                )}
+                <Link
+                  href={
+                    signedIn ? '/matches' : '/__gateway/login?next=/matches'
+                  }
+                  prefetch={signedIn ? undefined : false}
+                >
+                  {matchingDisabled
+                    ? t(
+                        'Matching is temporarily paused',
+                        '匹配暂时暂停',
+                        '配對暫時暫停',
+                      )
+                    : t(
+                        'Find complementary requests',
+                        '寻找互补需求',
+                        '尋找互補需求',
+                      )}
+                  {signedIn && matchCount !== undefined && matchCount > 0 && (
+                    <span className="home-match-count">{matchCount}</span>
+                  )}
+                </Link>
               </h3>
               <p>
                 {t(
-                  'Find someone whose hall preferences fit yours, then follow the official process.',
-                  '认识需求互补的同学，再通过学校正规流程申请调宿。',
-                  '認識需求互補的同學，再透過學校正規流程申請調宿。',
+                  'Housing, items, study, transport and activities. Connect through the details in your requests.',
+                  '宿舍、物品、学习、交通和活动，从具体的需求找到彼此。',
+                  '宿舍、物品、學習、交通和活動，從具體的需求找到彼此。',
                 )}
               </p>
             </div>

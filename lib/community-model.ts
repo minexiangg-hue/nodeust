@@ -164,6 +164,26 @@ export type PostPayload = {
   isMine: boolean;
 };
 
+export type MatchReason = { code: string; values?: string[] };
+export type MatchDetails = {
+  kind: Exclude<Category, 'all'>;
+  confidence: 'high' | 'possible';
+  reasons: MatchReason[];
+  missing: string[];
+  ownPostId: string;
+};
+export type MatchPayload = PostPayload & { match: MatchDetails };
+export type MatchesResponse = {
+  items: MatchPayload[];
+  hasMore: boolean;
+  total: number;
+  highConfidenceCount: number;
+  possibleCount: number;
+  ownPostCount: number;
+  needsDetails: { id: string; title: string; missing: string[] }[];
+  disabled?: boolean;
+};
+
 // The feed is server-authoritative: demo placeholders are gone and everything
 // rendered comes from GET /api/posts (or a freshly published post).
 export function mapPost(payload: PostPayload): RequestItem {

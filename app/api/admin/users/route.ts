@@ -1,3 +1,4 @@
+import { invalidateMatchIndex } from '@/lib/match/cache-state';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -72,6 +73,7 @@ export async function PATCH(request: NextRequest) {
         createdAt: now,
       });
     });
+    invalidateMatchIndex();
     return NextResponse.json({ userId: target.id, action, status: 'updated' });
   } catch (error) {
     return apiError(error, '账号操作失败。');

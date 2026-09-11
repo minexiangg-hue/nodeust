@@ -1,0 +1,2256 @@
+[
+  {
+    "id": "holdout-hall-01",
+    "kind": "hall",
+    "a": {
+      "title": "September room change",
+      "body": "UG Hall I single → UG Hall III single, Fall 2026 only. Male-resident eligibility on both sides; official swap only.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall III"
+    },
+    "b": {
+      "title": "可以互换吗",
+      "body": "2026秋季，男生单人房。现在本科三舍，想换本科一舍，目标也是单人房，走学校流程。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "本科三舍",
+      "targetHall": "本科一舍"
+    },
+    "expected": "match",
+    "reason": "Explicit reverse UG route, same Fall 2026 term, compatible single rooms and stated eligibility."
+  },
+  {
+    "id": "holdout-hall-02",
+    "kind": "hall",
+    "a": {
+      "title": "四舍想换二舍",
+      "body": "2026秋季女生双人房，现在本科四舍，只换本科二舍双人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "本科四舍",
+      "targetHall": "本科二舍"
+    },
+    "b": {
+      "title": "hall 2 to hall 4 pls",
+      "body": "UG Hall 2 double room, woman resident; seeking a double in UG Hall 4 for autumn 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall 2",
+      "targetHall": "UG Hall 4"
+    },
+    "expected": "match",
+    "reason": "Arabic/Chinese UG aliases agree; route, term, double rooms and eligibility align."
+  },
+  {
+    "id": "holdout-hall-03",
+    "kind": "hall",
+    "a": {
+      "title": "PG move",
+      "body": "Female postgraduate, Fall 2026. PG Hall I single room available in exchange for PG Hall II double.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "PG Hall I",
+      "targetHall": "PG Hall II"
+    },
+    "b": {
+      "title": "研究生宿舍换房",
+      "body": "2026秋季女研究生，PG Hall 2 双人房换 PG Hall 1 单人房；是研究生宿舍，不是本科一二舍。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "PG Hall 2",
+      "targetHall": "PG Hall 1"
+    },
+    "expected": "match",
+    "reason": "PG namespace stays distinct from UG; room types satisfy both directions."
+  },
+  {
+    "id": "holdout-hall-04",
+    "kind": "hall",
+    "a": {
+      "title": "十一换十三",
+      "body": "本科 Hall XI，2026秋季男生双人房，想换本科 Hall XIII 双人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall XI",
+      "targetHall": "UG Hall XIII"
+    },
+    "b": {
+      "title": "13 → 11",
+      "body": "UG hall 13 double to UG hall 11 double; Fall 2026, male eligibility.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG hall 13",
+      "targetHall": "UG hall 11"
+    },
+    "expected": "match",
+    "reason": "Roman XI/XIII and Arabic 11/13 normalize without confusing XI with II."
+  },
+  {
+    "id": "holdout-hall-05",
+    "kind": "hall",
+    "a": {
+      "title": "Closer to my friends",
+      "body": "I have a female double in undergraduate Hall II; need Hall VIII double for 2026 fall.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "undergraduate Hall II",
+      "targetHall": "Hall VIII"
+    },
+    "b": {
+      "title": "八舍找二舍",
+      "body": "女、本科、2026秋季，Hall 8 双人房，目标 Hall 2 双人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall 8",
+      "targetHall": "UG Hall 2"
+    },
+    "expected": "match",
+    "reason": "Explicit undergraduate scope, reverse route and all stated constraints agree."
+  },
+  {
+    "id": "holdout-hall-06",
+    "kind": "hall",
+    "a": {
+      "title": "兩個 hall 都得",
+      "body": "女本科生，2026秋季一舍單人房，想去六舍或七舍，必須單人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall VI or UG Hall VII"
+    },
+    "b": {
+      "title": "七舍換一舍",
+      "body": "2026秋季，女本科生，七舍單人房換一舍單人房，會用正式程序。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall VII",
+      "targetHall": "UG Hall I"
+    },
+    "expected": "match",
+    "reason": "One explicitly acceptable target is Hall VII; multi-target intent does not erase the valid option."
+  },
+  {
+    "id": "holdout-hall-07",
+    "kind": "hall",
+    "a": {
+      "title": "点错分类了，换宿",
+      "body": "不是卖东西：2026秋季男生本科四舍双人房换六舍双人房。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall IV",
+      "targetHall": "UG Hall VI"
+    },
+    "b": {
+      "title": "Hall VI exchange",
+      "body": "Male UG, Fall 2026: Hall VI double for Hall IV double.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall VI",
+      "targetHall": "UG Hall IV"
+    },
+    "expected": "match",
+    "reason": "Wrong selected category is a weak hint; clear exchange intent and reverse constraints are compatible."
+  },
+  {
+    "id": "holdout-hall-08",
+    "kind": "hall",
+    "a": {
+      "title": "更新目标",
+      "body": "2026秋季女生本科三舍单人房。已经不想去二舍了，现在只换八舍单人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall III",
+      "targetHall": "UG Hall VIII"
+    },
+    "b": {
+      "title": "Eight to three",
+      "body": "Female UG single in Hall 8, wanting Hall 3 single, fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall 8",
+      "targetHall": "UG Hall 3"
+    },
+    "expected": "match",
+    "reason": "An explicit updated target replaces the negated old target; this is not a cancellation of the whole exchange."
+  },
+  {
+    "id": "holdout-hall-09",
+    "kind": "hall",
+    "a": {
+      "title": "UA exchange request",
+      "body": "Male postgraduate, Fall 2026: UA Tower A single for UA Towers C–D single, subject to official approval.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UA Tower A",
+      "targetHall": "UA Towers C–D"
+    },
+    "b": {
+      "title": "UA C-D to A",
+      "body": "Fall 2026 male PG resident, University Apartments Towers C and D single; seeking University Apartments Tower A single via official exchange.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "University Apartments Towers C and D",
+      "targetHall": "University Apartments Tower A"
+    },
+    "expected": "match",
+    "reason": "Explicit University Apartments aliases refer to reciprocal towers; term, room and stated eligibility align."
+  },
+  {
+    "id": "holdout-hall-10",
+    "kind": "hall",
+    "a": {
+      "title": "room pls",
+      "body": "2026 fall only; woman UG, Hall 10 single, hoping for Hall 9 single. happy to follow official swap steps.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall 10",
+      "targetHall": "UG Hall 9"
+    },
+    "b": {
+      "title": "九換十",
+      "body": "女本科生，2026秋季，九舍單人房想換十舍單人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall IX",
+      "targetHall": "UG Hall X"
+    },
+    "expected": "match",
+    "reason": "Independent concise bilingual reciprocal request with compatible explicit constraints."
+  },
+  {
+    "id": "holdout-hall-11",
+    "kind": "hall",
+    "a": {
+      "title": "I to III",
+      "body": "Male UG double, Fall 2026, Hall I to Hall III double.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall III"
+    },
+    "b": {
+      "title": "same boat",
+      "body": "Also male UG double, Fall 2026, Hall I to Hall III double.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall III"
+    },
+    "expected": "reject",
+    "reason": "Both need the same direction; neither supplies the other’s wanted hall."
+  },
+  {
+    "id": "holdout-hall-12",
+    "kind": "hall",
+    "a": {
+      "title": "本科换宿",
+      "body": "2026秋季男生本科一舍单人房换本科二舍单人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall II"
+    },
+    "b": {
+      "title": "Postgrad exchange",
+      "body": "Fall 2026 male: PG Hall II single to PG Hall I single.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "PG Hall II",
+      "targetHall": "PG Hall I"
+    },
+    "expected": "reject",
+    "reason": "Similar hall numbers in PG and UG namespaces are different destinations."
+  },
+  {
+    "id": "holdout-hall-13",
+    "kind": "hall",
+    "a": {
+      "title": "Only a single",
+      "body": "Female UG Hall I double; seeking Hall IV single in Fall 2026, no doubles.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall IV"
+    },
+    "b": {
+      "title": "Double for double",
+      "body": "Female Hall IV double, wanting UG Hall I double, Fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall IV",
+      "targetHall": "UG Hall I"
+    },
+    "expected": "reject",
+    "reason": "Candidate offers a double while A explicitly requires a single."
+  },
+  {
+    "id": "holdout-hall-14",
+    "kind": "hall",
+    "a": {
+      "title": "This autumn",
+      "body": "UG Hall V single to UG Hall VI single, male, Fall 2026 only.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall V",
+      "targetHall": "UG Hall VI"
+    },
+    "b": {
+      "title": "Next spring",
+      "body": "UG Hall VI single to UG Hall V single, male, Spring 2027 only.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall VI",
+      "targetHall": "UG Hall V"
+    },
+    "expected": "reject",
+    "reason": "Reverse locations do not overcome mutually exclusive semesters."
+  },
+  {
+    "id": "holdout-hall-15",
+    "kind": "hall",
+    "a": {
+      "title": "Female eligibility only",
+      "body": "UG Hall II single to UG Hall III single, female eligibility only, Fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall II",
+      "targetHall": "UG Hall III"
+    },
+    "b": {
+      "title": "Male room",
+      "body": "UG Hall III single to UG Hall II single, male eligibility only, Fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall III",
+      "targetHall": "UG Hall II"
+    },
+    "expected": "reject",
+    "reason": "Explicit accommodation eligibility constraints conflict; no attributes are inferred."
+  },
+  {
+    "id": "holdout-hall-16",
+    "kind": "hall",
+    "a": {
+      "title": "已取消换宿",
+      "body": "原本想本科一舍换三舍。现在已经办好，不换了，请不要再联系。2026秋季男生单人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall III"
+    },
+    "b": {
+      "title": "Three to one",
+      "body": "UG Hall III single to UG Hall I single, male, Fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall III",
+      "targetHall": "UG Hall I"
+    },
+    "expected": "reject",
+    "reason": "A explicitly cancelled the exchange even though stale structured fields remain reciprocal."
+  },
+  {
+    "id": "holdout-hall-17",
+    "kind": "hall",
+    "a": {
+      "title": "不是二舍",
+      "body": "女生本科一舍单人房，2026秋季。只去四舍，不考虑二舍。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall IV"
+    },
+    "b": {
+      "title": "二舍換一舍",
+      "body": "女本科二舍單人房，2026秋季，想去一舍單人房。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall II",
+      "targetHall": "UG Hall I"
+    },
+    "expected": "reject",
+    "reason": "The candidate’s hall is explicitly excluded, not an alternative positive mention."
+  },
+  {
+    "id": "holdout-hall-18",
+    "kind": "hall",
+    "a": {
+      "title": "十一，不是二",
+      "body": "男本科 Hall XI 单人房想换 Hall IV 单人房，2026秋季。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall XI",
+      "targetHall": "UG Hall IV"
+    },
+    "b": {
+      "title": "Four to two",
+      "body": "Male UG Hall IV single to Hall II single, fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall IV",
+      "targetHall": "UG Hall II"
+    },
+    "expected": "reject",
+    "reason": "Hall XI/11 must not be confused with Hall II/2; B does not want A’s current hall."
+  },
+  {
+    "id": "holdout-hall-19",
+    "kind": "hall",
+    "a": {
+      "title": "help",
+      "body": "随便看看，填不了就先写 x。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "x",
+      "targetHall": "x"
+    },
+    "b": {
+      "title": "swap?",
+      "body": "idk",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "x",
+      "targetHall": "x"
+    },
+    "expected": "uncertain",
+    "reason": "Placeholder fields and non-actionable text establish no housing intent or destinations."
+  },
+  {
+    "id": "holdout-hall-20",
+    "kind": "hall",
+    "a": {
+      "title": "换房",
+      "body": "本科一舍想去三舍，其他还没想好。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall III"
+    },
+    "b": {
+      "title": "三舍想換一舍",
+      "body": "本科三舍可以換一舍，時間房型晚點聊。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall III",
+      "targetHall": "UG Hall I"
+    },
+    "expected": "uncertain",
+    "reason": "Route compatibility alone does not establish missing term and room/eligibility conditions."
+  },
+  {
+    "id": "holdout-hall-21",
+    "kind": "hall",
+    "a": {
+      "title": "from 1 to 2",
+      "body": "Single to single, fall 2026, male; I just call them hall 1 and hall 2. Not sure whether the form means UG or PG.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "1",
+      "targetHall": "2"
+    },
+    "b": {
+      "title": "PG II to I",
+      "body": "Male PG resident, fall 2026, PG Hall II single to PG Hall I single.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "PG Hall II",
+      "targetHall": "PG Hall I"
+    },
+    "expected": "uncertain",
+    "reason": "A explicitly leaves the housing namespace unresolved; do not invent UG/PG identity."
+  },
+  {
+    "id": "holdout-hall-22",
+    "kind": "hall",
+    "a": {
+      "title": "Hall I to III",
+      "body": "Female UG single, Fall 2026. In the description I want Hall V single. I have not checked which target field is right.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall I",
+      "targetHall": "UG Hall III"
+    },
+    "b": {
+      "title": "III to I",
+      "body": "Female UG Hall III single to Hall I single, Fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall III",
+      "targetHall": "UG Hall I"
+    },
+    "expected": "uncertain",
+    "reason": "Unresolved contradiction between structured target and body requires confirmation."
+  },
+  {
+    "id": "holdout-hall-23",
+    "kind": "hall",
+    "a": {
+      "title": "Temporary host?",
+      "body": "Can someone host my visiting cousin in their room for three nights? This is not a hall exchange.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Regular hall swap",
+      "body": "Male UG Hall II single to Hall IV single, Fall 2026.",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall II",
+      "targetHall": "UG Hall IV"
+    },
+    "expected": "uncertain",
+    "reason": "Guest accommodation is outside the supported hall-exchange intent; abstain rather than infer an exchange."
+  },
+  {
+    "id": "holdout-hall-24",
+    "kind": "hall",
+    "a": {
+      "title": "靠近教学楼就好",
+      "body": "2026秋季女生本科六舍单人房，想搬近一点，目标宿舍还没决定。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall VI",
+      "targetHall": ""
+    },
+    "b": {
+      "title": "四舍换六舍",
+      "body": "女本科四舍单人房换六舍单人房，2026秋季。",
+      "category": "hall",
+      "createdAt": "2026-09-11T04:00:00Z",
+      "currentHall": "UG Hall IV",
+      "targetHall": "UG Hall VI"
+    },
+    "expected": "uncertain",
+    "reason": "A has not named an acceptable target; geographic preference does not authorize choosing Hall IV."
+  },
+  {
+    "id": "holdout-goods-01",
+    "kind": "goods",
+    "a": {
+      "title": "CASIO fx-991EX for sale",
+      "body": "Selling my working Casio fx-991EX calculator for HK$140, fixed. Pickup at HKUST library on 12 Sep, 15:00–17:00.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "收计算器",
+      "body": "想收 Casio fx-991EX，预算最多180港币。9月12日15点到17点可以在科大图书馆交收。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Same exact model, offer/seek roles, affordable price and explicit overlapping handover."
+  },
+  {
+    "id": "holdout-goods-02",
+    "kind": "goods",
+    "a": {
+      "title": "枱燈放售",
+      "body": "IKEA TERTIAL 枱燈，正常，售80港幣。9月13日18:00科大北門交收。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "need that ikea lamp",
+      "body": "Looking to buy a working IKEA TERTIAL desk lamp, max HKD100. Sep 13 at18:00 HKUST North Gate works.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Bilingual specific product, complementary roles, price and handover agree."
+  },
+  {
+    "id": "holdout-goods-03",
+    "kind": "goods",
+    "a": {
+      "title": "Free monitor",
+      "body": "Giving away a Dell P2422H monitor, working, no charge. Pickup 12 Sep 11:00 at HKUST North Gate.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "求免费显示器",
+      "body": "需要一台 Dell P2422H，能接受免费赠送，9月12日11:00科大北门自取。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "An explicit free offer satisfies an explicit request for the same item and collection slot."
+  },
+  {
+    "id": "holdout-goods-04",
+    "kind": "goods",
+    "a": {
+      "title": "Actually buying, wrong category",
+      "body": "Want to BUY a Logitech K380 keyboard, any colour, max HK$120. Campus library 14 Sep 16:00.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "K380出售",
+      "body": "罗技 K380，蓝色，100港币。9月14日下午4点科大图书馆交收。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Wrong chosen category does not erase a clear compatible keyboard purchase intent."
+  },
+  {
+    "id": "holdout-goods-05",
+    "kind": "goods",
+    "a": {
+      "title": "两件事",
+      "body": "出 Anker 323 充电器，HK$90，9月12日中午12点科大北门交收。另想买一把吉他，跟充电器无关。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "charger pls",
+      "body": "Need an Anker 323 charger, willing to pay up to HK$110; North Gate at noon on Sep12.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "An independent sale intent matches even though A also contains an unrelated purchase."
+  },
+  {
+    "id": "holdout-goods-06",
+    "kind": "goods",
+    "a": {
+      "title": "Sold guitar, lamp still here",
+      "body": "The guitar is sold. Xiaomi Mi Smart LED Desk Lamp 1S is STILL available for HKD160. Sep14 18:00, HKUST library.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "小米灯",
+      "body": "收小米 Mi Smart LED Desk Lamp 1S，最高200港币，9月14日18点图书馆见。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Cancellation applies only to the unrelated guitar; the named lamp offer remains actionable."
+  },
+  {
+    "id": "holdout-goods-07",
+    "kind": "goods",
+    "a": {
+      "title": "TI-84 Plus CE",
+      "body": "Selling TI-84 Plus CE, excellent working condition, fixed HK$500. Meet HKUST library 15 Sep, 13:00.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "收 TI-84 Plus CE",
+      "body": "预算就是500港币，买正常工作的 TI-84 Plus CE。9月15日13:00科大图书馆可以。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Seller price equals the buyer’s inclusive budget boundary."
+  },
+  {
+    "id": "holdout-goods-08",
+    "kind": "goods",
+    "a": {
+      "title": "one textbook",
+      "body": "Selling ISBN 9780262046305, fourth edition, HKD250; no notes. 16 Sep 17:00, HKUST library.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "教材求购",
+      "body": "想买 ISBN 9780262046305 第4版，不能换别的版，最多300港币。9月16日17点科大图书馆交收。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Matching ISBN and edition remove title ambiguity; price and handover are compatible."
+  },
+  {
+    "id": "holdout-goods-09",
+    "kind": "goods",
+    "a": {
+      "title": "black XM4",
+      "body": "Sony WH-1000XM4 headphones, black, asking HK$900. 13Sep noon at HKUST North Gate.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "headphones wanted",
+      "body": "Buying Sony WH-1000XM4, black or silver are both fine. Limit HK$1000. Sep13 12:00 North Gate.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Buyer’s explicit colour alternatives include seller’s colour and all hard constraints align."
+  },
+  {
+    "id": "holdout-goods-10",
+    "kind": "goods",
+    "a": {
+      "title": "keyboard only now",
+      "body": "不再卖鼠标了，Logitech MX Keys Mini 键盘仍出，450港币。9月17日19点科大北门。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "MX Keys Mini wanted",
+      "body": "WTB Logitech MX Keys Mini at up to HKD500, collect HKUST North Gate on17Sep19:00.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Negation of a different item must not cancel the keyboard sale."
+  },
+  {
+    "id": "holdout-goods-11",
+    "kind": "goods",
+    "a": {
+      "title": "Need a kettle",
+      "body": "Want to buy Xiaomi Electric Kettle 2, max HKD120, Sep12 campus pickup.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "我也收热水壶",
+      "body": "同求 Xiaomi Electric Kettle 2，最多120港币，9月12日校内交收。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Two buyers do not supply each other’s requested product."
+  },
+  {
+    "id": "holdout-goods-12",
+    "kind": "goods",
+    "a": {
+      "title": "Selling P2422H",
+      "body": "Dell P2422H monitor, HKD400, Sep12 14:00 library.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "只要P2425H",
+      "body": "要买 Dell P2425H，明确不考虑 P2422H，预算500港币，9月12日14点图书馆。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicit different model and exclusion must beat shared brand/product wording."
+  },
+  {
+    "id": "holdout-goods-13",
+    "kind": "goods",
+    "a": {
+      "title": "Price firm",
+      "body": "Selling Apple Pencil 2, HK$600 firm; no bargaining. Sep14 18:00 library.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "预算上限",
+      "body": "收 Apple Pencil 2，最高500港币，不能加钱，9月14日18点图书馆。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Fixed sale price exceeds the buyer’s hard budget."
+  },
+  {
+    "id": "holdout-goods-14",
+    "kind": "goods",
+    "a": {
+      "title": "iPhone sold",
+      "body": "iPhone 13 128GB was HKD1800. Update: sold already, please stop asking.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "iPhone13 wanted",
+      "body": "Buying iPhone13 128GB, budget HKD2000, can collect tomorrow.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "A has explicitly sold the item; historical offer details are no longer actionable."
+  },
+  {
+    "id": "holdout-goods-15",
+    "kind": "goods",
+    "a": {
+      "title": "Fourth edition",
+      "body": "Selling fourth edition, ISBN9780262046305, HKD200, tomorrow library.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "第三版才要",
+      "body": "只收第三版，不买第四版。预算300港币，明天图书馆。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicit incompatible edition; semantic title similarity is insufficient."
+  },
+  {
+    "id": "holdout-goods-16",
+    "kind": "goods",
+    "a": {
+      "title": "Only pickup tomorrow",
+      "body": "Selling Logitech K380 for HKD90. Only HKUST library on12Sep10:00–11:00; leaving HK permanently afterwards.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "晚一天行吗",
+      "body": "收 Logitech K380，预算120港币，但只能9月13日18点科大图书馆交收，12号绝对不行。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicit disjoint handover dates are hard constraints."
+  },
+  {
+    "id": "holdout-goods-17",
+    "kind": "goods",
+    "a": {
+      "title": "Not selling this",
+      "body": "Not selling my Nintendo Switch OLED. Just showing how nice the screen is; no offers please.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "want OLED",
+      "body": "Want to buy Nintendo Switch OLED, maxHKD1800, campus pickup tomorrow.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "The post explicitly denies any sale; a product mention is not supply."
+  },
+  {
+    "id": "holdout-goods-18",
+    "kind": "goods",
+    "a": {
+      "title": "one left",
+      "body": "Selling exactly ONE Dell P2422H monitor for HKD400, library14Sep16:00.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "需要一对",
+      "body": "必须一次买到两台 Dell P2422H，单台不要，总预算1000港币，14号16点图书馆。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Seller’s explicit quantity cannot satisfy the buyer’s indivisible two-unit requirement."
+  },
+  {
+    "id": "holdout-goods-19",
+    "kind": "goods",
+    "a": {
+      "title": "卖显示器",
+      "body": "出一个显示器，型号价格以后说。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "求显示器",
+      "body": "想收一个显示器，具体要求还没决定。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Product family overlap without model, price or handover is insufficient for a definite match."
+  },
+  {
+    "id": "holdout-goods-20",
+    "kind": "goods",
+    "a": {
+      "title": "AirPods",
+      "body": "AirPods available, not sure which generation; serial is unreadable. Price later.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "AirPodsPro2",
+      "body": "只收 AirPods Pro 2，最多900港币，明天科大交收。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Unknown version must not be assumed to be the exact requested model."
+  },
+  {
+    "id": "holdout-goods-21",
+    "kind": "goods",
+    "a": {
+      "title": "price?",
+      "body": "Selling a Casio fx-991EX, buyer collects at library12Sep16:00. Have not set a price.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "小预算",
+      "body": "收 fx-991EX，预算80港币，12号16点图书馆。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Seller price is missing; the buyer’s cap cannot be presumed satisfied."
+  },
+  {
+    "id": "holdout-goods-22",
+    "kind": "goods",
+    "a": {
+      "title": "Borrow only",
+      "body": "Need to borrow a Sony A6400 for one afternoon, not buying. Can return it the same night.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "For sale",
+      "body": "Selling Sony A6400 for HKD4200, camera in good condition.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Borrowing is outside the scoped buy/sell/give matching intent; do not reinterpret it as purchase."
+  },
+  {
+    "id": "holdout-goods-23",
+    "kind": "goods",
+    "a": {
+      "title": "maybe available",
+      "body": "可能出 MacBook Air M2 16GB，还没想好要不要卖，也没定价。",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "buying Air",
+      "body": "Want to buy MacBook Air M2 16GB, maxHKD6000, next week campus pickup.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "The owner has not committed to an actionable sale or price."
+  },
+  {
+    "id": "holdout-goods-24",
+    "kind": "goods",
+    "a": {
+      "title": "offer? need?",
+      "body": "Logitech K380 wanted / available, copied an old listing. I need to check which direction this is.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "K380",
+      "body": "Selling Logitech K380 at HKD80, HKUST library12Sep18:00.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "A explicitly has unresolved supply/demand role ambiguity."
+  },
+  {
+    "id": "holdout-study-01",
+    "kind": "study",
+    "a": {
+      "title": "recursion help available",
+      "body": "Can tutor COMP2011 recursion in English. HKUST library,12Sep15:00–16:00; happy to explain, not looking for a tutor.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "递归卡住了",
+      "body": "需要别人给我讲 COMP 2011 recursion，用英语可以。9月12日15:00–16:00科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Explicit mentor and learner roles share course, topic, language, place and time."
+  },
+  {
+    "id": "holdout-study-02",
+    "kind": "study",
+    "a": {
+      "title": "FINA2203 可以教",
+      "body": "我可以用廣東話講 FINA 2203 債券估值，9月13日14–15點科大圖書館。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "求教債券",
+      "body": "FINA2203 bonds 唔識，想搵人講返我聽；廣東話，9月13號14:00–15:00科大圖書館。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Cantonese mentor/learner pair shares course and explicitly overlapping session."
+  },
+  {
+    "id": "holdout-study-03",
+    "kind": "study",
+    "a": {
+      "title": "一起做题",
+      "body": "找 MATH1013 微积分复习同伴，一起练题不是要人代做。普通话，9月14日10–12点，科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "revision buddy",
+      "body": "MATH 1013 calculus practice buddy wanted. Mandarin works; HKUST library14Sep10:30–11:30.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Two explicit peers have shared course/topic/language and overlapping study windows."
+  },
+  {
+    "id": "holdout-study-04",
+    "kind": "study",
+    "a": {
+      "title": "Python office hour",
+      "body": "Can explain COMP1021 Python lists in English or Mandarin. HKUST library12Sep18:00–19:00.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "中文求讲解",
+      "body": "COMP1021 Python列表完全不会，需要辅导，只能普通话，9月12日18点到19点图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Tutor’s stated language alternatives include learner’s required language."
+  },
+  {
+    "id": "holdout-study-05",
+    "kind": "study",
+    "a": {
+      "title": "Wrong button, study help",
+      "body": "I selected goods by mistake. Offering English tutoring for MATH1014 integration,13Sep16–17 at HKUST library.",
+      "category": "goods",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Need calculus tutor",
+      "body": "Need someone to explain MATH 1014 integration in English, HKUST library13Sep16:00–17:00.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Body specifies compatible study supply despite selected category being goods."
+  },
+  {
+    "id": "holdout-study-06",
+    "kind": "study",
+    "a": {
+      "title": "有两门课",
+      "body": "COMP2011 指针我可以用英语教；MATH1013我自己要找老师。9月15日17:00–18:00都在科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "pointers pls",
+      "body": "Need an English explanation of COMP2011 pointers, HKUST library15Sep17:00–18:00.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "A’s tutoring supply for COMP2011 is independent from its unrelated request for MATH1013 help."
+  },
+  {
+    "id": "holdout-study-07",
+    "kind": "study",
+    "a": {
+      "title": "不是求辅导",
+      "body": "不是找人教我。COMP2011链表我能讲，英语，9月16日13–14点科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "linked lists",
+      "body": "Need a tutor for COMP 2011 linked lists; English,16Sep13:00–14:00 HKUST library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Negation applies to A’s seeking role, followed by explicit teaching supply."
+  },
+  {
+    "id": "holdout-study-08",
+    "kind": "study",
+    "a": {
+      "title": "tmr revision?",
+      "body": "Anyone for MATH1013 limits practice tomorrow17:00–18:00 at HKUST library? English peer session, not tutoring.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "明天一起刷题",
+      "body": "9月12日17:00–18:00，MATH1013 limits，一起复习，用英语，科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Tomorrow at the fixed Hong Kong posting date is12Sep; explicit peer intentions and times agree."
+  },
+  {
+    "id": "holdout-study-09",
+    "kind": "study",
+    "a": {
+      "title": "后天讲概率",
+      "body": "后天9月13日11–12点可以讲 MATH2411 probability，普通话，科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-10T16:30:00Z"
+    },
+    "b": {
+      "title": "求概率辅导",
+      "body": "9月13日11:00–12:00想找人用普通话讲 MATH2411 probability，科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Posting instant is11Sep00:30 HKT; 后天 and explicit13Sep are consistent, with compatible roles."
+  },
+  {
+    "id": "holdout-study-10",
+    "kind": "study",
+    "a": {
+      "title": "oral practice partner",
+      "body": "LANG1406 presentation practice, English peers taking turns giving feedback. Sep17,19:00–20:00 at HKUST library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "练presentation",
+      "body": "找 LANG 1406 presentation 同伴，相互反馈，用英语。9月17日19–20点科大图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Mutual feedback is a complementary peer activity rather than two one-way help requests."
+  },
+  {
+    "id": "holdout-study-11",
+    "kind": "study",
+    "a": {
+      "title": "Need COMP2011 tutor",
+      "body": "I need someone to explain COMP2011 pointers. English,12Sep16–17 library; cannot teach anyone.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "我也不会",
+      "body": "COMP2011 pointers不懂，只想找老师，不会教别人；英语，12号16–17点图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Two explicit learners requiring a teacher do not meet each other’s need."
+  },
+  {
+    "id": "holdout-study-12",
+    "kind": "study",
+    "a": {
+      "title": "Tutoring only",
+      "body": "Offering English COMP2011 tutoring at library12Sep16–17. Not seeking lessons or a co-tutor.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "老师找学生",
+      "body": "提供 COMP2011 英语辅导，只找学生，不找一起备课的人，12号16–17点图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Two explicit tutoring suppliers are not complementary when neither seeks peer collaboration."
+  },
+  {
+    "id": "holdout-study-13",
+    "kind": "study",
+    "a": {
+      "title": "COMP1021 help",
+      "body": "Can teach COMP1021 Python lists in English,12Sep16–17 library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "只要COMP2011",
+      "body": "需要 COMP2011 C++ pointer 辅导，不是 COMP1021；英语，12号16–17点图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Distinct required courses/topics conflict despite shared programming terms."
+  },
+  {
+    "id": "holdout-study-14",
+    "kind": "study",
+    "a": {
+      "title": "English only tutor",
+      "body": "Can tutor FINA2203 valuation, English only, cannot communicate in Chinese.13Sep14–15 library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "只用粤语",
+      "body": "求 FINA2203 valuation 辅导，只能粤语，听不懂英语；13号14–15点图书馆。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicitly disjoint communication languages are a hard constraint."
+  },
+  {
+    "id": "holdout-study-15",
+    "kind": "study",
+    "a": {
+      "title": "Morning mentor",
+      "body": "Can explain MATH1013 in Mandarin,14Sep09:00–10:00 only at library. Cannot do any other time.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "下午才有空",
+      "body": "求 MATH1013 普通话辅导，只能14号15:00–16:00图书馆，上午没空。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Same date and course cannot overcome disjoint mandatory time windows."
+  },
+  {
+    "id": "holdout-study-16",
+    "kind": "study",
+    "a": {
+      "title": "This Saturday only",
+      "body": "Offering COMP2011 English help Saturday12Sep12–13 library, no Sunday availability.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Only Sunday",
+      "body": "Need COMP2011 English help Sunday13Sep12–13 library; Saturday impossible.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "The matching clock time occurs on explicitly different unavailable dates."
+  },
+  {
+    "id": "holdout-study-17",
+    "kind": "study",
+    "a": {
+      "title": "不教了",
+      "body": "原计划明天教 COMP2011 英语，现已取消，整周都没空，别再约。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Need tomorrow",
+      "body": "Need COMP2011 English tutor tomorrow14:00–15:00, library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicit cancelled tutoring supply cannot match a current request."
+  },
+  {
+    "id": "holdout-study-18",
+    "kind": "study",
+    "a": {
+      "title": "Expired session",
+      "body": "Can tutor COMP2011 in English on10Sep2026 from15:00 to16:00, that day only.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Wanted yesterday",
+      "body": "Need COMP2011 English help10Sep2026 15:00–16:00 only.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Both explicit session times are before the fixed evaluation instant; stale alignment is not a current opportunity."
+  },
+  {
+    "id": "holdout-study-19",
+    "kind": "study",
+    "a": {
+      "title": "math help",
+      "body": "Need some maths help sometime. Haven’t picked a course or topic.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "I can help",
+      "body": "Can explain some maths, DM to work out what and when.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "No definite shared course/topic or timing can be established."
+  },
+  {
+    "id": "holdout-study-20",
+    "kind": "study",
+    "a": {
+      "title": "COMP2011 teacher",
+      "body": "Can teach COMP2011 in English, but I have no availability schedule yet.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "COMP2011 learner",
+      "body": "Need COMP2011 English help; date and time undecided.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Complementary roles alone do not establish missing temporal compatibility."
+  },
+  {
+    "id": "holdout-study-21",
+    "kind": "study",
+    "a": {
+      "title": "COMP20xx",
+      "body": "Need help with COMP20xx, forgot the exact course number. English,12Sep18–19 library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "COMP2011 support",
+      "body": "Offering COMP2011 English tutoring12Sep18–19 library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Unknown course suffix must not be guessed as COMP2011."
+  },
+  {
+    "id": "holdout-study-22",
+    "kind": "study",
+    "a": {
+      "title": "Looking for teaching feedback",
+      "body": "Writing a review of COMP2011 lectures, want opinions on course design, not lessons or a study partner.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Need a tutor",
+      "body": "Need COMP2011 English tutoring tomorrow16–17, library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Course-review discussion is outside supported tutoring/peer-study matching; abstain."
+  },
+  {
+    "id": "holdout-study-23",
+    "kind": "study",
+    "a": {
+      "title": "Tomorrow depends where I land",
+      "body": "Need COMP2011 English help tomorrow at10; flying between time zones and have not decided whether I mean Hong Kong or destination time.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "HK morning tutor",
+      "body": "Can tutor COMP2011 English12Sep10:00–11:00 Hong Kong time, online.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Explicit unresolved timezone must not be silently resolved from posting locale."
+  },
+  {
+    "id": "holdout-study-24",
+    "kind": "study",
+    "a": {
+      "title": "Two plans, unconfirmed",
+      "body": "COMP2011 help in English either12Sep18–19 or13Sep10–11; I still need to find out if I am teaching or attending.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Learner",
+      "body": "Need COMP2011 English tutor12Sep18–19 library.",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "A expressly leaves teaching/learning role unresolved despite a possible matching time."
+  },
+  {
+    "id": "holdout-transport-01",
+    "kind": "transport",
+    "a": {
+      "title": "Airport lift",
+      "body": "Driving from HKUST North Gate to Hong Kong Airport12Sep2026, depart07:30. Exactly2 spare seats; no extra stops.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "兩個人去機場",
+      "body": "9月12日早上7:30，兩個人想由科大北門搭順風車去香港機場，無其他停靠。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Same explicit origin/destination/date/time; driver’s two spare seats cover two riders."
+  },
+  {
+    "id": "holdout-transport-02",
+    "kind": "transport",
+    "a": {
+      "title": "夾的士返坑口",
+      "body": "今晚18:00–18:20科大北門去坑口站，搵人夾普通四客座的士。我哋2個，最多再加2個。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "taxi share?",
+      "body": "Just me, want to share a four-passenger taxi HKUST North Gate→Hang Hau MTR today18:10. One passenger.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Today is11Sep HKT; explicit departure windows overlap and total3fits the stated4passenger capacity."
+  },
+  {
+    "id": "holdout-transport-03",
+    "kind": "transport",
+    "a": {
+      "title": "明天去机场",
+      "body": "明天9月12日09:00从科大北门开车去香港机场，还剩1个乘客座位。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "one rider",
+      "body": "Need1seat from HKUST North Gate to Hong Kong Airport12Sep09:00; no companions.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Wrong category does not defeat clear driving supply; exact trip constraints agree."
+  },
+  {
+    "id": "holdout-transport-04",
+    "kind": "transport",
+    "a": {
+      "title": "Late post, tomorrow ride",
+      "body": "明天12号下午3点科大北门去坑口站，我开车，2个空位。",
+      "category": "transport",
+      "createdAt": "2026-09-10T16:20:00Z"
+    },
+    "b": {
+      "title": "12号去坑口",
+      "body": "9月12日下午15:00，2人求科大北门到坑口站顺风车。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "A’s posting time is11Sep00:20 HKT, so tomorrow is12Sep, not11Sep UTC."
+  },
+  {
+    "id": "holdout-transport-05",
+    "kind": "transport",
+    "a": {
+      "title": "两段行程",
+      "body": "9月13日10:00科大北门去香港机场，我开车有3个空位；20号才从机场回来，回程暂不接人。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "outbound only",
+      "body": "Need a lift for2 from HKUST North Gate to Hong Kong Airport13Sep10:00. Only asking about the outbound leg.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "The independent outbound offer remains valid even though A declines riders on a later return leg."
+  },
+  {
+    "id": "holdout-transport-06",
+    "kind": "transport",
+    "a": {
+      "title": "Time correction",
+      "body": "Not leaving at16:00 anymore. Updated: HKUST North Gate to Mong Kok MTR14Sep17:00,2spare seats, driving.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "旺角17点",
+      "body": "两个人求顺风车，9月14日17:00科大北门去旺角站。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Explicit correction establishes17:00 as current departure; stale16:00 must not dominate."
+  },
+  {
+    "id": "holdout-transport-07",
+    "kind": "transport",
+    "a": {
+      "title": "share four-seat taxi",
+      "body": "Hong Kong Airport→HKUST North Gate15Sep21:00. We are2, looking for exactly2others to share a4passenger taxi.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "兩人返科大",
+      "body": "9月15日21點，香港機場返科大北門，我哋2個，搵2人夾四客座的士。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Both parties seek taxi sharing on same trip and exactly fill the explicit4person capacity."
+  },
+  {
+    "id": "holdout-transport-08",
+    "kind": "transport",
+    "a": {
+      "title": "CWB run",
+      "body": "Driving HKUST North Gate to Causeway Bay MTR16Sep18:00–18:30,1spare seat.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "铜锣湾一起？",
+      "body": "9月16日18:30需要1个座位，由科大北门到铜锣湾站。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Explicit destination alias and inclusive departure-window boundary agree; capacity covers rider."
+  },
+  {
+    "id": "holdout-transport-09",
+    "kind": "transport",
+    "a": {
+      "title": "可带三位",
+      "body": "9月17日早上08:15，我由坑口站开车去科大北门，有3个空位。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "3 seats please",
+      "body": "Three students need a ride Hang Hau MTR→HKUST North Gate17Sep08:15; all3must travel together.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Driver’s stated spare-seat count exactly satisfies an indivisible3person group."
+  },
+  {
+    "id": "holdout-transport-10",
+    "kind": "transport",
+    "a": {
+      "title": "今晚搭车",
+      "body": "Need1seat in a car HKUST North Gate→Tseung Kwan O MTR this evening19:40 HKT.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "将军澳顺风车",
+      "body": "今天19:30到20:00都能出发，科大北门去将军澳站，我开车，还有2个空位。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Relative same-day evening is anchored to11Sep HKT and lies inside driver’s explicit window."
+  },
+  {
+    "id": "holdout-transport-11",
+    "kind": "transport",
+    "a": {
+      "title": "Outward",
+      "body": "Driving HKUST North Gate→Hong Kong Airport12Sep08:00,2spare seats.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Return",
+      "body": "Need2seats Hong Kong Airport→HKUST North Gate12Sep08:00.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Same place names and clock time but opposite travel direction."
+  },
+  {
+    "id": "holdout-transport-12",
+    "kind": "transport",
+    "a": {
+      "title": "Saturday airport",
+      "body": "Driving HKUST North Gate→Airport12Sep08:00 only,2spare seats.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Sunday airport",
+      "body": "Need1seat HKUST North Gate→Airport13Sep08:00 only.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Required calendar dates differ."
+  },
+  {
+    "id": "holdout-transport-13",
+    "kind": "transport",
+    "a": {
+      "title": "Leave early",
+      "body": "Driving HKUST North Gate→Hang Hau MTR12Sep17:00 sharp,1spare seat; cannot wait.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "只能六点",
+      "body": "求1位，12号18:00才能从科大北门出发去坑口站，17点不行。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicit departure times are incompatible; do not assume an unstated tolerance."
+  },
+  {
+    "id": "holdout-transport-14",
+    "kind": "transport",
+    "a": {
+      "title": "Only one place",
+      "body": "Driving HKUST North Gate→Airport13Sep09:00, exactly1spare passenger seat.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "我们两个人",
+      "body": "9月13日09:00科大北门去机场，2个人必须同车，求2个座位。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "One spare seat cannot serve an inseparable2person party."
+  },
+  {
+    "id": "holdout-transport-15",
+    "kind": "transport",
+    "a": {
+      "title": "three sharing",
+      "body": "Three of us need a4passenger taxi HKUST North Gate→Airport14Sep10:00; looking to split with others.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "two sharing",
+      "body": "We are2, want to join a4passenger taxi HKUST North Gate→Airport14Sep10:00.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Combined taxi passenger count5exceeds the explicitly stated4person capacity."
+  },
+  {
+    "id": "holdout-transport-16",
+    "kind": "transport",
+    "a": {
+      "title": "Rider",
+      "body": "Need a driver with1spare seat HKUST North Gate→Mong Kok15Sep18:00; not arranging a taxi.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "另一个乘客",
+      "body": "15号18点科大北门去旺角，找司机接我1人，不拼的士，也没有车。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Both explicitly seek a driver and neither offers driving or taxi-sharing supply."
+  },
+  {
+    "id": "holdout-transport-17",
+    "kind": "transport",
+    "a": {
+      "title": "车取消了",
+      "body": "原本今晚19:00科大北门去机场有2个空位；车坏了，整个行程取消，别等我。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Need tonight",
+      "body": "Need1seat HKUST North Gate→Airport tonight19:00.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicit full-trip cancellation overrides old route/time/seat mentions."
+  },
+  {
+    "id": "holdout-transport-18",
+    "kind": "transport",
+    "a": {
+      "title": "Yesterday ride",
+      "body": "Driving HKUST North Gate→Airport10Sep2026 20:00,1spare seat, only that departure.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Yesterday request",
+      "body": "Need1seat HKUST North Gate→Airport10Sep2026 20:00 only.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "The only departure is before the fixed now; matching two expired trips is invalid."
+  },
+  {
+    "id": "holdout-transport-19",
+    "kind": "transport",
+    "a": {
+      "title": "Airport sometime",
+      "body": "Anyone sharing from HKUST North Gate to Airport? I have not booked a date or time.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "有车位",
+      "body": "科大北门去机场有车位，日期时间还没定。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "A common route without actual date/time cannot establish an actionable trip match."
+  },
+  {
+    "id": "holdout-transport-20",
+    "kind": "transport",
+    "a": {
+      "title": "明天出发",
+      "body": "明天去机场，人在科大发帖，但出发地可能是家里，也可能北门，人数待定。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Campus lift",
+      "body": "Driving HKUST North Gate→Airport12Sep09:00,2spare seats.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Posting location does not settle an explicitly unknown origin, time or party size."
+  },
+  {
+    "id": "holdout-transport-21",
+    "kind": "transport",
+    "a": {
+      "title": "车里还有位置",
+      "body": "12号09:00科大北门开车去机场，有位置但没数清剩几个。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "三人搭车",
+      "body": "12号09:00，3人要从科大北门去机场，一定要同一辆车。",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Unspecified spare-seat count must not be assumed sufficient for3riders."
+  },
+  {
+    "id": "holdout-transport-22",
+    "kind": "transport",
+    "a": {
+      "title": "next Friday?",
+      "body": "HKUST North Gate to Airport next Friday18:00, I mean the one after this week or maybe today; I need to confirm. One rider.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Today driver",
+      "body": "Driving HKUST North Gate→Airport11Sep18:00,2spare seats.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Author explicitly signals unresolved relative-date interpretation; do not guess from weekday wording."
+  },
+  {
+    "id": "holdout-transport-23",
+    "kind": "transport",
+    "a": {
+      "title": "How does the bus work",
+      "body": "Does the airport bus stop near HKUST? Just asking for route information, not looking for companions or a lift.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Drive tomorrow",
+      "body": "Driving HKUST North Gate→Airport12Sep09:00,2spare seats.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Travel-information inquiry is outside supported ride/share intent; shared destinations are not demand."
+  },
+  {
+    "id": "holdout-transport-24",
+    "kind": "transport",
+    "a": {
+      "title": "one of two trips",
+      "body": "Maybe HKUST North Gate→Airport or maybe Airport→HKUST North Gate on12Sep09:00. Waiting for itinerary, role and headcount undecided.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Driver outbound",
+      "body": "Driving HKUST North Gate→Airport12Sep09:00,2spare seats.",
+      "category": "transport",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Unresolved direction, role and party count require clarification rather than a high-confidence recommendation."
+  },
+  {
+    "id": "holdout-other-01",
+    "kind": "other",
+    "a": {
+      "title": "羽毛球差個人",
+      "body": "9月12日18:00–19:00科大LG1羽毛球場1號，休閒打波，想搵同伴，我係初級。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "casual badminton",
+      "body": "Beginner looking for a casual badminton partner at HKUST LG1 court1 on12Sep18:00–19:00.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Both explicitly seek beginner badminton peers at the same court and time."
+  },
+  {
+    "id": "holdout-other-02",
+    "kind": "other",
+    "a": {
+      "title": "chess anyone",
+      "body": "Looking for a friendly chess opponent, HKUST library ground-floor seating,13Sep16:00–17:00. Any skill level.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "想下棋",
+      "body": "9月13日16点到17点，科大图书馆一楼座位区，想找人下国际象棋，我新手，可以休闲玩。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Same chess activity, explicit shared venue/time and permitted skill level."
+  },
+  {
+    "id": "holdout-other-03",
+    "kind": "other",
+    "a": {
+      "title": "coffee after class",
+      "body": "Coffee companion wanted14Sep11:00; meet at Hang Hau MTR Exit A then choose a cafe together.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "一齊飲咖啡",
+      "body": "想搵人9月14日11點飲咖啡，坑口站A出口碰面再揀店。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Both seek coffee companionship with identical meeting point and time."
+  },
+  {
+    "id": "holdout-other-04",
+    "kind": "other",
+    "a": {
+      "title": "Easy hike",
+      "body": "Want companions for an easy Clear Water Bay trail walk15Sep08:00; meet at HKUST North Gate bus stop. Beginner pace, no climbing.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "行山搵伴",
+      "body": "9月15日08:00科大北門巴士站集合，去清水灣步道輕鬆行，新手慢行，不攀爬，搵同伴。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Shared hiking activity, rendezvous, date/time and explicit difficulty preferences agree."
+  },
+  {
+    "id": "holdout-other-05",
+    "kind": "other",
+    "a": {
+      "title": "track jog",
+      "body": "Find a running buddy on HKUST athletics track16Sep19:00–19:40. Easy6min/km pace, no racing.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "慢跑约吗",
+      "body": "9月16日19点到19:40科大田径场慢跑，配速每公里6分钟，不比赛，找搭子。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Running companionship with compatible stated pace, venue and time."
+  },
+  {
+    "id": "holdout-other-06",
+    "kind": "other",
+    "a": {
+      "title": "点错了不是学习",
+      "body": "找乒乓球搭子，9月12日15:00–16:00科大LG1乒乓球台2号，休闲打。",
+      "category": "study",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "table tennis pal",
+      "body": "Casual table tennis partner wanted, HKUST LG1 table2,12Sep15:00–16:00.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Explicit peer activity overrides a mistakenly selected study category."
+  },
+  {
+    "id": "holdout-other-07",
+    "kind": "other",
+    "a": {
+      "title": "两次活动",
+      "body": "周六9月12日18点只约羽毛球；周日9月13日11点另找人喝咖啡，坑口站A出口碰面。两件事分开。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Sunday coffee",
+      "body": "Looking for a coffee companion13Sep11:00, meet Hang Hau MTR Exit A. Not available for badminton.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "The independently stated Sunday coffee intent matches despite a separate badminton plan."
+  },
+  {
+    "id": "holdout-other-08",
+    "kind": "other",
+    "a": {
+      "title": "Not a class",
+      "body": "Not offering photography lessons. Looking for a photo-walk buddy17Sep17:00–18:00, start HKUST North Gate; beginners welcome.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "散步拍照",
+      "body": "9月17日17点到18点想找人一起散步拍照，科大北门出发，我是新手，不找课程。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Negation excludes lessons but explicitly preserves shared photo-walk companionship."
+  },
+  {
+    "id": "holdout-other-09",
+    "kind": "other",
+    "a": {
+      "title": "明晚走走",
+      "body": "明晚9月12日19:00–19:30科大海边长廊散步，找同伴轻松聊聊。",
+      "category": "other",
+      "createdAt": "2026-09-10T17:10:00Z"
+    },
+    "b": {
+      "title": "evening walk",
+      "body": "Seeking company for an easy walk on HKUST waterfront promenade12Sep19:00–19:30.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "A was posted11Sep01:10 HKT; tomorrow evening matches the explicit12Sep date."
+  },
+  {
+    "id": "holdout-other-10",
+    "kind": "other",
+    "a": {
+      "title": "Beach cleanup buddies",
+      "body": "Looking for peers to clean litter at Clear Water Bay Beach18Sep09:00–10:30, meet the beach main entrance. Casual volunteer group.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "一起捡垃圾",
+      "body": "9月18日09:00–10:30清水湾海滩捡垃圾，正门集合，想找志愿者同伴，不收费。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "match",
+    "reason": "Clear reciprocal volunteer-companion intent with the same activity/place/time, independent from older corpus themes."
+  },
+  {
+    "id": "holdout-other-11",
+    "kind": "other",
+    "a": {
+      "title": "basketball LG1",
+      "body": "Looking for basketball peers at HKUST LG1 court12Sep18:00–19:00 only.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "羽毛球不是篮球",
+      "body": "找羽毛球搭子，明确不打篮球，科大LG1羽毛球场12号18–19点。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Different explicitly required activities despite same broad sports venue and time."
+  },
+  {
+    "id": "holdout-other-12",
+    "kind": "other",
+    "a": {
+      "title": "Campus coffee",
+      "body": "Coffee companion12Sep11:00, meet HKUST North Gate; cannot leave campus.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Mong Kok coffee",
+      "body": "Coffee companion12Sep11:00, meet Mong Kok MTR Exit E2; cannot go to campus.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Both fix mutually incompatible meeting locations."
+  },
+  {
+    "id": "holdout-other-13",
+    "kind": "other",
+    "a": {
+      "title": "Morning chess",
+      "body": "Chess partner at HKUST library13Sep09:00–10:00 only, unavailable later.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Evening chess",
+      "body": "Chess partner at HKUST library13Sep19:00–20:00 only; cannot play mornings.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Hard time windows do not overlap."
+  },
+  {
+    "id": "holdout-other-14",
+    "kind": "other",
+    "a": {
+      "title": "Saturday hike",
+      "body": "Easy hiking companions, meet HKUST North Gate12Sep08:00 only; cannot do Sunday.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Sunday hike",
+      "body": "Easy hike companion, HKUST North Gate13Sep08:00 only, Saturday unavailable.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Same activity and rendezvous on incompatible explicit dates."
+  },
+  {
+    "id": "holdout-other-15",
+    "kind": "other",
+    "a": {
+      "title": "已取消篮球",
+      "body": "今晚18点科大LG1篮球约局取消了，脚扭了，今天不打，别来等。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Basketball tonight",
+      "body": "Need someone for basketball HKUST LG1 court tonight18:00–19:00.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "A explicitly cancelled the whole activity."
+  },
+  {
+    "id": "holdout-other-16",
+    "kind": "other",
+    "a": {
+      "title": "Solo run",
+      "body": "Running alone at HKUST track14Sep19:00. I do NOT want company; this is just a diary entry.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "running partner",
+      "body": "Looking for a running companion HKUST track14Sep19:00, easy pace.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "A explicitly declines companionship; an activity mention alone is not reciprocal intent."
+  },
+  {
+    "id": "holdout-other-17",
+    "kind": "other",
+    "a": {
+      "title": "Advanced only",
+      "body": "Need an advanced climbing partner15Sep14:00 at HKUST climbing wall; no beginners, must already know belaying.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "完全初学",
+      "body": "9月15日14点科大攀岩墙找搭子，我完全初学，不会保护操作，需要对方教。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Explicit advanced-skill prerequisite conflicts with B’s explicitly stated beginner status."
+  },
+  {
+    "id": "holdout-other-18",
+    "kind": "other",
+    "a": {
+      "title": "Old coffee plan",
+      "body": "Coffee companion wanted10Sep2026 11:00 at Hang Hau MTR Exit A, that slot only.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Same old plan",
+      "body": "Coffee buddy10Sep2026 11:00, Hang Hau MTR Exit A only.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "reject",
+    "reason": "Only meeting time is already in the past at fixed now."
+  },
+  {
+    "id": "holdout-other-19",
+    "kind": "other",
+    "a": {
+      "title": "hi campus",
+      "body": "好累，海风真舒服。没有约活动，就是感叹一下。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "hii",
+      "body": "same, nice breeze...",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Neither post establishes an actionable companion-seeking activity."
+  },
+  {
+    "id": "holdout-other-20",
+    "kind": "other",
+    "a": {
+      "title": "Someday basketball",
+      "body": "Could do basketball sometime, have not chosen a day, time or court.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "有空约球",
+      "body": "想打篮球，什么时候哪里还没想。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Activity overlap without date/time/place is insufficient for definite compatibility."
+  },
+  {
+    "id": "holdout-other-21",
+    "kind": "other",
+    "a": {
+      "title": "Maybe coffee or a run",
+      "body": "想找搭子但没决定喝咖啡还是跑步，也没定时间地点，等课表。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Coffee confirmed",
+      "body": "Coffee companion tomorrow11:00, Hang Hau MTR Exit A.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "A explicitly leaves activity and schedule undecided; do not assume coffee is accepted."
+  },
+  {
+    "id": "holdout-other-22",
+    "kind": "other",
+    "a": {
+      "title": "Old poster quote",
+      "body": "Saw a poster saying “chess buddy at library Friday16:00”. Just discussing the wording; not my event and I am not joining.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Need chess opponent",
+      "body": "Looking for chess opponent HKUST library11Sep16:00.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Quoted third-party text is unsupported as the author’s own companion request; abstain."
+  },
+  {
+    "id": "holdout-other-23",
+    "kind": "other",
+    "a": {
+      "title": "Poem",
+      "body": "想和你去海边，是我写的诗里的一句，不是约人；今晚的风也很温柔。",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Walk buddy",
+      "body": "Looking for company to walk HKUST waterfront tonight19:00–20:00.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Poetic/quoted activity wording is not a supported actionable request."
+  },
+  {
+    "id": "holdout-other-24",
+    "kind": "other",
+    "a": {
+      "title": "Laundry service inquiry",
+      "body": "Need a paid laundry pickup service at my room tomorrow; looking for a business, not a hangout or volunteer companion.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "b": {
+      "title": "Campus walk",
+      "body": "Looking for a walking buddy tomorrow at17:00, HKUST North Gate.",
+      "category": "other",
+      "createdAt": "2026-09-11T04:00:00Z"
+    },
+    "expected": "uncertain",
+    "reason": "Commercial service procurement lies outside supported peer-activity matching; do not invent a social intent."
+  }
+]

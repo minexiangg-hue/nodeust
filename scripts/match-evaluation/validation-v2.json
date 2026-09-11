@@ -1,0 +1,2713 @@
+{
+  "now": "2026-09-11T04:00:00Z",
+  "cases": [
+    {
+      "id": "v2-hall-m01",
+      "kind": "hall",
+      "a": {
+        "title": "想換近啲圖書館嗰邊",
+        "body": "我係男UG，已批2026/27全年 UG Hall III 雙人房，想換 UG Hall II 雙人房。已符合換宿資格，願走正式調房程序。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z",
+        "currentHall": "UG Hall III",
+        "targetHall": "UG Hall II"
+      },
+      "b": {
+        "title": "Hall II -> III anyone?",
+        "body": "Male undergraduate with an allocated double in UG Hall II for the entire 2026/27 year. Looking for a double in UG Hall III. Eligible for an approved room exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z",
+        "currentHall": "UG Hall II",
+        "targetHall": "UG Hall III"
+      },
+      "expected": "match",
+      "reason": "Allocated UG rooms form the reciprocal III/II route; year, double rooms, male eligibility and formal exchange intent agree."
+    },
+    {
+      "id": "v2-hall-m02",
+      "kind": "hall",
+      "a": {
+        "title": "搬一搬宿位",
+        "body": "女本科生，2026秋季已獲批 UG Hall V 單人房，想用它換 UG Hall VII 單人房；雙方都是女生先可以，換宿資格已確認。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "V would suit me better",
+        "body": "I am a female UG with a confirmed single room in UG Hall VII, fall 2026 only. I want to exchange for a single in UG Hall V and am eligible to swap.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Explicit reciprocal UG V/VII single-room exchange covers the same fall term and female requirement despite the first category."
+    },
+    {
+      "id": "v2-hall-m03",
+      "kind": "hall",
+      "a": {
+        "title": "PG Hall 1 single to Hall 2",
+        "body": "I hold a PG Hall 1 single for 1 Sep 2026–31 Aug 2027 and need a PG Hall 2 single. Male postgraduate, approved to apply for an exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "研究生宿舍換房",
+        "body": "男研究生，PG Hall 2 單人房已有分配，住宿期 2026-09-01 至 2027-08-31，想去 PG Hall 1 單人房。我有換房資格。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Both are eligible male PG residents with allocated reciprocal Hall 1/2 singles and identical dates; neither is an undergraduate hall."
+    },
+    {
+      "id": "v2-hall-m04",
+      "kind": "hall",
+      "a": {
+        "title": "Still looking for a swap, not a sublet",
+        "body": "Allocated UG Hall VIII double, female UG, full academic year 2026/27. Happy with a double in UG Hall IV OR VI. Official exchange eligibility confirmed.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "四換八",
+        "body": "女UG，已分配 UG Hall IV 雙人房，2026/27學年全年，目標係 UG Hall VIII 雙人房；我符合正式互換條件。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "One explicitly accepted destination is IV; the counterpart holds IV and wants VIII, with matching term, rooms and gender."
+    },
+    {
+      "id": "v2-hall-m05",
+      "kind": "hall",
+      "a": {
+        "title": "改咗主意，唔去六堂",
+        "body": "男本科生，2026秋季 UG Hall I 雙人房已批。之前想換 UG Hall VI 嗰個計劃取消，依家只想換 UG Hall IV 雙人房。我符合互換資格。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Allocated IV, seeking I",
+        "body": "Male UG with a fall 2026 double room allocated in UG Hall IV. Want a double in UG Hall I through the approved swap process; I meet its eligibility conditions.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Cancellation applies only to the former VI target; the live I-to-IV request reciprocates the IV-to-I offer."
+    },
+    {
+      "id": "v2-hall-m06",
+      "kind": "hall",
+      "a": {
+        "title": "Room exchange before settling in",
+        "body": "Female PG, confirmed PG Hall 2 single, September 2026 through August 2027. Seeking a PG Hall 3 single for the same period; eligible for an official exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z",
+        "currentHall": "PG Hall 2",
+        "targetHall": "PG Hall 3"
+      },
+      "b": {
+        "title": "唔係UG三堂呀",
+        "body": "我係女研究生，已分配 PG Hall 3 單人房，2026年9月至2027年8月。希望正式互換到 PG Hall 2 單人房，資格沒有問題。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Reciprocal PG 2/3 singles match term and female eligibility, with an explicit distinction from UG Hall III."
+    },
+    {
+      "id": "v2-hall-m07",
+      "kind": "hall",
+      "a": {
+        "title": "Laundry trek is winning",
+        "body": "Male undergraduate allocated UG Hall VI, double, full year 2026/27. Looking for UG Hall IX, single or double both okay. I am eligible for the room-swap scheme.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "IX single available for approved swap",
+        "body": "Male UG, allocated single in UG Hall IX for all of 2026/27; I would take a double in UG Hall VI. Eligible for official exchange, please contact only if you hold VI.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Each accepts the other allocated room type explicitly; reciprocal VI/IX route, full-year term and male status agree."
+    },
+    {
+      "id": "v2-hall-m08",
+      "kind": "hall",
+      "a": {
+        "title": "春季宿位互換",
+        "body": "女本科生，UG Hall II 雙人房的分配只包括2027春季，我想換同樣春季 UG Hall V 雙人房。已確認可以正式調換。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Planning the January move",
+        "body": "Female undergraduate with a confirmed UG Hall V double for spring 2027 only. Seeking a UG Hall II double for spring 2027, eligible to exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Both explicitly hold future spring-only allocations; the UG II/V route, double rooms and female eligibility reciprocate."
+    },
+    {
+      "id": "v2-hall-m09",
+      "kind": "hall",
+      "a": {
+        "title": "七堂去八堂 pls",
+        "body": "男UG，confirmed UG Hall VII double，2026/27全年。想換UG Hall VIII double，已確認eligible做official exchange。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Room route VIII to VII",
+        "body": "I already have a double in UG Hall VIII for the full 2026–2027 academic year. Male UG and eligible for room exchange; seeking a double in UG Hall VII.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Casual mixed-language text and the wrong category still establish a reciprocal eligible UG VII/VIII double exchange."
+    },
+    {
+      "id": "v2-hall-m10",
+      "kind": "hall",
+      "a": {
+        "title": "Swap request — both options fine",
+        "body": "Female UG, allocated UG Hall IX single, fall 2026. I can swap into a single in UG Hall I or UG Hall III, and am eligible for either approved exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "想試下九堂",
+        "body": "女本科生，2026秋季已有 UG Hall III 單人房；想互換 UG Hall IX 單人房，已符合換宿規定。只接受單人房。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The offered III single is one explicitly allowed target; the reverse IX single and the same term and female requirement all fit."
+    },
+    {
+      "id": "v2-hall-m11",
+      "kind": "hall",
+      "a": {
+        "title": "Two bits of moving admin",
+        "body": "My kettle has sold. The room exchange is still open: male UG, allocated UG Hall IV double for 2026/27 full year, seeking UG Hall V double. Eligible to swap.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "V → IV room exchange",
+        "body": "Male undergraduate; confirmed UG Hall V double for the complete 2026/27 year. Seeking a UG Hall IV double. I meet the official exchange eligibility requirements.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The sold kettle is a separate closed need; the live reciprocal IV/V housing exchange has compatible explicit constraints."
+    },
+    {
+      "id": "v2-hall-m12",
+      "kind": "hall",
+      "a": {
+        "title": "PG住一年，換近朋友",
+        "body": "男研究生，PG Hall 3 單人房已批，2026-09-01 至 2027-08-31。想正式互換 PG Hall 1 單人房，資格已確認。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Postgraduate hall swap",
+        "body": "I am an eligible male postgraduate with an allocated PG Hall 1 single from 1 September 2026 to 31 August 2027. Looking to exchange for a single in PG Hall 3.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Public text supplies reciprocal PG 3/1 single allocations, the same residence period and explicit male exchange eligibility."
+    },
+    {
+      "id": "v2-hall-r01",
+      "kind": "hall",
+      "a": {
+        "title": "UG I for II",
+        "body": "Male UG; allocated UG Hall I double for all of 2026/27. Want UG Hall II double, eligible for an approved swap.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "PG 2 for 1",
+        "body": "Male PG; allocated PG Hall 2 single for Sep 2026–Aug 2027. Want PG Hall 1 single, eligible for an approved swap.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Similar numbered halls belong to distinct UG and PG namespaces; neither holds the other required room."
+    },
+    {
+      "id": "v2-hall-r02",
+      "kind": "hall",
+      "a": {
+        "title": "III -> V",
+        "body": "Female UG with UG Hall III double for full year 2026/27, eligible to swap. Seeking UG Hall V double.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "V -> VII",
+        "body": "Female UG with UG Hall V double for full year 2026/27, eligible to swap. Seeking UG Hall VII double only.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "One direction fits, but the Hall V resident explicitly wants VII rather than the offered III; the route is not reciprocal."
+    },
+    {
+      "id": "v2-hall-r03",
+      "kind": "hall",
+      "a": {
+        "title": "秋季五堂換六堂",
+        "body": "男UG，已批 UG Hall V 雙人房，只有2026秋季；只換同一秋季 UG Hall VI 雙人房，符合資格。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "春季六堂換五堂",
+        "body": "男UG，已批 UG Hall VI 雙人房，只有2027春季；只換同一春季 UG Hall V 雙人房，符合資格。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Hall route and room types reciprocate, but the explicit nonoverlapping fall-only and spring-only allocations cannot exchange."
+    },
+    {
+      "id": "v2-hall-r04",
+      "kind": "hall",
+      "a": {
+        "title": "IV double out, VIII single only",
+        "body": "Male UG, 2026/27 full-year UG Hall IV double allocated; eligible to exchange. I need a SINGLE in UG Hall VIII, no doubles.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "VIII double -> IV double",
+        "body": "Male UG, full-year 2026/27 allocated UG Hall VIII double, seeking UG Hall IV double through an eligible official swap.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The Hall VIII allocation is explicitly double while the Hall IV resident requires a single and excludes doubles."
+    },
+    {
+      "id": "v2-hall-r05",
+      "kind": "hall",
+      "a": {
+        "title": "女生換宿 II to III",
+        "body": "女UG，2026/27全年 UG Hall II 雙人房已分配，只能與女生互換 UG Hall III 雙人房，資格已確認。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "III to II for next year",
+        "body": "Male UG, confirmed UG Hall III double for all of 2026/27, seeking UG Hall II double. Eligible for swaps with male residents.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The explicit gender eligibility restrictions conflict despite reciprocal halls and matching dates and room types."
+    },
+    {
+      "id": "v2-hall-r06",
+      "kind": "hall",
+      "a": {
+        "title": "更新：唔換喇",
+        "body": "原本想用 UG Hall VI 雙人房換 UG Hall I，2026/27全年，男UG。調房申請已撤回，我會留在六堂，請不要再聯絡換房。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "I double seeking VI",
+        "body": "Male UG with allocated UG Hall I double for full year 2026/27; seeking UG Hall VI double and eligible for official exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The first author explicitly withdrew the housing exchange, so there is no live complementary room request."
+    },
+    {
+      "id": "v2-hall-r07",
+      "kind": "hall",
+      "a": {
+        "title": "Need somewhere in VII",
+        "body": "I have no hall allocation this year. Male UG, looking to take over a UG Hall VII double for 2026/27; I cannot offer a room in exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "VII allocated, seeking II",
+        "body": "Male UG holding a UG Hall VII double for all of 2026/27. I only want an official exchange for UG Hall II double; not giving away my place.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The seeker explicitly has no allocated room and cannot supply the Hall II room required for the offered reciprocal exchange."
+    },
+    {
+      "id": "v2-hall-r08",
+      "kind": "hall",
+      "a": {
+        "title": "Hall IX into IV",
+        "body": "Female UG, confirmed IX single, full year 2026/27; hoping for UG Hall IV single.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z",
+        "currentHall": "UG Hall IX",
+        "targetHall": "UG Hall IV"
+      },
+      "b": {
+        "title": "同路人揮手",
+        "body": "我都係女UG，2026/27全年已批 UG Hall IX 單人房，想換 UG Hall IV 單人房。九堂住戶一齊等啦。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Both hold IX and seek IV; neither offers the destination room that the other needs."
+    },
+    {
+      "id": "v2-hall-r09",
+      "kind": "hall",
+      "a": {
+        "title": "PG Hall 1 to 2 exchange",
+        "body": "Female PG; allocated PG Hall 1 single for Sep 2026–Aug 2027, seeking PG Hall 2 single through an official room exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "PG Hall 2 storytime",
+        "body": "I lived in PG Hall 2 last year and moved to PG Hall 1. I have no room allocated now; this is just a review of the single-room layout, not a swap listing.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Historical discussion explicitly disclaims a current allocation or swap offer; shared hall names do not create actionable complementarity."
+    },
+    {
+      "id": "v2-hall-r10",
+      "kind": "hall",
+      "a": {
+        "title": "UG V -> IX, official scheme only",
+        "body": "Male UG with a full-year 2026/27 UG Hall V double. Seeking a UG Hall IX double from a resident who is eligible for an official exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "IX room situation",
+        "body": "Male UG with a full-year 2026/27 UG Hall IX double, would like UG Hall V double. Housing has told me I am ineligible to exchange this year; I cannot submit a swap.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The apparent reciprocal counterpart explicitly cannot participate in the required official exchange, a stated material eligibility failure."
+    },
+    {
+      "id": "v2-hall-u01",
+      "kind": "hall",
+      "a": {
+        "title": "三堂換二堂",
+        "body": "男UG，已批 UG Hall III 雙人房，2026/27全年，想换 UG Hall II 雙人房，符合換宿資格。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "二堂去三堂？",
+        "body": "我是男UG，想搬去 UG Hall III 雙人房。UG Hall II 那邊還要等宿辦回覆，暫時不說自己有沒有拿到房。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second author has not confirmed a Hall II allocation, which is essential to complete the reciprocal exchange."
+    },
+    {
+      "id": "v2-hall-u02",
+      "kind": "hall",
+      "a": {
+        "title": "PG 1 single for PG 2",
+        "body": "Male postgraduate with allocated PG Hall 1 single, Sep 2026–Aug 2027; seeking PG Hall 2 single. Eligible for an official exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Hall 2 single, want Hall 1",
+        "body": "I hold a Hall 2 single for September 2026 to August 2027 and want a Hall 1 single. Male student, eligible to swap. Drop me a note if your route is the reverse.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second post never resolves UG versus PG hall namespace; matching the bare numbers would assume a critical fact."
+    },
+    {
+      "id": "v2-hall-u03",
+      "kind": "hall",
+      "a": {
+        "title": "只換秋季",
+        "body": "女UG，UG Hall VII 單人房已批，僅2026秋季，想換同期 UG Hall VIII 單人房，符合資格。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "VIII to VII single swap",
+        "body": "Female UG, allocated UG Hall VIII single and seeking UG Hall VII single. Eligible to exchange. VIII is nice but VII would make my mornings easier.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "Reciprocal halls, room type and gender are explicit, but the second allocation term is missing and may not cover fall 2026."
+    },
+    {
+      "id": "v2-hall-u04",
+      "kind": "hall",
+      "a": {
+        "title": "Double for a single",
+        "body": "Male UG; allocated UG Hall IV double, full year 2026/27. Need UG Hall VI single only, eligible to swap.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Six to four",
+        "body": "Male UG, allocated UG Hall VI for the full 2026/27 academic year. Want UG Hall IV double, eligible for official exchange. Hoping to get this sorted soon.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The offered Hall VI room type is undisclosed, so compliance with the single-only requirement cannot be established."
+    },
+    {
+      "id": "v2-hall-u05",
+      "kind": "hall",
+      "a": {
+        "title": "只可女生互換",
+        "body": "女本科生，2026/27全年 UG Hall II 雙人房已批，想換 UG Hall IX 雙人房，只接受符合女生換宿資格的人。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "IX double to II double",
+        "body": "Allocated UG Hall IX double for all of 2026/27, seeking UG Hall II double. Hoping to find someone going the other way so I can ask housing about the process.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second author does not state whether they satisfy the hard female exchange eligibility condition; a reciprocal hall route alone is insufficient."
+    },
+    {
+      "id": "v2-hall-u06",
+      "kind": "hall",
+      "a": {
+        "title": "V allocated, looking for I",
+        "body": "Male UG, allocated UG Hall V double for fall 2026. Seeking UG Hall I double; eligible to exchange.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "一堂五堂好難揀",
+        "body": "男UG，2026秋季 UG Hall I 雙人房已批。五堂個位置幾吸引，係咪真係搬就仲未諗掂，先傾下。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The Hall I author is considering locations rather than making a definite actionable exchange request."
+    },
+    {
+      "id": "v2-hall-u07",
+      "kind": "hall",
+      "a": {
+        "title": "VII -> III room exchange",
+        "body": "Female UG, eligible, allocated UG Hall VII double for full year 2026/27. Want a UG Hall III double.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Stuff to sort out",
+        "body": "Female UG, full-year 2026/27 UG Hall III double. Was arranging a swap to VII and selling a lamp. Update: that one is cancelled, other one maybe still on.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The cancellation referent does not identify whether the room exchange or the lamp is cancelled; room intent remains unresolved."
+    },
+    {
+      "id": "v2-hall-u08",
+      "kind": "hall",
+      "a": {
+        "title": "PG Hall 3 needs Hall 2",
+        "body": "Male PG, allocated PG Hall 3 single from 1 Sep 2026 to 31 Aug 2027, seeking PG Hall 2 single; eligible for official swap.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Room wish list",
+        "body": "PG Hall 2 single or PG Hall 3 single? Both on my wish list this year. Male postgraduate, still refreshing the housing inbox. I keep changing my mind about where to live.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "Listing two PG halls is not evidence of an allocated Hall 2 offer or a decided Hall 3 target; both required direction and possession are unconfirmed."
+    },
+    {
+      "id": "v2-goods-m01",
+      "kind": "goods",
+      "a": {
+        "title": "iPad畢業價",
+        "body": "出售 iPad Air 5 64GB Wi-Fi，功能正常，HK$2200 不議價。9月12日 14:00–16:00 可以在圖書館門口交收。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "For lecture notes",
+        "body": "Want to buy a working iPad Air 5, 64 GB Wi-Fi. Budget up to HK$2300. I can collect at the library entrance on 12 Sep 2026 at 15:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Same explicitly specified tablet and capacity, complementary sale/purchase, affordable price and an agreed date, overlapping time and handover place."
+    },
+    {
+      "id": "v2-goods-m02",
+      "kind": "goods",
+      "a": {
+        "title": "有冇人借到個電鑽",
+        "body": "求借 18V cordless drill，用一晚掛架，9月13日18:00在北巴士站取，9月14日18:00原地還；肯俾HK$50借用費。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Drill available to lend",
+        "body": "I can lend my working 18 V cordless drill for HK$30. Pickup at the north bus stop 13 September 2026 at 18:00, return there 14 September at 18:00.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "A loan offer complements a loan request for the same tool; exact handover/return schedule, location and fee ceiling fit."
+    },
+    {
+      "id": "v2-goods-m03",
+      "kind": "goods",
+      "a": {
+        "title": "Moving out — desk free",
+        "body": "Giving away a sturdy 100 cm wide desk, already assembled. Must be collected from UG Hall VI lobby on 12 September 2026 between 10:00 and 11:00; bring someone to carry it.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "求張唔太大嘅枱",
+        "body": "想免費領取書枱，闊度最多110cm。9月12日10:30我和室友可以到 UG Hall VI 大堂一齊搬，已組裝都冇問題。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Free desk acquisition matches the giveaway, width limit, exact pickup window and explicitly satisfied carrying condition."
+    },
+    {
+      "id": "v2-goods-m04",
+      "kind": "goods",
+      "a": {
+        "title": "Sony耳機搵接手",
+        "body": "賣 Sony WH-1000XM4 黑色頭戴耳機，HK$900，運作正常。9月14日12:00–13:00學術大樓正門交收。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "My XM4 died",
+        "body": "Buying Sony WH-1000XM4 over-ear headphones, black preferred, budget HK$950. Can meet at the academic building main entrance at 12:30 on 14 Sep 2026.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Identical headphone model and form factor, affordable asking price and compatible stated pickup date/time/place."
+    },
+    {
+      "id": "v2-goods-m05",
+      "kind": "goods",
+      "a": {
+        "title": "Rice cooker gone, lamp still here",
+        "body": "The rice cooker is sold. Still selling the IKEA TERTIAL white desk lamp for HK$60, working perfectly. Library entrance, 15 Sep 2026, 17:00–18:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "只要盞枱燈",
+        "body": "想買白色 IKEA TERTIAL 枱燈，最多HK$80，9月15日17:30圖書館門口可以交收。電飯煲唔需要。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Cancellation is scoped to the rice cooker; the live specific lamp offer fits the seeker’s item, budget and handover constraints."
+    },
+    {
+      "id": "v2-goods-m06",
+      "kind": "goods",
+      "a": {
+        "title": "Textbook needed before Tuesday",
+        "body": "Looking to buy Stewart Calculus: Early Transcendentals, 9th edition, English print copy. Up to HK$180. Can pick up at the library entrance at 16:00 on 14 September 2026.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "微積分書放售",
+        "body": "Stewart Calculus: Early Transcendentals 第9版，英文紙本，無缺頁，HK$150。9月14日16:00圖書館入口交收。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The exact book, edition, language and format agree, with a sale price within budget and identical handover arrangements."
+    },
+    {
+      "id": "v2-goods-m07",
+      "kind": "goods",
+      "a": {
+        "title": "借個轉插，唔係充電器",
+        "body": "9月12日11:00至9月13日11:00想借 USB-C to HDMI adapter，圖書館門口取還，免費最好。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Spare USB-C HDMI adapter",
+        "body": "Happy to lend my USB-C to HDMI adapter free from 11:00 on 12 Sep 2026 until 11:00 on 13 Sep. Meet at the library entrance for both handovers.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The same adapter is explicitly offered as a free loan for the full requested interval with matching handover place."
+    },
+    {
+      "id": "v2-goods-m08",
+      "kind": "goods",
+      "a": {
+        "title": "小雪櫃未賣",
+        "body": "出售40L小型雪櫃，HK$300，9月13日14:00–15:00在 UG Hall IV 大堂自取，需要買家自己搬。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Mini fridge for room",
+        "body": "Want to buy a mini fridge, 35–50 L, max HK$350. A friend and I can carry it from UG Hall IV lobby at 14:30 on 13 Sep 2026.",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The 40 L fridge falls within the requested size range and budget; buyer explicitly satisfies pickup window, location and self-carry condition."
+    },
+    {
+      "id": "v2-goods-m09",
+      "kind": "goods",
+      "a": {
+        "title": "相機電池求救",
+        "body": "我有 Sony NP-FW50 一顆想換 Canon LP-E17 一顆，要原廠正常。我的也是正常原廠。9月16日13:00北巴士站可互換。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Battery swap",
+        "body": "Have one genuine working Canon LP-E17 battery; want one genuine working Sony NP-FW50. Straight swap at the north bus stop on 16 Sep 2026 at 13:00 works for me.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The exchange is genuinely reciprocal between two distinct battery models, with mutually satisfied authenticity, condition and meeting constraints."
+    },
+    {
+      "id": "v2-goods-m10",
+      "kind": "goods",
+      "a": {
+        "title": "Keyboard cheap, need space",
+        "body": "Selling a working wired USB keyboard for HK$40. Collect tomorrow, 12 Sep, at 18:00 outside the library.",
+        "category": "goods",
+        "createdAt": "2026-09-10T16:15:00Z"
+      },
+      "b": {
+        "title": "想要最普通嗰種keyboard",
+        "body": "求購正常 USB 有線鍵盤，HK$50以內就得。2026年9月12日18:00我在圖書館門口。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The first timestamp is 11 Sep in Hong Kong, so tomorrow explicitly means 12 Sep; the item, budget and handover match."
+    },
+    {
+      "id": "v2-goods-m11",
+      "kind": "goods",
+      "a": {
+        "title": "瑜伽墊有多",
+        "body": "有全新6mm瑜伽墊免費送，9月17日19:00在體育館正門交收。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Need a mat for floor exercises",
+        "body": "Would like to take a free unused yoga mat, at least 5 mm thick. I can collect at the sports centre main entrance on 17 September 2026 at 19:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "A free unused 6 mm mat satisfies the acquisition request and minimum thickness, with the same explicit handover."
+    },
+    {
+      "id": "v2-goods-m12",
+      "kind": "goods",
+      "a": {
+        "title": "A chair AND a monitor",
+        "body": "Buying an adjustable office chair up to HK$200 and a Dell U2422H monitor up to HK$700. For the monitor I can collect at UG Hall II lobby on 18 Sep 2026, 16:00–17:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "螢幕出讓",
+        "body": "Dell U2422H 正常使用，HK$650；沒有椅子出售。9月18日16:30 UG Hall II 大堂交收。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The monitor is one distinct live need in a multi-item request; its exact model, price and pickup match even though the separate chair need is unmet."
+    },
+    {
+      "id": "v2-goods-r01",
+      "kind": "goods",
+      "a": {
+        "title": "Air 5 only please",
+        "body": "Looking to buy iPad Air 5 64GB Wi-Fi, max HK$2400. Collect library entrance 12 Sep 2026 at 15:00. Must be Air 5, not another generation.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "iPad Air 4 64GB",
+        "body": "Selling working iPad Air 4 64GB Wi-Fi for HK$2200. Library entrance 12 Sep 2026, 15:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Closely related devices have different explicit generations; the buyer requires Air 5 and the seller offers Air 4."
+    },
+    {
+      "id": "v2-goods-r02",
+      "kind": "goods",
+      "a": {
+        "title": "Sony XM4收一個",
+        "body": "收 Sony WH-1000XM4，HK$800係絕對上限。9月14日12:30學術大樓正門交收。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "WH-1000XM4 sale",
+        "body": "Selling Sony WH-1000XM4 for HK$900 firm, no discounts or trade. 14 Sep 2026 at 12:30, academic building main entrance.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Exact item and handover agree but the firm HK$900 price exceeds the explicit hard HK$800 budget."
+    },
+    {
+      "id": "v2-goods-r03",
+      "kind": "goods",
+      "a": {
+        "title": "Monday only collection",
+        "body": "Want a free assembled desk. I can only collect on 14 September 2026, 18:00–19:00, UG Hall VI lobby; I cannot collect earlier.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "枱一定要週六搬走",
+        "body": "免費送已組裝書枱，只可9月12日10:00–11:00在 UG Hall VI 大堂取，之後交還房間，不能留到其他日子。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Mandatory pickup dates do not overlap and neither party permits an alternative despite an otherwise suitable desk."
+    },
+    {
+      "id": "v2-goods-r04",
+      "kind": "goods",
+      "a": {
+        "title": "Battery need",
+        "body": "Buying a genuine Canon LP-E17 camera battery, HK$200 maximum. North bus stop, 16 Sep 2026 at 13:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "另一個求電池",
+        "body": "我都想買 Canon LP-E17 原廠電池，最多HK$180，9月16日13:00北巴士站可交收；我沒有電池出售。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Both are explicit buyers of the same item; neither can provide a battery."
+    },
+    {
+      "id": "v2-goods-r05",
+      "kind": "goods",
+      "a": {
+        "title": "Rice cooker gone, lamp left",
+        "body": "Update: rice cooker sold and collected, no longer available. IKEA TERTIAL lamp still for sale HK$60 at library entrance 15 Sep 2026 at 17:30.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "飯煲收一個",
+        "body": "想買電飯煲，最多HK$100，9月15日17:30圖書館門口可以交收。唔要枱燈。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The requested rice cooker is explicitly sold; the remaining live lamp is not the requested item and is explicitly unwanted."
+    },
+    {
+      "id": "v2-goods-r06",
+      "kind": "goods",
+      "a": {
+        "title": "借用一晚就還",
+        "body": "想免費借 USB-C to HDMI adapter，9月12日11:00圖書館取、13日11:00還。不購買，我只用一晚。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "USB-C HDMI adapter for sale",
+        "body": "Selling USB-C to HDMI adapter for HK$70 at library entrance on 12 Sep 2026, 11:00. Sale only; I do not lend equipment.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The seeker requires a loan and explicitly will not buy; the owner explicitly offers sale only and refuses lending."
+    },
+    {
+      "id": "v2-goods-r07",
+      "kind": "goods",
+      "a": {
+        "title": "Need local pickup",
+        "body": "Buying Dell U2422H monitor up to HK$700, 18 Sep 2026 at 16:30. I can collect only at the campus UG Hall II lobby; cannot travel off campus.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "U2422H出讓",
+        "body": "Dell U2422H正常，HK$650。只限2026年9月18日16:30旺角站自取，不送校園、不郵寄。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The exact monitor is affordable but the two exclusive handover places are incompatible."
+    },
+    {
+      "id": "v2-goods-r08",
+      "kind": "goods",
+      "a": {
+        "title": "Calculus paper copy",
+        "body": "Buying Stewart Calculus: Early Transcendentals, 9th edition, English paper textbook only, max HK$180. Library 14 Sep 2026 at 16:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "課本唔係電子版",
+        "body": "賣 Stewart Calculus: Early Transcendentals 第8版英文紙本，HK$120，圖書館9月14日16:00交收。就是第8版，沒有第9版。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The textbook title is identical but the explicitly required 9th edition is not the offered 8th edition."
+    },
+    {
+      "id": "v2-goods-r09",
+      "kind": "goods",
+      "a": {
+        "title": "Printer wanted",
+        "body": "Need to buy a working Brother HL-L2350DW laser printer, up to HK$600. Can collect library entrance 19 Sep 2026 at 14:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "HL-L2350DW spare parts",
+        "body": "Brother HL-L2350DW for HK$100, library entrance 19 Sep at 14:00. It does NOT print and cannot power on, sold for parts only.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The exact model is explicitly nonfunctional while the buyer requires a working printer."
+    },
+    {
+      "id": "v2-goods-r10",
+      "kind": "goods",
+      "a": {
+        "title": "Free mat, unused",
+        "body": "Giving away an unused 6 mm yoga mat, sports centre main entrance 17 Sep 2026 at 19:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Yoga mat nostalgia",
+        "body": "I used to love my 6 mm yoga mat. Just sharing an old photo, not looking for a mat, not selling one, and not planning to collect anything.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The second post explicitly denies all actionable acquisition and offer intent; item similarity alone is not a match."
+    },
+    {
+      "id": "v2-goods-u01",
+      "kind": "goods",
+      "a": {
+        "title": "Need Air 5 for notes",
+        "body": "Buying iPad Air 5 64GB Wi-Fi, max HK$2300, library entrance on 12 Sep 2026 at 15:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "有部iPad出",
+        "body": "iPad Air，64GB Wi-Fi，HK$2100，9月12日15:00圖書館門口可交收。第幾代我要查下先。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "Price and handover fit, but the seller has not identified the generation required by the buyer."
+    },
+    {
+      "id": "v2-goods-u02",
+      "kind": "goods",
+      "a": {
+        "title": "Chair budget fixed",
+        "body": "Want an adjustable office chair, up to HK$200 total. Can collect at UG Hall II lobby on 18 Sep 2026 at 16:30.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Office chair needs a home",
+        "body": "Selling my adjustable office chair. Price to be decided after I ask my roommate. UG Hall II lobby, 18 Sep 2026 at 16:30.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The hard budget cannot be checked because no selling price or accepted range is public."
+    },
+    {
+      "id": "v2-goods-u03",
+      "kind": "goods",
+      "a": {
+        "title": "只能嗰半個鐘",
+        "body": "想買18V無線電鑽，HK$250以内。只能9月13日18:00–18:30北巴士站取，其他時間不在香港。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "18 V drill for HK$200",
+        "body": "Working 18 V cordless drill for sale, HK$200. North bus stop pickup, 13 September 2026, sometime in the evening; will know the time later.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "An unspecified evening does not establish overlap with the buyer’s sole narrow collection window."
+    },
+    {
+      "id": "v2-goods-u04",
+      "kind": "goods",
+      "a": {
+        "title": "Desk please",
+        "body": "Looking to take a free desk up to 110 cm wide. Can collect UG Hall VI lobby 12 Sep 2026 at 10:30 with someone to help.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "張枱諗緊點處理",
+        "body": "有張100cm書枱，12號10:30我會在六堂大堂。可能送，可能自己留返，未決定。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The owner has not decided to give away or sell the desk, so actionable offer intent is not established."
+    },
+    {
+      "id": "v2-goods-u05",
+      "kind": "goods",
+      "a": {
+        "title": "LP-E17 needed",
+        "body": "Buying a genuine working Canon LP-E17 battery up to HK$200. North bus stop, 16 Sep 2026 at 13:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Battery + tripod update",
+        "body": "Selling a Canon LP-E17 battery for HK$150 and a tripod for HK$80; north bus stop 16 Sep 2026 at 13:00. Update: one has gone! In a rush, will tidy this post after class.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The update leaves it unresolved whether the requested battery remains available; cancellation scope cannot be safely inferred."
+    },
+    {
+      "id": "v2-goods-u06",
+      "kind": "goods",
+      "a": {
+        "title": "HDMI adapter loan",
+        "body": "Can lend USB-C to HDMI adapter free, 12 Sep 2026 11:00 to 13 Sep 11:00, library entrance for both handovers.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "轉插真係成日唔見",
+        "body": "USB-C to HDMI adapter 又唔知擺咗去邊，唉。不知自己會唔會需要借，等我睇下先。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second author is undecided about needing a loan, so the shared item mention is not yet a request."
+    },
+    {
+      "id": "v2-goods-u07",
+      "kind": "goods",
+      "a": {
+        "title": "Mini fridge must fit",
+        "body": "Buying a mini fridge 35–50 L, max HK$350. Can carry it from UG Hall IV lobby on 13 Sep 2026 at 14:30.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "小雪櫃賣HK$300",
+        "body": "正常小雪櫃，HK$300，9月13日14:30四堂大堂取。我找不到容量標籤，幾多L唔清楚。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The seller’s capacity is unknown, so the buyer’s material 35–50 L fit requirement is unverified."
+    },
+    {
+      "id": "v2-goods-u08",
+      "kind": "goods",
+      "a": {
+        "title": "Keyboard to sell",
+        "body": "Working wired USB keyboard for HK$40, library entrance 12 Sep 2026 at 18:00.",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "keyboard 40?",
+        "body": "USB keyboard，HK$40，9月12日18:00圖書館。記低先，趕住上堂，詳情放學補。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The terse item, price and meeting note never establishes whether the author is buying or selling, leaving complementary transaction direction unanswerable."
+    },
+    {
+      "id": "v2-study-m01",
+      "kind": "study",
+      "a": {
+        "title": "Pointers唔入腦",
+        "body": "COMP 2011 learner here, need someone to teach me C++ pointers. English explanation is fine. Free help only; library ground floor on 14 Sep 2026, 16:00–17:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Can help with C++ pointers",
+        "body": "Offering free tutoring for COMP2011 students on pointers. I can teach in English at the library ground floor, 14 September 2026 from 16:00 to 17:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Same course and topic, explicit tutor/learner roles, English language, free price and identical study time/place."
+    },
+    {
+      "id": "v2-study-m02",
+      "kind": "study",
+      "a": {
+        "title": "一齊做積分題",
+        "body": "搵 MATH 1014 同學一齊練 integration by parts，我都係學緊，唔係教人。9月15日19:00–20:00圖書館地下，廣東話討論。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "MATH1014 buddy",
+        "body": "想搵同級同學互相對下分部積分練習思路，廣東話；9月15日19:00–20:00我在圖書館地下，一齊練習可以。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Both seek peer collaboration on the same course topic and expressly share Cantonese, time and location."
+    },
+    {
+      "id": "v2-study-m03",
+      "kind": "study",
+      "a": {
+        "title": "ECON 2123 溫習卡住",
+        "body": "求師兄姐教 consumer choice，自己修緊 ECON2123。只聽得明廣東話，9月16日14:00–15:00只可 Zoom，想要免費幫手。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "微觀可以幫手",
+        "body": "我讀過 ECON2123，可以免費教 consumer choice，用廣東話，9月16日14:00–15:00 Zoom 一對一有空。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The explicit course/topic tutoring offer meets the learner’s Cantonese-only, online-only, free and precise-time requirements."
+    },
+    {
+      "id": "v2-study-m04",
+      "kind": "study",
+      "a": {
+        "title": "Physics practice partner",
+        "body": "Taking PHYS1112; want another learner to work through electric field problems with. English discussion, library ground floor, 17 Sep 2026, 10:00–11:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "PHYS 1112 同學集合",
+        "body": "我想找同學一起練電場題，不是收費補習。我可以用英文，9月17日10:00–11:00在圖書館地下。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The same PHYS1112 electric-field peer activity has compatible language, exact session time and location."
+    },
+    {
+      "id": "v2-study-m05",
+      "kind": "study",
+      "a": {
+        "title": "Chem flashcards, one seat open",
+        "body": "We are two CHEM1010 learners reviewing chemical bonding with flashcards. One more peer welcome, in English, library ground floor on 18 Sep 2026 from 15:00 to 16:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Chemical bonding revision",
+        "body": "One CHEM 1010 student hoping to join peer flashcard practice on chemical bonding. English okay; free at the library ground floor, 18 September 15:00–16:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "An explicit open study-group place fits a single peer learner on the same course/topic, language, time and location."
+    },
+    {
+      "id": "v2-study-m06",
+      "kind": "study",
+      "a": {
+        "title": "Presentation rehearsal coaching",
+        "body": "I can coach LANG1403 oral presentation structure for free, in English over Zoom, 19 Sep 2026 at 11:00–12:00. Looking for a learner who wants feedback.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "講presentation太散",
+        "body": "修 LANG 1403，想有人教我組織英文presentation，唔係搵人代做。9月19日11:00–12:00可用 Zoom，用英文就得；想免費指導。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "A learner explicitly requests the exact presentation coaching offered, with matching English, Zoom, free cost and schedule."
+    },
+    {
+      "id": "v2-study-m07",
+      "kind": "study",
+      "a": {
+        "title": "Two courses, one resolved",
+        "body": "No longer need help with ACCT2010. Still need a tutor for ECON2103 elasticity, in English, free, library ground floor on 20 Sep 2026 from 14:00 to 15:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Elasticity can help",
+        "body": "Offering free English tutoring on elasticity for ECON 2103. Library ground floor, 20 September 2026, 14:00–15:00. I do not teach accounting.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Only the accounting request is closed; the separate live ECON2103 elasticity need matches the tutor’s explicit offer and constraints."
+    },
+    {
+      "id": "v2-study-m08",
+      "kind": "study",
+      "a": {
+        "title": "Python loops revision",
+        "body": "Seeking a peer for COMP1021 loops practice, Mandarin or English both work for me. Zoom, 21 Sep 2026, 18:00–19:00. I am learning too.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "一個人寫loop太悶",
+        "body": "我是 COMP 1021 初學者，想找同學一起練 Python loops。只能普通話討論，9月21日18:00–19:00可以 Zoom。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Both want peer loop practice for COMP1021; Mandarin is explicitly accepted by both and the online session time agrees."
+    },
+    {
+      "id": "v2-study-m09",
+      "kind": "study",
+      "a": {
+        "title": "生物補底一小時",
+        "body": "BISC1001 細胞膜運輸唔明，想找人教；英文可，9月22日12:00–13:00圖書館地下，免費最好。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Cell membrane transport help",
+        "body": "Happy to teach BISC 1001 membrane transport in English at no charge. Available 22 Sep 2026 from 12:00 to 13:00 on the library ground floor.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Wrong category does not obscure the explicit same-course membrane-transport learner/tutor pair and matching session constraints."
+    },
+    {
+      "id": "v2-study-m10",
+      "kind": "study",
+      "a": {
+        "title": "IELTS speaking together?",
+        "body": "Seeking an IELTS speaking practice partner, both taking turns as candidate and interviewer. English, Zoom, 23 Sep 2026 from 20:00 to 21:00.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "雅思口語搭子",
+        "body": "我考 IELTS，想同另一位考生互相練 speaking，不要付費老師。9月23日20:00–21:00可 Zoom，用英文練。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Compatible peers explicitly seek reciprocal IELTS speaking practice with the same language, online format and fixed session."
+    },
+    {
+      "id": "v2-study-m11",
+      "kind": "study",
+      "a": {
+        "title": "Proofs buddy pls",
+        "body": "COMP2711 student looking for a peer to practice induction proofs, English only. Library ground floor, tomorrow 12 Sep 2026, 15:00–16:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T16:25:00Z"
+      },
+      "b": {
+        "title": "COMP 2711 induction",
+        "body": "想一起練數學歸納法證明，我是同課同學，可全英文。2026年9月12日15:00–16:00圖書館地下見。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Hong Kong creation time makes tomorrow 12 Sep; both explicit peers share course, proof topic, English and the same session."
+    },
+    {
+      "id": "v2-study-m12",
+      "kind": "study",
+      "a": {
+        "title": "Need limits explained slowly",
+        "body": "MATH1013 learner needs one hour of tutoring on limits, English, at most HK$100 total. Library ground floor on 24 Sep 2026, 16:00–17:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Limits tutoring slot",
+        "body": "I tutor MATH 1013 limits in English. One-hour session HK$80 total; can meet at the library ground floor on 24 September 2026, 16:00–17:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Explicit tutor/learner complementarity includes exact course/topic, venue/time/language and a total fee within the hard budget."
+    },
+    {
+      "id": "v2-study-r01",
+      "kind": "study",
+      "a": {
+        "title": "Tutor: COMP2011 pointers",
+        "body": "Offering free English tutoring for COMP2011 pointers at the library ground floor, 14 Sep 2026, 16:00–17:00. Seeking learners.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "我都可以教",
+        "body": "我教 COMP 2011 pointers，英文免費，9月14日16:00–17:00圖書館地下。我只收學生，不找老師或共同備課的人。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Both explicitly offer instruction and seek learners; neither requests tuition or peer collaboration."
+    },
+    {
+      "id": "v2-study-r02",
+      "kind": "study",
+      "a": {
+        "title": "MATH1014 practice",
+        "body": "Need a MATH1014 peer for integration by parts; 15 Sep 2026, 19:00–20:00, English, library ground floor. Only my course practice set.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "MATH1013 only",
+        "body": "Want a MATH1013 peer to practice limits, same library floor on 15 Sep 2026 at 19:00–20:00, English. Not taking MATH1014 and not doing integration.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The course and requested practice topic differ, with the second author explicitly excluding the first course/topic."
+    },
+    {
+      "id": "v2-study-r03",
+      "kind": "study",
+      "a": {
+        "title": "只得下午可以學",
+        "body": "ECON2123 consumer choice 求免費教學，廣東話，Zoom。9月16日只可14:00–15:00，之後要上班。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "ECON2123 tutoring",
+        "body": "Free Cantonese tutor for consumer choice over Zoom. On 16 Sep 2026 I am available ONLY 19:00–20:00 and cannot move that slot.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The same tutoring subject and language cannot overcome the explicit nonoverlapping fixed availability windows."
+    },
+    {
+      "id": "v2-study-r04",
+      "kind": "study",
+      "a": {
+        "title": "Need Cantonese explanation",
+        "body": "ECON2123 consumer choice learner. Cantonese only, I cannot follow English tuition. Free Zoom, 16 Sep 2026, 14:00–15:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "English-only ECON2123 tuition",
+        "body": "Can teach consumer choice for free on Zoom, 16 Sep 2026, 14:00–15:00. I speak only English and cannot teach in Cantonese.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The learner requires Cantonese and the tutor explicitly cannot provide it, despite all other session details matching."
+    },
+    {
+      "id": "v2-study-r05",
+      "kind": "study",
+      "a": {
+        "title": "Online rehearsal only",
+        "body": "LANG1403 learner seeking presentation coaching in English, free, 19 Sep 2026, 11:00–12:00. I am off campus, Zoom only.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Face-to-face LANG1403 coach",
+        "body": "Free English presentation coaching, 19 Sep 2026 11:00–12:00, library ground floor only. I cannot use Zoom or any online call.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The parties explicitly require mutually exclusive online and in-person formats."
+    },
+    {
+      "id": "v2-study-r06",
+      "kind": "study",
+      "a": {
+        "title": "Induction is the issue",
+        "body": "COMP2711 learner wants free English tutoring on induction proofs only. Library ground floor, 12 Sep 2026, 15:00–16:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "COMP2711 algebra help",
+        "body": "I can tutor basic Boolean algebra for COMP2711, free in English, library ground floor 12 Sep 2026 15:00–16:00. I cannot teach induction proofs.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Same course alone is insufficient: the tutor explicitly excludes the only topic the learner requests."
+    },
+    {
+      "id": "v2-study-r07",
+      "kind": "study",
+      "a": {
+        "title": "MATH1013 tutorial budget",
+        "body": "Need one hour learning limits, MATH1013, English. Library ground floor 24 Sep 2026 16:00–17:00. HK$100 is my absolute maximum total.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "MATH1013 limits tuition",
+        "body": "English limits tutor, library ground floor 24 Sep 2026 16:00–17:00. HK$180 for the hour, fixed rate, no free sessions.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The mandatory tuition rate exceeds the learner’s explicit hard total budget."
+    },
+    {
+      "id": "v2-study-r08",
+      "kind": "study",
+      "a": {
+        "title": "Python learner changed plans",
+        "body": "I was looking for a COMP1021 loops tutor. Cancelled that request: I dropped the course and do not need any Python help. Still selling a desk.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "COMP1021 loop tutor",
+        "body": "Can teach Python loops for COMP1021 free in Mandarin, Zoom, 21 Sep 2026, 18:00–19:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The study request is explicitly cancelled; a separate furniture sale does not make the tutoring offer complementary."
+    },
+    {
+      "id": "v2-study-r09",
+      "kind": "study",
+      "a": {
+        "title": "IELTS practice partner",
+        "body": "Want a peer for IELTS speaking role-play in English on Zoom, 23 Sep 2026 20:00–21:00. Preparing specifically for IELTS.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "TOEFL speaking only",
+        "body": "Seeking a TOEFL iBT speaking peer, English Zoom 23 Sep 2026 20:00–21:00. TOEFL tasks only; I am not doing IELTS or general conversation.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The explicitly exclusive examination practice formats conflict; a broad speaking label does not satisfy the stated activity."
+    },
+    {
+      "id": "v2-study-r10",
+      "kind": "study",
+      "a": {
+        "title": "Cell membrane tutor",
+        "body": "Offering free BISC1001 membrane transport tutoring in English, library ground floor 22 Sep 2026 12:00–13:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "課後隨想",
+        "body": "BISC1001 membrane transport 真有趣。純粹記錄今天學到的東西，沒有想找老師、學生或溫習伙伴。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The second author explicitly disclaims any actionable study-partner, learner or teaching request."
+    },
+    {
+      "id": "v2-study-u01",
+      "kind": "study",
+      "a": {
+        "title": "Pointers help wanted",
+        "body": "Need a free COMP2011 tutor on C++ pointers, English, library ground floor 14 Sep 2026 16:00–17:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Can teach computing",
+        "body": "Computing is my comfort zone, happy to help someone for free in English. Library ground floor, 14 Sep 2026 16:00–17:00. Tell me what you are stuck on.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The offer does not establish competence or scope for the explicitly requested course and pointers topic."
+    },
+    {
+      "id": "v2-study-u02",
+      "kind": "study",
+      "a": {
+        "title": "MATH1014 integration together",
+        "body": "Seeking another learner for MATH1014 integration by parts, Cantonese, library ground floor 15 Sep 2026 19:00–20:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "MATH1014 記低先",
+        "body": "MATH1014 分部積分，廣東話，9月15日19:00–20:00圖書館地下。留個note先，依家趕住交功課。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The note supplies a course, topic and appointment but never states a teaching, learning or peer-collaboration intent, so peer complementarity cannot be assumed."
+    },
+    {
+      "id": "v2-study-u03",
+      "kind": "study",
+      "a": {
+        "title": "Cantonese only economics help",
+        "body": "Need free ECON2123 consumer choice tuition in Cantonese only, Zoom 16 Sep 2026 14:00–15:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Consumer choice tutor",
+        "body": "I can teach ECON2123 consumer choice for free on Zoom, 16 Sep 2026 14:00–15:00. One learner welcome, we can go through a few examples together.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "A hard Cantonese-only requirement is present, but the tutor has not supplied evidence of the required language."
+    },
+    {
+      "id": "v2-study-u04",
+      "kind": "study",
+      "a": {
+        "title": "Fixed physics hour",
+        "body": "PHYS1112 learner seeking a peer for electric field problems in English, library ground floor on 17 Sep 2026. I can ONLY do 10:00–11:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Physics in the morning",
+        "body": "I want a PHYS1112 electric-field practice peer, English at the library ground floor on 17 September 2026. Sometime in the morning, will confirm after my appointment.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "An unconfirmed morning does not establish compatibility with the other student’s sole fixed hour."
+    },
+    {
+      "id": "v2-study-u05",
+      "kind": "study",
+      "a": {
+        "title": "Zoom coaching needed",
+        "body": "LANG1403 learner seeking free English presentation coaching, 19 Sep 2026 11:00–12:00. I can attend only by Zoom.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "LANG1403 coach free",
+        "body": "I can coach presentation structure in English free, 19 Sep 2026 11:00–12:00. I will decide later whether this is online or in a room.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The offer has not committed to the only delivery mode that the learner can attend."
+    },
+    {
+      "id": "v2-study-u06",
+      "kind": "study",
+      "a": {
+        "title": "COMP2711 induction tutor",
+        "body": "Offering free English tutoring on induction proofs for COMP2711, library ground floor 12 Sep 2026 15:00–16:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "離散數學有啲頭痕",
+        "body": "Discrete maths最近難咗，想有人教。9月12日15:00–16:00圖書館地下，英文免費可以。啲筆記仲在袋底，我返到房再影題目。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The learner has not identified course or topic; generic discrete mathematics does not establish that induction tutoring answers the need."
+    },
+    {
+      "id": "v2-study-u07",
+      "kind": "study",
+      "a": {
+        "title": "English speaking peers",
+        "body": "Looking for an IELTS speaking practice peer on Zoom in English, 23 Sep 2026 20:00–21:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Maybe speaking practice",
+        "body": "IELTS speaking個部分有啲驚，23號晚我可能想練，但我也可能決定休息。先在這裡自言自語，尚未約人。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The author explicitly has not decided to arrange practice and does not commit to an exact session."
+    },
+    {
+      "id": "v2-study-u08",
+      "kind": "study",
+      "a": {
+        "title": "Limits tutor slot",
+        "body": "MATH1013 limits tutor, English, HK$80 total, library ground floor 24 Sep 2026 16:00–17:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "兩科補習update",
+        "body": "想找 MATH1013 limits 和 ECON2103 elasticity 的老師，各預算HK$100，英文，9月24日16:00–17:00圖書館地下。更新：其中一科不用了，稍後再寫清楚。",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The update does not identify which tutoring need was cancelled, so the requested limits lesson cannot be treated as definitely live."
+    },
+    {
+      "id": "v2-transport-m01",
+      "kind": "transport",
+      "a": {
+        "title": "清晨去機場夾的士",
+        "body": "我一個人，想搵人9月18日06:00從科大北巴士站出發去香港機場，搭4乘客座位的士分車費。我得一個背包。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Airport taxi share",
+        "body": "Solo traveller seeking a shared four-passenger taxi from HKUST north bus stop to Hong Kong airport on 18 September 2026 at 06:00. One backpack, happy to split fare.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Both explicitly seek the same taxi-sharing trip and direction at the same time; two solo passengers fit the stated four-seat taxi."
+    },
+    {
+      "id": "v2-transport-m02",
+      "kind": "transport",
+      "a": {
+        "title": "Driving to Kowloon Station",
+        "body": "I will drive from HKUST north bus stop to Kowloon Station on 12 Sep 2026 at 09:00. Two passenger seats free, HK$30 per passenger, backpacks only.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "兩個人搵順風車",
+        "body": "我同朋友共2人，9月12日09:00想從科大北巴士站去九龍站，每人最多HK$40，兩人各一個背包。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The driver’s two free seats cover the two-person party, with identical origin, destination, date/time, acceptable baggage and affordable per-person fare."
+    },
+    {
+      "id": "v2-transport-m03",
+      "kind": "transport",
+      "a": {
+        "title": "聽朝出去",
+        "body": "我開車，明天9月12日08:00從科大北巴士站到坑口站，有1個乘客位，免費；只可帶一個小袋。",
+        "category": "transport",
+        "createdAt": "2026-09-10T16:05:00Z"
+      },
+      "b": {
+        "title": "Lift to Hang Hau",
+        "body": "One person needs a free lift, HKUST north bus stop to Hang Hau Station, 12 Sep 2026 at 08:00. Carrying only a small handbag.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Created just after Hong Kong midnight on 11 Sep, tomorrow is 12 Sep; the single free seat, route, exact departure and bag restriction fit."
+    },
+    {
+      "id": "v2-transport-m04",
+      "kind": "transport",
+      "a": {
+        "title": "校園群借位post",
+        "body": "tag寫科大方便同學搵，但實際出發係坑口站A出口。9月13日14:00我一個人想夾4人座的士去香港機場，只有背包。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Taxi from Hang Hau A",
+        "body": "I am one passenger seeking someone to split a four-seat taxi from Hang Hau Station Exit A to Hong Kong airport, 13 Sep 2026 at 14:00. Backpack only.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The actual shared origin is explicitly Hang Hau Exit A despite a campus tag reference; route/date/time and combined taxi occupancy agree."
+    },
+    {
+      "id": "v2-transport-m05",
+      "kind": "transport",
+      "a": {
+        "title": "沙田順路，三個位",
+        "body": "9月14日18:30開車從科大北巴士站去沙田站，3個乘客位，可放3個小背包。免費搭順風車，有需要可約。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Three of us to Sha Tin",
+        "body": "Our group is three people, each with one small backpack, seeking a free lift from HKUST north bus stop to Sha Tin Station on 14 Sep 2026 at 18:30.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Driver and rider group have the same explicit trip; three free seats and three allowed backpacks exactly cover the group’s requirements."
+    },
+    {
+      "id": "v2-transport-m06",
+      "kind": "transport",
+      "a": {
+        "title": "Two more can share airport taxi",
+        "body": "We are two passengers booking a taxi with exactly four passenger seats, HKUST north bus stop to Hong Kong airport, 15 Sep 2026 07:00. Looking for up to two more; we each have a backpack.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "機場夾車兩位",
+        "body": "我同同學2人，9月15日07:00想由科大北巴士站去香港機場夾的士，各一個背包，接受四人分攤車費。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The two existing passengers plus two new passengers exactly fit the explicitly four-passenger taxi and share the same route/date/time."
+    },
+    {
+      "id": "v2-transport-m07",
+      "kind": "transport",
+      "a": {
+        "title": "Late lift into town",
+        "body": "Driving from HKUST north bus stop to Causeway Bay Station Exit F on 16 Sep 2026 at 21:00. One passenger seat, free, small bag allowed.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "出銅鑼灣有人順路嗎",
+        "body": "我1人帶小袋，9月16日21:00從科大北巴士站去銅鑼灣站F出口，想搵免費順風車。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Explicit driver and single passenger share actual origin, precise station exit destination and departure; free price and bag allowance fit."
+    },
+    {
+      "id": "v2-transport-m08",
+      "kind": "transport",
+      "a": {
+        "title": "返科大，唔係出去",
+        "body": "我1人9月17日22:00從坑口站A出口返科大北巴士站，想夾4人座的士，只有背包。唔係校園去坑口嗰程。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Return taxi share",
+        "body": "One person looking to share a four-passenger taxi from Hang Hau Station Exit A back to HKUST north bus stop at 22:00 on 17 September 2026. Backpack only, split fare.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Both expressly take the inbound route, at identical date/time and pickup; two passengers fit the four-seat taxi."
+    },
+    {
+      "id": "v2-transport-m09",
+      "kind": "transport",
+      "a": {
+        "title": "One trip cancelled, one still running",
+        "body": "My 19 Sep airport drive is cancelled. Still offering a lift on 20 Sep 2026 at 10:00 from HKUST north bus stop to Kowloon Station: one free passenger seat, one backpack allowed.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "九龍站一位",
+        "body": "9月20日10:00我1人想免費搭順風車，從科大北巴士站去九龍站，只有一個背包。不去機場。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The cancellation concerns a different date/destination; the live Kowloon Station ride supplies the requested seat with matching trip constraints."
+    },
+    {
+      "id": "v2-transport-m10",
+      "kind": "transport",
+      "a": {
+        "title": "車返學校仲有位",
+        "body": "我9月21日08:30開車由沙田站A出口到科大北巴士站，有2個乘客位免費，接受每人一個背包。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Need a campus lift",
+        "body": "I am one person with a backpack, seeking a free ride from Sha Tin Station Exit A to HKUST north bus stop, 21 Sep 2026 at 08:30.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The driver offers adequate free capacity on the exact inbound route and departure; the lone rider’s bag is explicitly allowed."
+    },
+    {
+      "id": "v2-transport-m11",
+      "kind": "transport",
+      "a": {
+        "title": "香港站去學校夾車",
+        "body": "我和朋友共2人，9月22日20:00香港站D出口出發去科大北巴士站，想找1人夾4座的士，全部只帶背包。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "From Hong Kong Station D",
+        "body": "Solo passenger with backpack wants to split a four-passenger taxi from Hong Kong Station Exit D to HKUST north bus stop on 22 Sep 2026 at 20:00.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "A two-person party inviting one additional passenger complements the solo request, with total three within four seats and the same trip."
+    },
+    {
+      "id": "v2-transport-m12",
+      "kind": "transport",
+      "a": {
+        "title": "大後日北站上車",
+        "body": "我9月9日寫低先：大後日9月12日17:00，開車由科大北巴士站去調景嶺站A出口，有1個免費乘客位，可帶小背包。",
+        "category": "transport",
+        "createdAt": "2026-09-09T02:00:00Z"
+      },
+      "b": {
+        "title": "Tiu Keng Leng lift needed",
+        "body": "One passenger with small backpack needs a free ride, HKUST north bus stop to Tiu Keng Leng Station Exit A, 12 September 2026 at 17:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The relative date is anchored to 9 Sep Hong Kong and explicitly clarified as 12 Sep; one-seat driver offer matches the route and rider constraints."
+    },
+    {
+      "id": "v2-transport-r01",
+      "kind": "transport",
+      "a": {
+        "title": "To airport on Friday",
+        "body": "Solo backpack traveller seeks four-seat taxi share from HKUST north bus stop to Hong Kong airport, 18 Sep 2026 at 06:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "週六去機場",
+        "body": "我一人帶背包想夾4人座的士，9月19日06:00由科大北巴士站去香港機場，只會19號走。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The same route and clock time occur on different explicitly fixed dates; they cannot share the requested departure."
+    },
+    {
+      "id": "v2-transport-r02",
+      "kind": "transport",
+      "a": {
+        "title": "Going out at ten",
+        "body": "Driving from HKUST north bus stop to Kowloon Station on 20 Sep 2026 at 10:00, one free passenger seat.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "十點返科大",
+        "body": "9月20日10:00我1人由九龍站返科大北巴士站，想搭順風車。唔係由科大出九龍。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The route direction is reversed; shared place names and time do not make the outbound driver serve the inbound rider."
+    },
+    {
+      "id": "v2-transport-r03",
+      "kind": "transport",
+      "a": {
+        "title": "Two seats into town",
+        "body": "Driving HKUST north bus stop to Sha Tin Station, 14 Sep 2026 18:30, exactly TWO passenger seats free, no second trip possible.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "三個人一齊走",
+        "body": "3人要同一架車由科大北巴士站去沙田站，9月14日18:30，不可拆開，想免費搭順風車。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The inseparable three-person party exceeds the driver’s explicitly two free passenger seats."
+    },
+    {
+      "id": "v2-transport-r04",
+      "kind": "transport",
+      "a": {
+        "title": "Taxi already has three",
+        "body": "Our three-person group wants to split a four-passenger taxi with one more person, HKUST north bus stop to Hong Kong airport, 15 Sep 2026 07:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "兩人一齊去機場",
+        "body": "我哋2人一定一齊，9月15日07:00科大北巴士站去香港機場，想加入一架4乘客座位的士，不能分車。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Combining the explicit parties requires five passenger seats, exceeding the stated four-passenger taxi capacity."
+    },
+    {
+      "id": "v2-transport-r05",
+      "kind": "transport",
+      "a": {
+        "title": "Campus tag, Hang Hau pickup",
+        "body": "Tagged HKUST to reach classmates. Actual trip is from Hang Hau Station Exit A to Hong Kong airport on 13 Sep 2026 at 14:00. One taxi passenger, no campus pickup or detour.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "北巴士站去機場",
+        "body": "我1人要9月13日14:00由科大北巴士站出發去香港機場，只可在北巴士站上車，不能先去坑口。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Actual origins are incompatible and both exclude repositioning; the campus audience tag is not the first post’s departure point."
+    },
+    {
+      "id": "v2-transport-r06",
+      "kind": "transport",
+      "a": {
+        "title": "Airport fare HK$100",
+        "body": "One passenger seat offered from HKUST north bus stop to Hong Kong airport, 18 Sep 2026 06:00. Fare HK$100 fixed, not negotiable.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "機場預算有限",
+        "body": "我1人9月18日06:00科大北巴士站去香港機場，想搭車，HK$60係車費絕對上限。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The mandatory HK$100 fare exceeds the rider’s explicitly hard HK$60 trip budget."
+    },
+    {
+      "id": "v2-transport-r07",
+      "kind": "transport",
+      "a": {
+        "title": "No luggage space",
+        "body": "Driving HKUST north bus stop to Hong Kong airport, 18 Sep 2026 06:00, one free passenger seat. Only a handbag fits; absolutely no suitcases or extra cargo.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "兩個大箱一定要帶",
+        "body": "我1人想9月18日06:00由科大北巴士站去香港機場，要帶2個大行李箱，不能分開寄運。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The rider’s mandatory two large suitcases violate the driver’s explicit no-suitcase capacity constraint."
+    },
+    {
+      "id": "v2-transport-r08",
+      "kind": "transport",
+      "a": {
+        "title": "Morning ride only",
+        "body": "Driving HKUST north bus stop to Hang Hau Station on 12 Sep 2026 at 08:00 sharp, one free seat, cannot wait or depart later.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "晏晝先出",
+        "body": "我1人9月12日14:00才可由科大北巴士站去坑口站，想免費搭車，不能上午走。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The explicit same-day departure requirements are six hours apart with no permitted flexibility."
+    },
+    {
+      "id": "v2-transport-r09",
+      "kind": "transport",
+      "a": {
+        "title": "機場嗰程取消",
+        "body": "9月19日06:00科大北巴士站去香港機場嗰程已取消，不開車了。只剩9月20日10:00去九龍站的順風車。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Need airport lift",
+        "body": "One person needs a lift from HKUST north bus stop to Hong Kong airport on 19 Sep 2026 at 06:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The exact requested airport trip is explicitly cancelled; the different live Kowloon trip does not meet it."
+    },
+    {
+      "id": "v2-transport-r10",
+      "kind": "transport",
+      "a": {
+        "title": "One seat offered",
+        "body": "Driving Sha Tin Station Exit A to HKUST north bus stop, 21 Sep 2026 08:30. One free passenger seat, looking for a rider.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "我都開車返科大",
+        "body": "我開自己的車，9月21日08:30從沙田站A出口返科大北巴士站，也有一個位給乘客。我不需要坐別人的車。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Both offer driver seats and explicitly one does not need a ride; identical itineraries alone do not create driver/rider complementarity."
+    },
+    {
+      "id": "v2-transport-u01",
+      "kind": "transport",
+      "a": {
+        "title": "Airport taxi at six",
+        "body": "Solo traveller wants to share a four-seat taxi from HKUST north bus stop to Hong Kong airport, 18 Sep 2026 at 06:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "週末機場夾車",
+        "body": "我1人想由科大北巴士站去香港機場，可能18號、可能19號，朝早時間仲未定，想搵人夾。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second author has neither selected a date nor fixed a departure time, so the exact trip cannot be established."
+    },
+    {
+      "id": "v2-transport-u02",
+      "kind": "transport",
+      "a": {
+        "title": "Space in my car",
+        "body": "Driving HKUST north bus stop to Kowloon Station, 12 Sep 2026 09:00. I can take passengers, but have not worked out how many seats are free.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "兩位去九龍站",
+        "body": "我哋2人9月12日09:00由科大北巴士站去九龍站，想同車搭順風車。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The driver has not stated available seats, so capacity for the explicit two-person party is unverified."
+    },
+    {
+      "id": "v2-transport-u03",
+      "kind": "transport",
+      "a": {
+        "title": "Taxi for four",
+        "body": "We are two people seeking others to split a four-passenger taxi from HKUST north bus stop to Hong Kong airport, 15 Sep 2026 07:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "機場同行",
+        "body": "想9月15日07:00由科大北巴士站夾4乘客座位的士去香港機場，我同幾個friend想一齊走，遲啲等佢哋覆先知幾多人。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second party size is unknown, so total occupancy relative to the stated four-passenger capacity cannot be checked."
+    },
+    {
+      "id": "v2-transport-u04",
+      "kind": "transport",
+      "a": {
+        "title": "Hang Hau to airport taxi",
+        "body": "One person looking to split a four-seat taxi from Hang Hau Station Exit A to Hong Kong airport on 13 Sep 2026 at 14:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "科大同學夾機場車",
+        "body": "9月13日14:00我1人想夾的士去香港機場。標籤科大；我實際在哪裡上車還沒決定，可能不在校園。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "A campus tag and destination do not establish the second passenger’s actual origin, which remains explicitly undecided."
+    },
+    {
+      "id": "v2-transport-u05",
+      "kind": "transport",
+      "a": {
+        "title": "Inbound lift offered",
+        "body": "Driving Hang Hau Station Exit A to HKUST north bus stop, 17 Sep 2026 22:00, one free passenger seat.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "坑口／科大 22:00",
+        "body": "9月17日22:00，坑口A／科大北巴士站，一個人搵車。記在這裡免得忘記，完整行程遲啲補。",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "Both endpoints and a time appear in the terse ride request, but it does not establish which endpoint is the origin and which is the destination."
+    },
+    {
+      "id": "v2-transport-u06",
+      "kind": "transport",
+      "a": {
+        "title": "Suitcase trip",
+        "body": "One person with two large suitcases needs a ride from HKUST north bus stop to Hong Kong airport, 18 Sep 2026 06:00. Bags must come with me.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Airport seat available",
+        "body": "Driving HKUST north bus stop to Hong Kong airport on 18 Sep 2026 at 06:00, one free passenger seat. I have not checked boot space or decided whether I can take suitcases.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The mandatory luggage capacity is explicitly unknown even though a passenger seat and exact route are offered."
+    },
+    {
+      "id": "v2-transport-u07",
+      "kind": "transport",
+      "a": {
+        "title": "Need Kowloon lift",
+        "body": "One person seeking a free lift from HKUST north bus stop to Kowloon Station on 20 Sep 2026 at 10:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Two rides update",
+        "body": "Was offering one free seat to airport on 19 Sep and Kowloon Station on 20 Sep at 10:00, both from HKUST north bus stop. One trip cancelled; will edit which one later.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The cancellation is not scoped to a specific trip, so the requested Kowloon ride cannot be assumed to remain available."
+    },
+    {
+      "id": "v2-transport-u08",
+      "kind": "transport",
+      "a": {
+        "title": "Share taxi to Causeway Bay",
+        "body": "Solo traveller wants a four-seat taxi share from HKUST north bus stop to Causeway Bay Station Exit F, 16 Sep 2026 21:00.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Maybe going shopping",
+        "body": "銅鑼灣啲舖可能好行，9月16日21:00從北巴士站出發都幾合理。但我未決定去唔去，亦未決定交通方式。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second author is discussing a possible outing and has not committed to travel or taxi sharing."
+    },
+    {
+      "id": "v2-other-m01",
+      "kind": "other",
+      "a": {
+        "title": "羽毛球缺一個新手",
+        "body": "9月12日18:00–19:00體育館3號場，已book好，搵1位初學者打羽毛球。只限新手，請自備球拍，英文或廣東話都得。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Terrible at badminton, keen to play",
+        "body": "I am one badminton beginner with my own racket, hoping to join a game at sports centre Court 3 on 12 Sep 2026, 18:00–19:00. I can chat in English.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "A specific badminton invitation complements a participant’s explicit plan; beginner-only, own-racket, language, time and court conditions are satisfied."
+    },
+    {
+      "id": "v2-other-m02",
+      "kind": "other",
+      "a": {
+        "title": "Casual hoops, need a sixth",
+        "body": "Five of us have outdoor basketball Court 1 on 13 Sep 2026 from 17:00 to 18:00. One more student welcome for relaxed 3-on-3; any skill level, English or Cantonese.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "放學想打下波",
+        "body": "想加入9月13日17:00–18:00室外1號篮球場的輕鬆3v3，我一個人，係學生，英文廣東話都ok。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "One open place in a fixed casual basketball game answers a solo student’s stated wish to join that same activity, time and court."
+    },
+    {
+      "id": "v2-other-m03",
+      "kind": "other",
+      "a": {
+        "title": "Catan教學局",
+        "body": "9月14日19:00–21:00 UG Hall V common room 開 Catan 新手局，仲有1位，英文玩；任何同學都可，我會在門口帶非本堂同學入場。",
+        "category": "hall",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Want to learn Catan",
+        "body": "One student looking to join a beginner Catan game, happy playing in English. Can be at UG Hall V common room on 14 September 2026 from 19:00 to 21:00.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The explicit open beginner Catan invitation includes guest access and fits the solo student’s requested game, language, time and venue."
+    },
+    {
+      "id": "v2-other-m04",
+      "kind": "other",
+      "a": {
+        "title": "海旁行下，唔使跑",
+        "body": "9月15日08:00西貢碼頭集合，想約同學沿海旁行90分鐘，英文聊天，步速慢，新手歡迎。請確定自己可以連續行90分鐘。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Morning walking company",
+        "body": "I want to join a slow 90-minute Sai Kung waterfront walk, meeting at Sai Kung pier at 08:00 on 15 Sep 2026. I can comfortably walk that long and speak English.",
+        "category": "transport",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The social walking invitation has the same meeting time/place and activity as the join request, with duration capability and language explicitly met."
+    },
+    {
+      "id": "v2-other-m05",
+      "kind": "other",
+      "a": {
+        "title": "普通話咖啡搭子",
+        "body": "9月16日15:00–16:00想約同學在校園咖啡店正門碰面，買杯咖啡用普通話聊日常。完全免費互相練習，各自付飲品，歡迎初學者。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Mandarin over coffee",
+        "body": "Looking for a casual Mandarin conversation companion over coffee. I am a beginner; happy to pay for my own drink. Campus café main entrance, 16 Sep 2026 at 15:00, free until 16:00.",
+        "category": "study",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Both explicitly seek the same informal Mandarin coffee session with matching time/place; beginner access and self-paid drinks are accepted."
+    },
+    {
+      "id": "v2-other-m06",
+      "kind": "other",
+      "a": {
+        "title": "研究生素食晚飯",
+        "body": "9月17日18:30校園飯堂正門集合一齊食晚飯，限PG同學，這桌只點素食。想認識新朋友，還可加2人。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Dinner with other postgrads",
+        "body": "I am a postgraduate and vegetarian, one person hoping to join a vegetarian dinner with other PG students. Can meet at the campus canteen main entrance at 18:30 on 17 Sep 2026.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "An explicit dinner invitation has room for the solo participant and meets the postgraduate-only and vegetarian-only conditions at the same time/place."
+    },
+    {
+      "id": "v2-other-m07",
+      "kind": "other",
+      "a": {
+        "title": "Minecraft Java 一齊生存",
+        "body": "9月18日20:00–22:00想約同學玩 Minecraft Java survival，不玩Bedrock。集合在 Campus Games Discord 的 Minecraft 語音頻道，英文溝通；仲有2位。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Java survival buddy wanted",
+        "body": "I own Minecraft Java and want to join an English survival session on 18 Sep 2026, 20:00–22:00. I can join the Minecraft voice channel in Campus Games Discord, just me.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The single player explicitly has the required Java edition and wants the same survival activity, time, named online venue and language."
+    },
+    {
+      "id": "v2-other-m08",
+      "kind": "other",
+      "a": {
+        "title": "Girls beginner table tennis",
+        "body": "Inviting one more female student beginner for table tennis, sports centre Table 2 on 19 Sep 2026 from 11:00 to 12:00. Rackets provided, Cantonese chat.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "乒乓球新手想玩",
+        "body": "女同學一個，乒乓球初學，想加入9月19日11:00–12:00體育館2號枱的練習。我講廣東話，需要借球拍。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "An open beginner table-tennis place matches explicit female student eligibility, Cantonese and the exact table/time; provided rackets cover the stated need."
+    },
+    {
+      "id": "v2-other-m09",
+      "kind": "other",
+      "a": {
+        "title": "唔飲酒K歌夜",
+        "body": "9月20日19:00–21:00 UG Hall II common room唱廣東歌，邀請同學加入；不飲酒，請接受全場無酒精。我可帶非本堂同學入場。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Canto karaoke sounds good",
+        "body": "One student looking to join Cantonese karaoke without alcohol. I agree to no alcohol. UG Hall II common room on 20 Sep 2026 from 19:00 to 21:00 works for me.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "The explicit alcohol-free Cantonese karaoke invitation and join request share activity, fixed venue/time and acceptance of the hard no-alcohol condition."
+    },
+    {
+      "id": "v2-other-m10",
+      "kind": "other",
+      "a": {
+        "title": "週一逛書店有人嗎",
+        "body": "9月21日14:00銅鑼灣站F出口集合，約同學一齊逛書店到16:00，只逛書店不購物商場。英文或普通話聊天都可。",
+        "category": "goods",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Bookshop wandering company",
+        "body": "Want to join a two-hour bookshop outing, no malls for me either. Causeway Bay Station Exit F at 14:00 on 21 September 2026, finish 16:00; I speak English.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "An actual bookshop-outing invitation answers the second author’s explicit join intent, with the same meeting place, time, duration and bookshops-only condition."
+    },
+    {
+      "id": "v2-other-m11",
+      "kind": "other",
+      "a": {
+        "title": "Movie off, Codenames on",
+        "body": "Cancelled the movie night. Still inviting two more students to Codenames in English at UG Hall VII common room on 22 Sep 2026, 19:00–20:30. I can admit guests from other halls.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "想玩Codenames",
+        "body": "我1位同學想加入英文 Codenames 桌遊，9月22日19:00–20:30可以到 UG Hall VII common room。不是想看電影。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Cancellation is scoped to the movie; the still-live Codenames invitation has capacity and guest access for the matching activity/time/place request."
+    },
+    {
+      "id": "v2-other-m12",
+      "kind": "other",
+      "a": {
+        "title": "Sunset phone-photo stroll",
+        "body": "Inviting classmates for a relaxed phone photography walk tomorrow, 12 Sep 2026, 17:30–18:30. Meet at campus sundial; phone cameras welcome, English chat.",
+        "category": "other",
+        "createdAt": "2026-09-10T16:40:00Z"
+      },
+      "b": {
+        "title": "手機影相新手想同行",
+        "body": "想參加9月12日17:30–18:30的校園日落攝影散步，17:30在日晷集合可以。我係學生，只用手機，英文交流ok。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "match",
+      "reason": "Tomorrow resolves to 12 Sep from the Hong Kong timestamp; a student explicitly wants the invited photography walk and satisfies phone-camera, language and meeting constraints."
+    },
+    {
+      "id": "v2-other-r01",
+      "kind": "other",
+      "a": {
+        "title": "Badminton, one beginner place",
+        "body": "Inviting one beginner with their own racket to badminton at sports centre Court 3, 12 Sep 2026 18:00–19:00.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "想打乒乓波",
+        "body": "想參加9月12日18:00–19:00體育館3號枱的乒乓球新手局，自備拍。只打乒乓，不打羽毛球。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Badminton and table tennis are different explicitly chosen activities; shared racket-sport vocabulary, numbers and time do not make them compatible."
+    },
+    {
+      "id": "v2-other-r02",
+      "kind": "other",
+      "a": {
+        "title": "Hoops on the 13th",
+        "body": "One more student welcome for casual 3-on-3 basketball at outdoor Court 1, 13 Sep 2026 17:00–18:00. The booking is only for the 13th.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "14號先打到",
+        "body": "想搵輕鬆3v3篮球，室外1號場17:00–18:00，但我只可9月14日；13號肯定不在校園。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The matching activity and venue have explicitly incompatible dates, with the participant unavailable on the booked date."
+    },
+    {
+      "id": "v2-other-r03",
+      "kind": "other",
+      "a": {
+        "title": "Catan night",
+        "body": "One place for beginner Catan, English, UG Hall V common room, 14 Sep 2026 19:00–21:00. Guests welcome.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Catan但早啲",
+        "body": "想玩英文 Catan 新手局，9月14日 UG Hall V common room，但只可15:00–17:00，18:00要走，晚場無法參加。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The player’s explicit availability ends before the invitation begins; same game and hall do not resolve the time conflict."
+    },
+    {
+      "id": "v2-other-r04",
+      "kind": "other",
+      "a": {
+        "title": "Walk from Sai Kung pier",
+        "body": "Inviting people for a slow 90-minute waterfront walk, starting Sai Kung pier at 08:00 on 15 Sep 2026. Cannot change start location.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "只行校園",
+        "body": "想9月15日08:00開始慢行90分鐘，但只可以校園日晷出發，不能去西貢或其他地方。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "Both specify exclusive, different meeting places and the participant cannot travel to the invitation’s origin."
+    },
+    {
+      "id": "v2-other-r05",
+      "kind": "other",
+      "a": {
+        "title": "PG vegetarian dinner",
+        "body": "Inviting postgraduate students ONLY to a vegetarian dinner, campus canteen main entrance, 17 Sep 2026 18:30. This gathering is restricted to PG students.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "UG都想食素飯",
+        "body": "我係本科生，不是PG。想9月17日18:30在校園飯堂正門加入素食聚餐。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The participant explicitly does not satisfy the invitation’s hard postgraduate-only eligibility condition."
+    },
+    {
+      "id": "v2-other-r06",
+      "kind": "other",
+      "a": {
+        "title": "Java survival tonight next week",
+        "body": "Minecraft Java survival, 18 Sep 2026 20:00–22:00, Minecraft voice channel in Campus Games Discord, English. Java edition required; this server cannot accept Bedrock.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Bedrock only player",
+        "body": "I want to join Minecraft survival at that Discord channel and time, 18 Sep 2026 20:00–22:00. I only own Bedrock, have no Java account and cannot get one.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The explicitly required game edition is unavailable to the participant, and the invitation explicitly excludes Bedrock compatibility."
+    },
+    {
+      "id": "v2-other-r07",
+      "kind": "other",
+      "a": {
+        "title": "Girls beginner ping-pong",
+        "body": "One female student beginner welcome for table tennis at sports centre Table 2, 19 Sep 2026 11:00–12:00. This session is women only.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "男同學想學乒乓",
+        "body": "我係男同學，乒乓初學，想加入9月19日11:00–12:00體育館2號枱的新手活動。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The stated male participant does not meet the explicitly women-only invitation condition."
+    },
+    {
+      "id": "v2-other-r08",
+      "kind": "other",
+      "a": {
+        "title": "No-alcohol karaoke",
+        "body": "Inviting students to Cantonese karaoke, UG Hall II common room, 20 Sep 2026 19:00–21:00. Strictly no alcohol allowed.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "唱K一定飲啤酒",
+        "body": "想9月20日19:00–21:00在 UG Hall II common room唱廣東歌，但我一定會帶酒和飲酒，不接受無酒精場。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The participant explicitly refuses the invitation’s mandatory no-alcohol condition."
+    },
+    {
+      "id": "v2-other-r09",
+      "kind": "other",
+      "a": {
+        "title": "Movie cancelled, game open",
+        "body": "Movie night cancelled, there will be no screening. Codenames in English is still open at UG Hall VII common room, 22 Sep 2026 19:00–20:30.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "只想睇戲",
+        "body": "想9月22日19:00–20:30在 UG Hall VII common room看電影；不參加桌遊，Codenames也不玩。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The only activity the participant wants is explicitly cancelled and the remaining game is explicitly rejected by that participant."
+    },
+    {
+      "id": "v2-other-r10",
+      "kind": "other",
+      "a": {
+        "title": "Phone photo walk invitation",
+        "body": "Come for a phone photography walk from campus sundial, 12 Sep 2026 17:30–18:30, English chat, students welcome.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "日落隨手影",
+        "body": "只是分享以前在日晷拍的日落照片，不約人、不參加攝影散步。12號也會自己待房間。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "reject",
+      "reason": "The second author explicitly disclaims both invitations and participation; a past-photo discussion is not live social intent."
+    },
+    {
+      "id": "v2-other-u01",
+      "kind": "other",
+      "a": {
+        "title": "One badminton place",
+        "body": "Inviting one beginner with their own racket, sports centre Court 3, 12 Sep 2026 18:00–19:00, Cantonese or English. Beginners only.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "想打羽毛球",
+        "body": "9月12日18:00–19:00可到體育館3號場，自己有拍，想加入，廣東話OK。之前打過幾次，係咩水平我真係唔識分。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The participant is unsure of their skill classification, so the invitation’s hard beginner-only condition is not clearly established."
+    },
+    {
+      "id": "v2-other-u02",
+      "kind": "other",
+      "a": {
+        "title": "Catan at seven",
+        "body": "Inviting one beginner to English Catan in UG Hall V common room, 14 Sep 2026 19:00–21:00, guests welcome.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Monday Catan maybe",
+        "body": "I would like to join beginner Catan in English at UG Hall V common room on 14 September. My lab may finish early or late; I cannot promise when I can get there.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The participant wants the activity but has not established arrival within the fixed session; natural schedule uncertainty remains."
+    },
+    {
+      "id": "v2-other-u03",
+      "kind": "other",
+      "a": {
+        "title": "PG dinner table",
+        "body": "Postgraduates only, vegetarian dinner at campus canteen main entrance, 17 Sep 2026 18:30. Two spare places, come meet other PGs.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Dinner company please",
+        "body": "One new student, vegetarian, hoping to join dinner at the campus canteen main entrance on 17 Sep 2026 at 18:30. Still figuring this campus out!",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The interested student never identifies UG or PG status, so the invitation’s postgraduate-only requirement cannot be verified from public text."
+    },
+    {
+      "id": "v2-other-u04",
+      "kind": "other",
+      "a": {
+        "title": "Java survival invitation",
+        "body": "Minecraft Java survival on 18 Sep 2026 20:00–22:00, English in Minecraft voice channel on Campus Games Discord. Java edition required, two places open.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Minecraft一齊玩",
+        "body": "想加入9月18日20:00–22:00那個 Campus Games Discord Minecraft survival局，可英文語音。我有Minecraft，不過賬號係家人幫我整，唔知係邊個版本。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The participant does not know whether they own the required Java edition; platform compatibility is unanswerable."
+    },
+    {
+      "id": "v2-other-u05",
+      "kind": "other",
+      "a": {
+        "title": "Canto karaoke sans alcohol",
+        "body": "Inviting classmates to Cantonese karaoke, UG Hall II common room, 20 Sep 2026 19:00–21:00. Strict no-alcohol event, please agree to that before joining.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "K歌好想去",
+        "body": "想加入9月20日19:00–21:00 UG Hall II common room的廣東歌K歌夜。至於現場不喝酒那條，我仲未決定接唔接受。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The participant has not accepted an explicit mandatory no-alcohol rule, so the invitation’s condition remains unresolved."
+    },
+    {
+      "id": "v2-other-u06",
+      "kind": "other",
+      "a": {
+        "title": "Phone walk group",
+        "body": "Inviting students for phone photography, campus sundial 12 Sep 2026 17:30–18:30, English, beginners welcome.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "Maybe sunset photos",
+        "body": "日晷日落好似幾靚，12號17:30我應該得閒。可能自己影，可能搵人一齊，未諗掂想唔想參加活動。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The author is undecided about social participation rather than explicitly seeking to join the photography invitation."
+    },
+    {
+      "id": "v2-other-u07",
+      "kind": "other",
+      "a": {
+        "title": "Codenames one seat",
+        "body": "One student welcome to English Codenames, UG Hall VII common room, 22 Sep 2026 19:00–20:30, I can admit guests.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "夜晚節目update",
+        "body": "我想搵9月22日19:00–20:30的英文Codenames，也想搵另一晚電影局。更新：其中一個唔去了，趕住上堂遲啲補。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The withdrawal does not identify the activity, leaving the live status of the Codenames participation request uncertain."
+    },
+    {
+      "id": "v2-other-u08",
+      "kind": "other",
+      "a": {
+        "title": "Bookshop stroll invitation",
+        "body": "Inviting classmates to browse bookshops, meet Causeway Bay Station Exit F, 21 Sep 2026 14:00–16:00. English conversation, no mall visit.",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "b": {
+        "title": "21號搵人行下",
+        "body": "想9月21日14:00–16:00搵人一齊出去行，英文可以。未揀去邊，也未決定行書店、商場定海旁。",
+        "category": "other",
+        "createdAt": "2026-09-10T08:00:00Z"
+      },
+      "expected": "uncertain",
+      "reason": "The second author seeks company but has not chosen either the specific activity or meeting place needed to establish compatibility."
+    }
+  ]
+}

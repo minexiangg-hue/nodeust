@@ -1,0 +1,476 @@
+{
+  "status": "development_checkpoint_not_ready_for_release",
+  "baselineCommit": "f32c923",
+  "limits": [
+    "Iteration 02 API/browser results describe the earlier isolated build, not every later source change.",
+    "The original generated corpus and initial 120 scenarios are exposed development data.",
+    "The 150-case validation-v2 set was blind for the first iteration-03 evaluation; it is now exposed development data.",
+    "Synthetic and agent-authored labels do not establish real-student precision.",
+    "Local model extraction has not yet been evaluated or integrated."
+  ],
+  "results": {
+    "iteration02Corpus": {
+      "recordedSource": "iteration-02/summary.json",
+      "summary": {
+        "version": "reciprocal-intents-v1",
+        "now": "2026-09-11T04:00:00.000Z",
+        "posts": 3746,
+        "students": 500,
+        "sourceSha256": "c04c4c47f9e5e1bea2468be2fe14c4e7c2022428f5cbd068288c5fc78859ec8b",
+        "indexMs": 2181.34418,
+        "totalMs": 3578.933655,
+        "meanCandidateCount": 500.468,
+        "byKind": {
+          "hall": {
+            "gold": 1362,
+            "returned": 1362,
+            "truePositive": 1362,
+            "top5Returned": 1171,
+            "top5True": 1171,
+            "eligible": 373,
+            "hit": 373,
+            "slots": 2500,
+            "attainable": 1171,
+            "precision": 1,
+            "recall": 1,
+            "top5Precision": 1,
+            "pAt5": 0.4684,
+            "fillRate": 0.4684,
+            "hitRate": 1,
+            "attainableTop5Recall": 1
+          },
+          "goods": {
+            "gold": 18835,
+            "returned": 18835,
+            "truePositive": 18835,
+            "top5Returned": 1881,
+            "top5True": 1881,
+            "eligible": 377,
+            "hit": 377,
+            "slots": 2500,
+            "attainable": 1881,
+            "precision": 1,
+            "recall": 1,
+            "top5Precision": 1,
+            "pAt5": 0.7524,
+            "fillRate": 0.7524,
+            "hitRate": 1,
+            "attainableTop5Recall": 1
+          },
+          "study": {
+            "gold": 1099,
+            "returned": 1099,
+            "truePositive": 1099,
+            "top5Returned": 990,
+            "top5True": 990,
+            "eligible": 334,
+            "hit": 334,
+            "slots": 2500,
+            "attainable": 990,
+            "precision": 1,
+            "recall": 1,
+            "top5Precision": 1,
+            "pAt5": 0.396,
+            "fillRate": 0.396,
+            "hitRate": 1,
+            "attainableTop5Recall": 1
+          },
+          "transport": {
+            "gold": 908,
+            "returned": 908,
+            "truePositive": 908,
+            "top5Returned": 838,
+            "top5True": 838,
+            "eligible": 310,
+            "hit": 310,
+            "slots": 2500,
+            "attainable": 838,
+            "precision": 1,
+            "recall": 1,
+            "top5Precision": 1,
+            "pAt5": 0.3352,
+            "fillRate": 0.3352,
+            "hitRate": 1,
+            "attainableTop5Recall": 1
+          },
+          "other": {
+            "gold": 1549,
+            "returned": 1549,
+            "truePositive": 1549,
+            "top5Returned": 1121,
+            "top5True": 1121,
+            "eligible": 292,
+            "hit": 292,
+            "slots": 2500,
+            "attainable": 1121,
+            "precision": 1,
+            "recall": 1,
+            "top5Precision": 1,
+            "pAt5": 0.4484,
+            "fillRate": 0.4484,
+            "hitRate": 1,
+            "attainableTop5Recall": 1
+          }
+        },
+        "gates": {
+          "hall": {
+            "precision": true,
+            "recall": true,
+            "hitRate": true
+          },
+          "goods": {
+            "precision": true,
+            "recall": true,
+            "hitRate": true
+          },
+          "study": {
+            "precision": true,
+            "recall": true,
+            "hitRate": true
+          },
+          "transport": {
+            "precision": true,
+            "recall": true,
+            "hitRate": true
+          },
+          "other": {
+            "precision": true,
+            "recall": true,
+            "hitRate": true
+          }
+        }
+      }
+    },
+    "iteration02ExposedScenarios": {
+      "recordedSource": "iteration-02/holdout-summary.json",
+      "summary": {
+        "sourceSha256": "37a3d5f8b0a28b8f347e14d33f2218338d2bb08ce35fadf675d6a04abb126d3a",
+        "cases": 120,
+        "byKind": {
+          "hall": {
+            "positive": 10,
+            "negative": 14,
+            "tp": 10,
+            "fp": 0,
+            "precision": 1,
+            "recall": 1,
+            "falsePositiveRate": 0
+          },
+          "goods": {
+            "positive": 10,
+            "negative": 14,
+            "tp": 10,
+            "fp": 0,
+            "precision": 1,
+            "recall": 1,
+            "falsePositiveRate": 0
+          },
+          "study": {
+            "positive": 10,
+            "negative": 14,
+            "tp": 10,
+            "fp": 0,
+            "precision": 1,
+            "recall": 1,
+            "falsePositiveRate": 0
+          },
+          "transport": {
+            "positive": 10,
+            "negative": 14,
+            "tp": 10,
+            "fp": 0,
+            "precision": 1,
+            "recall": 1,
+            "falsePositiveRate": 0
+          },
+          "other": {
+            "positive": 10,
+            "negative": 14,
+            "tp": 8,
+            "fp": 0,
+            "precision": 1,
+            "recall": 0.8,
+            "falsePositiveRate": 0
+          }
+        },
+        "failures": [
+          "holdout-other-03",
+          "holdout-other-07"
+        ],
+        "gates": {
+          "hall": {
+            "precision": true,
+            "recall": true
+          },
+          "goods": {
+            "precision": true,
+            "recall": true
+          },
+          "study": {
+            "precision": true,
+            "recall": true
+          },
+          "transport": {
+            "precision": true,
+            "recall": true
+          },
+          "other": {
+            "precision": true,
+            "recall": true
+          }
+        },
+        "falsePositiveRate": 0
+      }
+    },
+    "iteration03FirstBlindValidation": {
+      "recordedSource": "iteration-03/holdout-summary.json",
+      "summary": {
+        "sourceSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+        "cases": 150,
+        "byKind": {
+          "hall": {
+            "positive": 12,
+            "negative": 18,
+            "tp": 0,
+            "fp": 0,
+            "precision": null,
+            "recall": 0,
+            "falsePositiveRate": 0
+          },
+          "goods": {
+            "positive": 12,
+            "negative": 18,
+            "tp": 6,
+            "fp": 0,
+            "precision": 1,
+            "recall": 0.5,
+            "falsePositiveRate": 0
+          },
+          "study": {
+            "positive": 12,
+            "negative": 18,
+            "tp": 3,
+            "fp": 1,
+            "precision": 0.75,
+            "recall": 0.25,
+            "falsePositiveRate": 0.05555555555555555
+          },
+          "transport": {
+            "positive": 12,
+            "negative": 18,
+            "tp": 1,
+            "fp": 0,
+            "precision": 1,
+            "recall": 0.08333333333333333,
+            "falsePositiveRate": 0
+          },
+          "other": {
+            "positive": 12,
+            "negative": 18,
+            "tp": 0,
+            "fp": 0,
+            "precision": null,
+            "recall": 0,
+            "falsePositiveRate": 0
+          }
+        },
+        "failures": [
+          "v2-hall-m01",
+          "v2-hall-m02",
+          "v2-hall-m03",
+          "v2-hall-m04",
+          "v2-hall-m05",
+          "v2-hall-m06",
+          "v2-hall-m07",
+          "v2-hall-m08",
+          "v2-hall-m09",
+          "v2-hall-m10",
+          "v2-hall-m11",
+          "v2-hall-m12",
+          "v2-goods-m02",
+          "v2-goods-m03",
+          "v2-goods-m06",
+          "v2-goods-m07",
+          "v2-goods-m09",
+          "v2-goods-m11",
+          "v2-study-m01",
+          "v2-study-m02",
+          "v2-study-m04",
+          "v2-study-m05",
+          "v2-study-m06",
+          "v2-study-m07",
+          "v2-study-m08",
+          "v2-study-m10",
+          "v2-study-m11",
+          "v2-study-r04",
+          "v2-transport-m01",
+          "v2-transport-m02",
+          "v2-transport-m03",
+          "v2-transport-m04",
+          "v2-transport-m05",
+          "v2-transport-m06",
+          "v2-transport-m07",
+          "v2-transport-m09",
+          "v2-transport-m10",
+          "v2-transport-m11",
+          "v2-transport-m12",
+          "v2-other-m01",
+          "v2-other-m02",
+          "v2-other-m03",
+          "v2-other-m04",
+          "v2-other-m05",
+          "v2-other-m06",
+          "v2-other-m07",
+          "v2-other-m08",
+          "v2-other-m09",
+          "v2-other-m10",
+          "v2-other-m11",
+          "v2-other-m12"
+        ],
+        "gates": {
+          "hall": {
+            "precision": false,
+            "recall": false
+          },
+          "goods": {
+            "precision": true,
+            "recall": false
+          },
+          "study": {
+            "precision": false,
+            "recall": false
+          },
+          "transport": {
+            "precision": true,
+            "recall": false
+          },
+          "other": {
+            "precision": false,
+            "recall": false
+          }
+        },
+        "falsePositiveRate": 0.011111111111111112
+      }
+    },
+    "iteration02ActualApi": {
+      "recordedSource": "iteration-02/api-summary.json",
+      "summary": {
+        "students": 500,
+        "requests": 1202,
+        "failures": 0,
+        "totalMs": 16958.004277,
+        "p50ms": 39.92716199999995,
+        "p95ms": 59.00438799999938,
+        "maxMs": 2510.694063,
+        "method": "Actual authenticated endpoint and pagination compared with public-input engine predictions for every archived student; restricted MySQL replay"
+      }
+    },
+    "iteration02Lifecycle": {
+      "recordedSource": "iteration-02/lifecycle-summary.json",
+      "summary": {
+        "checks": [
+          "unauthenticated rejected",
+          "untrusted identity headers rejected",
+          "post creation appears immediately across route bundles, including overlapping GET",
+          "self excluded",
+          "nonowner edit rejected",
+          "price edit removes incompatible result immediately",
+          "compatible edit restores result immediately",
+          "closed post excluded",
+          "reopened post indexed immediately",
+          "suspended account hidden and access denied",
+          "reactivated account eligible immediately",
+          "peer-side block excludes candidate",
+          "blocked conversation excludes candidate",
+          "explicit expired trip excluded",
+          "missing price appears only when possible results requested",
+          "removed result excluded",
+          "closed own request no longer drives matching"
+        ],
+        "passed": 17,
+        "method": "Actual production-build HTTP writes/reads; explicit block fixtures written only into restricted test schema"
+      }
+    },
+    "iteration02ActualBrowser": {
+      "recordedSource": "iteration-02/browser-summary.json",
+      "summary": {
+        "roles": 500,
+        "passed": 500,
+        "mobile": 250,
+        "desktop": 250,
+        "failures": [],
+        "representativeInteractions": [
+          {
+            "studentId": "student-052",
+            "kind": "other",
+            "checks": [
+              "actual-next-page",
+              "independent-category-and-page-reset",
+              "detail-navigation-id-title-body-and-back",
+              "possible-toggle-actual-pagination-missing-details",
+              "explore-search-does-not-filter-matches"
+            ],
+            "passed": true
+          },
+          {
+            "studentId": "student-190",
+            "kind": "hall",
+            "checks": [
+              "actual-next-page",
+              "independent-category-and-page-reset",
+              "detail-navigation-id-title-body-and-back",
+              "possible-toggle-actual-pagination-missing-details",
+              "explore-search-does-not-filter-matches"
+            ],
+            "passed": true
+          },
+          {
+            "studentId": "student-351",
+            "kind": "transport",
+            "checks": [
+              "actual-next-page",
+              "independent-category-and-page-reset",
+              "detail-navigation-id-title-body-and-back",
+              "possible-toggle-actual-pagination-missing-details",
+              "explore-search-does-not-filter-matches"
+            ],
+            "passed": true
+          },
+          {
+            "studentId": "student-399",
+            "kind": "goods",
+            "checks": [
+              "actual-next-page",
+              "independent-category-and-page-reset",
+              "detail-navigation-id-title-body-and-back",
+              "possible-toggle-actual-pagination-missing-details",
+              "explore-search-does-not-filter-matches"
+            ],
+            "passed": true
+          },
+          {
+            "studentId": "student-479",
+            "kind": "study",
+            "checks": [
+              "actual-next-page",
+              "independent-category-and-page-reset",
+              "detail-navigation-id-title-body-and-back",
+              "possible-toggle-actual-pagination-missing-details",
+              "explore-search-does-not-filter-matches"
+            ],
+            "passed": true
+          }
+        ],
+        "totalMs": 114813.84002,
+        "renderedFirstPageCards": 10536,
+        "apiErrors": 0,
+        "runtimeErrors": 0,
+        "cancelledResponseBodies": 0,
+        "versions": [
+          "reciprocal-intents-v1"
+        ],
+        "method": "Real authenticated isolated API; no network mocks. For every role, ordered API IDs are compared with the frozen predictions and each corresponding rendered card is checked against the archived complete title, body, own-post link and confidence; displayed totals and document/card overflow are checked. Representative detail navigation confirms the candidate ID in the actual route. Candidate IDs are not exposed as DOM attributes in this build."
+      }
+    }
+  }
+}

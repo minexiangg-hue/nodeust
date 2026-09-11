@@ -1,3 +1,4 @@
+import { invalidateMatchIndex } from '@/lib/match/cache-state';
 import { and, eq, ne, inArray } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/db';
@@ -70,6 +71,7 @@ export async function DELETE(_request: NextRequest, context: Context) {
         { error: 'Post unavailable or already removed.' },
         { status: 404 },
       );
+    invalidateMatchIndex();
     return NextResponse.json({ id, status: 'removed' });
   } catch (error) {
     return apiError(error, 'Unable to delete the post.');
@@ -101,6 +103,7 @@ export async function PATCH(request: NextRequest, context: Context) {
           },
           { status: 409 },
         );
+      invalidateMatchIndex();
       return NextResponse.json({ id });
     }
     if (input.action !== 'close' && input.action !== 'reopen')
@@ -127,6 +130,7 @@ export async function PATCH(request: NextRequest, context: Context) {
         },
         { status: 409 },
       );
+    invalidateMatchIndex();
     return NextResponse.json({ id, status });
   } catch (error) {
     if (error instanceof Error && error.message.startsWith('INVALID_POST:'))

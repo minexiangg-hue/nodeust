@@ -1,3 +1,4 @@
+import { invalidateMatchIndex } from '@/lib/match/cache-state';
 import { and, asc, eq, inArray } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -237,6 +238,7 @@ export async function PATCH(request: NextRequest) {
         });
       });
     }
+    if (action === 'remove' || action === 'suspend' || action === 'ban') invalidateMatchIndex();
     return NextResponse.json({
       id: report.id,
       status: action === 'dismiss' ? 'dismissed' : 'resolved',
