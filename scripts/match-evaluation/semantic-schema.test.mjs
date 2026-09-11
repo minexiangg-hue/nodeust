@@ -2,14 +2,23 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { SEMANTIC_RESPONSE_SCHEMA, SEMANTIC_SYSTEM_PROMPT, semanticPublicInput, semanticMessages, validateSemanticResponse } from '../../lib/match/semantic-schema.ts';
 const post = (body, extra = {}) => ({ id:'synthetic-post', ownerId:'private-owner-marker', category:'other', title:'', body, createdAt:'2026-09-11T10:00:00Z', ...extra });
-const validate = (body, intent, extra) => validateSemanticResponse(post(body,extra), {intents:[intent]});
+const coreUnknowns = {
+ hall:{from:null,to:null,term:null,room:null,wantedRoom:null,eligibility:null},
+ goods:{}, study:{date:null,minute:null,communication:null},
+ transport:{from:null,to:null,date:null,minute:null,party:null,seats:null,capacity:null}, other:{},
+};
+// Fixtures explicitly acknowledge unknown core values, just as constrained model output must.
+const complete = intent => ({...coreUnknowns[intent.kind],...intent});
+const validate = (body, intent, extra) => validateSemanticResponse(post(body,extra), {intents:[complete(intent)]});
 const goods = (evidence, extra = {}) => ({kind:'goods',side:'offer',entity:'chair',price:100,currency:'HKD',transaction:'sale',evidence:[evidence],...extra});
 const success = result => { assert.equal(result.ok,true,JSON.stringify(result)); return result; };
 const rejection = result => { assert.equal(result.ok,false,JSON.stringify(result)); return result.errors; };
 test('schema is bounded and does not solicit model confidence or free-form reasoning',()=>{
  assert.equal(SEMANTIC_RESPONSE_SCHEMA.properties.intents.maxItems,4);
- assert.equal(SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.additionalProperties,false);
- assert.equal('confidence' in SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.properties,false);
+ const branches=SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.anyOf;
+ assert.equal(branches.length,5);
+ for(const branch of branches){assert.equal(branch.additionalProperties,false);assert.equal('confidence' in branch.properties,false);}
+ assert.deepEqual(branches.map(branch=>branch.properties.kind.const),['hall','goods','study','transport','other']);
  assert.ok(SEMANTIC_SYSTEM_PROMPT.includes('UNTRUSTED POST DATA'));
 });
 test('semantic input allows only public post text and explicit post fields',()=>{
@@ -26,7 +35,7 @@ test('valid sale remains compatible with the existing engine contract',()=>{
  assert.equal(result.parsed.intents[0].entity,'chair');assert.deepEqual(result.parsed.intents[0].missing,[]);
  assert.equal(result.semantic[0].transaction,'sale');
 });
-test('unknowns may be omitted or explicitly null without being filled by convention',()=>{
+test('unknown core fields are null and optional unknowns may be omitted without convention',()=>{
  const text='Need a lift from HKUST to Airport; details still undecided.';
  const result=success(validate(text,{kind:'transport',side:'rider',entity:'trip',from:'hkust',to:'airport',date:null,minute:null,party:null,evidence:[text]}));
  assert.equal(result.parsed.intents[0].party,undefined);assert.ok(result.parsed.intents[0].missing.includes('party'));assert.ok(result.parsed.intents[0].missing.includes('date'));
@@ -115,4 +124,43 @@ test('mixed valid and invalid intents fail atomically',()=>{
 });
 test('an empty model response is an explicit abstention',()=>{
  const result=success(validateSemanticResponse(post('Nice weather.'),{intents:[]}));assert.deepEqual(result.parsed.intents,[]);assert.ok(result.warnings.includes('semantic-abstained'));
+});
+
+test('kind-discriminated schema prevents incompatible roles and unrelated fields, including null',()=>{
+ const branches=Object.fromEntries(SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.anyOf.map(branch=>[branch.properties.kind.const,branch]));
+ assert.deepEqual(branches.hall.properties.side.enum,['swap',null]);
+ assert.deepEqual(branches.transport.properties.side.enum,['driver','rider','share',null]);
+ assert.equal('party' in branches.hall.properties,false);
+ assert.equal('room' in branches.transport.properties,false);
+ assert.equal('transaction' in branches.study.properties,false);
+ const body='I want to exchange my allocated double room.';
+ for(const side of ['seek','rider'])assert.ok(rejection(validate(body,{kind:'hall',side,entity:'housing-exchange',evidence:[body]})).some(e=>e.includes('incompatible-kind-side')));
+ assert.ok(rejection(validate(body,{kind:'hall',side:'swap',entity:'housing-exchange',party:null,evidence:[body]})).some(e=>e.includes('wrong-kind-field:party')));
+});
+test('model response must explicitly acknowledge every required core field for its kind',()=>{
+ for(const kind of ['hall','study','transport']){
+  const body='The details of my request are not settled yet.';
+  const intent=complete({kind,side:null,entity:null,evidence:[body]});
+  const required=SEMANTIC_RESPONSE_SCHEMA.properties.intents.items.anyOf.find(branch=>branch.properties.kind.const===kind).required;
+  for(const key of Object.keys(coreUnknowns[kind])){
+   assert.ok(required.includes(key));
+   const incomplete={...intent};delete incomplete[key];
+   assert.ok(rejection(validateSemanticResponse(post(body),{intents:[incomplete]})).some(e=>e.includes('missing-required-fields')));
+  }
+  success(validateSemanticResponse(post(body),{intents:[intent]}));
+ }
+});
+test('loan offers, learners and taxi sharers retain distinct legal roles',()=>{
+ const loan='Can lend my lamp; please return it after use.';
+ assert.equal(success(validate(loan,{kind:'goods',side:'offer',entity:'lamp',transaction:'loan',evidence:[loan]})).semantic[0].side,'offer');
+ const learner='Can someone explain PHYS1130 waves to me in Cantonese?';
+ assert.equal(success(validate(learner,{kind:'study',side:'seek',entity:'PHYS1130',communication:'cantonese',topics:['waves'],evidence:[learner]})).semantic[0].side,'seek');
+ const sharing='Seeking a companion to split a taxi from Hang Hau to HKUST.';
+ assert.equal(success(validate(sharing,{kind:'transport',side:'share',entity:'trip',from:'hang-hau',to:'hkust',evidence:[sharing]})).semantic[0].side,'share');
+});
+test('normalizing evidence case or punctuation fails literal grounding',()=>{
+ const body='Selling a Chair for HKD 100!';
+ for(const quote of ['selling a Chair for HKD 100!','Selling a Chair for HKD 100.']){
+  assert.ok(rejection(validate(body,goods(quote))).some(e=>e.includes('unverified-evidence')));
+ }
 });

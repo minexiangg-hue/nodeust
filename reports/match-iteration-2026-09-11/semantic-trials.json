@@ -1,0 +1,113 @@
+{
+  "status": "development_in_progress_not_release_evidence",
+  "trials": [
+    {
+      "trial": "iteration-04",
+      "sample": "First pair per category from exposed validation-v2",
+      "posts": 10,
+      "validatorRejected": 4,
+      "validatedEmpty": 3,
+      "validatedNonempty": 3,
+      "correctHighPairs": 0,
+      "pairs": 5,
+      "meanMs": 28318.359246599997,
+      "medianMs": 31879.430978000004,
+      "maxMs": 61525.161334,
+      "medianDecodeTokensPerSecond": 5.5698424791043095,
+      "interpretation": "Failed pilot. Passing structure/evidence validation does not imply correct semantic extraction."
+    },
+    {
+      "trial": "iteration-06",
+      "method": "direct pair judgment",
+      "sample": "Same first pair per category from exposed validation-v2",
+      "pairs": 5,
+      "correctHighPairs": 4,
+      "invalid": 1,
+      "meanMs": 55266.195128800005,
+      "medianMs": 48374.987911000004,
+      "maxMs": 91503.746019,
+      "interpretation": "Pilot contains only five known-positive pairs: no precision or false-positive claim is possible. Housing falsely treated reciprocal routes as a conflict and also failed quote validation."
+    },
+    {
+      "trial": "iteration-05",
+      "method": "Per-kind schema with explicit field guide and nullable required core fields",
+      "posts": 10,
+      "validatorRejected": 5,
+      "correctHighPairs": 0,
+      "pairs": 5,
+      "meanMs": 42978.099379000014,
+      "medianMs": 30587.699291000026,
+      "maxMs": 153241.470661,
+      "interpretation": "Roles and housing period improved, but optional fields and unsupported hard constraints still prevent matches; quotations sometimes paraphrased."
+    },
+    {
+      "trial": "iteration-07",
+      "method": "Identical prompt/post: original schema versus json_object",
+      "posts": 2,
+      "jsonValidatorPasses": 0,
+      "interpretation": "Plain JSON restored previously skipped price/model/time keys but introduced wrong role, field names, types, time values and evidence shapes. It is not a usable replacement."
+    },
+    {
+      "trial": "iteration-09",
+      "method": "Direct pair judgment with explicit role-direction rules",
+      "selection": "First match, reject, uncertain pair in each category",
+      "pairs": 15,
+      "positivePairs": 5,
+      "truePositive": 4,
+      "falsePositive": 3,
+      "invalid": 3,
+      "meanMs": 36740.91751113333,
+      "interpretation": "Failed stratified development pilot. Unknown allocation, item facts and travel details were sometimes assumed. Invalid responses are never shown as high matches, but their raw decisions remain in the logs."
+    },
+    {
+      "trial": "iteration-10",
+      "method": "Controlled decision-first versus evidence-first output order",
+      "selection": "First hall match and first hall uncertain pair in validation-v2 file order; decision-first then evidence-first for each pair",
+      "fixtureSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+      "sourceSha256": {
+        "probe": "718d66bd1cb127167a4279ccfcf4a4d6732e3c0853508f3e63e1492c8a228b64",
+        "client": "a13e057ae7b93e175b4a0e45c3b4b431dfda3c555bc5c62e4f5aead79eae181a",
+        "publicInput": "7f768bc685d8c5e1f8db641f4aca0bae876c0c2af3da3c44cde365e249d40119"
+      },
+      "requests": 4,
+      "model": "nodeust-qwen3-4b-instruct-2507-q8",
+      "modelSha256": "ae916ede1c010a26955ee8ae2e908bf8815a3f135ec860439ab924701c69d5f1",
+      "rows": [
+        {
+          "pairId": "v2-hall-m01",
+          "expected": "match",
+          "outputOrder": "decision-first",
+          "decision": "conflict",
+          "ms": 39652.02692900001,
+          "cacheHit": false
+        },
+        {
+          "pairId": "v2-hall-m01",
+          "expected": "match",
+          "outputOrder": "evidence-first",
+          "decision": "compatible",
+          "ms": 78398.85830699999,
+          "cacheHit": false
+        },
+        {
+          "pairId": "v2-hall-u01",
+          "expected": "uncertain",
+          "outputOrder": "decision-first",
+          "decision": "compatible",
+          "ms": 73966.86811000001,
+          "cacheHit": false
+        },
+        {
+          "pairId": "v2-hall-u01",
+          "expected": "uncertain",
+          "outputOrder": "evidence-first",
+          "decision": "conflict",
+          "ms": 94018.91912400001,
+          "cacheHit": false
+        }
+      ],
+      "validatorPasses": 4,
+      "interpretation": "Evidence-first fixed the positive housing pair and removed a false high on the uncertain pair, but called uncertainty a direction conflict with a wrong rationale. Only one of four three-way classifications was correct. Two exposed targeted cases cannot establish accuracy; unequal prompt-cache reuse and concurrent local preparation prevent a fair speed comparison."
+    }
+  ]
+}

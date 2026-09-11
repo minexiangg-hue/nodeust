@@ -114,6 +114,11 @@ export function matchReasonLabel(reason: MatchReason, locale: Locale): string {
       '双方的当前宿舍与目标宿舍互补。',
       '雙方的目前宿舍與目標宿舍互補。',
     ],
+    'term-year-unspecified': [
+      'Both name the same semester; confirm its year in chat',
+      '双方注明相同学期，具体年份请在沟通时确认',
+      '雙方註明相同學期，具體年份請在溝通時確認',
+    ],
     'housing-conditions': [
       'No conflict found in the housing conditions provided.',
       '已提供的住宿条件未发现冲突。',

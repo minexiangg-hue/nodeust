@@ -30,6 +30,7 @@ export type MatchIntent = {
   term?: string;
   room?: string;
   wantedRoom?: string;
+  wantedRooms?: string[];
   eligibility?: string;
   price?: number;
   currency?: string;

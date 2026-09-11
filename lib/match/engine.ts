@@ -1,8 +1,10 @@
 import type { MatchIntent, MatchPost, ParsedPost, PairMatch } from './types.ts';
 import { parseHousing, parseGoods } from './housing-goods.ts';
 import { parseTransport, parseStudy, parseSocial } from './mobility-study.ts';
+import { compareResidencePeriods, compareRoomAcceptance, parseResidenceLabel } from './constraints.ts';
+import type { RoomType } from './constraints.ts';
 
-export const MATCH_VERSION = 'reciprocal-intents-v2';
+export const MATCH_VERSION = 'reciprocal-intents-v3';
 export const TIME_TOLERANCE_MINUTES = 30;
 
 export function parseMatchPost(post: MatchPost): ParsedPost {
@@ -54,13 +56,23 @@ export function missingIntentDetails(intent: MatchIntent): string[] {
     ...new Set([
       ...intent.missing,
       ...fields
-        .filter((field) => intent[field] === undefined || intent[field] === '')
+        .filter((field) => !(field === 'wantedRoom' && intent.wantedRooms?.length) && (intent[field] === undefined || intent[field] === ''))
         .map((field) => (field === 'minute' ? 'time' : field)),
     ]),
   ];
 }
 
 export function isExpired(intent: MatchIntent, now: Date): boolean {
+  if (intent.kind === 'hall') {
+    const period = parseResidenceLabel(intent.term);
+    // Only explicit endpoints support expiry here; semester labels are not a school calendar.
+    if (period?.type === 'dates') return new Date(`${period.end}T23:59:59.999+08:00`).getTime() < now.getTime();
+    if (period?.type === 'academic-year') {
+      const currentYear = new Date(now.getTime() + 8 * 60 * 60 * 1000).getUTCFullYear();
+      return period.endYear < currentYear;
+    }
+    return false;
+  }
   if (
     !intent.date ||
     !['transport', 'study', 'other', 'goods'].includes(intent.kind)
@@ -75,12 +87,6 @@ export function isExpired(intent: MatchIntent, now: Date): boolean {
 }
 function differs(a?: string, b?: string): boolean {
   return Boolean(a && b && a !== b);
-}
-function termConflict(a?: string, b?: string): boolean {
-  if (!a || !b) return false;
-  const semester = (s: string) => s.match(/fall|spring|summer|winter/)?.[0];
-  const year = (s: string) => s.match(/20\d{2}/)?.[0];
-  return differs(semester(a), semester(b)) || differs(year(a), year(b));
 }
 
 /** Compatibility is symmetric; score describes evidence strength, never success probability. */
@@ -106,19 +112,32 @@ export function compareIntents(
       a.from === a.to
     )
       return null;
-    if (
-      termConflict(a.term, b.term) ||
-      differs(a.room, b.wantedRoom) ||
-      differs(a.wantedRoom, b.room)
-    )
-      return null;
+    // Existing posts can state only a season. Preserve that declared scope without
+    // inventing calendar years; an explicit year on either side still needs confirmation.
+    const seasons = ['fall', 'spring', 'summer', 'winter'];
+    if (a.term && b.term && seasons.includes(a.term) && seasons.includes(b.term)) {
+      if (a.term !== b.term) return null;
+      reasons.push({ code: 'term-year-unspecified', values: [a.term] });
+    } else {
+      const period = compareResidencePeriods(parseResidenceLabel(a.term), parseResidenceLabel(b.term), 'equal');
+      if (period.status === 'conflict') return null;
+      if (period.status === 'unknown') missing.add('term');
+    }
+    for (const [offer, seek] of [[a, b], [b, a]]) {
+      const wanted = seek.wantedRooms?.length
+        ? seek.wantedRooms as RoomType[]
+        : seek.wantedRoom === 'any' ? 'any' : seek.wantedRoom ? [seek.wantedRoom as RoomType] : undefined;
+      const room = compareRoomAcceptance(offer.room as RoomType | undefined, wanted);
+      if (room.status === 'conflict') return null;
+      if (room.status === 'unknown') missing.add('room');
+    }
     if (
       a.eligibility !== 'any' &&
       b.eligibility !== 'any' &&
       differs(a.eligibility, b.eligibility)
     )
       return null;
-    for (const key of ['term', 'room', 'wantedRoom', 'eligibility'] as const)
+    for (const key of ['term', 'room', 'eligibility'] as const)
       required(key, key);
     reasons.push(
       { code: 'reverse-route', values: [a.from, a.to] },
