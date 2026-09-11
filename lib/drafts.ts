@@ -1,7 +1,7 @@
 export type PostDraft = {
   id: string;
   updatedAt: string;
-  category: 'hall' | 'goods' | 'study' | 'other';
+  category: 'hall' | 'goods' | 'study' | 'transport' | 'other';
   title: string;
   detail: string;
   from: string;
@@ -15,7 +15,9 @@ export function parseDrafts(raw: string | null): PostDraft[] {
   return value.filter(
     (item): item is PostDraft =>
       item &&
-      ['hall', 'goods', 'study', 'other'].includes(item.category) &&
+      ['hall', 'goods', 'study', 'transport', 'other'].includes(
+        item.category,
+      ) &&
       ['id', 'updatedAt', 'title', 'detail', 'from', 'to', 'locationId'].every(
         (key) => typeof item[key] === 'string',
       ),

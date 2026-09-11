@@ -33,7 +33,7 @@ export type MyPost = {
   id: string;
   title: string;
   body: string;
-  category: 'hall' | 'goods' | 'study' | 'other';
+  category: 'hall' | 'goods' | 'study' | 'transport' | 'other';
   status: 'active' | 'closed' | 'matched' | 'removed';
   createdAt: string;
 };

@@ -14,6 +14,7 @@ export const categoryLabels = {
   hall: ['Housing', '宿舍', '宿舍'],
   goods: ['Exchange', '物品交换', '物品交換'],
   study: ['Study help', '学习互助', '學習互助'],
+  transport: ['Transport', '交通', '交通'],
   other: ['Other', '其他', '其他'],
 } as const;
 

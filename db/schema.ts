@@ -70,6 +70,7 @@ export const posts = mysqlTable(
       'goods',
       'study',
       'other',
+      'transport',
     ]).notNull(),
     title: varchar('title', { length: 200 }).notNull(),
     body: text('body').notNull(),

@@ -1,6 +1,7 @@
 'use client';
 /* oxlint-disable next/no-html-link-for-pages */
 
+import { findReciprocalHousingMatches } from '@/lib/matching';
 import {
   useCallback,
   useEffect,
@@ -361,17 +362,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
   const selectedLocationItems = selectedLocationId
     ? items.filter((item) => item.locationId === selectedLocationId)
     : [];
-  const myHallRequests = items.filter(
-    (item) => item.mine && item.category === 'hall',
-  );
-  const matchItems = items.filter(
-    (item) =>
-      !item.mine &&
-      item.category === 'hall' &&
-      myHallRequests.some(
-        (mine) => mine.from === item.to && mine.to === item.from,
-      ),
-  );
+  const matchItems = findReciprocalHousingMatches(items);
   const savedItems = items.filter((item) => savedIds.has(String(item.id)));
   const sectionItems =
     activeSection === 'matches'
@@ -682,7 +673,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
           if (locationGroups.some((g) => g.id === remembered.group))
             setGroup(remembered.group);
           if (
-            ['all', 'hall', 'goods', 'study', 'other'].includes(
+            ['all', 'hall', 'goods', 'study', 'transport', 'other'].includes(
               remembered.category,
             )
           )
@@ -848,7 +839,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
           query: { type: 'string' },
           category: {
             type: 'string',
-            enum: ['all', 'hall', 'goods', 'study', 'other'],
+            enum: ['all', 'hall', 'goods', 'study', 'transport', 'other'],
           },
           location: { type: 'string' },
         },
@@ -869,7 +860,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
         if (
           value.category !== undefined &&
           (typeof value.category !== 'string' ||
-            !['all', 'hall', 'goods', 'study', 'other'].includes(
+            !['all', 'hall', 'goods', 'study', 'transport', 'other'].includes(
               value.category,
             ))
         )
@@ -1406,13 +1397,20 @@ export function PlazaApp({ children }: { children: ReactNode }) {
                     <SelectValue>{t[category]}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {(['all', 'hall', 'goods', 'study', 'other'] as const).map(
-                      (value) => (
-                        <SelectItem key={value} value={value}>
-                          {t[value]}
-                        </SelectItem>
-                      ),
-                    )}
+                    {(
+                      [
+                        'all',
+                        'hall',
+                        'goods',
+                        'study',
+                        'transport',
+                        'other',
+                      ] as const
+                    ).map((value) => (
+                      <SelectItem key={value} value={value}>
+                        {t[value]}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

@@ -45,3 +45,8 @@ next-env.d.ts
 
 # Temporary release and rollback staging directories
 /.next-*/
+
+# Reproducible match-study payloads and offline downloads (kept locally)
+/reports/*/artifacts/
+/reports/*/logs.zip
+/reports/*/review.html

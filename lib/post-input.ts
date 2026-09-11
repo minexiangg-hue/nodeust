@@ -7,6 +7,7 @@ export function parsePostInput(input: Record<string, unknown>) {
     category !== 'hall' &&
     category !== 'goods' &&
     category !== 'study' &&
+    category !== 'transport' &&
     category !== 'other'
   )
     throw new Error('INVALID_POST:无效的需求类型。');

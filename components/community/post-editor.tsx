@@ -163,6 +163,7 @@ export function PostEditor({
                 <SelectItem value="hall">{t.hall}</SelectItem>
                 <SelectItem value="goods">{t.goods}</SelectItem>
                 <SelectItem value="study">{t.study}</SelectItem>
+                <SelectItem value="transport">{t.transport}</SelectItem>
                 <SelectItem value="other">{t.other}</SelectItem>
               </SelectContent>
             </Select>

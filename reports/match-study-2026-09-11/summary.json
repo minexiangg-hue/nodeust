@@ -1,0 +1,172 @@
+{
+  "seed": 20260911,
+  "started": "2026-09-10T17:59:29.814Z",
+  "finished": "2026-09-10T17:59:43.117Z",
+  "students": 500,
+  "posts": 3746,
+  "perStudent": {
+    "min": 5,
+    "max": 10
+  },
+  "styles": {
+    "en-casual": 568,
+    "en-formal": 440,
+    "mixed": 716,
+    "zh-CN": 586,
+    "en-typos": 789,
+    "zh-HK": 647
+  },
+  "intentTypes": {
+    "study": 689,
+    "hall": 881,
+    "goods": 814,
+    "transport": 854,
+    "other": 508
+  },
+  "submittedCategories": {
+    "study": 727,
+    "hall": 853,
+    "goods": 789,
+    "other": 564,
+    "transport": 813
+  },
+  "misclassified": 987,
+  "insufficient": 410,
+  "rolesWithNoOwnPostsInFeed": 406,
+  "rolesWithNoOwnHousingInFeed": 479,
+  "metrics": {
+    "current-feed": {
+      "roles": 500,
+      "empty": 498,
+      "eligibleRoles": 500,
+      "hitRoles": 0,
+      "returned": 2,
+      "tp": 0,
+      "gold": 23753,
+      "routeTp": 0,
+      "routeGold": 20649,
+      "top5Count": 2,
+      "top5Tp": 0,
+      "byKind": {
+        "hall": {
+          "returned": 0,
+          "tp": 0,
+          "gold": 1362
+        },
+        "goods": {
+          "returned": 0,
+          "tp": 0,
+          "gold": 18835
+        },
+        "study": {
+          "returned": 1,
+          "tp": 0,
+          "gold": 1099
+        },
+        "transport": {
+          "returned": 0,
+          "tp": 0,
+          "gold": 908
+        },
+        "other": {
+          "returned": 1,
+          "tp": 0,
+          "gold": 1549
+        }
+      }
+    },
+    "full-exact": {
+      "roles": 500,
+      "empty": 190,
+      "eligibleRoles": 500,
+      "hitRoles": 86,
+      "returned": 5158,
+      "tp": 150,
+      "gold": 23753,
+      "routeTp": 331,
+      "routeGold": 20649,
+      "top5Count": 955,
+      "top5Tp": 30,
+      "byKind": {
+        "hall": {
+          "returned": 412,
+          "tp": 25,
+          "gold": 1362
+        },
+        "goods": {
+          "returned": 1466,
+          "tp": 111,
+          "gold": 18835
+        },
+        "study": {
+          "returned": 979,
+          "tp": 3,
+          "gold": 1099
+        },
+        "transport": {
+          "returned": 1164,
+          "tp": 5,
+          "gold": 908
+        },
+        "other": {
+          "returned": 1137,
+          "tp": 6,
+          "gold": 1549
+        }
+      }
+    },
+    "full-normalized": {
+      "roles": 500,
+      "empty": 134,
+      "eligibleRoles": 500,
+      "hitRoles": 289,
+      "returned": 13734,
+      "tp": 771,
+      "gold": 23753,
+      "routeTp": 11128,
+      "routeGold": 20649,
+      "top5Count": 1830,
+      "top5Tp": 110,
+      "byKind": {
+        "hall": {
+          "returned": 13624,
+          "tp": 769,
+          "gold": 1362
+        },
+        "goods": {
+          "returned": 44,
+          "tp": 1,
+          "gold": 18835
+        },
+        "study": {
+          "returned": 0,
+          "tp": 0,
+          "gold": 1099
+        },
+        "transport": {
+          "returned": 44,
+          "tp": 1,
+          "gold": 908
+        },
+        "other": {
+          "returned": 22,
+          "tp": 0,
+          "gold": 1549
+        }
+      }
+    }
+  },
+  "api": {
+    "requests": 5246,
+    "failures": 0,
+    "p50ms": 10.63,
+    "p95ms": 41.89
+  },
+  "corpusSha256": "c04c4c47f9e5e1bea2468be2fe14c4e7c2022428f5cbd068288c5fc78859ec8b",
+  "notes": [
+    "Synthetic scenario oracle; no independent human relevance labels.",
+    "All predictions consume public API fields, never the truth labels.",
+    "full-exact and full-normalized are offline ablations, not deployed algorithms.",
+    "500 roles use the real API and the exact shared UI matcher; browser sampling is separate."
+  ]
+}

@@ -8,7 +8,7 @@ import { requireMember } from '@/lib/current-member';
 import { campusLocationIds } from '@/lib/campus-locations';
 import { PAGE_SIZE, pageOffset, pagedItems } from '@/lib/pagination';
 
-const categories = new Set(['hall', 'goods', 'study', 'other']);
+const categories = new Set(['hall', 'goods', 'study', 'transport', 'other']);
 
 export async function GET(request: NextRequest) {
   try {

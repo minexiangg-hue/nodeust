@@ -1,8 +1,14 @@
-import { ArrowLeftRight, Boxes, BookOpen, Sparkles } from 'lucide-react';
+import { ArrowLeftRight, Boxes, BookOpen, Bus, Sparkles } from 'lucide-react';
 import { localize, type Locale } from '@/lib/locale';
 import { campusLocations } from '@/lib/campus-locations';
 
-export type Category = 'all' | 'hall' | 'goods' | 'study' | 'other';
+export type Category =
+  | 'all'
+  | 'hall'
+  | 'goods'
+  | 'study'
+  | 'transport'
+  | 'other';
 export type ActiveSection = 'explore' | 'matches' | 'chats' | 'saved' | 'posts';
 export type Announcement = {
   id: string;
@@ -204,6 +210,7 @@ export const copy = {
     hall: '宿舍',
     goods: '物品交换',
     study: '学习互助',
+    transport: '交通',
     other: '其他',
     ug: '本科宿舍',
     pg: '研究生宿舍',
@@ -232,6 +239,7 @@ export const copy = {
     hall: '宿舍',
     goods: '物品交換',
     study: '學習互助',
+    transport: '交通',
     other: '其他',
     ug: '本科宿舍',
     pg: '研究生宿舍',
@@ -260,6 +268,7 @@ export const copy = {
     hall: 'Housing',
     goods: 'Exchange',
     study: 'Study help',
+    transport: 'Transport',
     other: 'Other',
     ug: 'UG halls',
     pg: 'PG halls',
@@ -278,6 +287,7 @@ export const categoryMeta = {
   hall: { icon: ArrowLeftRight, color: '#ff7a59' },
   goods: { icon: Boxes, color: '#ffd166' },
   study: { icon: BookOpen, color: '#63e6be' },
+  transport: { icon: Bus, color: '#b5a0ff' },
   other: { icon: Sparkles, color: '#66b3ff' },
 };
 

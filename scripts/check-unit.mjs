@@ -86,3 +86,40 @@ test('moderators retain lower-role suspension and restoration permissions', () =
   for (const action of ['activate', 'suspend', 'ban'])
     assert.equal(canManageUser('moderator', 'member', action), true);
 });
+
+// Keep evaluation and the UI on the exact same existing housing rule.
+import { findReciprocalHousingMatches } from '../lib/matching.ts';
+import { parseDrafts } from '../lib/drafts.ts';
+test('reciprocal matcher preserves its category, ownership and exact-string boundaries', () => {
+  const base = { category: 'hall', from: 'Hall I', to: 'Hall II' };
+  const own = { ...base, id: 'own', mine: true };
+  const reciprocal = { ...base, id: 'yes', from: 'Hall II', to: 'Hall I' };
+  const otherCategory = {
+    ...reciprocal,
+    id: 'transport',
+    category: 'transport',
+  };
+  const alias = { ...reciprocal, id: 'alias', from: 'Hall 2' };
+  assert.deepEqual(
+    findReciprocalHousingMatches([own, reciprocal, otherCategory, alias]),
+    [reciprocal],
+  );
+  assert.deepEqual(findReciprocalHousingMatches([reciprocal]), []);
+});
+test('transport drafts survive storage parsing alongside existing categories', () => {
+  const draft = {
+    id: 'transport-draft',
+    updatedAt: '2026-09-11',
+    category: 'transport',
+    title: 'Share a taxi',
+    detail: 'Campus to Hang Hau',
+    from: '',
+    to: '',
+    locationId: 'ug-hall-i',
+  };
+  assert.deepEqual(parseDrafts(JSON.stringify([draft])), [draft]);
+  assert.deepEqual(
+    parseDrafts(JSON.stringify([{ ...draft, category: 'invalid' }])),
+    [],
+  );
+});

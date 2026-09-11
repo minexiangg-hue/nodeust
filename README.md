@@ -103,3 +103,15 @@ uses that gateway's `/__gateway/login?next=/explore`. Authentication remains the
 existing preview mechanism; the future SSO handoff remains a separate task.
 
 See `docs/architecture-rearrange.md` for the route map, verified backup and rollout.
+
+## Transport and current matching scope
+
+Transport is available in posting, editing, drafts, exploration filters and
+request displays. Apply `0003_add_transport_category.sql` through the normal
+migration runner before deploying this version; it appends the MySQL enum value.
+
+Matching still means exact reciprocal housing fields within the latest 100-post
+feed. Adding Transport does not implement transport matching. The shared baseline
+is in `lib/matching.ts`; the 500-student / 3,746-post evaluation and proposed
+improvements are documented in [the match study](reports/match-study-2026-09-11/report.md).
+See [reproduction instructions](scripts/match-study/README.md) for isolated tests.
