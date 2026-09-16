@@ -65,3 +65,36 @@ Back up MySQL with the server's existing backup policy before every migration.
 For updates, fetch the reviewed branch, run `npm ci`, apply migrations, build,
 and restart the systemd service. Keep the previous release directory until the
 health check passes so rollback is immediate.
+
+## Rule-based matching release and rollback
+
+`lib/match/` owns the rule parser, constraints, index and ranking. Its regression
+suite is `node --experimental-strip-types --test scripts/match-evaluation/*.test.mjs`.
+The application calls this engine through `lib/match/service.ts` and `/api/matches`.
+Local model clients are experimental scripts only; production does not call them.
+Algorithm changes can be developed/tested separately; shipping them still requires
+an application build. Change `MATCH_VERSION` when releasing changed semantics.
+
+On the current server, retain complete `.next` artifacts outside the working tree.
+The version switcher validates build IDs and static assets, archives the running
+artifact, restarts `nodeust`, and restores the old artifact if health fails:
+
+```bash
+python3 scripts/switch-release.py /absolute/path/to/saved-next --check
+python3 scripts/switch-release.py /absolute/path/to/saved-next
+```
+
+Only use trusted artifacts built for this server. Each switch writes a manifest
+under `/home/ubuntu/nodeust-backups/switch-*/deployment.json`; its `previous` path
+can be passed to the same command to roll back. Successful switches preserve the
+previous build. These commands do not alter the source checkout, configuration or
+database, so new posts/messages survive this release's rollback. Build and source
+versions are recorded separately in release records. Future schema changes need
+an explicit compatibility/migration plan; arbitrary versions are not automatically
+safe to interchange.
+
+To pause only matching, set `NODE_MATCHING_ENABLED=false` in the service's protected
+`.env.local` and restart `nodeust`; the page displays a pause message and posts/chat
+remain available. Remove the setting or set it to `true` and restart to re-enable.
+This is a pause switch, not a selector for an older algorithm. A future algorithm
+regression can also be reverted as an isolated Git change followed by a new build.
