@@ -19,6 +19,7 @@ import {
 import { localize, type Locale } from '@/lib/locale';
 
 export type HomePageProps = {
+  loginPath?: string;
   locale: Locale;
   alias?: string;
   signedIn?: boolean;
@@ -28,6 +29,7 @@ export type HomePageProps = {
 };
 
 export function HomePage({
+  loginPath = '/__gateway/login',
   locale,
   alias,
   signedIn = true,
@@ -70,7 +72,7 @@ export function HomePage({
           <div className="home-actions">
             <Link
               className="home-button home-button-primary"
-              href={signedIn ? '/explore' : '/__gateway/login?next=/explore'}
+              href={signedIn ? '/explore' : `${loginPath}?next=/explore`}
               prefetch={signedIn ? undefined : false}
               target={signedIn ? undefined : '_top'}
             >
@@ -262,7 +264,7 @@ export function HomePage({
               <h3>
                 <Link
                   href={
-                    signedIn ? '/matches' : '/__gateway/login?next=/matches'
+                    signedIn ? '/matches' : `${loginPath}?next=/matches`
                   }
                   prefetch={signedIn ? undefined : false}
                 >

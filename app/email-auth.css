@@ -1,0 +1,230 @@
+.email-auth-page {
+  min-height: 100svh;
+  background: #f7f8fa;
+  color: #17222b;
+  font-family: var(--font-sans, Arial, sans-serif);
+}
+.email-auth-header {
+  max-width: 1180px;
+  margin: auto;
+  padding: 30px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.email-auth-header .brand {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+.email-auth-brand-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #298465;
+}
+.email-auth-header > a:last-child {
+  font-size: 13px;
+  color: #485665;
+}
+.email-auth-main {
+  max-width: 1100px;
+  margin: 46px auto 60px;
+  padding: 0 36px;
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 80px;
+  align-items: center;
+}
+.email-auth-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #51635c;
+}
+.email-auth-story h1 {
+  font-size: clamp(36px, 4.5vw, 58px);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -2px;
+  margin: 25px 0;
+}
+.email-auth-story h1 span {
+  color: #33765f;
+}
+.email-auth-story > p:not(.email-auth-eyebrow) {
+  line-height: 1.8;
+  color: #52606c;
+  max-width: 370px;
+  font-size: 15px;
+}
+.email-auth-assurance {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 44px;
+  color: #466153;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.email-auth-card {
+  background: white;
+  padding: 34px;
+  border: 1px solid #dde3e6;
+  border-radius: 22px;
+  box-shadow: 0 12px 40px #162c2310;
+  min-width: 0;
+}
+.email-auth-icon {
+  display: inline-flex;
+  padding: 12px;
+  border-radius: 14px;
+  background: #edf5f0;
+  color: #24664c;
+  margin-bottom: 22px;
+}
+.email-auth-card h2 {
+  font-size: 29px;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+.email-auth-subtitle {
+  font-size: 15px;
+  color: #52606c;
+  margin: 0 0 22px;
+}
+.email-auth-hint {
+  font-size: 12px;
+  color: #53616c;
+  line-height: 1.8;
+  margin: 14px 0;
+}
+.email-auth-hint strong {
+  font-weight: 600;
+  color: #283b44;
+}
+.email-auth-card label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 18px 0 0;
+}
+.email-auth-card input {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  margin-top: 8px;
+  padding: 12px 13px;
+  border: 1px solid #bac6ce;
+  border-radius: 9px;
+  color: #17222b;
+  background: #fff;
+  box-sizing: border-box;
+}
+.email-auth-card input:focus {
+  outline: 2px solid #2b7059;
+  outline-offset: 2px;
+}
+.email-auth-submit {
+  width: 100%;
+  margin-top: 24px;
+  background: #205c49;
+  color: #fff;
+  padding: 13px 15px;
+  border: 0;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  min-height: 46px;
+}
+.email-auth-submit:hover {
+  background: #164635;
+}
+.email-auth-submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.email-auth-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 23px;
+  font-size: 12px;
+  color: #285f4d;
+}
+.email-auth-links a:hover {
+  text-decoration: underline;
+}
+.email-auth-alert {
+  padding: 12px 14px;
+  color: #8b2c24;
+  background: #fff1ed;
+  border: 1px solid #f1c9c1;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.email-auth-success {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  color: #22583f;
+  background: #eef7f0;
+  border: 1px solid #c6dfce;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.email-auth-success svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.email-auth-success p {
+  margin: 0;
+}
+.email-auth-footer {
+  text-align: center;
+  color: #67737b;
+  font-size: 12px;
+  padding: 20px 24px 36px;
+}
+@media (max-width: 800px) {
+  .email-auth-main {
+    grid-template-columns: 1fr;
+    max-width: 470px;
+    gap: 22px;
+    margin: 12px auto 20px;
+    padding: 0 20px;
+  }
+  .email-auth-story {
+    display: none;
+  }
+  .email-auth-header {
+    padding: 24px 20px;
+  }
+  .email-auth-card {
+    padding: 26px 22px;
+    border-radius: 16px;
+  }
+  .email-auth-header > a:last-child {
+    font-size: 12px;
+  }
+  .email-auth-card h2 {
+    font-size: 27px;
+  }
+}

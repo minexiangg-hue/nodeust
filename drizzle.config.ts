@@ -1,4 +1,5 @@
 import { defineConfig } from 'drizzle-kit';
+import { emailMode, emailDatabaseUrl } from './lib/email-auth/config';
 
 export default defineConfig({
   out: './drizzle-mysql',
@@ -6,7 +7,7 @@ export default defineConfig({
   dialect: 'mysql',
   dbCredentials: {
     url:
-      process.env.DATABASE_URL ??
-      'mysql://nodeust:change-me@127.0.0.1:3306/nodeust',
+      emailMode() ? emailDatabaseUrl() : (process.env.DATABASE_URL ??
+      'mysql://nodeust:change-me@127.0.0.1:3306/nodeust'),
   },
 });

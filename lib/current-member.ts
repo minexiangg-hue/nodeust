@@ -1,3 +1,4 @@
+import { emailMode } from './email-auth/config';
 import { count, eq } from 'drizzle-orm';
 
 import { getDb } from '@/db';
@@ -24,6 +25,7 @@ export async function requireMember() {
     .where(eq(users.identityId, identity.identityId))
     .limit(1);
 
+  if (!member && emailMode()) throw new Error('UNAUTHENTICATED');
   if (!member) {
     const now = new Date();
     const [{ total }] = await db.select({ total: count() }).from(users);

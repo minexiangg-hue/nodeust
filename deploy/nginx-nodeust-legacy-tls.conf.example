@@ -1,0 +1,39 @@
+# Rollback entry: retain HTTPS but restore the old independent gateway.
+# Other named vhosts remain separate. Obtain the certificate before activation.
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    listen 8080;
+    listen [::]:8080;
+    server_name _;
+    location /.well-known/acme-challenge/ { root /var/www/nodeust-acme; }
+    location / { return 308 https://nodeust.duckdns.org$request_uri; }
+}
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    server_name nodeust.duckdns.org _;
+    ssl_certificate /etc/letsencrypt/live/nodeust.duckdns.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/nodeust.duckdns.org/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    add_header Referrer-Policy "no-referrer" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    client_max_body_size 256k;
+    location / {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_cookie_flags nodeust_preview_session secure httponly samesite=lax;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-HKUST-Uid "";
+        proxy_set_header X-HKUST-Email "";
+        proxy_set_header X-HKUST-Affiliation "";
+        proxy_set_header X-HKUST-Full-Name "";
+        proxy_set_header X-Node-Role "";
+        proxy_set_header X-Node-Proxy-Secret "";
+        proxy_read_timeout 60s;
+        proxy_connect_timeout 5s;
+    }
+}

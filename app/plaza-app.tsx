@@ -136,7 +136,7 @@ function NavItem({
     </Link>
   );
 }
-export function PlazaApp({ children }: { children: ReactNode }) {
+export function PlazaApp({ children, storageNamespace = 'node' }: { children: ReactNode; storageNamespace?: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -224,9 +224,9 @@ export function PlazaApp({ children }: { children: ReactNode }) {
   const [announcementReads, setAnnouncementReads] = useState<
     Record<string, string>
   >({});
-  const draftKey = profile ? `node:drafts:${profile.id}` : null;
+  const draftKey = profile ? `${storageNamespace}:drafts:${profile.id}` : null;
   const announcementKey = profile
-    ? `node:announcement-reads:${profile.id}`
+    ? `${storageNamespace}:announcement-reads:${profile.id}`
     : null;
   const announcementVersion = (item: Announcement) =>
     JSON.stringify([item.publishedAt, item.title, item.body, item.kind]);
@@ -777,21 +777,21 @@ export function PlazaApp({ children }: { children: ReactNode }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
-        const saved = JSON.parse(localStorage.getItem('node:saved') || '[]');
+        const saved = JSON.parse(localStorage.getItem(`${storageNamespace}:saved`) || '[]');
         if (Array.isArray(saved))
           setSavedIds(new Set(saved.filter((id) => typeof id === 'string')));
-        const language = localStorage.getItem('node:locale') as Locale | null;
+        const language = localStorage.getItem(`${storageNamespace}:locale`) as Locale | null;
         if (language && ['en', 'zh-CN', 'zh-HK'].includes(language))
           setLocale(language);
-        setShowBubbles(localStorage.getItem('node:show-bubbles') !== 'false');
+        setShowBubbles(localStorage.getItem(`${storageNamespace}:show-bubbles`) !== 'false');
         const preferred =
-          localStorage.getItem('node:default-view') === 'list'
+          localStorage.getItem(`${storageNamespace}:default-view`) === 'list'
             ? 'list'
             : 'plaza';
         setDefaultView(preferred);
         setView(preferred);
         const remembered = JSON.parse(
-          sessionStorage.getItem('node:explore-state') || 'null',
+          sessionStorage.getItem(`${storageNamespace}:explore-state`) || 'null',
         );
         if (remembered) {
           if (['plaza', 'list'].includes(remembered.view))
@@ -818,24 +818,25 @@ export function PlazaApp({ children }: { children: ReactNode }) {
       setPreferencesReady(true);
     }, 0);
     return () => clearTimeout(timer);
-  }, []);
+  }, [storageNamespace]);
 
   useEffect(() => {
     document.documentElement.lang = locale;
     if (!preferencesReady) return;
     try {
-      localStorage.setItem('node:saved', JSON.stringify([...savedIds]));
-      localStorage.setItem('node:locale', locale);
-      localStorage.setItem('node:show-bubbles', String(showBubbles));
-      localStorage.setItem('node:default-view', defaultView);
+      localStorage.setItem(`${storageNamespace}:saved`, JSON.stringify([...savedIds]));
+      localStorage.setItem(`${storageNamespace}:locale`, locale);
+      localStorage.setItem(`${storageNamespace}:show-bubbles`, String(showBubbles));
+      localStorage.setItem(`${storageNamespace}:default-view`, defaultView);
       sessionStorage.setItem(
-        'node:explore-state',
+        `${storageNamespace}:explore-state`,
         JSON.stringify({ view, group, category, query, zoom }),
       );
     } catch {
       /* Saved drafts still report storage errors at the point of saving. */
     }
   }, [
+    storageNamespace,
     preferencesReady,
     savedIds,
     locale,
@@ -910,7 +911,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
           let initial = editorCache.current[routeKey];
           if (!initial && sourceDraft) {
             const draft = parseDrafts(
-              localStorage.getItem(`node:drafts:${profileId}`),
+              localStorage.getItem(`${storageNamespace}:drafts:${profileId}`),
             ).find((entry) => entry.id === sourceDraft);
             if (!draft) throw new Error('unavailable');
             initial = { ...draft, author: '', age: '', replies: 0, hall: '' };
@@ -930,7 +931,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [pathname, sourceDraft, profileId, activeSection, routeKey]);
+  }, [pathname, sourceDraft, profileId, activeSection, routeKey, storageNamespace]);
 
   useEffect(() => {
     const modelContext = (
@@ -1208,16 +1209,17 @@ export function PlazaApp({ children }: { children: ReactNode }) {
     ) : activeSection === 'settings' ? (
       <>
         <SettingsPage
+          emailAuth={storageNamespace.startsWith('node:email:')}
           locale={locale}
           onLocaleChange={changeLocale}
           showBubbles={showBubbles}
           onShowBubblesChange={(next) => {
-            localStorage.setItem('node:show-bubbles', String(next));
+            localStorage.setItem(`${storageNamespace}:show-bubbles`, String(next));
             setShowBubbles(next);
           }}
           defaultView={defaultView}
           onDefaultViewChange={(next) => {
-            localStorage.setItem('node:default-view', next);
+            localStorage.setItem(`${storageNamespace}:default-view`, next);
             setDefaultView(next);
             setView(next);
           }}
@@ -1232,6 +1234,7 @@ export function PlazaApp({ children }: { children: ReactNode }) {
         {pageHeading}
         <div className="profile-page">
           <ProfilePage
+            emailAuth={storageNamespace.startsWith('node:email:')}
             locale={locale}
             profile={profile}
             onSaved={() => void reloadProfile()}

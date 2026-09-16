@@ -1,3 +1,4 @@
+import { emailMode } from '@/lib/email-auth/config';
 import Link from 'next/link';
 import Image from 'next/image';
 import { HomePage } from '@/components/community/home-page';
@@ -13,7 +14,7 @@ export function Welcome() {
           <Link href="/rules">Community rules</Link>
           <Link
             className="button-link post-button"
-            href="/__gateway/login?next=/explore"
+            href={emailMode() ? '/login?next=/explore' : '/__gateway/login?next=/explore'}
             prefetch={false}
           >
             Sign in
@@ -21,7 +22,7 @@ export function Welcome() {
         </nav>
       </header>
       <main className="public-home-content">
-        <HomePage locale="en" signedIn={false} />
+        <HomePage locale="en" signedIn={false} loginPath={emailMode() ? '/login' : '/__gateway/login'} />
       </main>
       <footer className="public-footer">
         NODE is an independent HKUST community project. Hall changes must follow

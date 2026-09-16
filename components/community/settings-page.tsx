@@ -28,6 +28,7 @@ import {
 import { localize, type Locale } from '@/lib/locale';
 
 export type SettingsPageProps = {
+  emailAuth?: boolean;
   locale: Locale;
   onLocaleChange: (locale: Locale) => Promise<boolean>;
   showBubbles: boolean;
@@ -41,6 +42,7 @@ export type SettingsPageProps = {
 };
 
 export function SettingsPage({
+  emailAuth = false,
   locale,
   onLocaleChange,
   showBubbles,
@@ -439,9 +441,10 @@ export function SettingsPage({
                 </span>
                 <ArrowUpRight aria-hidden="true" />
               </button>
+              {emailAuth && <Link href="/forgot-password"><ShieldCheck aria-hidden="true" /><span>{t('Reset password', '重设密码', '重設密碼')}</span><ArrowUpRight aria-hidden="true" /></Link>}
               <Link
                 className="settings-signout"
-                href="/__gateway/logout"
+                href="/logout"
                 prefetch={false}
                 target="_top"
               >

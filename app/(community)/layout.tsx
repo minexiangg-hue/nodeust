@@ -1,3 +1,4 @@
+import { emailMode } from '@/lib/email-auth/config';
 import { getCurrentUser } from '@/lib/auth';
 import { MaintenanceScreen } from '@/app/maintenance-screen';
 import { Welcome } from '@/app/welcome';
@@ -12,5 +13,5 @@ export default async function CommunityLayout({
     return <MaintenanceScreen />;
   const user = await getCurrentUser();
   if (!user) return <Welcome />;
-  return <PlazaApp>{children}</PlazaApp>;
+  return <PlazaApp storageNamespace={emailMode() ? `node:email:${user.identityId}` : 'node'}>{children}</PlazaApp>;
 }

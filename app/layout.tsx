@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './email-auth.css';
 import './management.css';
 import './community-shell.css';
 import './community-pages.css';

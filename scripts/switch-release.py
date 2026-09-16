@@ -46,6 +46,17 @@ def main():
     assert target != active.resolve(), 'Target is already active'
     assert not target.is_relative_to(active.resolve()), 'Target must be outside active build'
     target_id = validate(target)
+    environment = os.environ.copy()
+    environment.pop('NODE_AUTH_MODE', None)
+    mode = subprocess.check_output([
+        '/home/ubuntu/.nvm/versions/node/v24.18.0/bin/node',
+        '--env-file=' + str(ROOT / '.env.local'), '-e',
+        "process.stdout.write(process.env.NODE_AUTH_MODE || 'legacy')",
+    ], env=environment, text=True).strip()
+    if mode == 'email':
+        routes = json.loads((target / 'server/app-paths-manifest.json').read_text())
+        if '/api/auth/[action]/route' not in routes:
+            raise RuntimeError('Use scripts/email-auth/switch-system.py for a legacy authentication rollback; build-only rollback would leave the wrong proxy and database active')
     old_id = validate(active)
     if args.check:
         print(json.dumps({'from': old_id, 'to': target_id, 'validated': True}))

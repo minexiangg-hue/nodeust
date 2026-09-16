@@ -34,12 +34,14 @@ function profileFields(profile: ProfileMember | null) {
 }
 
 export function ProfilePage({
+  emailAuth = false,
   locale,
   profile,
   onSaved,
   onSetLocale,
   onOpenFeedback,
 }: {
+  emailAuth?: boolean;
   locale: Locale;
   profile: ProfileMember | null;
   onSaved: () => void;
@@ -112,7 +114,7 @@ export function ProfilePage({
   }
 
   const initial = profile.anonymousAlias.trim().charAt(0).toUpperCase() || '?';
-  const affiliationLabel =
+  const affiliationLabel = emailAuth ? localize(locale, 'University email member', '学校邮箱用户', '學校郵箱用戶') :
     profile.affiliation === 'staff'
       ? localize(locale, 'Staff', '教职员', '教職員')
       : profile.affiliation === 'faculty'
@@ -129,9 +131,9 @@ export function ProfilePage({
           <ShieldCheck />{' '}
           {localize(
             locale,
-            'HKUST identity verified',
-            'HKUST 身份已验证',
-            'HKUST 身份已驗證',
+            emailAuth ? 'University email verified' : 'HKUST identity verified',
+            emailAuth ? '学校邮箱已验证' : 'HKUST 身份已验证',
+            emailAuth ? '學校郵箱已驗證' : 'HKUST 身份已驗證',
           )}{' '}
           · {roleLabel(profile.role)}
         </p>
@@ -433,7 +435,7 @@ export function ProfilePage({
           variant="destructive"
           className="profile-signout"
           onClick={() => {
-            window.location.href = '/__gateway/logout';
+            window.location.href = '/logout';
           }}
         >
           <LogOut />

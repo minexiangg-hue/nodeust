@@ -1,5 +1,7 @@
 import { timingSafeEqual } from 'node:crypto';
-import { headers } from 'next/headers';
+import { headers, cookies } from 'next/headers';
+import { emailMode, authConfig } from './email-auth/config';
+import { sessionUser } from './email-auth/service';
 
 export type AppUser = {
   identityId: string;
@@ -12,6 +14,7 @@ export type AppUser = {
 const HKUST_EMAIL = /@(connect\.)?ust\.hk$/i;
 
 export async function getCurrentUser(): Promise<AppUser | null> {
+  if (emailMode()) return sessionUser((await cookies()).get(authConfig().cookie)?.value);
   const requestHeaders = await headers();
   const identityId = requestHeaders.get('x-hkust-uid');
   const email = requestHeaders.get('x-hkust-email');
