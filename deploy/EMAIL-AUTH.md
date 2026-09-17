@@ -138,3 +138,22 @@ SMTP uses [Nodemailer's TLS transport](https://nodemailer.com/smtp).
 The designated external Owner is saved in the protected preservation bundle as
 `owner-pending.env`. Merge it into the future `email.env` before provisioning;
 it is not an SMTP sender configuration and does not activate production auth.
+
+## Current sender choice: Gmail
+
+The user chose the same personal Gmail for Owner and sender. The protected bundle
+contains `mail-pending.env` with SMTP `smtp.gmail.com:587` (STARTTLS), sender and
+Owner; no SMTP credential has been supplied yet. Server connectivity and normal TLS
+certificate validation passed. This is not a successful SMTP login or delivery test.
+The earlier Connect OAuth2 investigation is no longer the selected sending path.
+
+After enabling Google 2-Step Verification and generating an application password,
+the operator enters it in their own interactive server terminal:
+
+```bash
+python3 /home/ubuntu/nodeust/scripts/email-auth/set-gmail-password.py
+```
+
+The helper stores it atomically with mode 0600 outside Git, hides terminal input,
+and neither sends mail nor deploys. No ordinary Gmail login password is needed.
+Later sender changes do not require changing `NODE_EMAIL_OWNER_EMAIL` or user data.
