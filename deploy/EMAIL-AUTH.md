@@ -29,9 +29,10 @@ invalidate all sessions when consumed. Sessions expire after seven days.
 The current preservation bundle is
 `/home/ubuntu/nodeust-backups/20260916T183515Z-before-email-auth`.
 It contains the running matching-v5 program and old account/data/configuration
-snapshots. **No production cutover has happened.** Production HTTPS preparation/certificate
-issuance was rejected by automatic approval review because this request authorized
-building/testing, not that production configuration change. It has not been run.
+snapshots. **No authentication-system cutover has happened.** On 2026-09-17 the
+user explicitly authorized production HTTPS and SMTP configuration. HTTPS is now
+active with a valid Let’s Encrypt certificate; the old gateway remains in use.
+See `HTTPS-2026-09-17.md`. SMTP authorization and delivery remain pending.
 
 ## Production prerequisites
 

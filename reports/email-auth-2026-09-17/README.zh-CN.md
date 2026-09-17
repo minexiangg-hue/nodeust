@@ -36,3 +36,7 @@
 4. HTTPS 和发信条件满足后，创建新生产数据库，进行真实邮件投递验收，再协调切换并核对回退路径。
 
 当前线上仍运行旧登录和原匹配版本。详细运维步骤见 [EMAIL-AUTH.md](../../deploy/EMAIL-AUTH.md)，机器可读证据及源码摘要见 [validation.json](./validation.json)。
+
+## 后续状态更新
+
+用户已明确批准 HTTPS 和 SMTP 配置。当前域名 HTTPS 已启用，原登录仍运行；SMTP 的 Outlook OAuth2 授权及新 Owner 确认仍待完成。详见 [HTTPS 状态](../../deploy/HTTPS-2026-09-17.md)。前述验收记录描述的是切换前的测试阶段。
