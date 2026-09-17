@@ -1,0 +1,4 @@
+accounts.json
+identities.json
+*.env
+.env*
