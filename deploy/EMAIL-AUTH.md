@@ -1,3 +1,9 @@
+> Current deployment status (2026-09-17): independent email authentication is LIVE.
+> Build `s_N0AgjqzUmDaEED5XFpr`, application source commit `873fb0f`.
+> The new isolated production database is active; the legacy gateway is stopped
+> and disabled. Earlier preparation notes below are historical. See
+> `EMAIL-AUTH-LIVE-2026-09-17.md` for checks and rollback.
+
 # Independent university-email accounts
 
 Default mode remains `legacy` until an explicit, fully configured cutover. Email

@@ -99,7 +99,7 @@ try {
     assert.ok(storage.fresh.every((v) => v === '[]'));
     await page.goto(base + '/profile');
     await page
-      .getByText('University email verified', { exact: false })
+      .getByText('Email verified', { exact: false })
       .waitFor();
     await page.goto(base + '/settings');
     await page.getByRole('link', { name: /Reset password/ }).waitFor();
