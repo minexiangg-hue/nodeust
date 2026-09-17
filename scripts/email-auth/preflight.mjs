@@ -2,12 +2,12 @@ import assert from 'node:assert/strict';
 import mysql from 'mysql2/promise';
 import nodemailer from 'nodemailer';
 import { authConfig, emailDatabaseUrl } from '../../lib/email-auth/config.ts';
-import { universityEmail } from '../../lib/email-auth/crypto.ts';
+import { normalizedEmail } from '../../lib/email-auth/crypto.ts';
 try {
   const c = authConfig();
   assert.equal(c.test, false, 'Production must not enable test mode');
   assert.equal(c.secure, true);
-  universityEmail(process.env.NODE_EMAIL_OWNER_EMAIL);
+  normalizedEmail(process.env.NODE_EMAIL_OWNER_EMAIL);
   const {
     NODE_EMAIL_SMTP_HOST: host,
     NODE_EMAIL_SMTP_USER: user,

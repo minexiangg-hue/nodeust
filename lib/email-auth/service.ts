@@ -7,7 +7,7 @@ import {
   verifyPassword,
   newToken,
   tokenHash,
-  universityEmail,
+  configuredOwnerEmail,
 } from './crypto.ts';
 import { sendAuthMail } from './mail.ts';
 
@@ -144,9 +144,7 @@ export async function confirmVerification(raw: string, password: string) {
       throw new AuthError('INVALID_LINK');
     const userId = randomUUID(),
       alias = `Campus ${newToken().slice(0, 8)}`;
-    const owner = process.env.NODE_EMAIL_OWNER_EMAIL
-      ? universityEmail(process.env.NODE_EMAIL_OWNER_EMAIL)
-      : null;
+    const owner = configuredOwnerEmail();
     await db.execute(
       `INSERT INTO users(id,identity_id,email,affiliation,full_name,nickname,anonymous_alias,role,status,created_at,updated_at)
     VALUES (?,?,?,'student',?,?,?,?,'active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))`,

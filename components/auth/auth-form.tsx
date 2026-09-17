@@ -19,7 +19,7 @@ const titles: Record<AuthMode, [string, string]> = {
 };
 const errors: Record<string, string> = {
   INVALID_EMAIL:
-    'Please use an @connect.ust.hk or @ust.hk email. 请使用科大邮箱。',
+    'Use a university email or the designated administrator email. 请使用科大邮箱或指定的管理员邮箱。',
   INVALID_PASSWORD:
     'Use 12–128 characters for your password. 密码需为 12–128 个字符。',
   LOGIN_FAILED:
@@ -131,7 +131,7 @@ export function AuthForm({
           <div className="email-auth-assurance">
             <ShieldCheck size={20} />
             <span>
-              Verified university email.
+              Verified email.
               <br />
               Anonymous community conversations.
             </span>
@@ -147,7 +147,7 @@ export function AuthForm({
             <p className="email-auth-hint">
               Use your <strong>@connect.ust.hk</strong> or{' '}
               <strong>@ust.hk</strong> email. This is an independent NODE
-              account, not university SSO.
+              account, not university SSO. The designated administrator email is the only exception. 指定管理员邮箱可例外注册。
               <br />
               新系统需重新注册；不会关联旧内测账号或数据。
             </p>

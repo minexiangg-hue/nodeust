@@ -6,7 +6,7 @@ import { spawnSync } from 'node:child_process';
 import mysql from 'mysql2/promise';
 import { drizzle } from 'drizzle-orm/mysql2';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
-import { universityEmail } from '../../lib/email-auth/crypto.ts';
+import { normalizedEmail } from '../../lib/email-auth/crypto.ts';
 const out = process.argv[2];
 assert.ok(
   out?.startsWith('/home/ubuntu/nodeust-backups/') && !existsSync(out),
@@ -14,7 +14,7 @@ assert.ok(
 );
 const origin = new URL(process.env.NODE_EMAIL_ORIGIN || '');
 assert.equal(origin.protocol, 'https:');
-const owner = universityEmail(process.env.NODE_EMAIL_OWNER_EMAIL);
+const owner = normalizedEmail(process.env.NODE_EMAIL_OWNER_EMAIL);
 for (const key of [
   'NODE_EMAIL_FROM',
   'NODE_EMAIL_SMTP_HOST',

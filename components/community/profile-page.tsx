@@ -114,7 +114,7 @@ export function ProfilePage({
   }
 
   const initial = profile.anonymousAlias.trim().charAt(0).toUpperCase() || '?';
-  const affiliationLabel = emailAuth ? localize(locale, 'University email member', '学校邮箱用户', '學校郵箱用戶') :
+  const affiliationLabel = emailAuth ? localize(locale, 'Verified email member', '邮箱认证用户', '郵箱認證用戶') :
     profile.affiliation === 'staff'
       ? localize(locale, 'Staff', '教职员', '教職員')
       : profile.affiliation === 'faculty'
@@ -131,9 +131,9 @@ export function ProfilePage({
           <ShieldCheck />{' '}
           {localize(
             locale,
-            emailAuth ? 'University email verified' : 'HKUST identity verified',
-            emailAuth ? '学校邮箱已验证' : 'HKUST 身份已验证',
-            emailAuth ? '學校郵箱已驗證' : 'HKUST 身份已驗證',
+            emailAuth ? 'Email verified' : 'HKUST identity verified',
+            emailAuth ? '邮箱已验证' : 'HKUST 身份已验证',
+            emailAuth ? '郵箱已驗證' : 'HKUST 身份已驗證',
           )}{' '}
           · {roleLabel(profile.role)}
         </p>

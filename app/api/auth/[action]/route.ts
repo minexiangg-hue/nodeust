@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authConfig, AuthError } from '@/lib/email-auth/config';
 import {
-  universityEmail,
+  accountEmail,
   passwordInput,
   tokenInput,
   safeNext,
@@ -87,7 +87,7 @@ export async function POST(
       action === 'login' ||
       action === 'forgot-password'
     ) {
-      const email = universityEmail(input.email);
+      const email = accountEmail(input.email);
       await rateLimit('email-attempts', email, 20, 900);
       if (action === 'login')
         raw = await login(email, passwordInput(input.password));

@@ -1,7 +1,9 @@
 # Independent university-email accounts
 
 Default mode remains `legacy` until an explicit, fully configured cutover. Email
-mode accepts only exact `connect.ust.hk` and `ust.hk` domains, normalizes email
+mode accepts exact `connect.ust.hk` and `ust.hk` domains for ordinary members.
+The exact configured `NODE_EMAIL_OWNER_EMAIL` is the sole exception and may use
+an external domain; no domain-wide or plus-address alias exception is granted. It normalizes email
 case, and requires a one-use 24-hour emailed link plus the registration password
 before activation. It is not HKUST SSO. Verification GET requests do not change
 account state. Login uses email/password; reset links expire in 30 minutes and
@@ -17,7 +19,8 @@ invalidate all sessions when consumed. Sessions expire after seven days.
   gateway roles and the old preview cookie cannot authenticate it.
 - New user records are created only inside successful verification transactions.
   Their identities use new UUIDs. The first user is a member, never an automatic
-  Owner. Only the configured `NODE_EMAIL_OWNER_EMAIL`, after verification, becomes
+  Owner. Only the configured `NODE_EMAIL_OWNER_EMAIL` (including an explicitly designated
+  external address), after verification, becomes
   Owner. Configure it before registrations; changing it later does not silently
   promote an already-existing account.
 - Local drafts/preferences/saved items use the new identity namespace. Legacy
@@ -131,3 +134,7 @@ Password storage uses salted scrypt (N=2^17, r=8, p=1), following the
 One-use expiring reset tokens follow the
 [OWASP reset guidance](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html).
 SMTP uses [Nodemailer's TLS transport](https://nodemailer.com/smtp).
+
+The designated external Owner is saved in the protected preservation bundle as
+`owner-pending.env`. Merge it into the future `email.env` before provisioning;
+it is not an SMTP sender configuration and does not activate production auth.

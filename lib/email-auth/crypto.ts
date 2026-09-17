@@ -1,12 +1,14 @@
 import { randomBytes, createHash, scrypt, timingSafeEqual } from 'node:crypto';
 import { AuthError } from './config.ts';
-export function universityEmail(input: unknown): string {
+export function normalizedEmail(input: unknown): string {
   if (typeof input !== 'string') throw new AuthError('INVALID_EMAIL');
   const email = input.trim().toLowerCase();
   const [local, domain, extra] = email.split('@');
   if (
     extra !== undefined ||
-    !['connect.ust.hk', 'ust.hk'].includes(domain) ||
+    !domain ||
+    domain.length > 253 ||
+    !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$/.test(domain) ||
     !local ||
     local.length > 64 ||
     !/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+$/.test(local) ||
@@ -16,6 +18,22 @@ export function universityEmail(input: unknown): string {
   )
     throw new AuthError('INVALID_EMAIL');
   return email;
+}
+export function universityEmail(input: unknown): string {
+  const email = normalizedEmail(input);
+  if (!['connect.ust.hk', 'ust.hk'].includes(email.split('@')[1]))
+    throw new AuthError('INVALID_EMAIL');
+  return email;
+}
+export function configuredOwnerEmail(): string | null {
+  return process.env.NODE_EMAIL_OWNER_EMAIL
+    ? normalizedEmail(process.env.NODE_EMAIL_OWNER_EMAIL)
+    : null;
+}
+export function accountEmail(input: unknown): string {
+  const email = normalizedEmail(input);
+  if (email === configuredOwnerEmail()) return email;
+  return universityEmail(email);
 }
 export function passwordInput(input: unknown): string {
   if (

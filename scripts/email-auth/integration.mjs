@@ -369,7 +369,8 @@ try {
         [owner],
       );
       if (!existing[0]?.verified_at) {
-        await call('register', { email: owner, password: pw });
+        assert.equal((await call('register', { email: owner, password: pw })).status, 200);
+        assert.equal((await call('login', { email: owner, password: pw })).status, 401);
         const t = await currentToken(owner, 'verify');
         assert.equal(
           (await call('verify', { token: t, password: pw })).status,
@@ -381,6 +382,13 @@ try {
         [owner],
       );
       assert.equal(rows[0].role, 'owner');
+      assert.equal((await call('login', { email: owner, password: pw })).status, 200);
+      assert.equal((await call('forgot-password', { email: owner })).status, 200);
+      const reset = await currentToken(owner, 'reset');
+      assert.equal((await call('reset-password', { token: reset, password: pw })).status, 200);
+      assert.equal((await call('login', { email: owner, password: pw })).status, 200);
+      assert.equal((await call('register', { email: `not-owner-${suffix}@example.com`, password: pw })).status, 400);
+
     },
   );
   await clearRates();

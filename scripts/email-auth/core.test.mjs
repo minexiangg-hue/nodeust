@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   universityEmail,
+  accountEmail,
+  configuredOwnerEmail,
   passwordInput,
   hashPassword,
   verifyPassword,
@@ -95,5 +97,25 @@ test('email mode cannot reuse legacy database or database account', () => {
     for (const key of Object.keys(process.env))
       if (!(key in old)) delete process.env[key];
     Object.assign(process.env, old);
+  }
+});
+
+test('only the exact configured owner can bypass university domain restriction', () => {
+  const previous = process.env.NODE_EMAIL_OWNER_EMAIL;
+  try {
+    delete process.env.NODE_EMAIL_OWNER_EMAIL;
+    assert.throws(() => accountEmail('admin@example.com'));
+    process.env.NODE_EMAIL_OWNER_EMAIL = ' Admin@Example.com ';
+    assert.equal(configuredOwnerEmail(), 'admin@example.com');
+    assert.equal(accountEmail('ADMIN@example.com'), 'admin@example.com');
+    assert.equal(accountEmail('student@ust.hk'), 'student@ust.hk');
+    for (const value of ['other@example.com', 'admin+tag@example.com', 'admin@example.com.evil.org', 'admin@example.com@evil.org'])
+      assert.throws(() => accountEmail(value));
+    assert.throws(() => universityEmail('admin@example.com'));
+    process.env.NODE_EMAIL_OWNER_EMAIL = 'bad@@example.com';
+    assert.throws(() => configuredOwnerEmail());
+  } finally {
+    if (previous === undefined) delete process.env.NODE_EMAIL_OWNER_EMAIL;
+    else process.env.NODE_EMAIL_OWNER_EMAIL = previous;
   }
 });
