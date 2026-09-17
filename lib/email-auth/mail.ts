@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { authConfig, AuthError } from './config.ts';
+import { authMailContent } from './template.ts';
 export async function sendAuthMail(
   email: string,
   purpose: 'verify' | 'reset',
@@ -13,14 +14,7 @@ export async function sendAuthMail(
   const message = {
     from: process.env.NODE_EMAIL_FROM,
     to: email,
-    subject:
-      purpose === 'verify'
-        ? 'Verify your NODE email · 验证邮箱'
-        : 'Reset your NODE password · 重设密码',
-    text:
-      purpose === 'verify'
-        ? `Complete your NODE registration using the link below, then enter the password you chose. This link expires in 24 hours and can be used once.\n\n请打开链接并输入注册时设置的密码完成验证。链接 24 小时有效，仅可使用一次。\n\n${link}\n\nIf you did not request this registration, ignore this message. 若非本人注册，请忽略。NODE is an independent campus community, not HKUST SSO.`
-        : `Reset your NODE password using the link below. This link expires in 30 minutes and can be used once.\n\n链接 30 分钟有效，仅可使用一次。重设后所有已登录设备将退出。\n\n${link}\n\nIf you did not request this, ignore this message. 若非本人请求，请忽略。`,
+    ...authMailContent(purpose, link),
   };
   if (process.env.NODE_EMAIL_MAIL_TRANSPORT === 'file') {
     const directory = process.env.NODE_EMAIL_TEST_OUTBOX || '';

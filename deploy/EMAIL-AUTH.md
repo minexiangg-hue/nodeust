@@ -160,3 +160,13 @@ python3 /home/ubuntu/nodeust/scripts/email-auth/set-gmail-password.py
 The helper stores it atomically with mode 0600 outside Git, hides terminal input,
 and neither sends mail nor deploys. No ordinary Gmail login password is needed.
 Later sender changes do not require changing `NODE_EMAIL_OWNER_EMAIL` or user data.
+
+## Email copy and presentation update
+
+Verification and reset messages now use `lib/email-auth/template.ts` for matching
+HTML and plain-text alternatives: a clear request explanation, action, visible
+fallback URL, expiry, and unsolicited-request guidance. No remote images or
+tracking assets are included. The initial authorized Gmail delivery test was
+received in Spam; new copy has not been sent or inbox-tested. Content changes do
+not guarantee inbox placement. Rebuild `candidate-next` from current source before
+cutover: the preserved candidate predates this template update.
