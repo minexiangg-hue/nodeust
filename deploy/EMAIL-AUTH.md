@@ -141,10 +141,13 @@ it is not an SMTP sender configuration and does not activate production auth.
 
 ## Current sender choice: Gmail
 
-The user chose the same personal Gmail for Owner and sender. The protected bundle
+The user subsequently selected a separate Gmail for website sending while keeping
+the previously designated Owner unchanged. The protected bundle
 contains `mail-pending.env` with SMTP `smtp.gmail.com:587` (STARTTLS), sender and
-Owner; no SMTP credential has been supplied yet. Server connectivity and normal TLS
-certificate validation passed. This is not a successful SMTP login or delivery test.
+Owner. The supplied application password authenticated successfully after correcting
+the SMTP username to the new sender account. Server connectivity, normal TLS
+certificate validation and SMTP authentication passed. No actual email has been
+sent yet; inbox delivery and production authentication cutover remain pending.
 The earlier Connect OAuth2 investigation is no longer the selected sending path.
 
 After enabling Google 2-Step Verification and generating an application password,
