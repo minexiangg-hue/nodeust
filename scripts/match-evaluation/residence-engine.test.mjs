@@ -56,3 +56,24 @@ test('denied allocations and ineligible swaps conflict, pending author claims st
  assert.equal(compareIntents(a,{...b,allocation:'denied'},now),null);
  assert.equal(compareIntents(a,{...b,exchangeEligibility:'ineligible'},now),null);
 });
+
+test('negated room choices cannot reappear as high-confidence single-room acceptance',async()=>{
+ const {parseMatchPost,comparePosts}=await import('../../lib/match/engine.ts');
+ const p=(body,id)=>({id,ownerId:id,title:'',body,category:'hall',createdAt:'2026-09-11T04:00:00Z'});
+ const source='Male UG currently UG Hall VI double, full year 2028/29. Looking for UG Hall IX, single or double both okay.';
+ const other='Male UG currently UG Hall IX single, full year 2028/29. Looking for UG Hall VI double.';
+ const compare=text=>comparePosts(parseMatchPost(p(text,'a')),parseMatchPost(p(other,'b')),new Date('2026-09-11T04:00:00Z'));
+ assert.equal(compare(source)?.confidence,'high');
+ assert.notEqual(compare(source.replace('single or double','not single or double'))?.confidence,'high');
+});
+
+test('accepted room alternatives can complete a reciprocal full-year exchange',async()=>{
+ const {parseMatchPost,comparePosts}=await import('../../lib/match/engine.ts');
+ const p=(body,id)=>({id,ownerId:id,title:'',body,category:'hall',createdAt:'2026-09-11T04:00:00Z'});
+ const a='Male undergraduate allocated UG Hall VI, double, full year 2028/29. Looking for UG Hall IX, single or double both okay. Eligible for room swap.';
+ const b='Male UG, allocated single in UG Hall IX for all of 2028/29; I would take a double in UG Hall VI. Eligible for official exchange.';
+ const pair=(x,y)=>comparePosts(parseMatchPost(p(x,'a')),parseMatchPost(p(y,'b')),new Date('2026-09-11T04:00:00Z'));
+ assert.equal(pair(a,b)?.confidence,'high');
+ assert.equal(pair(a,b.replace('2028/29','2029/30')),null);
+ assert.equal(pair(a,b.replace('allocated single','allocated triple')),null);
+});

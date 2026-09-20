@@ -14,6 +14,7 @@ import {
   MATCH_VERSION,
 } from './engine.ts';
 import type { MatchPost } from './types.ts';
+import { ownPostGuidance } from './guidance.ts';
 
 const fields = {
   id: posts.id,
@@ -193,22 +194,6 @@ export async function getMemberMatches(
       .length,
     possibleCount: ranked.filter((row) => row.confidence === 'possible').length,
     ownPostCount: own.length,
-    needsDetails: own
-      .filter(
-        (row) =>
-          !row.intents.length ||
-          row.intents.every((intent) => intent.missing.length),
-      )
-      .map((row) => ({
-        id: row.post.id,
-        title: row.post.title,
-        missing: [
-          ...new Set(
-            row.intents.length
-              ? row.intents.flatMap((intent) => intent.missing)
-              : row.warnings,
-          ),
-        ],
-      })),
+    needsDetails: ownPostGuidance(own),
   };
 }

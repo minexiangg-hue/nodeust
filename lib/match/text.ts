@@ -126,7 +126,8 @@ export function extractSchedule(post: MatchPost): Schedule {
   );
   consumeDates(/(?<![\d月])(\d{1,2})[号號](?!\d)/g, (m) => {
     if (
-      /(?:[场場台桌房楼樓室]|court|table|room)\s*$/.test(
+      /^\s*(?:[场場枱台桌房楼樓室]|(?:篮球|籃球|羽毛球|网球|網球)?[场場]|court|table|room)/.test(text.slice(m.index! + m[0].length)) ||
+      /(?:[场場枱台桌房楼樓室]|court|table|room)\s*$/.test(
         text.slice(Math.max(0, m.index! - 12), m.index),
       )
     )
@@ -202,15 +203,16 @@ export function extractSchedule(post: MatchPost): Schedule {
   let explicitRange: [number, number] | undefined;
   // Preserve intervals as intervals, including compact multilingual hour ranges.
   timeText = timeText.replace(
-    /(?<![\d:])(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?|[点點時时])?\s*(?:-|–|—|to|至|到)\s*(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?|[点點時时])?/g,
+    /(?<![\d:])(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?|[点點時时])?\s*(?:-|–|—|to|至|到|and|,\s*(?:free|available) until)\s*(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?|[点點時时])?/g,
     (whole, h1, m1, p1, h2, m2, p2, offset) => {
       const before = text.slice(Math.max(0, offset - 18), offset);
+      if (/\band\b/.test(whole) && !/\bbetween\s*$/.test(before)) return whole;
       if (
         !m1 &&
         !m2 &&
         !p1 &&
         !p2 &&
-        !/(?:[日号號晚天]|sep|oct|nov|dec|jan|feb|mar|apr|may|jun|jul|aug|at|from|today|tomorrow|tmr|上午|下午|晚上|早上|傍晚)\s*$/i.test(
+        !/(?:[日号號晚天]|sep|oct|nov|dec|jan|feb|mar|apr|may|jun|jul|aug|at|from|between|today|tomorrow|tmr|上午|下午|晚上|早上|傍晚)\s*$/i.test(
           before,
         )
       )

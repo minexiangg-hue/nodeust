@@ -1,0 +1,1497 @@
+{
+  "version": "reciprocal-intents-v6-dev",
+  "source": "reports/match-iteration-2026-09-19/fresh-probe/scenarios.json",
+  "sha256": "c10ecf8c9f155ebfee02bb2ec62800c2c9342b0c2a39add9a8884a44e0bfa073",
+  "now": "2026-09-19T04:00:00Z",
+  "note": "Exposed development set. Stage counts are descriptive, not independent validation. Missing fields may coexist with other errors.",
+  "byKind": {
+    "hall": {
+      "positive": 3,
+      "stages": {
+        "missing-details": 1,
+        "high": 1,
+        "comparison-rejected": 1
+      },
+      "missingFields": {
+        "room": 2,
+        "term": 1,
+        "wantedRoom": 2,
+        "from": 1
+      },
+      "falseHigh": []
+    },
+    "goods": {
+      "positive": 3,
+      "stages": {
+        "high": 3
+      },
+      "missingFields": {},
+      "falseHigh": []
+    },
+    "study": {
+      "positive": 3,
+      "stages": {
+        "missing-details": 1,
+        "high": 2
+      },
+      "missingFields": {
+        "study-fee": 1
+      },
+      "falseHigh": []
+    },
+    "transport": {
+      "positive": 3,
+      "stages": {
+        "high": 2,
+        "missing-details": 1
+      },
+      "missingFields": {
+        "fare": 1
+      },
+      "falseHigh": []
+    },
+    "other": {
+      "positive": 3,
+      "stages": {
+        "high": 3
+      },
+      "missingFields": {},
+      "falseHigh": []
+    }
+  },
+  "rows": [
+    {
+      "id": "fresh-hall-1",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "room",
+        "term",
+        "wantedRoom"
+      ],
+      "parsedMissing": [
+        [
+          "term",
+          "wantedRoom"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-3->ug-hall-8",
+            "side": "swap",
+            "from": "ug-hall-3",
+            "to": "ug-hall-8",
+            "room": "single",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term",
+              "wantedRoom"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-8->ug-hall-3",
+            "side": "swap",
+            "from": "ug-hall-8",
+            "to": "ug-hall-3",
+            "room": "double",
+            "wantedRoom": "single",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-hall-2",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-2->ug-hall-5",
+            "side": "swap",
+            "from": "ug-hall-2",
+            "to": "ug-hall-5",
+            "room": "double",
+            "wantedRoom": "single",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-5->ug-hall-2",
+            "side": "swap",
+            "from": "ug-hall-5",
+            "to": "ug-hall-2",
+            "room": "single",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-hall-3",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "wantedRoom"
+        ],
+        [
+          "from",
+          "room"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-6",
+            "room": "single",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "wantedRoom"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "?->ug-hall-1",
+            "side": "swap",
+            "to": "ug-hall-1",
+            "wantedRoom": "single",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "from",
+              "room"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-hall-4",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "term"
+        ],
+        [
+          "term"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-6",
+            "room": "single",
+            "wantedRoom": "double",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-6->ug-hall-1",
+            "side": "swap",
+            "from": "ug-hall-6",
+            "to": "ug-hall-1",
+            "room": "double",
+            "wantedRoom": "single",
+            "eligibility": "female",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-hall-5",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "term"
+      ],
+      "parsedMissing": [
+        [
+          "term"
+        ],
+        [
+          "term"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-6",
+            "room": "single",
+            "wantedRoom": "double",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-6->ug-hall-1",
+            "side": "swap",
+            "from": "ug-hall-6",
+            "to": "ug-hall-1",
+            "room": "double",
+            "wantedRoom": "single",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-hall-6",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "eligibility",
+        "term"
+      ],
+      "parsedMissing": [
+        [
+          "term"
+        ],
+        [
+          "term",
+          "eligibility"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-6",
+            "room": "single",
+            "wantedRoom": "double",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-6->ug-hall-1",
+            "side": "swap",
+            "from": "ug-hall-6",
+            "to": "ug-hall-1",
+            "room": "double",
+            "wantedRoom": "single",
+            "missing": [
+              "term",
+              "eligibility"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-goods-1",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "desk-lamp",
+            "side": "offer",
+            "price": 45,
+            "condition": "working",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "desk-lamp",
+            "side": "seek",
+            "price": 60,
+            "colors": [
+              "any"
+            ],
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-goods-2",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "rice-cooker",
+            "side": "offer",
+            "price": 80,
+            "condition": "working",
+            "quantity": 1,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "rice-cooker",
+            "side": "seek",
+            "price": 100,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-goods-3",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "monitor",
+            "side": "offer",
+            "price": 0,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "monitor",
+            "side": "seek",
+            "price": 200,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-goods-4",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "desk-lamp",
+            "side": "offer",
+            "price": 90,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "desk-lamp",
+            "side": "seek",
+            "price": 40,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-goods-5",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "rice-cooker",
+            "side": "seek",
+            "price": 150,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "rice-cooker",
+            "side": "seek",
+            "price": 200,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-goods-6",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "currency"
+      ],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "monitor",
+            "side": "offer",
+            "price": 300,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "monitor",
+            "side": "seek",
+            "price": 350,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-study-1",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "study-fee"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "study-fee"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2012",
+            "side": "peer",
+            "topics": [
+              "recursion"
+            ],
+            "date": "2026-09-25",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg1"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2012",
+            "side": "peer",
+            "topics": [
+              "recursion"
+            ],
+            "date": "2026-09-25",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [
+              "study-fee"
+            ],
+            "place": "lg1"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-study-2",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1013",
+            "side": "offer",
+            "fee": {
+              "currency": "HKD",
+              "amount": 120,
+              "basis": "hour",
+              "scope": "asking"
+            },
+            "topics": [
+              "derivatives"
+            ],
+            "date": "2026-09-26",
+            "minute": 600,
+            "endMinute": 660,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg7"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1013",
+            "side": "seek",
+            "fee": {
+              "currency": "HKD",
+              "amount": 150,
+              "basis": "hour",
+              "scope": "maximum"
+            },
+            "topics": [
+              "derivatives"
+            ],
+            "date": "2026-09-26",
+            "minute": 600,
+            "endMinute": 660,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg7"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-study-3",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP1021",
+            "side": "peer",
+            "topics": [
+              "python"
+            ],
+            "date": "2026-09-27",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg1"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP1021",
+            "side": "peer",
+            "topics": [
+              "python"
+            ],
+            "date": "2026-09-27",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg1"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-study-4",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2012",
+            "side": "peer",
+            "topics": [
+              "recursion"
+            ],
+            "date": "2026-09-25",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg1"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2012",
+            "side": "peer",
+            "topics": [
+              "recursion"
+            ],
+            "date": "2026-09-25",
+            "minute": 1020,
+            "endMinute": 1080,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg1"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-study-5",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1013",
+            "side": "offer",
+            "fee": {
+              "currency": "HKD",
+              "amount": 200,
+              "basis": "hour",
+              "scope": "asking"
+            },
+            "date": "2026-09-26",
+            "minute": 600,
+            "endMinute": 660,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg7"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1013",
+            "side": "seek",
+            "fee": {
+              "currency": "HKD",
+              "amount": 80,
+              "basis": "hour",
+              "scope": "maximum"
+            },
+            "date": "2026-09-26",
+            "minute": 600,
+            "endMinute": 660,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg7"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-study-6",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2012",
+            "side": "peer",
+            "date": "2026-09-25",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "lg1"
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "fresh-transport-1",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "driver",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-28",
+            "minute": 420,
+            "strictTime": false,
+            "seats": 2,
+            "fee": {
+              "currency": "HKD",
+              "amount": 50,
+              "basis": "person",
+              "scope": "asking"
+            },
+            "luggageLimit": 0,
+            "luggageLimitKind": "any",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "rider",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-28",
+            "minute": 420,
+            "strictTime": false,
+            "party": 1,
+            "fee": {
+              "currency": "HKD",
+              "amount": 70,
+              "basis": "person",
+              "scope": "maximum"
+            },
+            "luggage": 0,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-transport-2",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "fare"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "fare"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>mong-kok",
+            "side": "driver",
+            "from": "hkust",
+            "to": "mong-kok",
+            "date": "2026-09-29",
+            "minute": 1080,
+            "strictTime": false,
+            "seats": 3,
+            "fee": {
+              "currency": "HKD",
+              "amount": 30,
+              "basis": "person",
+              "scope": "asking"
+            },
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>mong-kok",
+            "side": "rider",
+            "from": "hkust",
+            "to": "mong-kok",
+            "date": "2026-09-29",
+            "minute": 1080,
+            "strictTime": false,
+            "party": 2,
+            "missing": [
+              "fare"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-transport-3",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "capacity"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "share",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-30",
+            "minute": 360,
+            "strictTime": false,
+            "party": 2,
+            "capacity": 4,
+            "soughtPartyMax": 2,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "share",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-30",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "missing": [
+              "capacity"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-transport-4",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "driver",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-28",
+            "minute": 420,
+            "strictTime": false,
+            "seats": 1,
+            "fee": {
+              "currency": "HKD",
+              "amount": 50,
+              "basis": "person",
+              "scope": "asking"
+            },
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "rider",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-28",
+            "minute": 420,
+            "strictTime": false,
+            "party": 3,
+            "fee": {
+              "currency": "HKD",
+              "amount": 70,
+              "basis": "person",
+              "scope": "maximum"
+            },
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-transport-5",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "driver",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-28",
+            "minute": 420,
+            "strictTime": false,
+            "seats": 2,
+            "fee": {
+              "currency": "HKD",
+              "amount": 50,
+              "basis": "person",
+              "scope": "asking"
+            },
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "airport>hkust",
+            "side": "rider",
+            "from": "airport",
+            "to": "hkust",
+            "date": "2026-09-28",
+            "minute": 420,
+            "strictTime": false,
+            "party": 1,
+            "fee": {
+              "currency": "HKD",
+              "amount": 70,
+              "basis": "person",
+              "scope": "maximum"
+            },
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-transport-6",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "date",
+          "time",
+          "schedule",
+          "from",
+          "to",
+          "party"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust>airport",
+            "side": "driver",
+            "from": "hkust",
+            "to": "airport",
+            "date": "2026-09-28",
+            "minute": 420,
+            "strictTime": false,
+            "seats": 2,
+            "fee": {
+              "currency": "HKD",
+              "amount": 50,
+              "basis": "person",
+              "scope": "asking"
+            },
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "unknown-route",
+            "side": "rider",
+            "strictTime": false,
+            "missing": [
+              "date",
+              "time",
+              "schedule",
+              "from",
+              "to",
+              "party"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-other-1",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "walking",
+            "side": "peer",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "campus-sundial",
+            "date": "2026-09-25",
+            "minute": 540,
+            "strictTime": false,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "walking",
+            "side": "seek",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "campus-sundial",
+            "date": "2026-09-25",
+            "minute": 540,
+            "strictTime": false,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-other-2",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "photo-walk",
+            "side": "offer",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "campus-sundial",
+            "date": "2026-09-26",
+            "minute": 1020,
+            "endMinute": 1080,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "photo-walk",
+            "side": "seek",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "campus-sundial",
+            "date": "2026-09-26",
+            "minute": 1020,
+            "endMinute": 1080,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-other-3",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "chess",
+            "side": "peer",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "lg1",
+            "date": "2026-09-27",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "chess",
+            "side": "peer",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "lg1",
+            "date": "2026-09-27",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-other-4",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "walking",
+            "side": "offer",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "campus-sundial",
+            "date": "2026-09-25",
+            "minute": 540,
+            "strictTime": false,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "walking",
+            "side": "seek",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "sai-kung-pier",
+            "date": "2026-09-25",
+            "minute": 540,
+            "strictTime": false,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-other-5",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "chess",
+            "side": "peer",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "lg1",
+            "date": "2026-09-27",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "badminton",
+            "side": "peer",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "place": "lg1",
+            "date": "2026-09-27",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "fresh-other-6",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "other",
+            "entity": "badminton",
+            "side": "seek",
+            "unlimitedPlaces": false,
+            "limitedPlaces": false,
+            "party": 1,
+            "communication": "english",
+            "alcoholFree": false,
+            "requiresAlcoholFree": false,
+            "alcoholAllowed": false,
+            "vegetarianOnly": false,
+            "borrowedEquipment": [
+              "racket"
+            ],
+            "place": "sports-center:court-2",
+            "date": "2026-09-28",
+            "minute": 1080,
+            "endMinute": 1140,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    }
+  ]
+}

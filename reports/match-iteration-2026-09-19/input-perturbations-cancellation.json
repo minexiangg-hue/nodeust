@@ -1,0 +1,151 @@
+{
+  "version": "reciprocal-intents-v6-dev",
+  "fixturePath": "scripts/match-evaluation/validation-v2.json",
+  "sha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+  "note": "Exposed development fixture, not independent validation. Neutral titles can remove essential facts; changes require manual review, not automatic failure.",
+  "summary": {
+    "category": {
+      "runs": 1500,
+      "changed": 0,
+      "lostHigh": 0,
+      "newHigh": 0
+    },
+    "neutral-title": {
+      "runs": 300,
+      "changed": 7,
+      "lostHigh": 6,
+      "newHigh": 0
+    }
+  },
+  "changes": [
+    {
+      "id": "v2-goods-m06",
+      "kind": "goods",
+      "expected": "match",
+      "mode": "neutral-title",
+      "side": "b",
+      "baseline": {
+        "confidence": "high",
+        "kind": "goods",
+        "missing": []
+      },
+      "actual": {
+        "confidence": "reject",
+        "missing": []
+      },
+      "changed": true
+    },
+    {
+      "id": "v2-goods-m12",
+      "kind": "goods",
+      "expected": "match",
+      "mode": "neutral-title",
+      "side": "b",
+      "baseline": {
+        "confidence": "high",
+        "kind": "goods",
+        "missing": []
+      },
+      "actual": {
+        "confidence": "possible",
+        "kind": "goods",
+        "missing": [
+          "currency",
+          "date",
+          "price",
+          "time"
+        ]
+      },
+      "changed": true
+    },
+    {
+      "id": "v2-study-m02",
+      "kind": "study",
+      "expected": "match",
+      "mode": "neutral-title",
+      "side": "b",
+      "baseline": {
+        "confidence": "high",
+        "kind": "study",
+        "missing": []
+      },
+      "actual": {
+        "confidence": "reject",
+        "missing": []
+      },
+      "changed": true
+    },
+    {
+      "id": "v2-study-m04",
+      "kind": "study",
+      "expected": "match",
+      "mode": "neutral-title",
+      "side": "b",
+      "baseline": {
+        "confidence": "high",
+        "kind": "study",
+        "missing": []
+      },
+      "actual": {
+        "confidence": "reject",
+        "missing": []
+      },
+      "changed": true
+    },
+    {
+      "id": "v2-transport-m02",
+      "kind": "transport",
+      "expected": "match",
+      "mode": "neutral-title",
+      "side": "b",
+      "baseline": {
+        "confidence": "high",
+        "kind": "transport",
+        "missing": []
+      },
+      "actual": {
+        "confidence": "reject",
+        "missing": []
+      },
+      "changed": true
+    },
+    {
+      "id": "v2-transport-m06",
+      "kind": "transport",
+      "expected": "match",
+      "mode": "neutral-title",
+      "side": "a",
+      "baseline": {
+        "confidence": "high",
+        "kind": "transport",
+        "missing": []
+      },
+      "actual": {
+        "confidence": "reject",
+        "missing": []
+      },
+      "changed": true
+    },
+    {
+      "id": "v2-transport-u01",
+      "kind": "transport",
+      "expected": "uncertain",
+      "mode": "neutral-title",
+      "side": "b",
+      "baseline": {
+        "confidence": "possible",
+        "kind": "transport",
+        "missing": [
+          "date",
+          "schedule",
+          "time"
+        ]
+      },
+      "actual": {
+        "confidence": "reject",
+        "missing": []
+      },
+      "changed": true
+    }
+  ]
+}

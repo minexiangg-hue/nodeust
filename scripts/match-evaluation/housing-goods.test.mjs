@@ -51,8 +51,11 @@ test('edition, explicit quantity and acceptable color alternatives remain constr
   const [monitor]=parseGoods(post('必须买到两台 Dell P2422H，黑色或银色都可以，总预算1000港币。'));
   assert.equal(monitor.quantity,2);assert.deepEqual(monitor.colors.sort((a,b)=>a<b?-1:a>b?1:0),['black','silver']);assert.equal(monitor.priceBasis,'total');
 });
-test('unsupported loans and undecided role/price never become definite purchase evidence',()=>{
-  assert.deepEqual(parseGoods(post('Need to borrow Sony A6400 for one day, not buying.')),[]);
+test('loans and undecided role/price never become definite purchase evidence',()=>{
+  const [loan]=parseGoods(post('Need to borrow Sony A6400 for one day, not buying.'));
+  assert.equal(loan.transaction,'loan');
+  assert.ok(loan.missing.includes('loan-period'));
+  assert.equal(loan.price,undefined);
   const [item]=parseGoods(post('Selling a monitor; price to be discussed.'));
   assert.equal(item.price,undefined);assert.ok(item.missing.includes('price'));
 });
@@ -65,4 +68,41 @@ test('free delivery and free time never overwrite an item asking price',()=>{
   const result=parseGoods({id:'delivery',category:'goods',title:'Calculator',body,createdAt:'2026-09-11T04:00:00Z'});
   assert.ok(result.some(i=>i.price===150));assert.ok(result.every(i=>i.price!==0));
  }
+});
+
+test('explicit full academic years preserve both endpoints without guessing calendar dates',()=>{
+ const route='UG Hall II double -> UG Hall IV double, male, ';
+ for(const label of ['academic year 2028/29','2028-2029 full year','2028/29全年'])
+  assert.equal(parseHousing(post(route+label))[0].term,'academic:2028-2029');
+ for(const label of ['academic year 2028/30','academic year 2028/29 or 2029/30','2028/29 full year, fall only','academic year not 2028/29','2028/29'])
+  assert.equal(parseHousing(post(route+label))[0].term,undefined,label);
+});
+
+test('housing separates claimed allocation and eligibility from room preferences',()=>{
+ const [a]=parseHousing(post('男UG，已批2028/29全年 UG Hall II 雙人房，想換 UG Hall IV 雙人房。已符合換宿資格。'));
+ assert.equal(a.eligibility,'male');assert.equal(a.allocation,'confirmed');assert.equal(a.exchangeEligibility,'eligible');
+ const [b]=parseHousing(post('Female UG, currently UG Hall V single, looking to exchange for a single in UG Hall II, fall 2028. Allocation pending; not eligible for exchange.'));
+ assert.equal(b.wantedRoom,'single');assert.equal(b.exchangeEligibility,'ineligible');assert.equal(b.allocation,'pending');
+});
+
+
+test('unconfirmed housing author claims never become confirmed allocations',()=>{
+ for(const statement of ['not yet allocated','allocation pending','waiting for room allocation']){
+  const [i]=parseHousing(post(`UG Hall II double -> UG Hall IV double, male, fall 2028. ${statement}.`));
+  assert.equal(i.allocation,'pending',statement);
+ }
+});
+
+test('allocated current rooms and seeking a room retain their separate directions',()=>{
+ const [i]=parseHousing(post('Female undergraduate with a confirmed UG Hall V double for spring 2029 only. Seeking a UG Hall II double for spring 2029, eligible to exchange.'));
+ assert.equal(i.from,'ug-hall-5');assert.equal(i.to,'ug-hall-2');
+ const [j]=parseHousing(post('Male UG with a fall 2028 double room allocated in UG Hall IV. Want a double in UG Hall I through the approved swap process.'));
+ assert.equal(j.from,'ug-hall-4');assert.equal(j.to,'ug-hall-1');assert.equal(j.wantedRoom,'double');
+});
+
+test('explicit accepted room alternatives retain all choices without changing actual room',()=>{
+ const [i]=parseHousing(post('Male UG currently UG Hall VI double, full year 2028/29. Looking for UG Hall IX, single or double both okay.'));
+ assert.deepEqual(i.wantedRooms,['single','double']);assert.equal(i.room,'double');
+ const [j]=parseHousing(post('Male UG currently UG Hall VI double, full year 2028/29. Looking for UG Hall IX, not single or double both okay.'));
+ assert.equal(j.wantedRooms,undefined);
 });

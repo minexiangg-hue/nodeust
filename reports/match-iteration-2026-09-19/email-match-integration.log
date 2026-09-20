@@ -1,0 +1,20 @@
+PASS restricted database; legacy credentials deliberately unusable
+PASS forged gateway identity and old cookie cannot authenticate
+PASS reject external domain, CSRF, malformed and oversized bodies
+PASS registration creates only pending identity and hashed token/password
+PASS unverified login denied; link GET does not activate account
+PASS verification requires password and consumes token exactly once
+PASS first normal verified account is member, never automatic owner
+PASS password login, session cookie, safe redirect and own profile
+PASS matching endpoint uses email session and rejects proxy identity alone
+PASS verified accounts cannot be overwritten by re-registration
+PASS new account can create posts; cookie-auth writes enforce origin
+PASS logout revokes server-side session; old cookie fails
+PASS unknown reset response matches real-account reset response
+PASS expired password-reset token is rejected
+PASS password reset is one-use and revokes every old session
+PASS @ust.hk registration, newest verification link, concurrent consumption
+PASS suspension invalidates existing authenticated requests
+PASS only configured verified email receives owner role
+PASS persistent per-address email delivery limit
+{"passed":19,"externalMailSent":false}

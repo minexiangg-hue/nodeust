@@ -1,0 +1,22 @@
+
+> nodeust@0.1.0 check:unit
+> node --experimental-strip-types --test scripts/check-unit.mjs
+
+✔ language-only PATCH preserves omitted profile and visibility fields (1.635553ms)
+✔ optional profile text can be explicitly cleared and is bounded (0.259476ms)
+✔ invalid profile values are rejected rather than silently clearing data (0.248245ms)
+✔ profile PATCH cannot assign roles or identity fields (0.166532ms)
+✔ moderation accepts only supported actions (0.214262ms)
+✔ role hierarchy applies to every account action, including reports (0.209914ms)
+✔ moderators cannot promote themselves or members; only Owner appoints admins (0.171882ms)
+✔ moderators retain lower-role suspension and restoration permissions (0.13946ms)
+✔ reciprocal matcher preserves its category, ownership and exact-string boundaries (0.308939ms)
+✔ transport drafts survive storage parsing alongside existing categories (2.39718ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 127.395448

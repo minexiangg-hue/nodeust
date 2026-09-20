@@ -1,0 +1,332 @@
+{
+  "corpus": "reports/match-study-2026-09-11/artifacts/posts.jsonl",
+  "corpusSha256": "c04c4c47f9e5e1bea2468be2fe14c4e7c2022428f5cbd068288c5fc78859ec8b",
+  "evaluation": "reports/match-iteration-2026-09-19/iteration-open-invitation",
+  "rolesSha256": "ca292cc9debbf86f13ae83aae917658689e67dce1263309b276f0da8ae01e82e",
+  "note": "Counts are student/candidate recommendations, not independent post pairs. Missing currency can belong to either side; candidate text alone does not identify its source. Gold labels are unchanged.",
+  "byKind": {
+    "hall": {
+      "missedRecommendations": 0,
+      "uniqueCandidates": 0,
+      "affectedStudents": 0,
+      "reasons": {}
+    },
+    "goods": {
+      "missedRecommendations": 8030,
+      "uniqueCandidates": 693,
+      "affectedStudents": 375,
+      "reasons": {
+        "currency": 8030
+      }
+    },
+    "study": {
+      "missedRecommendations": 0,
+      "uniqueCandidates": 0,
+      "affectedStudents": 0,
+      "reasons": {}
+    },
+    "transport": {
+      "missedRecommendations": 0,
+      "uniqueCandidates": 0,
+      "affectedStudents": 0,
+      "reasons": {}
+    },
+    "other": {
+      "missedRecommendations": 0,
+      "uniqueCandidates": 0,
+      "affectedStudents": 0,
+      "reasons": {}
+    }
+  },
+  "positivePricePostsWithoutCurrency": 177,
+  "examples": [
+    {
+      "id": "fdaf4602-bb07-4ff6-af39-e220c884db6d",
+      "text": {
+        "category": "other",
+        "title": "Need calculator",
+        "body": "收計算機，最多出80蚊，校內交收，有冇人啱？ anyone?",
+        "locationId": "ug-hall-i",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "calculator",
+          "side": "seek",
+          "price": 80,
+          "evidence": [
+            "Need calculator",
+            "收計算機,最多出80蚊,校內交收,有冇人啱? anyone?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "bb9b11de-37b8-434a-b5e3-323207821da3",
+      "text": {
+        "category": "other",
+        "title": "小事",
+        "body": "放凳，賣250蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-iii",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "chair",
+          "side": "offer",
+          "price": 250,
+          "evidence": [
+            "小事",
+            "放凳,賣250蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "c275dc51-bcb1-4d9d-91be-8c4898ba0e4f",
+      "text": {
+        "category": "goods",
+        "title": "有人要吗",
+        "body": "收FINA 2203 課本，最多出100蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-i",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "textbook:FINA2203",
+          "side": "seek",
+          "price": 100,
+          "evidence": [
+            "有人要吗",
+            "收FINA 2203 課本,最多出100蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "4af1e863-3d5b-4be5-a02b-184bab5b5ade",
+      "text": {
+        "category": "goods",
+        "title": "放啲嘢",
+        "body": "收單車，最多出100蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-i",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "bike",
+          "side": "seek",
+          "price": 100,
+          "evidence": [
+            "放啲嘢",
+            "收單車,最多出100蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "b89a0bed-a1fa-428e-80c9-30371117e119",
+      "text": {
+        "category": "goods",
+        "title": "help",
+        "body": "放FINA 2203 課本，賣150蚊，校內交收，有冇人啱？ anyone?",
+        "locationId": "ug-hall-ii",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "textbook:FINA2203",
+          "side": "offer",
+          "price": 150,
+          "evidence": [
+            "help",
+            "放FINA 2203 課本,賣150蚊,校內交收,有冇人啱? anyone?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "e4932ebf-2349-4a3a-a0f8-4b5542257f9d",
+      "text": {
+        "category": "goods",
+        "title": "求问一下",
+        "body": "放凳，賣100蚊，校內交收，有冇人啱？",
+        "locationId": "pg-hall-i",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "chair",
+          "side": "offer",
+          "price": 100,
+          "evidence": [
+            "求问一下",
+            "放凳,賣100蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "ec094be3-583d-4ff0-bcf4-2ec1979fd290",
+      "text": {
+        "category": "goods",
+        "title": "小事",
+        "body": "收水壺，最多出100蚊，校內交收，有冇人啱？ anyone?",
+        "locationId": "ug-hall-iii",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "kettle",
+          "side": "seek",
+          "price": 100,
+          "evidence": [
+            "小事",
+            "收水壺,最多出100蚊,校內交收,有冇人啱? anyone?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "5eec5c9d-5850-4624-a90d-c41bc3afd664",
+      "text": {
+        "category": "hall",
+        "title": "放啲嘢",
+        "body": "放單車，賣250蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-i",
+        "currentHall": "x",
+        "targetHall": "x"
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "bike",
+          "side": "offer",
+          "price": 250,
+          "evidence": [
+            "放啲嘢",
+            "放單車,賣250蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "08f60f81-bd8a-44f2-80dc-fb74b99f7b1d",
+      "text": {
+        "category": "other",
+        "title": "有人要吗",
+        "body": "放螢幕，賣250蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-ii",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "monitor",
+          "side": "offer",
+          "price": 250,
+          "evidence": [
+            "有人要吗",
+            "放螢幕,賣250蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "92a43f93-803c-4f68-9f9b-de80c9620893",
+      "text": {
+        "category": "goods",
+        "title": "Have 枱燈",
+        "body": "放枱燈，賣80蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-ii",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "desk-lamp",
+          "side": "offer",
+          "price": 80,
+          "evidence": [
+            "Have 枱燈",
+            "放枱燈,賣80蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "17492b7d-bb92-4642-8011-67cf60fa5879",
+      "text": {
+        "category": "goods",
+        "title": "lmk",
+        "body": "收結他，最多出200蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-iii",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "guitar",
+          "side": "seek",
+          "price": 200,
+          "evidence": [
+            "lmk",
+            "收結他,最多出200蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "id": "15e8b81c-a31b-4e3d-af55-2878f0a41dca",
+      "text": {
+        "category": "goods",
+        "title": "求问一下",
+        "body": "收水壺，最多出250蚊，校內交收，有冇人啱？",
+        "locationId": "ug-hall-iii",
+        "currentHall": null,
+        "targetHall": null
+      },
+      "intents": [
+        {
+          "kind": "goods",
+          "entity": "kettle",
+          "side": "seek",
+          "price": 250,
+          "evidence": [
+            "求问一下",
+            "收水壺,最多出250蚊,校內交收,有冇人啱?"
+          ],
+          "missing": []
+        }
+      ]
+    }
+  ]
+}

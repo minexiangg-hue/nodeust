@@ -1,0 +1,486 @@
+{
+  "now": "2026-09-19T04:00:00Z",
+  "note": "Fresh pre-labelled probe authored by the implementing assistant, not independently authored or human annotated. Thirty cases are a diagnostic sample, not the full independent acceptance set. Labels frozen before first execution.",
+  "cases": [
+    {
+      "id": "fresh-hall-1",
+      "kind": "hall",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Confirmed UG Hall III single for 2026/27, male allocation, eligible to swap. Hoping to get a double in UG Hall VIII for the whole year.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "I have a confirmed double in UG Hall VIII for the full 2026/27 academic year. Male, eligible for room exchange. Want a single in UG Hall III.",
+        "category": "goods"
+      },
+      "reason": "Reciprocal confirmed male room exchange for identical full academic year."
+    },
+    {
+      "id": "fresh-hall-2",
+      "kind": "hall",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "我已獲派2026/27全學年 UG Hall II 雙人房，女生，可換宿，想換 UG Hall V 單人房。",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "女生，已確認獲派 UG Hall V 單人房，2026/27全學年，有資格換宿。想要 UG Hall II 雙人房。",
+        "category": "goods"
+      },
+      "reason": "Exact reciprocal hall and room requests with same declared eligibility and period."
+    },
+    {
+      "id": "fresh-hall-3",
+      "kind": "hall",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Have confirmed male single room in UG Hall I for the full 2026/27 academic year; eligible to exchange. Need a double in UG Hall VI. Please DM.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Confirmed male double room, UG Hall VI, full 2026/27 academic year. Eligible for exchange. Looking for UG Hall I single.",
+        "category": "goods"
+      },
+      "reason": "Different informal ordering preserves reciprocal room exchange."
+    },
+    {
+      "id": "fresh-hall-4",
+      "kind": "hall",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Confirmed male single UG Hall I, full 2026/27, eligible to exchange for UG Hall VI double.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Confirmed female double UG Hall VI, full 2026/27, eligible to exchange for UG Hall I single.",
+        "category": "goods"
+      },
+      "reason": "Explicit incompatible gender allocations."
+    },
+    {
+      "id": "fresh-hall-5",
+      "kind": "hall",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Confirmed male single UG Hall I, full 2026/27, eligible to exchange for UG Hall VI double.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Confirmed male double UG Hall VI, full 2027/28, eligible to exchange for UG Hall I single.",
+        "category": "goods"
+      },
+      "reason": "Academic years differ."
+    },
+    {
+      "id": "fresh-hall-6",
+      "kind": "hall",
+      "expected": "uncertain",
+      "a": {
+        "title": "Campus request",
+        "body": "Confirmed male single UG Hall I, full 2026/27, eligible to exchange for UG Hall VI double.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Still on the waiting list for UG Hall VI double. If I get it I might swap to UG Hall I single.",
+        "category": "goods"
+      },
+      "reason": "No confirmed allocation or committed exchange."
+    },
+    {
+      "id": "fresh-goods-1",
+      "kind": "goods",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Selling my desk lamp for HKD 45. Works fine, no extras.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Desk lamp wanted. Budget HKD 60. Any colour is fine.",
+        "category": "goods"
+      },
+      "reason": "Seller asks less than buyer budget for same ordinary item."
+    },
+    {
+      "id": "fresh-goods-2",
+      "kind": "goods",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "放一個電飯煲，HKD 80，正常運作。",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "想買電飯煲，預算 HKD 100。",
+        "category": "goods"
+      },
+      "reason": "Same goods with explicit compatible currency and price."
+    },
+    {
+      "id": "fresh-goods-3",
+      "kind": "goods",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Spare monitor going free. Giving it away, no payment needed.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Looking to buy a monitor, budget HKD 200.",
+        "category": "goods"
+      },
+      "reason": "Free monitor satisfies a positive budget."
+    },
+    {
+      "id": "fresh-goods-4",
+      "kind": "goods",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Selling a desk lamp for HKD 90.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Looking to buy a desk lamp, maximum HKD 40.",
+        "category": "goods"
+      },
+      "reason": "Asking price exceeds explicit maximum."
+    },
+    {
+      "id": "fresh-goods-5",
+      "kind": "goods",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Need a rice cooker, budget HKD 150.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Also looking to buy a rice cooker, can pay HKD 200.",
+        "category": "goods"
+      },
+      "reason": "Two buyers do not satisfy each other."
+    },
+    {
+      "id": "fresh-goods-6",
+      "kind": "goods",
+      "expected": "uncertain",
+      "a": {
+        "title": "Campus request",
+        "body": "Selling a monitor for 300 dollars.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Want a monitor, max HKD 350.",
+        "category": "goods"
+      },
+      "reason": "Unqualified dollars cannot be confidently compared to HKD."
+    },
+    {
+      "id": "fresh-study-1",
+      "kind": "study",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Anyone doing COMP 2012 want to revise recursion together? 25 Sep 2026 14:00–15:00 at LG1. English, free peer study.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Looking for a COMP2012 study partner to work on recursion, 25 Sep 2026 from 14:00 to 15:00 at LG1. English. No paid tutoring.",
+        "category": "goods"
+      },
+      "reason": "Same course, topic, time, place and reciprocal peer role."
+    },
+    {
+      "id": "fresh-study-2",
+      "kind": "study",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "I can tutor MATH1013 differentiation on 26 Sep 2026 from 10:00 to 11:00 at LG7, English, HKD 120 per hour.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Need a MATH1013 tutor for differentiation, 26 Sep 2026 10:00–11:00 at LG7. English. Budget HKD 150 per hour.",
+        "category": "goods"
+      },
+      "reason": "Tutor supply fits explicit lesson requirements and hourly budget."
+    },
+    {
+      "id": "fresh-study-3",
+      "kind": "study",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "想搵 COMP1021 同學一齊溫 Python，9月27日15:00–16:00，LG1，英文，免費互相練習。",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Looking for a COMP1021 study buddy for Python on 27 Sep 2026, 15:00–16:00 at LG1. English, free peer practice.",
+        "category": "goods"
+      },
+      "reason": "Bilingual peer requests agree on course, topic and session."
+    },
+    {
+      "id": "fresh-study-4",
+      "kind": "study",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "COMP2012 peer study, recursion, 25 Sep 2026 14:00–15:00 at LG1. English. Looking for a partner.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "COMP2012 recursion study buddy wanted, 25 Sep 2026 17:00–18:00 at LG1, English. Only available after 17:00.",
+        "category": "goods"
+      },
+      "reason": "Nonoverlapping availability."
+    },
+    {
+      "id": "fresh-study-5",
+      "kind": "study",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Offering MATH1013 tutoring at LG7 on 26 Sep 2026 10:00–11:00, English, HKD 200 per hour.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Need MATH1013 tutoring at LG7 on 26 Sep 2026 10:00–11:00, English, maximum HKD 80 per hour.",
+        "category": "goods"
+      },
+      "reason": "Hourly price exceeds maximum."
+    },
+    {
+      "id": "fresh-study-6",
+      "kind": "study",
+      "expected": "uncertain",
+      "a": {
+        "title": "Campus request",
+        "body": "Looking for a COMP2012 study partner at LG1 on 25 Sep 2026 14:00–15:00, English.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Want a COMP2012 buddy at LG1, English. I do not know when my lab finishes so cannot confirm a day or time.",
+        "category": "goods"
+      },
+      "reason": "Schedule cannot be established."
+    },
+    {
+      "id": "fresh-transport-1",
+      "kind": "transport",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Driving from HKUST to airport on 28 Sep 2026 at 07:00. Two seats available, HKD 50 per passenger, no luggage allowed.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Need a ride from HKUST to airport on 28 Sep 2026 at 07:00. One person, no luggage, budget HKD 70 per person.",
+        "category": "goods"
+      },
+      "reason": "One passenger fits two seats with compatible route, time, luggage and fare."
+    },
+    {
+      "id": "fresh-transport-2",
+      "kind": "transport",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "I can drive HKUST to Mong Kok on 29 Sep 2026 at 18:00, three passenger seats, HKD 30 per person.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Looking for a lift from HKUST to Mong Kok on 29 Sep 2026 at 18:00. We are two people, max HKD 40 each.",
+        "category": "goods"
+      },
+      "reason": "Two passengers fit the driver offer and per-person budget."
+    },
+    {
+      "id": "fresh-transport-3",
+      "kind": "transport",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "We are two passengers sharing a taxi with four passenger seats from HKUST to airport on 30 Sep 2026 at 06:00. Looking for two more, split the fare equally.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "One passenger looking to share a taxi from HKUST to airport on 30 Sep 2026 at 06:00. Happy to split the fare equally.",
+        "category": "goods"
+      },
+      "reason": "Compatible taxi sharers total three within explicit four seats."
+    },
+    {
+      "id": "fresh-transport-4",
+      "kind": "transport",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Driving HKUST to airport on 28 Sep 2026 at 07:00, one seat, HKD 50 per person.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Need a ride HKUST to airport on 28 Sep 2026 at 07:00, three passengers, HKD 70 per person.",
+        "category": "goods"
+      },
+      "reason": "Party exceeds seats."
+    },
+    {
+      "id": "fresh-transport-5",
+      "kind": "transport",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Driving HKUST to airport on 28 Sep 2026 at 07:00, two seats, HKD 50 per person.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Need a ride airport to HKUST on 28 Sep 2026 at 07:00, one passenger, HKD 70 per person.",
+        "category": "goods"
+      },
+      "reason": "Opposite direction."
+    },
+    {
+      "id": "fresh-transport-6",
+      "kind": "transport",
+      "expected": "uncertain",
+      "a": {
+        "title": "Campus request",
+        "body": "Driving HKUST to airport on 28 Sep 2026 at 07:00, two seats, HKD 50 per person.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Might need a ride to airport next week, but flight still not booked. Cannot confirm the day or departure place.",
+        "category": "goods"
+      },
+      "reason": "No confirmed itinerary."
+    },
+    {
+      "id": "fresh-other-1",
+      "kind": "other",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Looking for company for a walk, campus sundial on 25 Sep 2026 at 09:00. English chat, easy pace.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "I want to join a walk from campus sundial on 25 Sep 2026 at 09:00. English is fine.",
+        "category": "goods"
+      },
+      "reason": "Ordinary open walking invitation fits explicit participation."
+    },
+    {
+      "id": "fresh-other-2",
+      "kind": "other",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Inviting classmates to a photography walk at campus sundial on 26 Sep 2026 from 17:00 to 18:00, English. Phone cameras welcome.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "想參加9月26日17:00–18:00日晷集合的攝影散步，英文交流，我用手機。",
+        "category": "goods"
+      },
+      "reason": "Matching open phone photography activity with same venue and session."
+    },
+    {
+      "id": "fresh-other-3",
+      "kind": "other",
+      "expected": "match",
+      "a": {
+        "title": "Campus request",
+        "body": "Looking for a chess partner at LG1 on 27 Sep 2026 from 16:00 to 17:00. English, casual game.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Chess buddy wanted, LG1, 27 Sep 2026 16:00–17:00. Happy chatting in English.",
+        "category": "goods"
+      },
+      "reason": "Reciprocal chess peers share venue and availability."
+    },
+    {
+      "id": "fresh-other-4",
+      "kind": "other",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Inviting classmates for a walk at campus sundial on 25 Sep 2026 at 09:00. English.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Want to join a walk at Sai Kung pier on 25 Sep 2026 at 09:00. Cannot meet anywhere else. English.",
+        "category": "goods"
+      },
+      "reason": "Exclusive different start locations."
+    },
+    {
+      "id": "fresh-other-5",
+      "kind": "other",
+      "expected": "reject",
+      "a": {
+        "title": "Campus request",
+        "body": "Looking for a chess partner at LG1 on 27 Sep 2026 from 16:00 to 17:00. English.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "Looking for a badminton partner at LG1 on 27 Sep 2026 from 16:00 to 17:00. English. Not interested in chess.",
+        "category": "goods"
+      },
+      "reason": "Different activities and explicit rejection."
+    },
+    {
+      "id": "fresh-other-6",
+      "kind": "other",
+      "expected": "uncertain",
+      "a": {
+        "title": "Campus request",
+        "body": "Inviting one beginner for badminton at sports centre Court 2 on 28 Sep 2026 18:00–19:00. English, beginners only, bring your own racket.",
+        "category": "other"
+      },
+      "b": {
+        "title": "Hi everyone",
+        "body": "One person hoping to join badminton at sports centre Court 2 on 28 Sep 2026 18:00–19:00. English. Unsure of my level and do not know if I can borrow a racket.",
+        "category": "goods"
+      },
+      "reason": "Hard skill and equipment requirements unresolved."
+    }
+  ]
+}

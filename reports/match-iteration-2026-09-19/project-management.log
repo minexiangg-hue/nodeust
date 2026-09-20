@@ -1,0 +1,34 @@
+
+> nodeust@0.1.0 check:management
+> node --test scripts/check-management.mjs
+
+✔ only Owner may delete announcements, feedback and processed reports (622.243035ms)
+✔ cleanup rejects unauthenticated and malformed requests without DB writes (166.825571ms)
+✔ announcement history is Owner-only; public endpoint retains active schedule filters (23.812017ms)
+✔ feedback cleanup atomically requires resolved status (52.570799ms)
+✔ feedback reopen cannot succeed after concurrent deletion or resolution changes (17.553091ms)
+✔ report cleanup only deletes completed reports and never touches audit logs (25.258006ms)
+✔ post deletion is a soft update constrained by owner and current status (57.405416ms)
+✔ reopen only affects the current member’s closed posts, never removed posts (28.703419ms)
+✔ My posts listing filters by authenticated owner and paginates independently (30.803574ms)
+✔ a stale review cannot remove content or write a duplicate moderation action (38.169963ms)
+✔ hidden account statistics reject every non-Owner before aggregate queries (57.454026ms)
+✔ statistics use Hong Kong calendar boundaries across UTC midnight and leap days (13.190871ms)
+✔ Owner statistics only read users and fill zero-registration days (13.86918ms)
+✔ editing is atomic, author-only, and cannot restore removed or matched posts (47.033415ms)
+✔ create and edit share validation, including contact privacy and hall field types (261.420603ms)
+✔ read acknowledgement verifies participation and the message conversation before writing (43.721753ms)
+✔ unread count excludes own and system messages, and uses the persisted read boundary (13.737504ms)
+✔ conversation deep links do not disclose metadata without authenticated membership (51.638824ms)
+✔ conversation metadata query binds the caller, peer and requested unblocked thread (10.923382ms)
+✔ conversation deep links select only anonymous metadata and tolerate a missing post (24.212085ms)
+✔ location counts expose aggregates only and exclude inactive accounts and posts (31.798848ms)
+✔ draft parser preserves incomplete drafts and rejects corrupt entries (1.578957ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2470.607836

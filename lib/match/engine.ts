@@ -2,14 +2,18 @@ import type { MatchIntent, MatchPost, ParsedPost, PairMatch } from './types.ts';
 import { parseHousing, parseGoods } from './housing-goods.ts';
 import { parseTransport, parseStudy, parseSocial } from './mobility-study.ts';
 import { compareResidencePeriods, compareRoomAcceptance, parseResidenceLabel, compareMoney } from './constraints.ts';
+import { compareLoanPeriods } from './loan.ts';
 import type { RoomType } from './constraints.ts';
 
-export const MATCH_VERSION = 'reciprocal-intents-v5';
+export const MATCH_VERSION = 'reciprocal-intents-v6-dev';
 export const TIME_TOLERANCE_MINUTES = 30;
 
 export function parseMatchPost(post: MatchPost): ParsedPost {
   if (post.status && post.status !== 'active')
     return { post, intents: [], warnings: ['inactive'] };
+  // Parse equivalent fullwidth forms consistently; keep the original post for display.
+  const normalizeInput = (value: string) => value.normalize('NFKC').replace(/\r\n?/g,'\n').replace(/[^\S\n]+/g,' ');
+  const input = {...post,title:normalizeInput(post.title),body:normalizeInput(post.body)};
   const intents = [
     parseHousing,
     parseGoods,
@@ -17,7 +21,7 @@ export function parseMatchPost(post: MatchPost): ParsedPost {
     parseStudy,
     parseSocial,
   ]
-    .flatMap((parse) => parse(post))
+    .flatMap((parse) => parse(input))
     .map((intent) => ({ ...intent, missing: missingIntentDetails(intent) }));
   const seen = new Set<string>();
   return {
@@ -67,6 +71,7 @@ export function isExpired(intent: MatchIntent, now: Date): boolean {
     const period = parseResidenceLabel(intent.term);
     // Only explicit endpoints support expiry here; semester labels are not a school calendar.
     if (period?.type === 'dates') return new Date(`${period.end}T23:59:59.999+08:00`).getTime() < now.getTime();
+    if (period?.type === 'months') return period.end < new Date(now.getTime() + 8*60*60*1000).toISOString().slice(0,7);
     if (period?.type === 'academic-year') {
       const currentYear = new Date(now.getTime() + 8 * 60 * 60 * 1000).getUTCFullYear();
       return period.endYear < currentYear;
@@ -162,6 +167,16 @@ export function compareIntents(
     if (!a.entity || a.entity !== b.entity || a.entity.startsWith('unknown-'))
       return null;
     if (a.kind === 'goods') {
+      if ((a.transaction ?? 'sale') !== (b.transaction ?? 'sale')) return null;
+      if (a.transaction === 'loan') {
+        const period = compareLoanPeriods(a, b);
+        if (period === 'conflict') return null;
+        if (period === 'unknown') missing.add('loan-period');
+        for (const field of ['loanPickupPlace', 'loanReturnPlace'] as const) {
+          if (a[field] && b[field] && a[field] !== b[field]) return null;
+          if (!a[field] || !b[field]) missing.add('loan-places');
+        }
+      }
       if (
         !(
           (a.side === 'offer' && b.side === 'seek') ||
@@ -224,6 +239,10 @@ export function compareIntents(
       )
         return null;
       if (seek.edition && !offer.edition) missing.add('edition');
+      for (const field of ['itemFormat','itemLanguage'] as const) {
+        if (seek[field] && offer[field] && seek[field] !== offer[field]) return null;
+        if (seek[field] && !offer[field]) missing.add(field === 'itemFormat' ? 'item-format' : 'item-language');
+      }
       if (
         seek.colors?.length &&
         !seek.colors.includes('any') &&
@@ -251,6 +270,10 @@ export function compareIntents(
         ) > 0
       )
         return null;
+      if (seek.minimumThicknessMm !== undefined) {
+        if (offer.thicknessMm === undefined) missing.add('item-thickness');
+        else if (offer.thicknessMm < seek.minimumThicknessMm) return null;
+      }
       // A requested model/condition needs evidence from the offered item.
       if (seek.model && !offer.model) missing.add('model');
       if (seek.condition && !offer.condition) missing.add('condition');
@@ -297,18 +320,24 @@ export function compareIntents(
           a.from === a.to
         )
           return null;
+        for (const key of ['fromExit','toExit'] as const) {
+          if (a[key] && b[key] && a[key] !== b[key]) return null;
+          if (Boolean(a[key]) !== Boolean(b[key])) missing.add('station-exit');
+        }
         if (a.side === 'share' && b.side === 'share') {
+          for (const [host,guest] of [[a,b],[b,a]]) {
+            if (host.soughtPartyMax !== undefined && guest.party !== undefined && guest.party > host.soughtPartyMax) return null;
+          }
           if (a.fee || b.fee) missing.add('fare');
           required('party', 'party');
-          required('capacity', 'capacity');
-          if (
-            a.party !== undefined &&
-            b.party !== undefined &&
-            a.capacity !== undefined &&
-            b.capacity !== undefined &&
-            a.party + b.party > Math.min(a.capacity, b.capacity)
-          )
-            return null;
+          const capacities = [a.capacity,b.capacity].filter((n): n is number => n !== undefined);
+          if (capacities.some(n => !Number.isSafeInteger(n) || n <= 0)) return null;
+          if (!capacities.length) missing.add('capacity');
+          else {
+            missing.delete('capacity');
+            if (a.party !== undefined && b.party !== undefined &&
+                a.party + b.party > Math.min(...capacities)) return null;
+          }
         } else {
           if (
             !(
@@ -330,13 +359,24 @@ export function compareIntents(
             return null;
         }
         for (const [offer, seek] of [[a,b],[b,a]]) {
+          if (offer.allowedLuggageKinds?.length && seek.luggage !== 0) {
+            if (!seek.luggageKind) missing.add('luggage-type');
+            else if (!offer.allowedLuggageKinds.includes(seek.luggageKind)) return null;
+          }
           if (offer.luggageLimit === undefined) continue;
           if (seek.luggage === 0) continue;
           if (seek.luggage === undefined) { missing.add('luggage'); continue; }
+          if (offer.luggageLimit === 0 && offer.luggageLimitKind === 'any' && seek.luggage > 0) return null;
           if (!offer.luggageLimitKind || !seek.luggageKind || (seek.luggageKind === 'bag' && offer.luggageLimitKind !== 'any')) {
             missing.add('luggage-type'); continue;
           }
-          if ((offer.luggageLimitKind === 'any' || offer.luggageLimitKind === seek.luggageKind) && seek.luggage > offer.luggageLimit) return null;
+          if (offer.luggageLimitKind === 'any' || offer.luggageLimitKind === seek.luggageKind) {
+            if (offer.luggageTotalLimit !== undefined && seek.luggage > offer.luggageTotalLimit) return null;
+            const count = offer.luggageLimitBasis === 'person'
+              ? seek.luggagePerPerson ?? (seek.party === 1 ? seek.luggage : undefined) : seek.luggage;
+            if (count === undefined) missing.add('luggage');
+            else if (count > offer.luggageLimit) return null;
+          }
         }
         reasons.push(
           { code: 'same-route', values: [a.from, a.to] },
@@ -363,7 +403,15 @@ export function compareIntents(
           return null;
         if (a.side === 'offer' && !feesFit(a, b)) return null;
         if (b.side === 'offer' && !feesFit(b, a)) return null;
-        if (a.side === 'peer' && (a.fee || b.fee)) missing.add('study-fee');
+        if (a.side === 'peer') {
+          for (const [host,guest] of [[a,b],[b,a]]) {
+            if (host.seats === undefined) continue;
+            if (!Number.isSafeInteger(host.seats) || host.seats <= 0) return null;
+            if (guest.party === undefined) missing.add('participants');
+            else if (!Number.isSafeInteger(guest.party) || guest.party <= 0 || guest.party > host.seats) return null;
+          }
+        }
+        if (a.side === 'peer' && [a.fee,b.fee].some(fee=>fee && fee.amount !== 0)) missing.add('study-fee');
         required('communication', 'communication');
         if (differs(a.place, b.place)) return null;
         if (Boolean(a.place) !== Boolean(b.place)) missing.add('place');
@@ -396,16 +444,56 @@ export function compareIntents(
         reasons.push({ code: 'study-partners', values: [a.entity] });
       } else {
         const peers = a.side === 'peer' && b.side === 'peer';
-        const hostAndGuest = (a.side === 'offer' && b.side === 'seek') || (b.side === 'offer' && a.side === 'seek');
+        const hostAndGuest = (['offer', 'peer'].includes(a.side) && b.side === 'seek') || (['offer', 'peer'].includes(b.side) && a.side === 'seek');
         if ((!peers && !hostAndGuest) || differs(a.place, b.place)) return null;
+        if ([a,b].some(intent => [intent.seats,intent.party].some(count =>
+          count !== undefined && (!Number.isSafeInteger(count) || count <= 0)))) return null;
+        if (peers && a.minute !== undefined && b.minute !== undefined &&
+            a.endMinute !== undefined && b.endMinute !== undefined &&
+            Math.min(a.endMinute,b.endMinute) <= Math.max(a.minute,b.minute)) return null;
         if (hostAndGuest) {
-          const host = a.side === 'offer' ? a : b, guest = a.side === 'seek' ? a : b;
-          if (host.seats === undefined) missing.add('activity-places');
-          if (guest.party === undefined) missing.add('participants');
+          const host = a.side === 'seek' ? b : a, guest = a.side === 'seek' ? a : b;
+          if (host.place?.endsWith(':common-room') && host.guestAccess !== 'provided') missing.add('guest-access');
+          if (host.endMinute !== undefined) {
+            if (guest.endMinute === undefined) missing.add('activity-duration');
+            else if (host.minute !== undefined && guest.minute !== undefined &&
+              (guest.minute > host.minute || guest.endMinute < host.endMinute)) return null;
+          }
+          // An invitation without a stated limit can be relevant without guaranteeing admission.
+          // Explicit limits still require enough information to establish compatibility.
+          if (host.limitedPlaces && host.seats === undefined) missing.add('activity-places');
+          if ((host.seats !== undefined || host.limitedPlaces) && guest.party === undefined) missing.add('participants');
           if (host.seats !== undefined && guest.party !== undefined && host.seats < guest.party) return null;
         }
+        if ([a,b].some(intent => intent.alcoholFree && intent.alcoholAllowed)) missing.add('alcohol-policy');
         for (const [request, peer] of [[a,b],[b,a]]) {
           if (request.seats !== undefined && peer.party !== undefined && request.seats < peer.party) return null;
+          if (request.requiredWalkingMinutes !== undefined) {
+            if (peer.walkingMinutes === undefined) missing.add('activity-duration');
+            else if (peer.walkingMinutes < request.requiredWalkingMinutes) return null;
+          }
+          if (request.requiresAlcoholFree) {
+            if (peer.alcoholAllowed) return null;
+            if (!peer.alcoholFree) missing.add('alcohol-policy');
+          }
+          if (request.alcoholFree && peer.side === 'seek') {
+            if (peer.acceptsAlcoholFree === false) return null;
+            if (peer.acceptsAlcoholFree === undefined) missing.add('alcohol-policy');
+          }
+          if (request.vegetarianOnly) {
+            if (peer.acceptsVegetarian === false) return null;
+            if (peer.acceptsVegetarian === undefined) missing.add('food-preference');
+          }
+          if (request.requiredParticipantLevel) {
+            if (!peer.participantLevel) missing.add('participant-eligibility');
+            else if (peer.participantLevel !== request.requiredParticipantLevel) return null;
+          }
+          if (request.requiredParticipantGender) {
+            if (!peer.participantGender) missing.add('participant-eligibility');
+            else if (peer.participantGender !== request.requiredParticipantGender) return null;
+          }
+          if (request.borrowedEquipment?.length &&
+              !request.borrowedEquipment.every(item => peer.providedEquipment?.includes(item))) missing.add('equipment');
           if (request.requiredEquipment?.length) {
             if (!peer.equipment?.length) missing.add('equipment');
             else if (!request.requiredEquipment.every(item => peer.equipment!.includes(item))) missing.add('equipment');

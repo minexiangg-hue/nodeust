@@ -4,6 +4,15 @@ import type { Category, MatchReason } from '@/lib/community-model';
 type Copy = [string, string, string];
 
 const missingCopy: Record<string, Copy> = {
+  'item-format': ['Book format', '教材载体（纸本或电子版）', '教材載體（紙本或電子版）'],
+  'item-language': ['Book language', '教材语言', '教材語言'],
+  'guest-access': ['Confirm guest access to the venue', '确认访客能否进入场地', '確認訪客能否進入場地'],
+  'room-preference': ['Confirm acceptable room types', '确认接受的房型', '確認接受的房型'],
+  'activity-venue': ['Confirm the activity venue', '确认具体活动场地', '確認具體活動場地'],
+  'activity-duration': ['Availability for the full activity', '能否参加完整活动时段', '能否參加完整活動時段'],
+  'loan-places': ['Loan pickup and return locations', '借用领取与归还地点', '借用領取與歸還地點'],
+  'loan-period': ['Loan pickup and return times', '借用领取与归还时间', '借用領取與歸還時間'],
+  'loan-terms': ['Loan fee, deposit and transaction terms', '借用费用、押金及交易方式', '借用費用、押金及交易方式'],
   from: [
     'Starting place or current hall',
     '出发地点或当前宿舍',
@@ -58,9 +67,14 @@ const missingCopy: Record<string, Copy> = {
   communication: ['Communication language', '交流语言', '交流語言'],
   topic: ['Study topic or chapter', '学习主题或章节', '學習主題或章節'],
   course: ['Course code or subject', '课程代码或科目', '課程代碼或科目'],
+  'station-exit': ['Station exit', '车站出口', '車站出口'],
   place: ['Meeting or collection place', '见面或交收地点', '見面或交收地點'],
   'activity-places': ['Available places in the activity', '活动可加入的名额', '活動可加入的名額'],
   participants: ['Number of joining participants', '参与人数', '參與人數'],
+  'alcohol-policy': ['Alcohol policy', '饮酒约定', '飲酒約定'],
+  'food-preference': ['Meal preferences', '饮食要求', '飲食要求'],
+  'participant-eligibility': ['Participation requirements', '参加资格', '參加資格'],
+  'item-thickness': ['Item thickness', '物品厚度', '物品厚度'],
   equipment: ['Required equipment', '所需装备', '所需裝備'],
   luggage: ['Baggage count for the stated limit', '行李限制对应的行李数量', '行李限制對應的行李數量'],
   'luggage-type': ['Baggage type covered by the limit', '行李限制适用的类型', '行李限制適用的類型'],

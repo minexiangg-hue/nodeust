@@ -222,6 +222,18 @@ try {
       assert.ok(rows.every((row) => !cookie.includes(row.token_hash)));
     },
   );
+  await check('matching endpoint uses email session and rejects proxy identity alone', async () => {
+    const forged = {'x-hkust-uid':'synthetic-forged', 'x-hkust-email':'synthetic-forged@connect.ust.hk', 'x-node-proxy-secret':process.env.NODE_TRUSTED_PROXY_SECRET};
+    const denied = await fetch(base + '/api/matches', {headers:forged});
+    assert.equal(denied.status,401);
+    const response = await fetch(base + '/api/matches?possible=1', {headers:{...forged,cookie}});
+    assert.equal(response.status,200);
+    assert.match(response.headers.get('cache-control'),/private.*no-store/);
+    const matches = await response.json();
+    assert.equal(matches.ownPostCount,0);
+    assert.equal(matches.total,0);
+    assert.deepEqual(matches.items,[]);
+  });
   await check(
     'verified accounts cannot be overwritten by re-registration',
     async () => {
@@ -263,6 +275,95 @@ try {
       assert.equal(r.status, 201);
     },
   );
+  await check('email matching paginates real candidates and revalidates edits and removal', async () => {
+    const peer = crypto.randomUUID(), offerIds = Array.from({length:27},()=>crypto.randomUUID());
+    let ownId;
+    const ownNoiseIds=[];
+    const matchConversation = crypto.randomUUID();
+    try {
+      await db.execute("INSERT INTO users (id,identity_id,email,affiliation,full_name,nickname,anonymous_alias,role,status,created_at,updated_at) VALUES (?,?,?,'student','Synthetic peer','Synthetic peer','Synthetic peer','member','active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))",[peer,peer,`match-${peer}@connect.ust.hk`]);
+      for(const id of offerIds) await db.execute("INSERT INTO posts (id,owner_id,category,title,body,location_id,status,created_at,updated_at) VALUES (?,?,'goods','Monitor available','Selling a monitor for HKD 50.','academic-building','active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))",[id,peer]);
+      const created = await fetch(base+'/api/posts',{method:'POST',headers:{'content-type':'application/json',cookie,origin:base},body:JSON.stringify({category:'goods',title:'Monitor wanted',body:'Looking to buy a monitor, budget HKD 100.',locationId:'academic-building'})});
+      assert.equal(created.status,201);
+      const [mine] = await db.execute("SELECT p.id FROM posts p JOIN users u ON u.id=p.owner_id WHERE u.identity_id=? AND p.title='Monitor wanted'",[identity]);
+      assert.equal(mine.length,1); ownId=mine[0].id;
+      const [[owner]] = await db.execute('SELECT owner_id FROM posts WHERE id=?',[ownId]);
+      await db.execute('UPDATE posts SET created_at=DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 30 DAY) WHERE id=? OR owner_id=?',[ownId,peer]);
+      for(let i=0;i<101;i++) {
+        for(const user of [owner.owner_id,peer]) {
+          const id=crypto.randomUUID();if(user===owner.owner_id)ownNoiseIds.push(id);
+          await db.execute("INSERT INTO posts (id,owner_id,category,title,body,location_id,status,created_at,updated_at) VALUES (?,?,'other','Synthetic unrelated note','Just testing, no request.','academic-building','active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))",[id,user]);
+        }
+      }
+      const page = async n => {
+        const response=await fetch(base+`/api/matches?kind=goods&page=${n}`,{headers:{cookie}});
+        assert.equal(response.status,200);return response.json();
+      };
+      const first=await page(0),second=await page(1);
+      assert.equal(first.ownPostCount,103);
+      const items=[...first.items,...second.items];
+      assert.equal(first.items.length,25);assert.equal(second.items.length,2);
+      assert.equal(first.hasMore,true);assert.equal(second.hasMore,false);
+      assert.equal(first.total,27);assert.equal(new Set(items.map(x=>x.id)).size,27);
+      assert.deepEqual(items.map(x=>x.id).sort((a,b)=>a.localeCompare(b)),[...offerIds].sort((a,b)=>a.localeCompare(b)));
+      if(process.env.MATCH_EMAIL_BROWSER === '1') {
+        const {checkEmailMatchBrowser}=await import('../match-evaluation/email-browser-smoke.mjs');
+        await checkEmailMatchBrowser({base,cookie});
+      }
+      for(const item of items) {
+        assert.equal(item.match.ownPostId,ownId);assert.equal(item.match.confidence,'high');
+        for(const key of ['ownerId','identityId','email','fullName','contactValue'])assert.ok(!(key in item));
+      }
+      const hkDay = offset => new Date(Date.now()+(8+offset*24)*3600000).toISOString().slice(0,10);
+      for(const [date,expected] of [[hkDay(1),27],[hkDay(-1),0]]) {
+        await db.execute('UPDATE posts SET body=?,updated_at=UTC_TIMESTAMP(3) WHERE owner_id=? AND title=?',[`Selling a monitor for HKD 50. Handover at LG1 on ${date} at 12:00.`,peer,'Monitor available']);
+        await db.execute('UPDATE posts SET body=?,updated_at=UTC_TIMESTAMP(3) WHERE id=?',[`Looking to buy a monitor, budget HKD 100. Handover at LG1 on ${date} at 12:00.`,ownId]);
+        assert.equal((await page(0)).total,expected,`Matching handover date ${date}`);
+        if(expected===0) {
+          const expired=await fetch(base+'/api/matches?kind=goods&possible=1',{headers:{cookie}});
+          assert.equal(expired.status,200);assert.equal((await expired.json()).total,0);
+        }
+      }
+      await db.execute("UPDATE posts SET body='Selling a monitor for HKD 50.',updated_at=UTC_TIMESTAMP(3) WHERE owner_id=? AND title='Monitor available'",[peer]);
+      await db.execute("UPDATE posts SET body='Looking to buy a monitor, budget 100.',updated_at=UTC_TIMESTAMP(3) WHERE id=?",[ownId]);
+      assert.equal((await page(0)).total,0);
+      const uncertainResponse=await fetch(base+'/api/matches?kind=goods&possible=1',{headers:{cookie}});
+      assert.equal(uncertainResponse.status,200);
+      const uncertain=await uncertainResponse.json();
+      assert.equal(uncertain.total,27);
+      assert.ok(uncertain.items.every(item=>item.match.confidence==='possible'&&item.match.missing.includes('currency')));
+      assert.ok(uncertain.needsDetails.some(post=>post.id===ownId&&post.missing.includes('currency')));
+      await db.execute("UPDATE posts SET body='Looking to buy a monitor, budget HKD 100.',updated_at=UTC_TIMESTAMP(3) WHERE id=?",[ownId]);
+      assert.equal((await page(0)).total,27);
+      await db.execute("UPDATE posts SET body='Selling a monitor for HKD 500.',updated_at=UTC_TIMESTAMP(3) WHERE id=?",[offerIds[0]]);
+      assert.equal((await page(0)).total,26);
+      await db.execute("UPDATE posts SET status='removed',updated_at=UTC_TIMESTAMP(3) WHERE id=?",[offerIds[1]]);
+      assert.equal((await page(0)).total,25);
+      await db.execute("UPDATE users SET status='suspended' WHERE id=?",[peer]);
+      assert.equal((await page(0)).total,0);
+      await db.execute("UPDATE users SET status='active' WHERE id=?",[peer]);
+      assert.equal((await page(0)).total,25);
+      const [[me]] = await db.execute('SELECT owner_id FROM posts WHERE id=?',[ownId]);
+      await db.execute("INSERT INTO conversations(id,post_id,status,created_at,updated_at) VALUES (?,?,'active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))",[matchConversation,ownId]);
+      for(const user of [me.owner_id,peer])await db.execute('INSERT INTO conversation_participants(id,conversation_id,user_id,is_blocked,joined_at) VALUES (?,?,?,false,UTC_TIMESTAMP(3))',[crypto.randomUUID(),matchConversation,user]);
+      for(const user of [me.owner_id,peer]) {
+        await db.execute('UPDATE conversation_participants SET is_blocked=true WHERE conversation_id=? AND user_id=?',[matchConversation,user]);
+        assert.equal((await page(0)).total,0);
+        await db.execute('UPDATE conversation_participants SET is_blocked=false WHERE conversation_id=?',[matchConversation]);
+        assert.equal((await page(0)).total,25);
+      }
+      await db.execute("UPDATE conversations SET status='blocked' WHERE id=?",[matchConversation]);
+      assert.equal((await page(0)).total,0);
+
+    } finally {
+      await db.execute('DELETE FROM conversation_participants WHERE conversation_id=?',[matchConversation]);
+      await db.execute('DELETE FROM conversations WHERE id=?',[matchConversation]);
+      for(const id of ownNoiseIds)await db.execute('DELETE FROM posts WHERE id=?',[id]);
+      if(ownId)await db.execute('DELETE FROM posts WHERE id=?',[ownId]);
+      await db.execute('DELETE FROM posts WHERE owner_id=?',[peer]);
+      await db.execute('DELETE FROM users WHERE id=?',[peer]);
+    }
+  });
   await check(
     'logout revokes server-side session; old cookie fails',
     async () => {

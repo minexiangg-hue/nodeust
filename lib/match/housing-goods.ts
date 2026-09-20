@@ -1,4 +1,7 @@
 import type { MatchIntent, MatchPost } from './types.ts';
+import { residenceDateRange, residenceMonthRange } from './residence-text.ts';
+import { loanPeriod } from './loan.ts';
+import { parseResidenceLabel } from './constraints.ts';
 import { extractSchedule, isCancelled, normalizeText } from './text.ts';
 
 type HallMention = { hall: string; start: number; end: number; raw: string };
@@ -177,6 +180,7 @@ function roomConstraints(
         )[0]
       : undefined;
   let wantedRoom: string | undefined;
+  let ambiguousPreference = false;
   for (let i = 0; i < rooms.length - 1; i++) {
     const a = rooms[i],
       b = rooms[i + 1];
@@ -194,8 +198,12 @@ function roomConstraints(
     const start = match.index!;
     const before = text.slice(Math.max(0, start - 45), start);
     const nearestHall = mentions.filter((hall) => hall.end <= start).at(-1);
+    if (/(?:not|no|neither|不要|不接受|唔要)\s*(?:a\s*)?$/.test(before)) {
+      ambiguousPreference = true;
+      continue;
+    }
     if (
-      /(?:want(?:ed)?|looking for|lookin for|seek(?:ing)?|prefer|only consider|只考虑|只考慮|必须|必須|想要|目标(?:也是)?|目標(?:也是)?|希望|求)\s*(?:a|an)?\s*$/i.test(
+      /(?:want(?:ed)?|need|hoping to get|would take|would accept|exchange for|swap for|looking for|lookin for|seek(?:ing)?|prefer|only consider|只考虑|只考慮|必须|必須|想要|目标(?:也是)?|目標(?:也是)?|希望|求)\s*(?:a|an)?\s*$/i.test(
         before,
       )
     )
@@ -225,9 +233,41 @@ function roomConstraints(
       .at(-1);
     if (beforeCurrent) room = roomName(beforeCurrent[0]);
   }
-  return { room, wantedRoom };
+  let wantedRooms: string[] | undefined;
+  for (let i = 0; i < rooms.length - 1; i++) {
+    const first = rooms[i], second = rooms[i+1];
+    const between = text.slice(first.index!+first[0].length,second.index!);
+    const after = text.slice(second.index!+second[0].length,second.index!+second[0].length+35);
+    const before = text.slice(Math.max(0,first.index!-35),first.index!);
+    if (/^\s*(?:or|或|或者)\s*$/.test(between) &&
+        /^(?:\s|房|间|間)*(?:both (?:okay|ok|fine)|都(?:可以|可|得)|均可)/.test(after) &&
+        !/(?:not|不要|不接受)\s*$/.test(before)) {
+      wantedRooms = [...new Set([roomName(first[0]),roomName(second[0])])];
+    }
+  }
+  return { room, wantedRoom, wantedRooms, ambiguousPreference };
 }
 function termConstraint(text: string): string | undefined {
+  const dates = residenceDateRange(text);
+  if (dates.found) return dates.term;
+  const months = residenceMonthRange(text);
+  if (months.found) return months.term;
+  // An explicit academic-year label is not a season or an inferred date range.
+  // Keep ambiguous/multiple periods unknown rather than selecting the first year.
+  const academicYears = [...text.matchAll(/\b(20\d{2})\s*[/–—-]\s*(20\d{2}|\d{2})(?![\d/-])/g)];
+  if (academicYears.length && /academic|full[ -]?year|(?:entire|complete|whole).{0,18}year|all of (?:20\d{2}[/–—-])|全年|全学年|全學年|学年|學年/.test(text)) {
+    if (/\b(?:not|except|excluding)\s+(?:for\s+)?(?:the\s+)?(?:full|entire|complete|whole|academic)\b|不是全年|非全年|不含全年/.test(text)) return;
+    const labels = academicYears.map(match => {
+      const start = Number(match[1]);
+      const end = match[2].length === 2 ? Math.floor(start / 100) * 100 + Number(match[2]) : Number(match[2]);
+      return `academic:${start}-${end}`;
+    });
+    if (new Set(labels).size !== 1 || !parseResidenceLabel(labels[0])) return;
+    // A semester restriction cannot be upgraded to full-year occupancy.
+    if (/\b(?:fall|autumn|spring|summer|winter)\b|秋季?|春季?|夏季?|暑期|冬季?/.test(text)) return;
+    if (academicYears.some(match => /(?:not|except|excluding|不是|非|不含)\s*$/.test(text.slice(Math.max(0, match.index - 20), match.index)))) return;
+    return labels[0];
+  }
   const match =
     /\b(fall|autumn|spring|summer|winter)(?:\s+(?:semester|term))?\b|秋季?|春季?|夏季?|暑期|冬季?/i.exec(
       text,
@@ -262,10 +302,10 @@ function eligibilityConstraint(text: string): string | undefined {
         ),
     );
   const female = positive(
-    /\b(?:female|women|woman|girls?)\b|女生|女性|女仔|女宿|女(?=本科|研究生|[、，,.；;\s])/g,
+    /\b(?:female|women|woman|girls?)\b|女生|女性|女仔|女宿|女(?=ug|pg|本科|研究生|[、，,.；;\s])/g,
   );
   const male = positive(
-    /\b(?:male|men|man|boys?)\b|男生|男性|男仔|男宿|男(?=本科|研究生|[、，,.；;\s])/g,
+    /\b(?:male|men|man|boys?)\b|男生|男性|男仔|男宿|男(?=ug|pg|本科|研究生|[、，,.；;\s])/g,
   );
   return female && !male ? 'female' : male && !female ? 'male' : undefined;
 }
@@ -303,7 +343,7 @@ export function parseHousing(post: MatchPost): MatchIntent[] {
     );
   const routeCue =
     mentions.length >= 2 &&
-    /->|→|↔|⇄|\b(?:to|want|need|seek|looking for)\b|换|換|去/.test(text);
+    /->|→|↔|⇄|\b(?:to|want|need|seek(?:ing)?|looking for|would take|would accept)\b|换|換|去/.test(text);
   const otherCue =
     /\bsell(?:ing)?\b|\bbuy(?:ing)?\b|\btextbook\b|\brevision buddy\b|\btaxi\b|拼车|拼車|出售|求购|求購|温书|溫書/.test(
       text,
@@ -321,6 +361,9 @@ export function parseHousing(post: MatchPost): MatchIntent[] {
   const missing: string[] = [];
   for (const mention of mentions) {
     const before = text.slice(Math.max(0, mention.start - 60), mention.start);
+    // A sentence-led allocation label may separate the room and hall with a comma.
+    if (/(?:^|[.!。\n])\s*confirmed (?:male |female )?(?:single|double|twin|triple)(?: room)?\s*[,，]\s*$/.test(before))
+      from ??= mention.hall;
     const negative =
       /(?:not|except|avoid|excluding|不是|不想去|不要|不想要|不考虑|不考慮|唔要|除咗|除了)\s*(?:the\s+)?$/.test(
         before,
@@ -330,13 +373,13 @@ export function parseHousing(post: MatchPost): MatchIntent[] {
       continue;
     }
     if (
-      /(?:currently(?:\s+(?:in|at))?|from|i(?:'m| am| live| stay| am living)\s+(?:in|at)|my(?: current)?(?: hall| room)?(?: is)?|have|目前|当前|當前|现在|現在|而家|现住|現住|我住(?:在)?|我在|由|从|從)\s*[:：]?\s*$/.test(
+      /(?:currently(?:\s+(?:in|at))?|from|i(?:'m| am| live| stay| am living)\s+(?:in|at)|my(?: current)?(?: hall| room)?(?: is)?|have(?: an?)?|i hold(?: an?)?|allocated(?: (?:single|double|twin|triple)(?: room)?)?(?: in)?|confirmed(?: (?:male|female))?(?: (?:single|double|twin|triple)(?: room)?)?(?: in)?|已分配|目前|当前|當前|现在|現在|而家|现住|現住|我住(?:在)?|我在|由|从|從)\s*[:：]?\s*$/.test(
         before,
       )
     )
       from ??= mention.hall;
     if (
-      /(?:looking|lookin|searching)\s+(?:for|to move to)\s*(?:a room in\s*)?$|(?:want(?:ed|ing)?|need|seek|prefer|move|switch)\s*(?:to|a room in|in)?\s*$|(?:\bto|into|for|想换去?|想換去?|想去|换到|換到|目标|目標|希望去|求换|求換|去)\s*$/.test(
+      /(?:looking|lookin|searching)\s+(?:for|to move to)\s*(?:a room in\s*)?$|(?:want(?:ed|ing)?|would take|would accept|need|seek(?:ing)?|prefer|move|switch)\s*(?:to|a room in|a (?:single|double|twin|triple)(?: room)? in|in|a|an)?\s*$|(?:\bto|into|for|想换去?|想換去?|想去|换到|換到|目标(?:是|係)?|目標(?:是|係)?|希望去|求换|求換|去)\s*$/.test(
         before,
       )
     ) {
@@ -392,6 +435,13 @@ export function parseHousing(post: MatchPost): MatchIntent[] {
   if (!from) missing.push('from');
   if (!targets.length) missing.push('to');
   if (!from && !targets.length) return [];
+  // These are author statements, not independent verification of university records.
+  const allocation: MatchIntent['allocation'] = /\b(?:not allocated|no allocation|allocation denied|application rejected)\b|未获批|未獲批|分配被拒/.test(text) ? 'denied'
+    : /\b(?:not yet allocated|allocation pending|awaiting allocation)\b|\b(?:pending|waiting for|awaiting)\b.{0,30}\b(?:allocation|room|offer)\b|尚未获批|尚未獲批|等候分配|等待分配/.test(text) ? 'pending'
+    : /\b(?:allocated|confirmed (?:single|double|room)|have an allocation)\b|已获批|已獲批|已批|已有分配/.test(text) ? 'confirmed' : undefined;
+  const exchangeEligibility: MatchIntent['exchangeEligibility'] = /\b(?:ineligible|not eligible)\b|没有换宿资格|沒有換宿資格|不符合換宿資格|不符合换宿资格/.test(text) ? 'ineligible'
+    : /\b(?:eligibility pending|(?:unsure|not sure).{0,15}eligible)\b|资格待确认|資格待確認/.test(text) ? 'pending'
+    : /\beligible\b|已符合換宿資格|已符合换宿资格|換宿資格已確認|换宿资格已确认|有換房資格|有换房资格/.test(text) ? 'eligible' : undefined;
   const term = termConstraint(text);
   const eligibility = eligibilityConstraint(
     normalizeText(post.genderEligibility ?? '') + ' ' + text,
@@ -400,7 +450,7 @@ export function parseHousing(post: MatchPost): MatchIntent[] {
     .slice(0, 6)
     .flatMap((to) => {
       if (from && to && from === to) return [];
-      const rooms = roomConstraints(text, post, mentions, from, to);
+      const { ambiguousPreference, ...rooms } = roomConstraints(text, post, mentions, from, to);
       return [
         {
           kind: 'hall',
@@ -411,13 +461,15 @@ export function parseHousing(post: MatchPost): MatchIntent[] {
           ...rooms,
           term,
           eligibility,
+          allocation,
+          exchangeEligibility,
           evidence: evidenceFor(post, [
             post.currentHall,
             post.targetHall,
             post.roomType,
             post.genderEligibility,
           ]),
-          missing: [...missing],
+          missing: [...missing, ...(ambiguousPreference ? ['room-preference'] : [])],
         } satisfies MatchIntent,
       ];
     });
@@ -425,6 +477,8 @@ export function parseHousing(post: MatchPost): MatchIntent[] {
 
 // Vocabulary names common objects, rather than memorising sentences or labels.
 const goodsVocabulary: [string, string][] = [
+  ['drill', '\\b(?:(?:cordless|electric|power) )?drills?\\b|電鑽|电钻'],
+  ['display-adapter', '\\busb[ -]?c (?:to )?hdmi adapter\\b|usb[ -]?c(?:轉|转|接)hdmi(?:轉接器|转接器|轉插|转插)?'],
   [
     'desk-lamp',
     '\\b(?:desk|table|study|reading|bedside) lamp\\b|\\blamp\\b|台灯|臺燈|枱燈|檯燈|书桌灯|書桌燈',
@@ -493,6 +547,7 @@ const goodsVocabulary: [string, string][] = [
   ],
   ['suitcase', '\\b(?:suitcases?|luggage)\\b|行李箱|旅行箱|行李喼|喼'],
   ['backpack', '\\b(?:backpacks?|rucksacks?)\\b|背包|书包|書包'],
+  ['yoga-mat', '\\byoga mats?\\b|瑜伽[垫墊]'],
   ['umbrella', '\\bumbrellas?\\b|雨伞|雨傘'],
   ['mattress', '\\bmattress(?:es)?\\b|床垫|床墊'],
   ['bookshelf', '\\b(?:bookshel(?:f|ves)|bookcases?)\\b|书架|書架'],
@@ -600,7 +655,7 @@ function goodsMentions(text: string): Mention[] {
 const offerPattern =
   /\b(?:sell(?:ing)?|for sale|wts|give(?:n|ing)? away|giveaway|giving away|free to (?:take|collect)|let(?:ting)? go|offer(?:ing)?|lend(?:ing)?|spare)\b|出售|转让|轉讓|放售|卖|賣|闲置|閒置|免费送|免費送|送出|出借|(?:^|[\s，,。:：])(?:出|放|送)(?!发|發|学|學|现|現|弃|棄)/gi;
 const seekPattern =
-  /\b(?:lookin(?:g)?(?: to buy| for)?|seek(?:ing)?|want(?:ed|ing)?(?: to buy)?|need(?:ed|ing)?|buy(?:ing)?|wtb|iso|borrow(?:ing)?|in search of)\b|求购|求購|求收|想买|想買|要买|要買|买|買|需要|想借|求借|征求|徵求|征|徵|求一|想收|(?:^|[\s，,。:：])收|同求|有(?:没有|冇|無)人(?:出|放|卖|賣)|搵/gi;
+  /\b(?:lookin(?:g)?(?: to buy| for)?|seek(?:ing)?|want(?:ed|ing)?(?: to buy)?|need(?:ed|ing)?|buy(?:ing)?|wtb|iso|borrow(?:ing)?|in search of|would like to take)\b|求购|求購|求收|想买|想買|要买|要買|买|買|需要|想借|求借|征求|徵求|征|徵|求一|想收|(?:^|[\s，,。:：])收|同求|有(?:没有|冇|無)人(?:出|放|卖|賣)|搵/gi;
 function sideFor(
   text: string,
   mention: Mention,
@@ -620,8 +675,9 @@ function sideFor(
   );
   const nearest = candidates.sort((a, b) => b.end - a.end)[0];
   const explicitAfter = text.slice(mention.end, mention.end + 80);
+  if (/(?:沒有|没有|冇|\bno|\bdo not have|\bdon't have)\s*(?:an?\s+)?$/.test(before)) return {negated:true};
   const postfix =
-    /\b(?:asking|for sale|(?:still )?available)\b|仍出|放售|出售|售\s*\d/.exec(
+    /\b(?:asking|for sale|(?:still )?available)\b|免費送|免费送|仍出|放售|出售|售\s*\d/.exec(
       explicitAfter,
     );
   if (
@@ -703,12 +759,24 @@ function priceConstraint(
     return { missing: ['bundle_price'] };
   return { price: values[0], missing: [] };
 }
+function bookTitle(text: string): string | undefined {
+  const quoted = /(?:title|book|textbook)\s*(?::|is)?\s*[“"]([^”"]{4,160})[”"]|《([^》]{2,100})》/.exec(text);
+  if (quoted) return normalizeText(quoted[1] || quoted[2]);
+  // A literal title/subtitle ending immediately before an explicit edition.
+  const titled = /([a-z][a-z .'-]{2,80}:\s*[a-z][a-z .'-]{2,100}),?\s*(?=\d{1,2}(?:st|nd|rd|th) edition|第[一二三四五六七八九十\d]+版)/i.exec(text);
+  if (!titled) return undefined;
+  return normalizeText(titled[1]).replace(/^(?:looking to buy|looking for|want to buy|buying|selling|buy|sell)\s+/, '').replace(/[, ]+$/, '');
+}
 function modelConstraint(text: string, entity: string): string | undefined {
   text = normalizeText(text)
     .replace(/罗技|羅技/g, 'logitech')
     .replace(/小米/g, 'xiaomi')
     .replace(/索尼/g, 'sony')
     .replace(/宜家/g, 'ikea');
+  if (entity === 'drill') {
+    const voltage = /\b(\d{1,3})\s*v\b/.exec(text);
+    return voltage ? `voltage:${Number(voltage[1])}v` : undefined;
+  }
   const patterns = [
     /\b(?:casio\s*)?(fx[ -]?\d+[a-z\d-]*(?:\s+(?:plus|ex|es|cw|ms|classwiz))?)\b/i,
     /\b(ti[ -]?(?:30|36|84|89|nspire)[a-z\d-]*(?:\s+(?:plus|ce|cx|ii|cas))*)\b/i,
@@ -742,6 +810,8 @@ function modelConstraint(text: string, entity: string): string | undefined {
   if (entity.startsWith('textbook')) {
     const isbn = /\bisbn(?:-1[03])?\s*[:：]?\s*([\d-]{10,17})/i.exec(text);
     if (isbn) return `isbn:${isbn[1].replaceAll('-', '')}`;
+    const title = bookTitle(text);
+    if (title) return `title:${title}`;
     const edition =
       /\b(\d{1,2})(?:st|nd|rd|th)?[ -]*(?:ed(?:ition)?)\b|第([一二三四五六七八九十\d]+)版/i.exec(
         text,
@@ -808,6 +878,7 @@ function editionConstraint(text: string): string | undefined {
 function additionalGoodsConstraints(text: string, post: MatchPost) {
   const schedule = extractSchedule({ ...post, title: '', body: text });
   const places: string[] = [];
+  if (/\bsports? cent(?:er|re) main entrance\b|[体體]育[馆館]正[门門]/.test(text)) places.push('sports-center-entrance');
   if (/\b(?:hkust\s*)?library\b|图书馆|圖書館/.test(text))
     places.push('hkust-library');
   if (/\b(?:hkust\s*)?north\s*gate\b|北门|北門/.test(text))
@@ -886,10 +957,10 @@ function additionalGoodsConstraints(text: string, post: MatchPost) {
     quantity,
     edition: editionConstraint(text),
     priceBasis,
-    currency: /\busd\b|us\s*\$|美元|美金/.test(text) ? 'USD'
+    currency: /\busd(?=\b|\d)|us\s*\$|美元|美金/.test(text) ? 'USD'
       : /\b(?:cny|rmb)\b|人民币|人民幣/.test(text) ? 'CNY'
       : /\beur\b|€|欧元|歐元/.test(text) ? 'EUR'
-      : /\bhkd\b|hk\s*\$|港币|港幣/.test(text) ? 'HKD' : undefined,
+      : /\bhkd(?=\b|\d)|hk\s*\$|港币|港幣/.test(text) ? 'HKD' : undefined,
     missing: [
       ...(schedule.ambiguous ? ['handover_time_ambiguous'] : []),
       ...(places.length > 1 ? ['handover_place_ambiguous'] : []),
@@ -1002,12 +1073,22 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
           ? `${post.title} ${post.body}`
           : `${before} ${mention.raw} ${after}`;
       const context = normalizeText(rawContext);
-      if (
-        /\b(?:borrow|borrowing|lend|lending|loan)\b|求借|借用|想借/.test(
-          context,
-        )
-      )
-        continue;
+      if (['backpack','suitcase'].includes(mention.entity) &&
+          /\b(?:ride|lift|taxi|cab|passenger|carpool)\b|順風車|顺风车|的士|乘客/.test(text)) {
+        const localBefore = text.slice(Math.max(text.lastIndexOf(',', mention.start - 1), text.lastIndexOf('，', mention.start - 1), sentenceStart - 1) + 1, mention.start);
+        const trade = /\b(?:buy|buying|sell|selling|borrow|lend)\b|求购|求購|出售|想买|想買|出借|想借/.test(localBefore)
+          || /(?:need|want|looking for|求|需要)\s*(?:(?:a|an|one|two|new|used|small|large)\s+)*$/.test(localBefore);
+        const titleTrade = titleMentions.some(item=>item.entity===mention.entity) &&
+          /\b(?:buy|buying|sell|selling|wts|wtb|borrow|lend)\b|求购|求購|出售|想买|想買|出借|想借/.test(titleText);
+        if (!trade && !titleTrade) continue;
+      }
+
+      const isLoan = /\b(?:borrow|borrowing|lend|lending|loan)\b|求借|借用|想借|出借/.test(context);
+      // Mixed transactions and negated loan statements require clarification.
+      const loanMissing = isLoan && /\b(?:sell|selling|buy|buying|sale|deposit|per day|daily|per hour)\b|押金|按天|每天|每日|每小时|每小時|不借|唔借|不出借/.test(context)
+        ? ['loan-terms'] : [];
+      const period = isLoan ? loanPeriod(context, post) : {};
+
       let price = priceConstraint(after, direction.side);
       if (price.price === undefined && !price.missing.length)
         price = priceConstraint(before, direction.side);
@@ -1033,12 +1114,25 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
       const entity = course
         ? `textbook:${course[1].toUpperCase()}${course[2].toUpperCase()}`
         : mention.entity;
+      if (isLoan && price.price === undefined && !price.missing.length &&
+          /\b(?:lend|loan)\b.{0,100}\bfree from\b/.test(context) &&
+          !/\b(?:not free|not for free)\b/.test(context)) price = {price:0,missing:[]};
       const constraints = additionalGoodsConstraints(context, post);
-      const missing = [...price.missing, ...constraints.missing];
+      if (isLoan && period.loanStart && period.loanEnd) {
+        const start = new Date(period.loanStart);
+        const local = new Date(start.getTime() + 8 * 3600000);
+        constraints.date = local.toISOString().slice(0, 10);
+        constraints.minute = local.getUTCHours() * 60 + local.getUTCMinutes();
+        constraints.endMinute = undefined;
+        constraints.missing = constraints.missing.filter(code => code !== 'handover_time_ambiguous');
+      }
+
+      const missing = [...price.missing, ...constraints.missing, ...loanMissing, ...(isLoan && !period.loanEnd ? ['loan-period'] : [])];
       if (price.price === undefined) missing.push('price');
+      if (entity.startsWith('textbook') && /\b(?:not|no)\s+(?:english|chinese|print|paperback|digital)|不要(?:英文|中文|紙本|纸本|電子版|电子版)/.test(context)) missing.push('item-format','item-language');
       if (
         mention.entity === 'textbook' &&
-        !course &&
+        !course && !bookTitle(context) &&
         !/\bisbn\s*\d/i.test(context)
       )
         missing.push('book_identity');
@@ -1055,12 +1149,27 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
       )
         missing.push('availability');
       const { missing: _, ...details } = constraints;
+      const thicknessMatches = entity === 'yoga-mat' ? [...context.matchAll(/(\d+(?:\.\d+)?)\s*(mm|cm|毫米|厘米)/g)] : [];
+      const thickness = thicknessMatches.length === 1 ? Number(thicknessMatches[0][1]) * (/^(cm|厘米)$/.test(thicknessMatches[0][2]) ? 10 : 1) : undefined;
+      const minimumThickness = /\bat least\b|至少|最少|不低[于於]/.test(context);
+      const thicknessUncertain = entity === 'yoga-mat' && (thickness === undefined || thickness <= 0 ||
+        /\b(?:wide|width|long|length)\b|[寬宽長长]|[-−]\s*\d+(?:\.\d+)?\s*(?:mm|cm|毫米|厘米)/.test(context) ||
+        /\b(?:not|around|about|approximately|at most|maximum)\b|不是|大約|大约|最多|[~–]/.test(context) ||
+        (direction.side === 'seek' && !minimumThickness));
+      if (thicknessUncertain) missing.push('item-thickness');
       const intent: MatchIntent = {
         kind: 'goods',
         entity,
         side: direction.side,
+        ...(isLoan ? { transaction: 'loan' as const, ...period } : {}),
         price: price.price,
         model: modelConstraint(context, entity),
+        ...(entity.startsWith('textbook') ? {
+          itemFormat: /\b(?:print|printed|paperback|hardback)\b|紙本|纸本/.test(context) ? 'print' as const
+            : /\b(?:ebook|e-book|digital|pdf)\b|电子版|電子版/.test(context) ? 'digital' as const : undefined,
+          itemLanguage: /\benglish\b|英文/.test(context) ? 'english' : /\bchinese\b|中文/.test(context) ? 'chinese' : undefined,
+        } : {}),
+        ...(entity === 'yoga-mat' && !thicknessUncertain ? direction.side === 'offer' ? {thicknessMm:thickness} : {minimumThicknessMm:thickness} : {}),
         condition: conditionConstraint(context),
         ...details,
         evidence: [
@@ -1093,3 +1202,5 @@ export function canonicalGoodsIdentity(value: string): {entity:string;model?:str
   const entity=entities.length===1 ? entities[0] : normalizeText(value).trim();
   return {entity,model:modelConstraint(text,entity)};
 }
+
+export { hallField as canonicalHallName };

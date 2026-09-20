@@ -1,0 +1,48 @@
+{
+  "base": "http://127.0.0.1:3197",
+  "authMode": "email",
+  "loginStatus": 200,
+  "assets": [
+    {
+      "path": "/_next/static/chunks/1d319d53-ea3840dd05ad8ca0.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/4625-5f25cb33e977ca0f.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/784-969076eb06755b54.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/9250-618bd010a6d193de.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/app/login/page-65d1b54bb0ba20ef.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/main-app-6ee8a1d76d0571f4.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/webpack-700de173e89f4179.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/css/a5d9556e806055ad.css",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/css/eb211b7f3c76f00f.css",
+      "status": 200
+    }
+  ],
+  "scope": "Isolated standalone login and assets only; no database/authenticated API/browser workflow coverage."
+}

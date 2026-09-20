@@ -1,0 +1,21 @@
+{
+  "scope": "Synthetic email session, direct route, pagination, reload and viewport overflow only",
+  "results": [
+    {
+      "viewport": "desktop",
+      "firstPage": 25,
+      "secondPage": 2,
+      "reload": true,
+      "horizontalOverflow": false,
+      "pageErrors": []
+    },
+    {
+      "viewport": "mobile",
+      "firstPage": 25,
+      "secondPage": 2,
+      "reload": true,
+      "horizontalOverflow": false,
+      "pageErrors": []
+    }
+  ]
+}

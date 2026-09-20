@@ -6,7 +6,8 @@ import { MatchIndex, parseMatchPost, rankMatches, comparePosts, MATCH_VERSION } 
 import { compatible } from '../match-study/generate.mjs';
 
 const kinds = ['hall','goods','study','transport','other'];
-const now = new Date('2026-09-11T04:00:00Z');
+const now = new Date(process.env.MATCH_EVAL_NOW || '2026-09-11T04:00:00Z');
+if (!Number.isFinite(now.getTime())) throw new Error('MATCH_EVAL_NOW must be a valid date');
 const directory = process.env.MATCH_EVAL_OUTPUT || 'reports/match-iteration-2026-09-11/artifacts';
 mkdirSync(directory,{recursive:true});
 const stat = () => ({gold:0,returned:0,truePositive:0,top5Returned:0,top5True:0,eligible:0,hit:0,slots:0,attainable:0});
@@ -62,14 +63,16 @@ const holdoutPath = process.env.MATCH_HOLDOUT || 'scripts/match-evaluation/holdo
 if(existsSync(holdoutPath)){
  const source=readFileSync(holdoutPath,'utf8');
  const fixture=JSON.parse(source); const cases=Array.isArray(fixture)?fixture:fixture.cases;
+ const fixtureNow = new Date(!Array.isArray(fixture) && fixture.now ? fixture.now : now);
+ if (!Number.isFinite(fixtureNow.getTime())) throw new Error('Scenario fixture must declare a valid evaluation time');
  const rows=cases.map(c=>{
-  const a=parseMatchPost({...c.a,id:`${c.id}:a`,ownerId:'a',createdAt:c.a.createdAt||now.toISOString()});
-  const b=parseMatchPost({...c.b,id:`${c.id}:b`,ownerId:'b',createdAt:c.b.createdAt||now.toISOString()});
-  const match=comparePosts(a,b,now);
+  const a=parseMatchPost({...c.a,id:`${c.id}:a`,ownerId:'a',createdAt:c.a.createdAt||fixtureNow.toISOString()});
+  const b=parseMatchPost({...c.b,id:`${c.id}:b`,ownerId:'b',createdAt:c.b.createdAt||fixtureNow.toISOString()});
+  const match=comparePosts(a,b,fixtureNow);
   const predicted=match?.confidence==='high'?'match':match?'uncertain':'reject';
   return {id:c.id,kind:c.kind,expected:c.expected,predicted,pass:c.expected==='match'?predicted==='match':predicted!=='match',match,a:a.intents,b:b.intents,reason:c.reason};
  });
- const summary={sourceSha256:createHash('sha256').update(source).digest('hex'),cases:rows.length,byKind:Object.fromEntries(kinds.map(kind=>{
+ const summary={now:fixtureNow.toISOString(),sourceSha256:createHash('sha256').update(source).digest('hex'),cases:rows.length,byKind:Object.fromEntries(kinds.map(kind=>{
   const r=rows.filter(row=>row.kind===kind),positive=r.filter(row=>row.expected==='match'),negative=r.filter(row=>row.expected!=='match');
   const tp=positive.filter(row=>row.predicted==='match').length,fp=negative.filter(row=>row.predicted==='match').length;
   return [kind,{positive:positive.length,negative:negative.length,tp,fp,precision:ratio(tp,tp+fp),recall:ratio(tp,positive.length),falsePositiveRate:ratio(fp,negative.length)}];

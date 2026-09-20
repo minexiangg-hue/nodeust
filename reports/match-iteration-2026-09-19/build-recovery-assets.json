@@ -1,0 +1,42 @@
+[
+  {
+    "path": "/_next/static/chunks/3794-3679f1c05160977c.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/chunks/4186-afa2c75bff6d78ef.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/chunks/4bd1b696-93bf506b236d6248.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/chunks/8500-f4d7bfbe7500f274.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/chunks/app/login/page-43225a837fa2bff7.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/chunks/main-app-3f7b840654fa937f.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/chunks/webpack-b39d845ddadee24a.js",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/css/e275afae45b1c395.css",
+    "status": 200
+  },
+  {
+    "path": "/_next/static/css/eb211b7f3c76f00f.css",
+    "status": 200
+  }
+]

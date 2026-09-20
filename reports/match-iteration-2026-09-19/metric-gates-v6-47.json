@@ -1,0 +1,188 @@
+{
+  "metricsPass": false,
+  "scope": "Numeric metrics only; exposed development pairs do not satisfy independent validation.",
+  "checks": [
+    {
+      "name": "corpus.hall.top5Precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.hall.recall",
+      "actual": 1,
+      "minimum": 0.6,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.hall.hitRate",
+      "actual": 1,
+      "minimum": 0.7,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.hall.precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.hall.recall",
+      "actual": 0.8333333333333334,
+      "minimum": 0.75,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.goods.top5Precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.goods.recall",
+      "actual": 0.5736660472524555,
+      "minimum": 0.6,
+      "maximum": 1,
+      "pass": false
+    },
+    {
+      "name": "corpus.goods.hitRate",
+      "actual": 0.8169761273209549,
+      "minimum": 0.7,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.goods.precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.goods.recall",
+      "actual": 0.8333333333333334,
+      "minimum": 0.75,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.study.top5Precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.study.recall",
+      "actual": 1,
+      "minimum": 0.6,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.study.hitRate",
+      "actual": 1,
+      "minimum": 0.7,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.study.precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.study.recall",
+      "actual": 0.9166666666666666,
+      "minimum": 0.75,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.transport.top5Precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.transport.recall",
+      "actual": 1,
+      "minimum": 0.6,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.transport.hitRate",
+      "actual": 1,
+      "minimum": 0.7,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.transport.precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.transport.recall",
+      "actual": 0.75,
+      "minimum": 0.75,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.other.top5Precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.other.recall",
+      "actual": 1,
+      "minimum": 0.6,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "corpus.other.hitRate",
+      "actual": 1,
+      "minimum": 0.7,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.other.precision",
+      "actual": 1,
+      "minimum": 0.9,
+      "maximum": 1,
+      "pass": true
+    },
+    {
+      "name": "pairs.other.recall",
+      "actual": 0.5833333333333334,
+      "minimum": 0.75,
+      "maximum": 1,
+      "pass": false
+    },
+    {
+      "name": "pairs.falsePositiveRate",
+      "actual": 0,
+      "minimum": 0,
+      "maximum": 0.05,
+      "pass": true
+    }
+  ]
+}

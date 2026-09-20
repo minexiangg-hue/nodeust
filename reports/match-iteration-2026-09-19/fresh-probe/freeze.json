@@ -1,0 +1,7 @@
+{
+  "fixture": "reports/match-iteration-2026-09-19/fresh-probe/scenarios.json",
+  "sha256": "c10ecf8c9f155ebfee02bb2ec62800c2c9342b0c2a39add9a8884a44e0bfa073",
+  "frozenAt": "2026-09-19T14:28:45.082Z",
+  "cases": 30,
+  "algorithmSnapshot": "work/match-snapshots/reciprocal-intents-v6-dev-49-of-60"
+}

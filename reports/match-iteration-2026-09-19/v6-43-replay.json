@@ -1,0 +1,7 @@
+{
+  "snapshot": "work/match-snapshots/reciprocal-intents-v6-dev-43-of-60",
+  "verifiedFiles": 68,
+  "corpusCategoryMetricsIdentical": true,
+  "developmentReportIdentical": true,
+  "replayOutput": "/tmp/nodeust-replay-v6-43"
+}

@@ -1,0 +1,227 @@
+{
+  "corpus": {
+    "version": "reciprocal-intents-v6-dev",
+    "now": "2026-09-11T04:00:00.000Z",
+    "posts": 3746,
+    "students": 500,
+    "sourceSha256": "c04c4c47f9e5e1bea2468be2fe14c4e7c2022428f5cbd068288c5fc78859ec8b",
+    "indexMs": 2653.968622,
+    "totalMs": 4307.656386000001,
+    "meanCandidateCount": 500.468,
+    "byKind": {
+      "hall": {
+        "gold": 1362,
+        "returned": 1362,
+        "truePositive": 1362,
+        "top5Returned": 1171,
+        "top5True": 1171,
+        "eligible": 373,
+        "hit": 373,
+        "slots": 2500,
+        "attainable": 1171,
+        "precision": 1,
+        "recall": 1,
+        "top5Precision": 1,
+        "pAt5": 0.4684,
+        "fillRate": 0.4684,
+        "hitRate": 1,
+        "attainableTop5Recall": 1
+      },
+      "goods": {
+        "gold": 18835,
+        "returned": 10805,
+        "truePositive": 10805,
+        "top5Returned": 1527,
+        "top5True": 1527,
+        "eligible": 377,
+        "hit": 308,
+        "slots": 2500,
+        "attainable": 1881,
+        "precision": 1,
+        "recall": 0.5736660472524555,
+        "top5Precision": 1,
+        "pAt5": 0.6108,
+        "fillRate": 0.6108,
+        "hitRate": 0.8169761273209549,
+        "attainableTop5Recall": 0.8118022328548644
+      },
+      "study": {
+        "gold": 1099,
+        "returned": 1099,
+        "truePositive": 1099,
+        "top5Returned": 990,
+        "top5True": 990,
+        "eligible": 334,
+        "hit": 334,
+        "slots": 2500,
+        "attainable": 990,
+        "precision": 1,
+        "recall": 1,
+        "top5Precision": 1,
+        "pAt5": 0.396,
+        "fillRate": 0.396,
+        "hitRate": 1,
+        "attainableTop5Recall": 1
+      },
+      "transport": {
+        "gold": 908,
+        "returned": 908,
+        "truePositive": 908,
+        "top5Returned": 838,
+        "top5True": 838,
+        "eligible": 310,
+        "hit": 310,
+        "slots": 2500,
+        "attainable": 838,
+        "precision": 1,
+        "recall": 1,
+        "top5Precision": 1,
+        "pAt5": 0.3352,
+        "fillRate": 0.3352,
+        "hitRate": 1,
+        "attainableTop5Recall": 1
+      },
+      "other": {
+        "gold": 1549,
+        "returned": 1549,
+        "truePositive": 1549,
+        "top5Returned": 1121,
+        "top5True": 1121,
+        "eligible": 292,
+        "hit": 292,
+        "slots": 2500,
+        "attainable": 1121,
+        "precision": 1,
+        "recall": 1,
+        "top5Precision": 1,
+        "pAt5": 0.4484,
+        "fillRate": 0.4484,
+        "hitRate": 1,
+        "attainableTop5Recall": 1
+      }
+    },
+    "gates": {
+      "hall": {
+        "precision": true,
+        "recall": true,
+        "hitRate": true
+      },
+      "goods": {
+        "precision": true,
+        "recall": false,
+        "hitRate": true
+      },
+      "study": {
+        "precision": true,
+        "recall": true,
+        "hitRate": true
+      },
+      "transport": {
+        "precision": true,
+        "recall": true,
+        "hitRate": true
+      },
+      "other": {
+        "precision": true,
+        "recall": true,
+        "hitRate": true
+      }
+    }
+  },
+  "development": {
+    "sourceSha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+    "cases": 150,
+    "byKind": {
+      "hall": {
+        "positive": 12,
+        "negative": 18,
+        "tp": 8,
+        "fp": 0,
+        "precision": 1,
+        "recall": 0.6666666666666666,
+        "falsePositiveRate": 0
+      },
+      "goods": {
+        "positive": 12,
+        "negative": 18,
+        "tp": 9,
+        "fp": 0,
+        "precision": 1,
+        "recall": 0.75,
+        "falsePositiveRate": 0
+      },
+      "study": {
+        "positive": 12,
+        "negative": 18,
+        "tp": 9,
+        "fp": 0,
+        "precision": 1,
+        "recall": 0.75,
+        "falsePositiveRate": 0
+      },
+      "transport": {
+        "positive": 12,
+        "negative": 18,
+        "tp": 8,
+        "fp": 0,
+        "precision": 1,
+        "recall": 0.6666666666666666,
+        "falsePositiveRate": 0
+      },
+      "other": {
+        "positive": 12,
+        "negative": 18,
+        "tp": 6,
+        "fp": 0,
+        "precision": 1,
+        "recall": 0.5,
+        "falsePositiveRate": 0
+      }
+    },
+    "failures": [
+      "v2-hall-m03",
+      "v2-hall-m04",
+      "v2-hall-m10",
+      "v2-hall-m11",
+      "v2-goods-m03",
+      "v2-goods-m09",
+      "v2-goods-m11",
+      "v2-study-m08",
+      "v2-study-m10",
+      "v2-study-m11",
+      "v2-transport-m06",
+      "v2-transport-m07",
+      "v2-transport-m09",
+      "v2-transport-m12",
+      "v2-other-m04",
+      "v2-other-m06",
+      "v2-other-m07",
+      "v2-other-m09",
+      "v2-other-m10",
+      "v2-other-m12"
+    ],
+    "gates": {
+      "hall": {
+        "precision": true,
+        "recall": false
+      },
+      "goods": {
+        "precision": true,
+        "recall": true
+      },
+      "study": {
+        "precision": true,
+        "recall": true
+      },
+      "transport": {
+        "precision": true,
+        "recall": false
+      },
+      "other": {
+        "precision": true,
+        "recall": false
+      }
+    },
+    "falsePositiveRate": 0
+  }
+}

@@ -470,6 +470,15 @@ function MatchResultCard({
         <div className="match-missing">
           <strong>{t('Still to confirm', '仍需确认', '仍需確認')}</strong>
           <p>{missing.join(' · ')}</p>
+          {match.missing.includes('currency') && (
+            <p>
+              {t(
+                'Check that your price or budget names the currency (for example, HKD). If it does, ask the other person to confirm theirs before comparing prices.',
+                '检查自己的价格或预算是否写明币种（例如 HKD）。如果已经写明，请向对方确认币种后再比较价格。',
+                '檢查自己的價格或預算是否寫明幣種（例如 HKD）。如果已經寫明，請向對方確認幣種後再比較價格。',
+              )}
+            </p>
+          )}
         </div>
       )}
       <div className="match-card-actions">

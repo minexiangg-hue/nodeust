@@ -1,0 +1,5698 @@
+{
+  "version": "reciprocal-intents-v6-dev",
+  "source": "scripts/match-evaluation/validation-v2.json",
+  "sha256": "d5427d91f41b0feab012cb593d432ac7cf13dfa8ba25e2443bcf0e60949d1b93",
+  "now": "2026-09-11T04:00:00Z",
+  "note": "Exposed development set. Stage counts are descriptive, not independent validation. Missing fields may coexist with other errors.",
+  "byKind": {
+    "hall": {
+      "positive": 12,
+      "stages": {
+        "high": 9,
+        "intent-not-extracted": 1,
+        "comparison-rejected": 1,
+        "missing-details": 1
+      },
+      "missingFields": {
+        "to": 1,
+        "wantedRoom": 1,
+        "term": 1
+      },
+      "falseHigh": []
+    },
+    "goods": {
+      "positive": 12,
+      "stages": {
+        "high": 9,
+        "intent-not-extracted": 3
+      },
+      "missingFields": {
+        "handover_time_ambiguous": 1
+      },
+      "falseHigh": []
+    },
+    "study": {
+      "positive": 12,
+      "stages": {
+        "high": 11,
+        "intent-not-extracted": 1
+      },
+      "missingFields": {},
+      "falseHigh": []
+    },
+    "transport": {
+      "positive": 12,
+      "stages": {
+        "high": 8,
+        "missing-details": 1,
+        "intent-not-extracted": 2,
+        "comparison-rejected": 1
+      },
+      "missingFields": {
+        "capacity": 1,
+        "luggage": 2,
+        "date": 1,
+        "time": 1,
+        "schedule": 1,
+        "from": 1,
+        "to": 1,
+        "seats": 1
+      },
+      "falseHigh": []
+    },
+    "other": {
+      "positive": 12,
+      "stages": {
+        "high": 6,
+        "intent-not-extracted": 6
+      },
+      "missingFields": {},
+      "falseHigh": []
+    }
+  },
+  "rows": [
+    {
+      "id": "v2-hall-m01",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-3->ug-hall-2",
+            "side": "swap",
+            "from": "ug-hall-3",
+            "to": "ug-hall-2",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-2->ug-hall-3",
+            "side": "swap",
+            "from": "ug-hall-2",
+            "to": "ug-hall-3",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m02",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-5->ug-hall-7",
+            "side": "swap",
+            "from": "ug-hall-5",
+            "to": "ug-hall-7",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "fall:2026",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-7->ug-hall-5",
+            "side": "swap",
+            "from": "ug-hall-7",
+            "to": "ug-hall-5",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "fall:2026",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m03",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-1->pg-hall-2",
+            "side": "swap",
+            "from": "pg-hall-1",
+            "to": "pg-hall-2",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "dates:2026-09-01/2027-08-31",
+            "eligibility": "male",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-2->pg-hall-1",
+            "side": "swap",
+            "from": "pg-hall-2",
+            "to": "pg-hall-1",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "dates:2026-09-01/2027-08-31",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m04",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-4->ug-hall-8",
+            "side": "swap",
+            "from": "ug-hall-4",
+            "to": "ug-hall-8",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m05",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "wantedRoom"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-6",
+            "room": "double",
+            "term": "fall:2026",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "missing": [
+              "wantedRoom"
+            ]
+          },
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-4",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-4",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "fall:2026",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-4->ug-hall-1",
+            "side": "swap",
+            "from": "ug-hall-4",
+            "to": "ug-hall-1",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "fall:2026",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m06",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-2->pg-hall-3",
+            "side": "swap",
+            "from": "pg-hall-2",
+            "to": "pg-hall-3",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "months:2026-09/2027-08",
+            "eligibility": "female",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-3->pg-hall-2",
+            "side": "swap",
+            "from": "pg-hall-3",
+            "to": "pg-hall-2",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "months:2026-09/2027-08",
+            "eligibility": "female",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m07",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-6->ug-hall-9",
+            "side": "swap",
+            "from": "ug-hall-6",
+            "to": "ug-hall-9",
+            "room": "double",
+            "wantedRoom": "single",
+            "wantedRooms": [
+              "single",
+              "double"
+            ],
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-9->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-9",
+            "to": "ug-hall-6",
+            "room": "single",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m08",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-2->ug-hall-5",
+            "side": "swap",
+            "from": "ug-hall-2",
+            "to": "ug-hall-5",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "spring:2027",
+            "eligibility": "female",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-5->ug-hall-2",
+            "side": "swap",
+            "from": "ug-hall-5",
+            "to": "ug-hall-2",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "spring:2027",
+            "eligibility": "female",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m09",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-7->ug-hall-8",
+            "side": "swap",
+            "from": "ug-hall-7",
+            "to": "ug-hall-8",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-8->ug-hall-7",
+            "side": "swap",
+            "from": "ug-hall-8",
+            "to": "ug-hall-7",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m10",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "to",
+          "wantedRoom"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-9->?",
+            "side": "swap",
+            "from": "ug-hall-9",
+            "room": "single",
+            "term": "fall:2026",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "to",
+              "wantedRoom"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-3->ug-hall-9",
+            "side": "swap",
+            "from": "ug-hall-3",
+            "to": "ug-hall-9",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "fall:2026",
+            "eligibility": "female",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m11",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "term"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "term"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-4->ug-hall-5",
+            "side": "swap",
+            "from": "ug-hall-4",
+            "to": "ug-hall-5",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-5->ug-hall-4",
+            "side": "swap",
+            "from": "ug-hall-5",
+            "to": "ug-hall-4",
+            "room": "double",
+            "wantedRoom": "double",
+            "eligibility": "male",
+            "missing": [
+              "term"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-m12",
+      "kind": "hall",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-3->pg-hall-1",
+            "side": "swap",
+            "from": "pg-hall-3",
+            "to": "pg-hall-1",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "dates:2026-09-01/2027-08-31",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-1->pg-hall-3",
+            "side": "swap",
+            "from": "pg-hall-1",
+            "to": "pg-hall-3",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "dates:2026-09-01/2027-08-31",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r01",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "term"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-2",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-2",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-2->pg-hall-1",
+            "side": "swap",
+            "from": "pg-hall-2",
+            "to": "pg-hall-1",
+            "room": "single",
+            "wantedRoom": "single",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r02",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-3->ug-hall-5",
+            "side": "swap",
+            "from": "ug-hall-3",
+            "to": "ug-hall-5",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-5->ug-hall-7",
+            "side": "swap",
+            "from": "ug-hall-5",
+            "to": "ug-hall-7",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r03",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-5->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-5",
+            "to": "ug-hall-6",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "fall:2026",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-6->ug-hall-5",
+            "side": "swap",
+            "from": "ug-hall-6",
+            "to": "ug-hall-5",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "spring:2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r04",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "room",
+        "wantedRoom"
+      ],
+      "parsedMissing": [
+        [
+          "wantedRoom"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-4->ug-hall-8",
+            "side": "swap",
+            "from": "ug-hall-4",
+            "to": "ug-hall-8",
+            "room": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "wantedRoom"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-8->ug-hall-4",
+            "side": "swap",
+            "from": "ug-hall-8",
+            "to": "ug-hall-4",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r05",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-2->ug-hall-3",
+            "side": "swap",
+            "from": "ug-hall-2",
+            "to": "ug-hall-3",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-3->ug-hall-2",
+            "side": "swap",
+            "from": "ug-hall-3",
+            "to": "ug-hall-2",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r06",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "room",
+        "wantedRoom"
+      ],
+      "parsedMissing": [
+        [
+          "wantedRoom"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-6->ug-hall-1",
+            "side": "swap",
+            "from": "ug-hall-6",
+            "to": "ug-hall-1",
+            "room": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "missing": [
+              "wantedRoom"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-1->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-1",
+            "to": "ug-hall-6",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r07",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "from",
+          "room"
+        ]
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "hall",
+            "entity": "?->ug-hall-2",
+            "side": "swap",
+            "to": "ug-hall-2",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "missing": [
+              "from",
+              "room"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r08",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "room"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-9->ug-hall-4",
+            "side": "swap",
+            "from": "ug-hall-9",
+            "to": "ug-hall-4",
+            "wantedRoom": "single",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "missing": [
+              "room"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-9->ug-hall-4",
+            "side": "swap",
+            "from": "ug-hall-9",
+            "to": "ug-hall-4",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r09",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "eligibility",
+        "room",
+        "term",
+        "wantedRoom"
+      ],
+      "parsedMissing": [
+        [
+          "term"
+        ],
+        [
+          "term",
+          "room",
+          "wantedRoom",
+          "eligibility"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-1->pg-hall-2",
+            "side": "swap",
+            "from": "pg-hall-1",
+            "to": "pg-hall-2",
+            "room": "single",
+            "wantedRoom": "single",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "missing": [
+              "term"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-2->pg-hall-1",
+            "side": "swap",
+            "from": "pg-hall-2",
+            "to": "pg-hall-1",
+            "allocation": "confirmed",
+            "missing": [
+              "term",
+              "room",
+              "wantedRoom",
+              "eligibility"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-r10",
+      "kind": "hall",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "from",
+          "room"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "?->ug-hall-9",
+            "side": "swap",
+            "to": "ug-hall-9",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "from",
+              "room"
+            ]
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-hall-u01",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "from",
+          "term",
+          "room"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-3->ug-hall-2",
+            "side": "swap",
+            "from": "ug-hall-3",
+            "to": "ug-hall-2",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "?->ug-hall-3",
+            "side": "swap",
+            "to": "ug-hall-3",
+            "wantedRoom": "double",
+            "eligibility": "male",
+            "missing": [
+              "from",
+              "term",
+              "room"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-u02",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "term"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-1->pg-hall-2",
+            "side": "swap",
+            "from": "pg-hall-1",
+            "to": "pg-hall-2",
+            "room": "single",
+            "wantedRoom": "single",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-2->ug-hall-1",
+            "side": "swap",
+            "from": "ug-hall-2",
+            "to": "ug-hall-1",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "months:2026-09/2027-08",
+            "eligibility": "male",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-u03",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "term"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "term"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-7->ug-hall-8",
+            "side": "swap",
+            "from": "ug-hall-7",
+            "to": "ug-hall-8",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "fall:2026",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-8->ug-hall-7",
+            "side": "swap",
+            "from": "ug-hall-8",
+            "to": "ug-hall-7",
+            "room": "single",
+            "wantedRoom": "single",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "term"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-u04",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "room"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "room"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-4->ug-hall-6",
+            "side": "swap",
+            "from": "ug-hall-4",
+            "to": "ug-hall-6",
+            "room": "double",
+            "wantedRoom": "single",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-6->ug-hall-4",
+            "side": "swap",
+            "from": "ug-hall-6",
+            "to": "ug-hall-4",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": [
+              "room"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-u05",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "eligibility"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "eligibility"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-2->ug-hall-9",
+            "side": "swap",
+            "from": "ug-hall-2",
+            "to": "ug-hall-9",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-9->ug-hall-2",
+            "side": "swap",
+            "from": "ug-hall-9",
+            "to": "ug-hall-2",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "allocation": "confirmed",
+            "missing": [
+              "eligibility"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-hall-u06",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-5->ug-hall-1",
+            "side": "swap",
+            "from": "ug-hall-5",
+            "to": "ug-hall-1",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "fall:2026",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-hall-u07",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "ug-hall-7->ug-hall-3",
+            "side": "swap",
+            "from": "ug-hall-7",
+            "to": "ug-hall-3",
+            "room": "double",
+            "wantedRoom": "double",
+            "term": "academic:2026-2027",
+            "eligibility": "female",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-hall-u08",
+      "kind": "hall",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "hall",
+            "entity": "pg-hall-3->pg-hall-2",
+            "side": "swap",
+            "from": "pg-hall-3",
+            "to": "pg-hall-2",
+            "room": "single",
+            "wantedRoom": "single",
+            "term": "dates:2026-09-01/2027-08-31",
+            "eligibility": "male",
+            "allocation": "confirmed",
+            "exchangeEligibility": "eligible",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-m01",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "tablet",
+            "side": "offer",
+            "price": 2200,
+            "model": "ipadair5",
+            "condition": "working",
+            "date": "2026-09-12",
+            "minute": 840,
+            "endMinute": 960,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "tablet",
+            "side": "seek",
+            "price": 2300,
+            "model": "ipadair5",
+            "condition": "working",
+            "date": "2026-09-12",
+            "minute": 900,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m02",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "drill",
+            "side": "seek",
+            "transaction": "loan",
+            "loanStart": "2026-09-13T18:00:00+08:00",
+            "loanEnd": "2026-09-14T18:00:00+08:00",
+            "loanPickupPlace": "hkust-north-bus-stop",
+            "loanReturnPlace": "hkust-north-bus-stop",
+            "price": 50,
+            "model": "voltage:18v",
+            "date": "2026-09-13",
+            "minute": 1080,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "drill",
+            "side": "offer",
+            "transaction": "loan",
+            "loanStart": "2026-09-13T18:00:00+08:00",
+            "loanEnd": "2026-09-14T18:00:00+08:00",
+            "loanPickupPlace": "hkust-north-bus-stop",
+            "loanReturnPlace": "hkust-north-bus-stop",
+            "price": 30,
+            "model": "voltage:18v",
+            "condition": "working",
+            "date": "2026-09-13",
+            "minute": 1080,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m03",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "handover_time_ambiguous"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "desk",
+            "side": "offer",
+            "price": 0,
+            "date": "2026-09-12",
+            "missing": [
+              "handover_time_ambiguous"
+            ]
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-m04",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "headphones",
+            "side": "offer",
+            "price": 900,
+            "model": "wh1000xm4",
+            "condition": "working",
+            "date": "2026-09-14",
+            "minute": 720,
+            "endMinute": 780,
+            "colors": [
+              "black"
+            ],
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "headphones",
+            "side": "seek",
+            "price": 950,
+            "model": "wh1000xm4",
+            "date": "2026-09-14",
+            "minute": 750,
+            "colors": [
+              "black"
+            ],
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m05",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "desk-lamp",
+            "side": "offer",
+            "price": 60,
+            "model": "ikeatertial",
+            "condition": "working",
+            "date": "2026-09-15",
+            "minute": 1020,
+            "endMinute": 1080,
+            "place": "hkust-library",
+            "colors": [
+              "white"
+            ],
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "desk-lamp",
+            "side": "seek",
+            "price": 80,
+            "model": "ikeatertial",
+            "date": "2026-09-15",
+            "minute": 1050,
+            "place": "hkust-library",
+            "colors": [
+              "white"
+            ],
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m06",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "textbook",
+            "side": "seek",
+            "price": 180,
+            "model": "title:stewart calculus: early transcendentals",
+            "itemFormat": "print",
+            "itemLanguage": "english",
+            "date": "2026-09-14",
+            "minute": 960,
+            "place": "hkust-library",
+            "edition": "9",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "textbook",
+            "side": "offer",
+            "price": 150,
+            "model": "title:stewart calculus: early transcendentals",
+            "itemFormat": "print",
+            "itemLanguage": "english",
+            "date": "2026-09-14",
+            "minute": 960,
+            "place": "hkust-library",
+            "edition": "9",
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m07",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "display-adapter",
+            "side": "seek",
+            "transaction": "loan",
+            "loanStart": "2026-09-12T11:00:00+08:00",
+            "loanEnd": "2026-09-13T11:00:00+08:00",
+            "loanPickupPlace": "hkust-library",
+            "loanReturnPlace": "hkust-library",
+            "price": 0,
+            "date": "2026-09-12",
+            "minute": 660,
+            "place": "hkust-library",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "display-adapter",
+            "side": "offer",
+            "transaction": "loan",
+            "loanStart": "2026-09-12T11:00:00+08:00",
+            "loanEnd": "2026-09-13T11:00:00+08:00",
+            "loanPickupPlace": "hkust-library",
+            "loanReturnPlace": "hkust-library",
+            "price": 0,
+            "date": "2026-09-12",
+            "minute": 660,
+            "place": "hkust-library",
+            "priceBasis": "total",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m08",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "fridge",
+            "side": "offer",
+            "price": 300,
+            "date": "2026-09-13",
+            "minute": 840,
+            "endMinute": 900,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "fridge",
+            "side": "seek",
+            "price": 350,
+            "date": "2026-09-13",
+            "minute": 870,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m09",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-m10",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "keyboard",
+            "side": "offer",
+            "price": 40,
+            "condition": "working",
+            "date": "2026-09-12",
+            "minute": 1080,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "keyboard",
+            "side": "seek",
+            "price": 50,
+            "condition": "working",
+            "date": "2026-09-12",
+            "minute": 1080,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-m11",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-m12",
+      "kind": "goods",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "price"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "chair",
+            "side": "seek",
+            "price": 200,
+            "currency": "HKD",
+            "missing": []
+          },
+          {
+            "kind": "goods",
+            "entity": "monitor",
+            "side": "seek",
+            "price": 700,
+            "model": "dellu2422h",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "monitor",
+            "side": "offer",
+            "price": 650,
+            "model": "dellu2422h",
+            "condition": "working",
+            "currency": "HKD",
+            "missing": []
+          },
+          {
+            "kind": "goods",
+            "entity": "chair",
+            "side": "offer",
+            "date": "2026-09-18",
+            "minute": 990,
+            "missing": [
+              "price"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-r01",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "tablet",
+            "side": "seek",
+            "price": 2400,
+            "model": "ipadair5",
+            "date": "2026-09-12",
+            "minute": 900,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "tablet",
+            "side": "offer",
+            "price": 2200,
+            "model": "ipadair4",
+            "condition": "working",
+            "date": "2026-09-12",
+            "minute": 900,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-r02",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "headphones",
+            "side": "seek",
+            "price": 800,
+            "model": "wh1000xm4",
+            "date": "2026-09-14",
+            "minute": 750,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "headphones",
+            "side": "offer",
+            "price": 900,
+            "model": "wh1000xm4",
+            "date": "2026-09-14",
+            "minute": 750,
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-r03",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "desk",
+            "side": "seek",
+            "price": 0,
+            "date": "2026-09-14",
+            "minute": 1080,
+            "endMinute": 1140,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "desk",
+            "side": "offer",
+            "price": 0,
+            "date": "2026-09-12",
+            "minute": 600,
+            "endMinute": 660,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-r04",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "camera",
+            "side": "seek",
+            "price": 200,
+            "date": "2026-09-16",
+            "minute": 780,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-r05",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "desk-lamp",
+            "side": "offer",
+            "price": 60,
+            "model": "ikeatertial",
+            "date": "2026-09-15",
+            "minute": 1050,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "rice-cooker",
+            "side": "seek",
+            "price": 100,
+            "date": "2026-09-15",
+            "minute": 1050,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-r06",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "loan-terms",
+          "loan-period"
+        ]
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "goods",
+            "entity": "display-adapter",
+            "side": "offer",
+            "transaction": "loan",
+            "price": 70,
+            "date": "2026-09-12",
+            "minute": 660,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": [
+              "loan-terms",
+              "loan-period"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-r07",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "monitor",
+            "side": "seek",
+            "price": 700,
+            "model": "dellu2422h",
+            "date": "2026-09-18",
+            "minute": 990,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-r08",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "price"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "textbook",
+            "side": "seek",
+            "model": "title:stewart calculus: early transcendentals",
+            "itemLanguage": "english",
+            "edition": "9",
+            "missing": [
+              "price"
+            ]
+          },
+          {
+            "kind": "goods",
+            "entity": "textbook:SEP2026",
+            "side": "seek",
+            "price": 180,
+            "itemLanguage": "english",
+            "date": "2026-09-14",
+            "minute": 960,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "textbook",
+            "side": "offer",
+            "price": 120,
+            "model": "title:stewart calculus: early transcendentals",
+            "itemFormat": "print",
+            "itemLanguage": "english",
+            "date": "2026-09-14",
+            "minute": 960,
+            "place": "hkust-library",
+            "edition": "8",
+            "currency": "HKD",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-r09",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "printer",
+            "side": "seek",
+            "price": 600,
+            "condition": "working",
+            "date": "2026-09-19",
+            "minute": 840,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-r10",
+      "kind": "goods",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-u01",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "tablet",
+            "side": "seek",
+            "price": 2300,
+            "model": "ipadair5",
+            "date": "2026-09-12",
+            "minute": 900,
+            "place": "hkust-library",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-u02",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "currency",
+        "price",
+        "price-basis",
+        "price-comparison"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "price"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "chair",
+            "side": "seek",
+            "price": 200,
+            "date": "2026-09-18",
+            "minute": 990,
+            "priceBasis": "total",
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "chair",
+            "side": "offer",
+            "date": "2026-09-18",
+            "minute": 990,
+            "missing": [
+              "price"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-u03",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "handover_time_ambiguous",
+        "time"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "handover_time_ambiguous"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "drill",
+            "side": "seek",
+            "price": 250,
+            "model": "voltage:18v",
+            "date": "2026-09-13",
+            "minute": 1080,
+            "endMinute": 1110,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "goods",
+            "entity": "drill",
+            "side": "offer",
+            "price": 200,
+            "model": "voltage:18v",
+            "condition": "working",
+            "date": "2026-09-13",
+            "currency": "HKD",
+            "missing": [
+              "handover_time_ambiguous"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-goods-u04",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "desk",
+            "side": "seek",
+            "price": 110,
+            "date": "2026-09-12",
+            "minute": 630,
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-u05",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-u06",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "handover_time_ambiguous",
+          "loan-period"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "display-adapter",
+            "side": "offer",
+            "transaction": "loan",
+            "price": 0,
+            "place": "hkust-library",
+            "priceBasis": "total",
+            "missing": [
+              "handover_time_ambiguous",
+              "loan-period"
+            ]
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-u07",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "goods",
+            "entity": "fridge",
+            "side": "seek",
+            "price": 350,
+            "date": "2026-09-13",
+            "minute": 870,
+            "currency": "HKD",
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-goods-u08",
+      "kind": "goods",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-m01",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2011",
+            "side": "seek",
+            "fee": {
+              "amount": 0,
+              "scope": "maximum"
+            },
+            "topics": [
+              "pointers"
+            ],
+            "date": "2026-09-14",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2011",
+            "side": "offer",
+            "fee": {
+              "amount": 0,
+              "scope": "asking"
+            },
+            "topics": [
+              "pointers"
+            ],
+            "date": "2026-09-14",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m02",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1014",
+            "side": "peer",
+            "topics": [
+              "integration"
+            ],
+            "date": "2026-09-15",
+            "minute": 1140,
+            "endMinute": 1200,
+            "strictTime": true,
+            "communication": "cantonese",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1014",
+            "side": "peer",
+            "topics": [
+              "integration"
+            ],
+            "date": "2026-09-15",
+            "minute": 1140,
+            "endMinute": 1200,
+            "strictTime": true,
+            "communication": "cantonese",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m03",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2123",
+            "side": "seek",
+            "fee": {
+              "amount": 0,
+              "scope": "maximum"
+            },
+            "date": "2026-09-16",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "cantonese",
+            "missing": [],
+            "place": "online"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2123",
+            "side": "offer",
+            "fee": {
+              "amount": 0,
+              "scope": "asking"
+            },
+            "date": "2026-09-16",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "cantonese",
+            "missing": [],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m04",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "PHYS1112",
+            "side": "peer",
+            "date": "2026-09-17",
+            "minute": 600,
+            "endMinute": 660,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "PHYS1112",
+            "side": "peer",
+            "fee": {
+              "amount": 0,
+              "scope": "maximum"
+            },
+            "date": "2026-09-17",
+            "minute": 600,
+            "endMinute": 660,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m05",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "CHEM1010",
+            "side": "peer",
+            "seats": 1,
+            "topics": [
+              "chemical-bonding"
+            ],
+            "date": "2026-09-18",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "CHEM1010",
+            "side": "peer",
+            "party": 1,
+            "topics": [
+              "chemical-bonding"
+            ],
+            "date": "2026-09-18",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m06",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "LANG1403",
+            "side": "offer",
+            "fee": {
+              "amount": 0,
+              "scope": "asking"
+            },
+            "topics": [
+              "presentation"
+            ],
+            "date": "2026-09-19",
+            "minute": 660,
+            "endMinute": 720,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "online"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "LANG1403",
+            "side": "seek",
+            "topics": [
+              "presentation"
+            ],
+            "date": "2026-09-19",
+            "minute": 660,
+            "endMinute": 720,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m07",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2103",
+            "side": "seek",
+            "date": "2026-09-20",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2103",
+            "side": "offer",
+            "date": "2026-09-20",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m08",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP1021",
+            "side": "peer",
+            "topics": [
+              "loops"
+            ],
+            "date": "2026-09-21",
+            "minute": 1080,
+            "endMinute": 1140,
+            "strictTime": true,
+            "communication": "english|mandarin",
+            "missing": [],
+            "place": "online"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP1021",
+            "side": "peer",
+            "topics": [
+              "loops"
+            ],
+            "date": "2026-09-21",
+            "minute": 1080,
+            "endMinute": 1140,
+            "strictTime": true,
+            "communication": "mandarin",
+            "missing": [],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m09",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "BISC1001",
+            "side": "seek",
+            "date": "2026-09-22",
+            "minute": 720,
+            "endMinute": 780,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "BISC1001",
+            "side": "offer",
+            "fee": {
+              "amount": 0,
+              "scope": "asking"
+            },
+            "date": "2026-09-22",
+            "minute": 720,
+            "endMinute": 780,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m10",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "ielts",
+            "side": "peer",
+            "topics": [
+              "speaking"
+            ],
+            "date": "2026-09-23",
+            "minute": 1200,
+            "endMinute": 1260,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "online"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "ielts",
+            "side": "peer",
+            "topics": [
+              "speaking"
+            ],
+            "date": "2026-09-23",
+            "minute": 1200,
+            "endMinute": 1260,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-m11",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2711",
+            "side": "peer",
+            "date": "2026-09-12",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-m12",
+      "kind": "study",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1013",
+            "side": "seek",
+            "fee": {
+              "currency": "HKD",
+              "amount": 100,
+              "basis": "session",
+              "scope": "maximum"
+            },
+            "topics": [
+              "limits"
+            ],
+            "date": "2026-09-24",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "MATH1013",
+            "side": "offer",
+            "fee": {
+              "currency": "HKD",
+              "amount": 80,
+              "basis": "session",
+              "scope": "asking"
+            },
+            "topics": [
+              "limits"
+            ],
+            "date": "2026-09-24",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-r01",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2011",
+            "side": "offer",
+            "topics": [
+              "pointers"
+            ],
+            "date": "2026-09-14",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2011",
+            "side": "offer",
+            "topics": [
+              "pointers"
+            ],
+            "date": "2026-09-14",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-r02",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-r03",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2123",
+            "side": "seek",
+            "fee": {
+              "amount": 0,
+              "scope": "maximum"
+            },
+            "date": "2026-09-16",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "cantonese",
+            "missing": [],
+            "place": "online"
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-r04",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2123",
+            "side": "seek",
+            "date": "2026-09-16",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "cantonese",
+            "missing": [],
+            "place": "online"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2123",
+            "side": "offer",
+            "fee": {
+              "amount": 0,
+              "scope": "asking"
+            },
+            "date": "2026-09-16",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-r05",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-r06",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2711",
+            "side": "offer",
+            "date": "2026-09-12",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-r07",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-r08",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "study",
+            "entity": "COMP1021",
+            "side": "offer",
+            "topics": [
+              "loops"
+            ],
+            "date": "2026-09-21",
+            "minute": 1080,
+            "endMinute": 1140,
+            "strictTime": true,
+            "communication": "mandarin",
+            "missing": [],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-r09",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "ielts",
+            "side": "peer",
+            "topics": [
+              "speaking"
+            ],
+            "date": "2026-09-23",
+            "minute": 1200,
+            "endMinute": 1260,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "online"
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-r10",
+      "kind": "study",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "time",
+          "communication"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "BISC1001",
+            "side": "offer",
+            "date": "2026-09-22",
+            "minute": 720,
+            "endMinute": 780,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "BISC1001",
+            "side": "seek",
+            "date": "2026-09-10",
+            "strictTime": false,
+            "missing": [
+              "time",
+              "communication"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-u01",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "course"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2011",
+            "side": "seek",
+            "topics": [
+              "pointers"
+            ],
+            "date": "2026-09-14",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "unknown-course",
+            "side": "offer",
+            "place": "library",
+            "date": "2026-09-14",
+            "minute": 960,
+            "endMinute": 1020,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [
+              "course"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-u02",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-u03",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "communication"
+        ]
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "study",
+            "entity": "ECON2123",
+            "side": "offer",
+            "fee": {
+              "amount": 0,
+              "scope": "asking"
+            },
+            "date": "2026-09-16",
+            "minute": 840,
+            "endMinute": 900,
+            "strictTime": true,
+            "missing": [
+              "communication"
+            ],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-u04",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-u05",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "study",
+            "entity": "LANG1403",
+            "side": "offer",
+            "topics": [
+              "presentation"
+            ],
+            "date": "2026-09-19",
+            "minute": 660,
+            "endMinute": 720,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "online"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-u06",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "course"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "study",
+            "entity": "COMP2711",
+            "side": "offer",
+            "date": "2026-09-12",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [],
+            "place": "library"
+          }
+        ],
+        [
+          {
+            "kind": "study",
+            "entity": "unknown-course",
+            "side": "seek",
+            "place": "library",
+            "date": "2026-09-12",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "communication": "english",
+            "missing": [
+              "course"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-study-u07",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-study-u08",
+      "kind": "study",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-m01",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-18",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "luggage": 1,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-18",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "luggage": 1,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m02",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>kowloon-station",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "kowloon-station",
+            "date": "2026-09-12",
+            "minute": 540,
+            "strictTime": false,
+            "seats": 2,
+            "fee": {
+              "currency": "HKD",
+              "amount": 30,
+              "basis": "person",
+              "scope": "asking"
+            },
+            "allowedLuggageKinds": [
+              "backpack"
+            ],
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>kowloon-station",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "kowloon-station",
+            "date": "2026-09-12",
+            "minute": 540,
+            "strictTime": false,
+            "party": 2,
+            "fee": {
+              "currency": "HKD",
+              "amount": 40,
+              "basis": "person",
+              "scope": "maximum"
+            },
+            "luggage": 2,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m03",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>hang-hau",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "hang-hau",
+            "date": "2026-09-12",
+            "minute": 480,
+            "strictTime": false,
+            "seats": 1,
+            "fee": {
+              "amount": 0
+            },
+            "luggageLimit": 1,
+            "luggageLimitKind": "small-bag",
+            "allowedLuggageKinds": [
+              "small-bag"
+            ],
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>hang-hau",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "hang-hau",
+            "date": "2026-09-12",
+            "minute": 480,
+            "strictTime": false,
+            "party": 1,
+            "fee": {
+              "amount": 0
+            },
+            "luggage": 1,
+            "luggageKind": "small-bag",
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m04",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hang-hau>airport",
+            "side": "share",
+            "from": "hang-hau",
+            "to": "airport",
+            "fromExit": "A",
+            "date": "2026-09-13",
+            "minute": 840,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hang-hau>airport",
+            "side": "share",
+            "from": "hang-hau",
+            "to": "airport",
+            "fromExit": "A",
+            "date": "2026-09-13",
+            "minute": 840,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m05",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>sha-tin",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "sha-tin",
+            "date": "2026-09-14",
+            "minute": 1110,
+            "strictTime": false,
+            "seats": 3,
+            "fee": {
+              "amount": 0
+            },
+            "luggageLimit": 3,
+            "luggageLimitKind": "backpack",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>sha-tin",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "sha-tin",
+            "date": "2026-09-14",
+            "minute": 1110,
+            "strictTime": false,
+            "party": 3,
+            "fee": {
+              "amount": 0
+            },
+            "luggage": 3,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m06",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "capacity"
+      ],
+      "parsedMissing": [
+        [
+          "capacity"
+        ],
+        [
+          "capacity"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-15",
+            "minute": 420,
+            "strictTime": false,
+            "party": 2,
+            "luggage": 2,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "soughtPartyMax": 2,
+            "missing": [
+              "capacity"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-15",
+            "minute": 420,
+            "strictTime": false,
+            "party": 2,
+            "luggage": 2,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "missing": [
+              "capacity"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m07",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "luggage"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>causeway-bay",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "causeway-bay",
+            "toExit": "F",
+            "date": "2026-09-16",
+            "minute": 1260,
+            "strictTime": false,
+            "seats": 1,
+            "missing": [
+              "luggage"
+            ]
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-m08",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hang-hau>hkust-north-bus-stop",
+            "side": "share",
+            "from": "hang-hau",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "A",
+            "date": "2026-09-17",
+            "minute": 1320,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          },
+          {
+            "kind": "transport",
+            "entity": "hkust>hang-hau",
+            "side": "share",
+            "from": "hkust",
+            "to": "hang-hau",
+            "date": "2026-09-17",
+            "minute": 1320,
+            "strictTime": false,
+            "party": 4,
+            "capacity": 4,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hang-hau>hkust-north-bus-stop",
+            "side": "share",
+            "from": "hang-hau",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "A",
+            "date": "2026-09-17",
+            "minute": 1320,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m09",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>kowloon-station",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "kowloon-station",
+            "date": "2026-09-20",
+            "minute": 600,
+            "strictTime": false,
+            "party": 1,
+            "fee": {
+              "amount": 0
+            },
+            "luggage": 1,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m10",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "sha-tin>hkust-north-bus-stop",
+            "side": "driver",
+            "from": "sha-tin",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "A",
+            "date": "2026-09-21",
+            "minute": 510,
+            "strictTime": false,
+            "seats": 2,
+            "fee": {
+              "amount": 0
+            },
+            "luggageLimit": 1,
+            "luggageLimitKind": "backpack",
+            "luggageLimitBasis": "person",
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "sha-tin>hkust-north-bus-stop",
+            "side": "rider",
+            "from": "sha-tin",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "A",
+            "date": "2026-09-21",
+            "minute": 510,
+            "strictTime": false,
+            "party": 1,
+            "fee": {
+              "amount": 0
+            },
+            "luggage": 1,
+            "luggageKind": "backpack",
+            "luggagePerPerson": 1,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m11",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hong-kong-station>hkust-north-bus-stop",
+            "side": "share",
+            "from": "hong-kong-station",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "D",
+            "date": "2026-09-22",
+            "minute": 1200,
+            "strictTime": false,
+            "party": 2,
+            "capacity": 4,
+            "soughtPartyMax": 1,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hong-kong-station>hkust-north-bus-stop",
+            "side": "share",
+            "from": "hong-kong-station",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "D",
+            "date": "2026-09-22",
+            "minute": 1200,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-m12",
+      "kind": "transport",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "date",
+          "time",
+          "schedule",
+          "luggage",
+          "from",
+          "to",
+          "seats"
+        ],
+        [
+          "from",
+          "to"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "unknown-route",
+            "side": "driver",
+            "strictTime": false,
+            "fee": {
+              "amount": 0
+            },
+            "missing": [
+              "date",
+              "time",
+              "schedule",
+              "luggage",
+              "from",
+              "to",
+              "seats"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "unknown-route",
+            "side": "rider",
+            "date": "2026-09-12",
+            "minute": 1020,
+            "strictTime": false,
+            "party": 1,
+            "fee": {
+              "amount": 0
+            },
+            "missing": [
+              "from",
+              "to"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-r01",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-18",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-19",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-r02",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "time",
+          "schedule"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>kowloon-station",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "kowloon-station",
+            "date": "2026-09-20",
+            "minute": 600,
+            "strictTime": false,
+            "seats": 1,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "kowloon-station>hkust-north-bus-stop",
+            "side": "rider",
+            "from": "kowloon-station",
+            "to": "hkust-north-bus-stop",
+            "date": "2026-09-20",
+            "strictTime": false,
+            "party": 1,
+            "missing": [
+              "time",
+              "schedule"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-r03",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>sha-tin",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "sha-tin",
+            "date": "2026-09-14",
+            "minute": 1110,
+            "strictTime": false,
+            "seats": 2,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>sha-tin",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "sha-tin",
+            "date": "2026-09-14",
+            "minute": 1110,
+            "strictTime": false,
+            "party": 3,
+            "fee": {
+              "amount": 0
+            },
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-r04",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "party"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-15",
+            "minute": 420,
+            "strictTime": false,
+            "capacity": 4,
+            "missing": [
+              "party"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-15",
+            "minute": 420,
+            "strictTime": false,
+            "seats": 4,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-r05",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-r06",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-r07",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "luggage"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-18",
+            "minute": 360,
+            "strictTime": false,
+            "seats": 1,
+            "missing": [
+              "luggage"
+            ]
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-r08",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>hang-hau",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "hang-hau",
+            "date": "2026-09-12",
+            "minute": 480,
+            "strictTime": true,
+            "seats": 1,
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-r09",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-19",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-r10",
+      "kind": "transport",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "sha-tin>hkust-north-bus-stop",
+            "side": "driver",
+            "from": "sha-tin",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "A",
+            "date": "2026-09-21",
+            "minute": 510,
+            "strictTime": false,
+            "seats": 1,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "sha-tin>hkust-north-bus-stop",
+            "side": "driver",
+            "from": "sha-tin",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "A",
+            "date": "2026-09-21",
+            "minute": 510,
+            "strictTime": false,
+            "seats": 1,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-u01",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "capacity",
+        "date",
+        "schedule",
+        "time"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "date",
+          "time",
+          "schedule",
+          "capacity"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-18",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "strictTime": false,
+            "party": 1,
+            "missing": [
+              "date",
+              "time",
+              "schedule",
+              "capacity"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-u02",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "seats"
+      ],
+      "parsedMissing": [
+        [
+          "seats"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>kowloon-station",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "kowloon-station",
+            "date": "2026-09-12",
+            "minute": 540,
+            "strictTime": false,
+            "missing": [
+              "seats"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>kowloon-station",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "kowloon-station",
+            "date": "2026-09-12",
+            "minute": 540,
+            "strictTime": false,
+            "party": 2,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-u03",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "party",
+        "schedule",
+        "time"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "time",
+          "schedule",
+          "party"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-15",
+            "minute": 420,
+            "strictTime": false,
+            "party": 2,
+            "capacity": 4,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-15",
+            "strictTime": false,
+            "capacity": 4,
+            "missing": [
+              "time",
+              "schedule",
+              "party"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-u04",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "date",
+          "time",
+          "party"
+        ],
+        [
+          "from",
+          "to",
+          "capacity"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hang-hau>airport",
+            "side": "share",
+            "from": "hang-hau",
+            "to": "airport",
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": [
+              "date",
+              "time"
+            ]
+          },
+          {
+            "kind": "transport",
+            "entity": "hang-hau>airport",
+            "side": "share",
+            "from": "hang-hau",
+            "to": "airport",
+            "fromExit": "A",
+            "date": "2026-09-13",
+            "minute": 840,
+            "strictTime": false,
+            "capacity": 4,
+            "missing": [
+              "party"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "unknown-route",
+            "side": "share",
+            "date": "2026-09-13",
+            "minute": 840,
+            "strictTime": false,
+            "party": 1,
+            "missing": [
+              "from",
+              "to",
+              "capacity"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-u05",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hang-hau>hkust-north-bus-stop",
+            "side": "driver",
+            "from": "hang-hau",
+            "to": "hkust-north-bus-stop",
+            "fromExit": "A",
+            "date": "2026-09-17",
+            "minute": 1320,
+            "strictTime": false,
+            "seats": 1,
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-u06",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "uncertain",
+      "stage": "missing-details",
+      "missing": [
+        "luggage"
+      ],
+      "parsedMissing": [
+        [
+          "luggage"
+        ],
+        [
+          "luggage"
+        ]
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-18",
+            "minute": 360,
+            "strictTime": false,
+            "party": 1,
+            "missing": [
+              "luggage"
+            ]
+          }
+        ],
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>airport",
+            "side": "driver",
+            "from": "hkust-north-bus-stop",
+            "to": "airport",
+            "date": "2026-09-18",
+            "minute": 360,
+            "strictTime": false,
+            "seats": 1,
+            "missing": [
+              "luggage"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-transport-u07",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>kowloon-station",
+            "side": "rider",
+            "from": "hkust-north-bus-stop",
+            "to": "kowloon-station",
+            "date": "2026-09-20",
+            "minute": 600,
+            "strictTime": false,
+            "party": 1,
+            "fee": {
+              "amount": 0
+            },
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-transport-u08",
+      "kind": "transport",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "transport",
+            "entity": "hkust-north-bus-stop>causeway-bay",
+            "side": "share",
+            "from": "hkust-north-bus-stop",
+            "to": "causeway-bay",
+            "toExit": "F",
+            "date": "2026-09-16",
+            "minute": 1260,
+            "strictTime": false,
+            "party": 1,
+            "capacity": 4,
+            "missing": []
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-m01",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "badminton",
+            "side": "offer",
+            "seats": 1,
+            "communication": "cantonese|english",
+            "requiredEquipment": [
+              "racket"
+            ],
+            "place": "sports-center:court-3",
+            "requiredSkill": "beginner",
+            "date": "2026-09-12",
+            "minute": 1080,
+            "endMinute": 1140,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "badminton",
+            "side": "seek",
+            "party": 1,
+            "communication": "english",
+            "equipment": [
+              "racket"
+            ],
+            "place": "sports-center:court-3",
+            "skill": "beginner",
+            "date": "2026-09-12",
+            "minute": 1080,
+            "endMinute": 1140,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m02",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "basketball",
+            "side": "offer",
+            "seats": 1,
+            "communication": "cantonese|english",
+            "place": "outdoor-basketball:court-1",
+            "date": "2026-09-13",
+            "minute": 1020,
+            "endMinute": 1080,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "basketball",
+            "side": "seek",
+            "party": 1,
+            "communication": "cantonese|english",
+            "place": "outdoor-basketball:court-1",
+            "date": "2026-09-13",
+            "minute": 1020,
+            "endMinute": 1080,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m03",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "board-game:catan",
+            "side": "offer",
+            "seats": 1,
+            "guestAccess": "provided",
+            "communication": "english",
+            "place": "ug-hall-5:common-room",
+            "date": "2026-09-14",
+            "minute": 1140,
+            "endMinute": 1260,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "board-game:catan",
+            "side": "seek",
+            "party": 1,
+            "communication": "english",
+            "place": "ug-hall-5:common-room",
+            "date": "2026-09-14",
+            "minute": 1140,
+            "endMinute": 1260,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m04",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "other",
+            "entity": "walking",
+            "side": "seek",
+            "communication": "english",
+            "place": "sai-kung",
+            "date": "2026-09-15",
+            "minute": 480,
+            "strictTime": false,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m05",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "coffee",
+            "side": "peer",
+            "communication": "mandarin",
+            "place": "campus-cafe-entrance",
+            "date": "2026-09-16",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "coffee",
+            "side": "peer",
+            "communication": "mandarin",
+            "place": "campus-cafe-entrance",
+            "skill": "beginner",
+            "date": "2026-09-16",
+            "minute": 900,
+            "endMinute": 960,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m06",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "other",
+            "entity": "dinner",
+            "side": "seek",
+            "party": 1,
+            "place": "hkust",
+            "date": "2026-09-17",
+            "minute": 1110,
+            "strictTime": false,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m07",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-m08",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "table-tennis",
+            "side": "offer",
+            "seats": 1,
+            "communication": "cantonese",
+            "requiredParticipantGender": "female",
+            "providedEquipment": [
+              "racket"
+            ],
+            "place": "sports-center:table-2",
+            "requiredSkill": "beginner",
+            "date": "2026-09-19",
+            "minute": 660,
+            "endMinute": 720,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "table-tennis",
+            "side": "seek",
+            "party": 1,
+            "communication": "cantonese",
+            "participantGender": "female",
+            "borrowedEquipment": [
+              "racket"
+            ],
+            "place": "sports-center:table-2",
+            "skill": "beginner",
+            "date": "2026-09-19",
+            "minute": 660,
+            "endMinute": 720,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m09",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-m10",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-m11",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "match",
+      "stage": "high",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "board-game:codenames",
+            "side": "offer",
+            "seats": 2,
+            "guestAccess": "provided",
+            "communication": "english",
+            "place": "ug-hall-7:common-room",
+            "date": "2026-09-22",
+            "minute": 1140,
+            "endMinute": 1230,
+            "strictTime": true,
+            "missing": []
+          }
+        ],
+        [
+          {
+            "kind": "other",
+            "entity": "board-game:codenames",
+            "side": "seek",
+            "party": 1,
+            "communication": "english",
+            "place": "ug-hall-7:common-room",
+            "date": "2026-09-22",
+            "minute": 1140,
+            "endMinute": 1230,
+            "strictTime": true,
+            "missing": []
+          },
+          {
+            "kind": "other",
+            "entity": "cinema",
+            "side": "seek",
+            "party": 1,
+            "communication": "english",
+            "place": "ug-hall-7:common-room",
+            "date": "2026-09-22",
+            "minute": 1140,
+            "endMinute": 1230,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-m12",
+      "kind": "other",
+      "expected": "match",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r01",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r02",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "place"
+        ],
+        []
+      ],
+      "intents": [
+        [
+          {
+            "kind": "other",
+            "entity": "basketball",
+            "side": "offer",
+            "seats": 1,
+            "date": "2026-09-13",
+            "minute": 1020,
+            "endMinute": 1080,
+            "strictTime": true,
+            "missing": [
+              "place"
+            ]
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r03",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r04",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r05",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r06",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r07",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r08",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r09",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-r10",
+      "kind": "other",
+      "expected": "reject",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-u01",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "other",
+            "entity": "badminton",
+            "side": "seek",
+            "communication": "cantonese",
+            "place": "sports-center:court-3",
+            "date": "2026-09-12",
+            "minute": 1080,
+            "endMinute": 1140,
+            "strictTime": true,
+            "missing": []
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-u02",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-u03",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        [
+          "place"
+        ]
+      ],
+      "intents": [
+        [],
+        [
+          {
+            "kind": "other",
+            "entity": "dinner",
+            "side": "seek",
+            "date": "2026-09-17",
+            "minute": 1110,
+            "strictTime": false,
+            "missing": [
+              "place"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "v2-other-u04",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-u05",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-u06",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-u07",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    },
+    {
+      "id": "v2-other-u08",
+      "kind": "other",
+      "expected": "uncertain",
+      "predicted": "reject",
+      "stage": "intent-not-extracted",
+      "missing": [],
+      "parsedMissing": [
+        [],
+        []
+      ],
+      "intents": [
+        [],
+        []
+      ]
+    }
+  ]
+}

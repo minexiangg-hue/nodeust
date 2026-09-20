@@ -1,0 +1,125 @@
+{
+  "fixtureSha256": "c10ecf8c9f155ebfee02bb2ec62800c2c9342b0c2a39add9a8884a44e0bfa073",
+  "note": "Fresh pre-labelled probe authored by the implementing assistant, not independently authored or human annotated. Thirty cases are a diagnostic sample, not the full independent acceptance set. Labels frozen before first execution.",
+  "byKind": {
+    "hall": {
+      "positive": 3,
+      "tp": 1,
+      "negative": 3,
+      "fp": 0,
+      "precision": 1,
+      "recall": 0.3333333333333333
+    },
+    "goods": {
+      "positive": 3,
+      "tp": 3,
+      "negative": 3,
+      "fp": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "study": {
+      "positive": 3,
+      "tp": 2,
+      "negative": 3,
+      "fp": 0,
+      "precision": 1,
+      "recall": 0.6666666666666666
+    },
+    "transport": {
+      "positive": 3,
+      "tp": 1,
+      "negative": 3,
+      "fp": 0,
+      "precision": 1,
+      "recall": 0.3333333333333333
+    },
+    "other": {
+      "positive": 3,
+      "tp": 3,
+      "negative": 3,
+      "fp": 0,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "overall": {
+    "positive": 15,
+    "tp": 10,
+    "negative": 15,
+    "fp": 0
+  },
+  "misses": [
+    {
+      "id": "fresh-hall-1",
+      "stage": "missing-details",
+      "missing": [
+        "room",
+        "term",
+        "wantedRoom"
+      ],
+      "parsedMissing": [
+        [
+          "term",
+          "wantedRoom"
+        ],
+        []
+      ]
+    },
+    {
+      "id": "fresh-hall-3",
+      "stage": "comparison-rejected",
+      "missing": [],
+      "parsedMissing": [
+        [
+          "wantedRoom"
+        ],
+        [
+          "from",
+          "room"
+        ]
+      ]
+    },
+    {
+      "id": "fresh-study-1",
+      "stage": "missing-details",
+      "missing": [
+        "study-fee"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "study-fee"
+        ]
+      ]
+    },
+    {
+      "id": "fresh-transport-1",
+      "stage": "missing-details",
+      "missing": [
+        "luggage"
+      ],
+      "parsedMissing": [
+        [
+          "luggage"
+        ],
+        [
+          "luggage"
+        ]
+      ]
+    },
+    {
+      "id": "fresh-transport-2",
+      "stage": "missing-details",
+      "missing": [
+        "fare"
+      ],
+      "parsedMissing": [
+        [],
+        [
+          "fare"
+        ]
+      ]
+    }
+  ]
+}

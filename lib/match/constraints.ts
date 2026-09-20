@@ -11,6 +11,7 @@ export interface ConstraintComparison {
 }
 
 export type ResidencePeriod =
+  | { type: 'months'; start: string; end: string }
   | { type: 'academic-year'; startYear: number; endYear: number }
   | {
       type: 'semester';
@@ -153,6 +154,11 @@ function validPeriod(value: unknown): value is ResidencePeriod {
         typeof value.semester === 'string' &&
         semesters.has(value.semester)
       );
+    case 'months':
+      return keysWithin(value, ['type','start','end']) &&
+        typeof value.start === 'string' && typeof value.end === 'string' &&
+        /^\d{4}-(?:0[1-9]|1[0-2])$/.test(value.start) && /^\d{4}-(?:0[1-9]|1[0-2])$/.test(value.end) &&
+        year(Number(value.start.slice(0,4))) && year(Number(value.end.slice(0,4))) && value.start <= value.end;
     case 'dates':
       return (
         keysWithin(value, ['type', 'start', 'end']) &&
@@ -171,9 +177,11 @@ export function parseResidenceLabel(label: string | null | undefined): Residence
   let value: ResidencePeriod | undefined;
   const semester = /^(fall|spring|summer|winter):(\d{4})$/.exec(label);
   const academic = /^academic:(\d{4})-(\d{4})$/.exec(label);
+  const months = /^months:(\d{4}-\d{2})\/(\d{4}-\d{2})$/.exec(label);
   const dates = /^dates:(\d{4}-\d{2}-\d{2})\/(\d{4}-\d{2}-\d{2})$/.exec(label);
   if (semester) value = { type: 'semester', semester: semester[1] as 'fall' | 'spring' | 'summer' | 'winter', year: Number(semester[2]) };
   else if (academic) value = { type: 'academic-year', startYear: Number(academic[1]), endYear: Number(academic[2]) };
+  else if (months) value = {type:'months',start:months[1],end:months[2]};
   else if (dates) value = { type: 'dates', start: dates[1], end: dates[2] };
   return validPeriod(value) ? value : undefined;
 }
@@ -200,7 +208,7 @@ export function compareResidencePeriods(
   if (offered.type !== wanted.type)
     return result('unknown', 'residence-calendar-mapping-required');
   let compatible: boolean;
-  if (offered.type === 'dates' && wanted.type === 'dates') {
+  if ((offered.type === 'dates' && wanted.type === 'dates') || (offered.type === 'months' && wanted.type === 'months')) {
     compatible =
       relation === 'equal'
         ? offered.start === wanted.start && offered.end === wanted.end

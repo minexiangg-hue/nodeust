@@ -1,0 +1,4 @@
+{"from": "previous", "to": "candidate", "target": "/tmp/tmph04evz5w/candidate", "previous": "/tmp/tmph04evz5w/backups/switch-20260919T151949Z-5de7e9aa/previous-next", "databaseChanged": false, "status": "healthy"}
+PASS successful switch preserves environment and data
+{"from": "previous", "to": "candidate", "target": "/tmp/tmpertkwiih/candidate", "previous": "/tmp/tmpertkwiih/backups/switch-20260919T151949Z-e5b9cdc1/previous-next", "databaseChanged": false, "status": "rolled_back"}
+PASS failed-health rollback preserves environment and data
