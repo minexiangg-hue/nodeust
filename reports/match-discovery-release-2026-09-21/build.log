@@ -1,0 +1,70 @@
+
+> nodeust@0.1.0 build
+> next build --webpack && node scripts/prepare-standalone.mjs
+
+▲ Next.js 16.3.4 (webpack)
+✓ Running next.config.ts took 25ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 12.3s
+  Running TypeScript ...
+  Finished TypeScript in 7.3s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/15) ...
+  Generating static pages using 3 workers (3/15)
+  Generating static pages using 3 workers (7/15)
+  Generating static pages using 3 workers (11/15)
+✓ Generating static pages using 3 workers (15/15) in 252ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /announcements
+├ ƒ /api/admin/reports
+├ ƒ /api/admin/users
+├ ƒ /api/announcements
+├ ƒ /api/auth/[action]
+├ ƒ /api/conversations
+├ ƒ /api/conversations/[id]
+├ ƒ /api/conversations/[id]/contact
+├ ƒ /api/conversations/[id]/messages
+├ ƒ /api/feedback
+├ ƒ /api/health
+├ ƒ /api/location
+├ ƒ /api/matches
+├ ƒ /api/posts
+├ ƒ /api/posts/[id]
+├ ƒ /api/profile
+├ ƒ /api/reports
+├ ƒ /auth/hkust
+├ ƒ /explore
+├ ƒ /forgot-password
+├ ƒ /login
+├ ƒ /logout
+├ ○ /maintenance
+├ ƒ /matches
+├ ƒ /messages
+├ ƒ /messages/[id]
+├ ƒ /moderation
+├ ƒ /owner/stats
+├ ƒ /posts
+├ ƒ /posts/[id]/edit
+├ ƒ /posts/new
+├ ƒ /profile
+├ ƒ /register
+├ ƒ /requests/[id]
+├ ƒ /reset-password
+├ ○ /rules
+├ ƒ /saved
+├ ƒ /settings
+└ ƒ /verify-email
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Standalone runtime assets prepared.

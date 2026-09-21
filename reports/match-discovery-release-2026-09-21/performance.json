@@ -1,0 +1,3015 @@
+{
+  "summary": {
+    "posts": 3746,
+    "owners": 500,
+    "buildMs": 2959.147428,
+    "p50Ms": 99.66601300000002,
+    "p95Ms": 184.29416499999934,
+    "maxMs": 240.91681599999993,
+    "meanCandidates": 933.654,
+    "memoryRSS": 356634624,
+    "scope": "Pure in-memory algorithm; existing synthetic corpus at original simulation time, no database/network; all owners queried once"
+  },
+  "rows": [
+    {
+      "owner": "student-004",
+      "ms": 152.6203519999999,
+      "candidates": 1156,
+      "returned": 171
+    },
+    {
+      "owner": "student-031",
+      "ms": 102.14660999999978,
+      "candidates": 817,
+      "returned": 94
+    },
+    {
+      "owner": "student-462",
+      "ms": 89.21673799999962,
+      "candidates": 506,
+      "returned": 8
+    },
+    {
+      "owner": "student-180",
+      "ms": 101.6084420000002,
+      "candidates": 517,
+      "returned": 89
+    },
+    {
+      "owner": "student-010",
+      "ms": 142.56658800000014,
+      "candidates": 1123,
+      "returned": 95
+    },
+    {
+      "owner": "student-007",
+      "ms": 82.43420199999991,
+      "candidates": 755,
+      "returned": 84
+    },
+    {
+      "owner": "student-040",
+      "ms": 125.39232599999968,
+      "candidates": 1257,
+      "returned": 99
+    },
+    {
+      "owner": "student-272",
+      "ms": 84.47506599999997,
+      "candidates": 896,
+      "returned": 56
+    },
+    {
+      "owner": "student-347",
+      "ms": 184.45299300000033,
+      "candidates": 1312,
+      "returned": 70
+    },
+    {
+      "owner": "student-467",
+      "ms": 240.91681599999993,
+      "candidates": 1402,
+      "returned": 109
+    },
+    {
+      "owner": "student-345",
+      "ms": 127.08946500000002,
+      "candidates": 1159,
+      "returned": 47
+    },
+    {
+      "owner": "student-400",
+      "ms": 145.4071589999994,
+      "candidates": 1276,
+      "returned": 103
+    },
+    {
+      "owner": "student-453",
+      "ms": 67.3757340000002,
+      "candidates": 828,
+      "returned": 61
+    },
+    {
+      "owner": "student-256",
+      "ms": 170.22197500000038,
+      "candidates": 1052,
+      "returned": 76
+    },
+    {
+      "owner": "student-440",
+      "ms": 66.65654599999925,
+      "candidates": 868,
+      "returned": 52
+    },
+    {
+      "owner": "student-223",
+      "ms": 110.56073299999935,
+      "candidates": 766,
+      "returned": 16
+    },
+    {
+      "owner": "student-119",
+      "ms": 212.15632900000037,
+      "candidates": 1351,
+      "returned": 72
+    },
+    {
+      "owner": "student-095",
+      "ms": 160.85769299999993,
+      "candidates": 1160,
+      "returned": 42
+    },
+    {
+      "owner": "student-368",
+      "ms": 66.69849499999964,
+      "candidates": 973,
+      "returned": 55
+    },
+    {
+      "owner": "student-245",
+      "ms": 184.01343999999972,
+      "candidates": 1143,
+      "returned": 76
+    },
+    {
+      "owner": "student-296",
+      "ms": 53.23571600000014,
+      "candidates": 800,
+      "returned": 99
+    },
+    {
+      "owner": "student-278",
+      "ms": 85.32917499999985,
+      "candidates": 1035,
+      "returned": 110
+    },
+    {
+      "owner": "student-390",
+      "ms": 82.78037200000017,
+      "candidates": 624,
+      "returned": 62
+    },
+    {
+      "owner": "student-309",
+      "ms": 91.60875000000033,
+      "candidates": 978,
+      "returned": 99
+    },
+    {
+      "owner": "student-492",
+      "ms": 105.01127599999927,
+      "candidates": 565,
+      "returned": 18
+    },
+    {
+      "owner": "student-057",
+      "ms": 84.3719030000002,
+      "candidates": 1066,
+      "returned": 119
+    },
+    {
+      "owner": "student-407",
+      "ms": 186.74598799999967,
+      "candidates": 1369,
+      "returned": 82
+    },
+    {
+      "owner": "student-396",
+      "ms": 107.84866099999999,
+      "candidates": 711,
+      "returned": 4
+    },
+    {
+      "owner": "student-201",
+      "ms": 85.41574800000035,
+      "candidates": 1017,
+      "returned": 154
+    },
+    {
+      "owner": "student-452",
+      "ms": 64.33335399999942,
+      "candidates": 886,
+      "returned": 26
+    },
+    {
+      "owner": "student-234",
+      "ms": 86.01152400000046,
+      "candidates": 551,
+      "returned": 61
+    },
+    {
+      "owner": "student-169",
+      "ms": 111.51647200000025,
+      "candidates": 821,
+      "returned": 25
+    },
+    {
+      "owner": "student-105",
+      "ms": 65.64533200000005,
+      "candidates": 909,
+      "returned": 14
+    },
+    {
+      "owner": "student-414",
+      "ms": 124.62248400000044,
+      "candidates": 691,
+      "returned": 45
+    },
+    {
+      "owner": "student-239",
+      "ms": 172.44540000000052,
+      "candidates": 917,
+      "returned": 33
+    },
+    {
+      "owner": "student-364",
+      "ms": 124.44044200000008,
+      "candidates": 1083,
+      "returned": 110
+    },
+    {
+      "owner": "student-274",
+      "ms": 103.61869699999988,
+      "candidates": 973,
+      "returned": 13
+    },
+    {
+      "owner": "student-449",
+      "ms": 166.0175079999999,
+      "candidates": 1316,
+      "returned": 103
+    },
+    {
+      "owner": "student-295",
+      "ms": 100.95399499999985,
+      "candidates": 805,
+      "returned": 45
+    },
+    {
+      "owner": "student-171",
+      "ms": 75.11618399999952,
+      "candidates": 993,
+      "returned": 98
+    },
+    {
+      "owner": "student-409",
+      "ms": 77.6265569999996,
+      "candidates": 591,
+      "returned": 9
+    },
+    {
+      "owner": "student-461",
+      "ms": 117.365769,
+      "candidates": 1001,
+      "returned": 16
+    },
+    {
+      "owner": "student-484",
+      "ms": 131.99345200000062,
+      "candidates": 1271,
+      "returned": 121
+    },
+    {
+      "owner": "student-159",
+      "ms": 65.43476800000008,
+      "candidates": 1011,
+      "returned": 88
+    },
+    {
+      "owner": "student-481",
+      "ms": 86.571414,
+      "candidates": 727,
+      "returned": 55
+    },
+    {
+      "owner": "student-457",
+      "ms": 113.57149099999879,
+      "candidates": 834,
+      "returned": 81
+    },
+    {
+      "owner": "student-265",
+      "ms": 99.66601300000002,
+      "candidates": 771,
+      "returned": 4
+    },
+    {
+      "owner": "student-154",
+      "ms": 131.06136600000173,
+      "candidates": 1019,
+      "returned": 56
+    },
+    {
+      "owner": "student-236",
+      "ms": 57.34978299999966,
+      "candidates": 881,
+      "returned": 61
+    },
+    {
+      "owner": "student-318",
+      "ms": 92.8912309999996,
+      "candidates": 770,
+      "returned": 12
+    },
+    {
+      "owner": "student-473",
+      "ms": 181.43994799999928,
+      "candidates": 1265,
+      "returned": 53
+    },
+    {
+      "owner": "student-293",
+      "ms": 171.35779199999888,
+      "candidates": 1204,
+      "returned": 48
+    },
+    {
+      "owner": "student-003",
+      "ms": 89.79151599999932,
+      "candidates": 961,
+      "returned": 10
+    },
+    {
+      "owner": "student-100",
+      "ms": 144.8749919999991,
+      "candidates": 1347,
+      "returned": 63
+    },
+    {
+      "owner": "student-167",
+      "ms": 183.15573199999926,
+      "candidates": 1177,
+      "returned": 146
+    },
+    {
+      "owner": "student-137",
+      "ms": 172.54515700000047,
+      "candidates": 1223,
+      "returned": 17
+    },
+    {
+      "owner": "student-411",
+      "ms": 89.44618799999989,
+      "candidates": 992,
+      "returned": 78
+    },
+    {
+      "owner": "student-125",
+      "ms": 207.42428499999914,
+      "candidates": 1277,
+      "returned": 59
+    },
+    {
+      "owner": "student-158",
+      "ms": 46.222578999999314,
+      "candidates": 822,
+      "returned": 90
+    },
+    {
+      "owner": "student-186",
+      "ms": 85.99297900000056,
+      "candidates": 751,
+      "returned": 32
+    },
+    {
+      "owner": "student-360",
+      "ms": 89.1507649999985,
+      "candidates": 615,
+      "returned": 6
+    },
+    {
+      "owner": "student-420",
+      "ms": 90.23828200000025,
+      "candidates": 610,
+      "returned": 83
+    },
+    {
+      "owner": "student-101",
+      "ms": 160.1309309999997,
+      "candidates": 1137,
+      "returned": 33
+    },
+    {
+      "owner": "student-184",
+      "ms": 125.70715500000006,
+      "candidates": 1034,
+      "returned": 89
+    },
+    {
+      "owner": "student-328",
+      "ms": 142.53897599999982,
+      "candidates": 1164,
+      "returned": 84
+    },
+    {
+      "owner": "student-257",
+      "ms": 134.71442899999965,
+      "candidates": 1106,
+      "returned": 144
+    },
+    {
+      "owner": "student-232",
+      "ms": 98.67041800000152,
+      "candidates": 1126,
+      "returned": 150
+    },
+    {
+      "owner": "student-316",
+      "ms": 152.8166600000004,
+      "candidates": 1359,
+      "returned": 42
+    },
+    {
+      "owner": "student-300",
+      "ms": 107.43834200000128,
+      "candidates": 756,
+      "returned": 45
+    },
+    {
+      "owner": "student-055",
+      "ms": 109.75999200000115,
+      "candidates": 907,
+      "returned": 95
+    },
+    {
+      "owner": "student-291",
+      "ms": 103.6479419999996,
+      "candidates": 887,
+      "returned": 18
+    },
+    {
+      "owner": "student-029",
+      "ms": 166.18359999999848,
+      "candidates": 1224,
+      "returned": 56
+    },
+    {
+      "owner": "student-002",
+      "ms": 74.70119700000032,
+      "candidates": 851,
+      "returned": 56
+    },
+    {
+      "owner": "student-270",
+      "ms": 65.06131800000003,
+      "candidates": 478,
+      "returned": 11
+    },
+    {
+      "owner": "student-455",
+      "ms": 187.47353099999964,
+      "candidates": 1397,
+      "returned": 87
+    },
+    {
+      "owner": "student-164",
+      "ms": 96.50396899999942,
+      "candidates": 893,
+      "returned": 7
+    },
+    {
+      "owner": "student-102",
+      "ms": 68.18353800000114,
+      "candidates": 671,
+      "returned": 6
+    },
+    {
+      "owner": "student-230",
+      "ms": 75.57180700000026,
+      "candidates": 836,
+      "returned": 48
+    },
+    {
+      "owner": "student-132",
+      "ms": 87.41263900000013,
+      "candidates": 623,
+      "returned": 9
+    },
+    {
+      "owner": "student-305",
+      "ms": 170.4966089999998,
+      "candidates": 1256,
+      "returned": 76
+    },
+    {
+      "owner": "student-218",
+      "ms": 62.21406500000012,
+      "candidates": 761,
+      "returned": 21
+    },
+    {
+      "owner": "student-468",
+      "ms": 84.43530199999987,
+      "candidates": 669,
+      "returned": 94
+    },
+    {
+      "owner": "student-005",
+      "ms": 166.51517000000058,
+      "candidates": 1253,
+      "returned": 81
+    },
+    {
+      "owner": "student-189",
+      "ms": 58.54986099999951,
+      "candidates": 832,
+      "returned": 57
+    },
+    {
+      "owner": "student-079",
+      "ms": 104.20012599999973,
+      "candidates": 908,
+      "returned": 46
+    },
+    {
+      "owner": "student-112",
+      "ms": 116.11762100000124,
+      "candidates": 1144,
+      "returned": 93
+    },
+    {
+      "owner": "student-179",
+      "ms": 129.81224600000132,
+      "candidates": 1066,
+      "returned": 130
+    },
+    {
+      "owner": "student-153",
+      "ms": 52.20451399999911,
+      "candidates": 830,
+      "returned": 133
+    },
+    {
+      "owner": "student-142",
+      "ms": 128.20288000000073,
+      "candidates": 1127,
+      "returned": 91
+    },
+    {
+      "owner": "student-146",
+      "ms": 68.03149200000007,
+      "candidates": 832,
+      "returned": 13
+    },
+    {
+      "owner": "student-106",
+      "ms": 105.81224800000018,
+      "candidates": 1037,
+      "returned": 94
+    },
+    {
+      "owner": "student-255",
+      "ms": 82.09835300000123,
+      "candidates": 1051,
+      "returned": 202
+    },
+    {
+      "owner": "student-454",
+      "ms": 99.76273399999991,
+      "candidates": 963,
+      "returned": 18
+    },
+    {
+      "owner": "student-361",
+      "ms": 116.83922399999938,
+      "candidates": 698,
+      "returned": 58
+    },
+    {
+      "owner": "student-140",
+      "ms": 51.694649000000936,
+      "candidates": 849,
+      "returned": 45
+    },
+    {
+      "owner": "student-425",
+      "ms": 177.0926150000014,
+      "candidates": 1199,
+      "returned": 61
+    },
+    {
+      "owner": "student-062",
+      "ms": 57.985593000001245,
+      "candidates": 614,
+      "returned": 29
+    },
+    {
+      "owner": "student-135",
+      "ms": 91.70277600000009,
+      "candidates": 1162,
+      "returned": 108
+    },
+    {
+      "owner": "student-006",
+      "ms": 86.50089200000002,
+      "candidates": 616,
+      "returned": 8
+    },
+    {
+      "owner": "student-499",
+      "ms": 107.8894479999999,
+      "candidates": 901,
+      "returned": 91
+    },
+    {
+      "owner": "student-206",
+      "ms": 90.5051110000004,
+      "candidates": 883,
+      "returned": 12
+    },
+    {
+      "owner": "student-311",
+      "ms": 196.53176900000108,
+      "candidates": 1340,
+      "returned": 52
+    },
+    {
+      "owner": "student-041",
+      "ms": 170.65579699999944,
+      "candidates": 995,
+      "returned": 151
+    },
+    {
+      "owner": "student-380",
+      "ms": 76.83526499999971,
+      "candidates": 781,
+      "returned": 18
+    },
+    {
+      "owner": "student-287",
+      "ms": 117.29775299999892,
+      "candidates": 974,
+      "returned": 124
+    },
+    {
+      "owner": "student-054",
+      "ms": 84.3307850000001,
+      "candidates": 674,
+      "returned": 43
+    },
+    {
+      "owner": "student-104",
+      "ms": 52.71077199999854,
+      "candidates": 818,
+      "returned": 62
+    },
+    {
+      "owner": "student-113",
+      "ms": 157.34630500000094,
+      "candidates": 1171,
+      "returned": 74
+    },
+    {
+      "owner": "student-246",
+      "ms": 96.00021500000003,
+      "candidates": 743,
+      "returned": 11
+    },
+    {
+      "owner": "student-162",
+      "ms": 88.99555399999917,
+      "candidates": 633,
+      "returned": 10
+    },
+    {
+      "owner": "student-241",
+      "ms": 92.96037199999955,
+      "candidates": 719,
+      "returned": 10
+    },
+    {
+      "owner": "student-008",
+      "ms": 77.01317700000072,
+      "candidates": 1071,
+      "returned": 106
+    },
+    {
+      "owner": "student-131",
+      "ms": 183.27631999999903,
+      "candidates": 1265,
+      "returned": 70
+    },
+    {
+      "owner": "student-423",
+      "ms": 49.86867800000073,
+      "candidates": 689,
+      "returned": 43
+    },
+    {
+      "owner": "student-222",
+      "ms": 77.4428629999984,
+      "candidates": 764,
+      "returned": 71
+    },
+    {
+      "owner": "student-014",
+      "ms": 70.80645100000038,
+      "candidates": 983,
+      "returned": 45
+    },
+    {
+      "owner": "student-212",
+      "ms": 64.39116399999875,
+      "candidates": 818,
+      "returned": 42
+    },
+    {
+      "owner": "student-210",
+      "ms": 93.44523900000058,
+      "candidates": 776,
+      "returned": 69
+    },
+    {
+      "owner": "student-303",
+      "ms": 73.68956199999957,
+      "candidates": 897,
+      "returned": 14
+    },
+    {
+      "owner": "student-429",
+      "ms": 87.31670900000063,
+      "candidates": 1004,
+      "returned": 59
+    },
+    {
+      "owner": "student-324",
+      "ms": 77.64885800000047,
+      "candidates": 694,
+      "returned": 44
+    },
+    {
+      "owner": "student-115",
+      "ms": 84.01249000000098,
+      "candidates": 640,
+      "returned": 7
+    },
+    {
+      "owner": "student-068",
+      "ms": 100.48221200000262,
+      "candidates": 1064,
+      "returned": 89
+    },
+    {
+      "owner": "student-448",
+      "ms": 115.27601399999912,
+      "candidates": 1063,
+      "returned": 112
+    },
+    {
+      "owner": "student-224",
+      "ms": 65.51447799999733,
+      "candidates": 887,
+      "returned": 37
+    },
+    {
+      "owner": "student-294",
+      "ms": 87.21541900000011,
+      "candidates": 624,
+      "returned": 11
+    },
+    {
+      "owner": "student-044",
+      "ms": 61.95299700000032,
+      "candidates": 877,
+      "returned": 57
+    },
+    {
+      "owner": "student-089",
+      "ms": 175.74355800000194,
+      "candidates": 1276,
+      "returned": 106
+    },
+    {
+      "owner": "student-286",
+      "ms": 154.22971699999835,
+      "candidates": 1111,
+      "returned": 53
+    },
+    {
+      "owner": "student-193",
+      "ms": 93.6560950000021,
+      "candidates": 715,
+      "returned": 47
+    },
+    {
+      "owner": "student-155",
+      "ms": 152.57025799999974,
+      "candidates": 1035,
+      "returned": 52
+    },
+    {
+      "owner": "student-393",
+      "ms": 63.806948000001285,
+      "candidates": 992,
+      "returned": 56
+    },
+    {
+      "owner": "student-166",
+      "ms": 118.01198099999965,
+      "candidates": 1265,
+      "returned": 109
+    },
+    {
+      "owner": "student-436",
+      "ms": 122.18322400000034,
+      "candidates": 1027,
+      "returned": 82
+    },
+    {
+      "owner": "student-220",
+      "ms": 150.8268820000012,
+      "candidates": 1220,
+      "returned": 22
+    },
+    {
+      "owner": "student-196",
+      "ms": 129.70940300000075,
+      "candidates": 1075,
+      "returned": 55
+    },
+    {
+      "owner": "student-027",
+      "ms": 75.1903029999994,
+      "candidates": 952,
+      "returned": 57
+    },
+    {
+      "owner": "student-417",
+      "ms": 93.28124199999729,
+      "candidates": 1109,
+      "returned": 113
+    },
+    {
+      "owner": "student-081",
+      "ms": 61.88659199999893,
+      "candidates": 787,
+      "returned": 11
+    },
+    {
+      "owner": "student-355",
+      "ms": 102.45727199999965,
+      "candidates": 777,
+      "returned": 61
+    },
+    {
+      "owner": "student-034",
+      "ms": 140.65480599999864,
+      "candidates": 1307,
+      "returned": 140
+    },
+    {
+      "owner": "student-406",
+      "ms": 116.66633000000002,
+      "candidates": 1131,
+      "returned": 65
+    },
+    {
+      "owner": "student-063",
+      "ms": 92.56051200000002,
+      "candidates": 1038,
+      "returned": 104
+    },
+    {
+      "owner": "student-262",
+      "ms": 121.03400099999999,
+      "candidates": 1348,
+      "returned": 79
+    },
+    {
+      "owner": "student-138",
+      "ms": 82.16534899999897,
+      "candidates": 689,
+      "returned": 13
+    },
+    {
+      "owner": "student-035",
+      "ms": 169.4649759999993,
+      "candidates": 1130,
+      "returned": 66
+    },
+    {
+      "owner": "student-478",
+      "ms": 102.2282120000018,
+      "candidates": 1147,
+      "returned": 99
+    },
+    {
+      "owner": "student-325",
+      "ms": 94.10646899999847,
+      "candidates": 818,
+      "returned": 10
+    },
+    {
+      "owner": "student-051",
+      "ms": 61.793837000001076,
+      "candidates": 892,
+      "returned": 100
+    },
+    {
+      "owner": "student-214",
+      "ms": 79.79906499999925,
+      "candidates": 987,
+      "returned": 21
+    },
+    {
+      "owner": "student-357",
+      "ms": 73.65696100000059,
+      "candidates": 1064,
+      "returned": 239
+    },
+    {
+      "owner": "student-312",
+      "ms": 84.33885100000043,
+      "candidates": 612,
+      "returned": 34
+    },
+    {
+      "owner": "student-497",
+      "ms": 191.3206480000008,
+      "candidates": 1214,
+      "returned": 77
+    },
+    {
+      "owner": "student-264",
+      "ms": 108.06976700000087,
+      "candidates": 742,
+      "returned": 84
+    },
+    {
+      "owner": "student-404",
+      "ms": 84.83368800000244,
+      "candidates": 895,
+      "returned": 81
+    },
+    {
+      "owner": "student-352",
+      "ms": 96.31872300000032,
+      "candidates": 997,
+      "returned": 121
+    },
+    {
+      "owner": "student-327",
+      "ms": 69.83275700000013,
+      "candidates": 858,
+      "returned": 62
+    },
+    {
+      "owner": "student-466",
+      "ms": 116.6390680000004,
+      "candidates": 1139,
+      "returned": 20
+    },
+    {
+      "owner": "student-083",
+      "ms": 187.6656320000002,
+      "candidates": 1210,
+      "returned": 134
+    },
+    {
+      "owner": "student-332",
+      "ms": 97.39102099999945,
+      "candidates": 991,
+      "returned": 68
+    },
+    {
+      "owner": "student-317",
+      "ms": 180.01899600000252,
+      "candidates": 1123,
+      "returned": 84
+    },
+    {
+      "owner": "student-182",
+      "ms": 82.87167299999783,
+      "candidates": 788,
+      "returned": 18
+    },
+    {
+      "owner": "student-190",
+      "ms": 105.3380479999978,
+      "candidates": 939,
+      "returned": 70
+    },
+    {
+      "owner": "student-371",
+      "ms": 150.25007099999857,
+      "candidates": 1113,
+      "returned": 46
+    },
+    {
+      "owner": "student-418",
+      "ms": 92.37139700000262,
+      "candidates": 938,
+      "returned": 24
+    },
+    {
+      "owner": "student-401",
+      "ms": 163.78979600000093,
+      "candidates": 1300,
+      "returned": 141
+    },
+    {
+      "owner": "student-152",
+      "ms": 81.7662820000005,
+      "candidates": 1005,
+      "returned": 37
+    },
+    {
+      "owner": "student-129",
+      "ms": 98.6329880000012,
+      "candidates": 1060,
+      "returned": 68
+    },
+    {
+      "owner": "student-267",
+      "ms": 57.11628500000006,
+      "candidates": 738,
+      "returned": 139
+    },
+    {
+      "owner": "student-134",
+      "ms": 65.24441200000001,
+      "candidates": 838,
+      "returned": 95
+    },
+    {
+      "owner": "student-064",
+      "ms": 131.60909099999844,
+      "candidates": 1065,
+      "returned": 87
+    },
+    {
+      "owner": "student-308",
+      "ms": 54.63479599999846,
+      "candidates": 883,
+      "returned": 82
+    },
+    {
+      "owner": "student-231",
+      "ms": 46.79651400000148,
+      "candidates": 946,
+      "returned": 136
+    },
+    {
+      "owner": "student-388",
+      "ms": 131.7670169999983,
+      "candidates": 1121,
+      "returned": 67
+    },
+    {
+      "owner": "student-381",
+      "ms": 71.07134700000097,
+      "candidates": 948,
+      "returned": 59
+    },
+    {
+      "owner": "student-415",
+      "ms": 117.0735620000014,
+      "candidates": 748,
+      "returned": 39
+    },
+    {
+      "owner": "student-243",
+      "ms": 106.79028899999685,
+      "candidates": 1163,
+      "returned": 60
+    },
+    {
+      "owner": "student-496",
+      "ms": 83.32372899999973,
+      "candidates": 1072,
+      "returned": 89
+    },
+    {
+      "owner": "student-121",
+      "ms": 92.71852800000124,
+      "candidates": 811,
+      "returned": 13
+    },
+    {
+      "owner": "student-490",
+      "ms": 79.68525399999999,
+      "candidates": 831,
+      "returned": 33
+    },
+    {
+      "owner": "student-323",
+      "ms": 194.20752500000162,
+      "candidates": 1275,
+      "returned": 91
+    },
+    {
+      "owner": "student-279",
+      "ms": 71.46294000000125,
+      "candidates": 1122,
+      "returned": 100
+    },
+    {
+      "owner": "student-349",
+      "ms": 101.3190399999985,
+      "candidates": 767,
+      "returned": 37
+    },
+    {
+      "owner": "student-333",
+      "ms": 85.14516200000071,
+      "candidates": 1103,
+      "returned": 121
+    },
+    {
+      "owner": "student-056",
+      "ms": 54.97772899999836,
+      "candidates": 864,
+      "returned": 74
+    },
+    {
+      "owner": "student-065",
+      "ms": 146.2965949999998,
+      "candidates": 1189,
+      "returned": 109
+    },
+    {
+      "owner": "student-122",
+      "ms": 89.4835579999999,
+      "candidates": 713,
+      "returned": 7
+    },
+    {
+      "owner": "student-362",
+      "ms": 56.05449700000099,
+      "candidates": 837,
+      "returned": 108
+    },
+    {
+      "owner": "student-093",
+      "ms": 84.79388299999846,
+      "candidates": 1096,
+      "returned": 57
+    },
+    {
+      "owner": "student-297",
+      "ms": 87.49133599999914,
+      "candidates": 798,
+      "returned": 19
+    },
+    {
+      "owner": "student-433",
+      "ms": 81.3191740000002,
+      "candidates": 812,
+      "returned": 87
+    },
+    {
+      "owner": "student-160",
+      "ms": 115.99440099999993,
+      "candidates": 1155,
+      "returned": 162
+    },
+    {
+      "owner": "student-022",
+      "ms": 130.92029100000218,
+      "candidates": 1242,
+      "returned": 64
+    },
+    {
+      "owner": "student-011",
+      "ms": 177.9120010000006,
+      "candidates": 1039,
+      "returned": 22
+    },
+    {
+      "owner": "student-091",
+      "ms": 101.60168800000247,
+      "candidates": 830,
+      "returned": 4
+    },
+    {
+      "owner": "student-379",
+      "ms": 110.09814499999993,
+      "candidates": 655,
+      "returned": 19
+    },
+    {
+      "owner": "student-059",
+      "ms": 169.597775000002,
+      "candidates": 907,
+      "returned": 105
+    },
+    {
+      "owner": "student-205",
+      "ms": 99.9915230000006,
+      "candidates": 905,
+      "returned": 41
+    },
+    {
+      "owner": "student-370",
+      "ms": 125.15951000000132,
+      "candidates": 1166,
+      "returned": 114
+    },
+    {
+      "owner": "student-070",
+      "ms": 116.72086200000194,
+      "candidates": 893,
+      "returned": 87
+    },
+    {
+      "owner": "student-074",
+      "ms": 89.19188099999883,
+      "candidates": 969,
+      "returned": 64
+    },
+    {
+      "owner": "student-353",
+      "ms": 168.71436099999846,
+      "candidates": 1236,
+      "returned": 143
+    },
+    {
+      "owner": "student-053",
+      "ms": 187.9324919999999,
+      "candidates": 1099,
+      "returned": 52
+    },
+    {
+      "owner": "student-281",
+      "ms": 175.4877290000004,
+      "candidates": 1276,
+      "returned": 99
+    },
+    {
+      "owner": "student-387",
+      "ms": 66.13554199999999,
+      "candidates": 1062,
+      "returned": 94
+    },
+    {
+      "owner": "student-284",
+      "ms": 69.1550470000002,
+      "candidates": 925,
+      "returned": 53
+    },
+    {
+      "owner": "student-376",
+      "ms": 99.10656499999823,
+      "candidates": 1253,
+      "returned": 92
+    },
+    {
+      "owner": "student-174",
+      "ms": 95.06380100000024,
+      "candidates": 710,
+      "returned": 7
+    },
+    {
+      "owner": "student-042",
+      "ms": 114.2973920000004,
+      "candidates": 725,
+      "returned": 8
+    },
+    {
+      "owner": "student-036",
+      "ms": 102.62465499999962,
+      "candidates": 680,
+      "returned": 34
+    },
+    {
+      "owner": "student-259",
+      "ms": 88.1154549999992,
+      "candidates": 506,
+      "returned": 9
+    },
+    {
+      "owner": "student-073",
+      "ms": 107.5094769999996,
+      "candidates": 750,
+      "returned": 69
+    },
+    {
+      "owner": "student-240",
+      "ms": 74.7817869999999,
+      "candidates": 579,
+      "returned": 99
+    },
+    {
+      "owner": "student-017",
+      "ms": 173.32604900000297,
+      "candidates": 1113,
+      "returned": 155
+    },
+    {
+      "owner": "student-299",
+      "ms": 157.77129100000093,
+      "candidates": 1154,
+      "returned": 72
+    },
+    {
+      "owner": "student-023",
+      "ms": 178.58932000000277,
+      "candidates": 1255,
+      "returned": 24
+    },
+    {
+      "owner": "student-251",
+      "ms": 206.18690699999934,
+      "candidates": 1442,
+      "returned": 50
+    },
+    {
+      "owner": "student-238",
+      "ms": 94.45274599999902,
+      "candidates": 1061,
+      "returned": 106
+    },
+    {
+      "owner": "student-191",
+      "ms": 186.05125699999917,
+      "candidates": 1256,
+      "returned": 70
+    },
+    {
+      "owner": "student-383",
+      "ms": 153.89055999999982,
+      "candidates": 1246,
+      "returned": 55
+    },
+    {
+      "owner": "student-410",
+      "ms": 92.14009499999884,
+      "candidates": 1063,
+      "returned": 60
+    },
+    {
+      "owner": "student-130",
+      "ms": 93.84081000000151,
+      "candidates": 1012,
+      "returned": 14
+    },
+    {
+      "owner": "student-226",
+      "ms": 130.51491199999873,
+      "candidates": 1081,
+      "returned": 18
+    },
+    {
+      "owner": "student-082",
+      "ms": 98.12670900000012,
+      "candidates": 1077,
+      "returned": 30
+    },
+    {
+      "owner": "student-334",
+      "ms": 126.44703200000004,
+      "candidates": 1116,
+      "returned": 21
+    },
+    {
+      "owner": "student-363",
+      "ms": 76.10621900000115,
+      "candidates": 996,
+      "returned": 21
+    },
+    {
+      "owner": "student-173",
+      "ms": 180.0511770000012,
+      "candidates": 1063,
+      "returned": 54
+    },
+    {
+      "owner": "student-372",
+      "ms": 77.39333999999872,
+      "candidates": 677,
+      "returned": 79
+    },
+    {
+      "owner": "student-329",
+      "ms": 187.48406100000284,
+      "candidates": 1131,
+      "returned": 58
+    },
+    {
+      "owner": "student-133",
+      "ms": 90.99096199999985,
+      "candidates": 889,
+      "returned": 12
+    },
+    {
+      "owner": "student-351",
+      "ms": 79.98053599999912,
+      "candidates": 1114,
+      "returned": 107
+    },
+    {
+      "owner": "student-441",
+      "ms": 82.94996999999785,
+      "candidates": 853,
+      "returned": 64
+    },
+    {
+      "owner": "student-301",
+      "ms": 102.40908099999797,
+      "candidates": 575,
+      "returned": 30
+    },
+    {
+      "owner": "student-341",
+      "ms": 184.29416499999934,
+      "candidates": 1390,
+      "returned": 55
+    },
+    {
+      "owner": "student-444",
+      "ms": 84.54655099999945,
+      "candidates": 655,
+      "returned": 7
+    },
+    {
+      "owner": "student-247",
+      "ms": 109.17217099999834,
+      "candidates": 546,
+      "returned": 18
+    },
+    {
+      "owner": "student-422",
+      "ms": 43.622356999996555,
+      "candidates": 810,
+      "returned": 81
+    },
+    {
+      "owner": "student-290",
+      "ms": 63.16312200000175,
+      "candidates": 771,
+      "returned": 53
+    },
+    {
+      "owner": "student-233",
+      "ms": 212.32169799999974,
+      "candidates": 1227,
+      "returned": 38
+    },
+    {
+      "owner": "student-249",
+      "ms": 100.6857029999992,
+      "candidates": 1106,
+      "returned": 88
+    },
+    {
+      "owner": "student-475",
+      "ms": 73.85035399999833,
+      "candidates": 801,
+      "returned": 100
+    },
+    {
+      "owner": "student-494",
+      "ms": 67.74172900000121,
+      "candidates": 820,
+      "returned": 46
+    },
+    {
+      "owner": "student-271",
+      "ms": 111.41380100000242,
+      "candidates": 795,
+      "returned": 69
+    },
+    {
+      "owner": "student-306",
+      "ms": 74.72902800000156,
+      "candidates": 645,
+      "returned": 16
+    },
+    {
+      "owner": "student-377",
+      "ms": 169.54040799999711,
+      "candidates": 1193,
+      "returned": 153
+    },
+    {
+      "owner": "student-269",
+      "ms": 155.60818899999867,
+      "candidates": 1204,
+      "returned": 66
+    },
+    {
+      "owner": "student-285",
+      "ms": 105.91585099999793,
+      "candidates": 1099,
+      "returned": 53
+    },
+    {
+      "owner": "student-046",
+      "ms": 131.75047599999743,
+      "candidates": 1249,
+      "returned": 68
+    },
+    {
+      "owner": "student-183",
+      "ms": 99.55306100000234,
+      "candidates": 905,
+      "returned": 10
+    },
+    {
+      "owner": "student-439",
+      "ms": 115.21643299999778,
+      "candidates": 847,
+      "returned": 92
+    },
+    {
+      "owner": "student-080",
+      "ms": 85.27567500000077,
+      "candidates": 916,
+      "returned": 55
+    },
+    {
+      "owner": "student-047",
+      "ms": 155.847818000002,
+      "candidates": 1230,
+      "returned": 118
+    },
+    {
+      "owner": "student-088",
+      "ms": 132.80320900000152,
+      "candidates": 1308,
+      "returned": 106
+    },
+    {
+      "owner": "student-419",
+      "ms": 161.5499290000007,
+      "candidates": 1157,
+      "returned": 11
+    },
+    {
+      "owner": "student-289",
+      "ms": 96.1799119999996,
+      "candidates": 708,
+      "returned": 61
+    },
+    {
+      "owner": "student-356",
+      "ms": 81.94585800000277,
+      "candidates": 884,
+      "returned": 22
+    },
+    {
+      "owner": "student-486",
+      "ms": 130.3638690000007,
+      "candidates": 766,
+      "returned": 13
+    },
+    {
+      "owner": "student-280",
+      "ms": 105.15982399999848,
+      "candidates": 1206,
+      "returned": 182
+    },
+    {
+      "owner": "student-168",
+      "ms": 86.39916000000085,
+      "candidates": 623,
+      "returned": 2
+    },
+    {
+      "owner": "student-359",
+      "ms": 223.91519700000208,
+      "candidates": 1148,
+      "returned": 19
+    },
+    {
+      "owner": "student-215",
+      "ms": 158.81010700000115,
+      "candidates": 1157,
+      "returned": 130
+    },
+    {
+      "owner": "student-273",
+      "ms": 61.35802999999942,
+      "candidates": 836,
+      "returned": 44
+    },
+    {
+      "owner": "student-253",
+      "ms": 108.02527299999929,
+      "candidates": 823,
+      "returned": 125
+    },
+    {
+      "owner": "student-120",
+      "ms": 110.17978800000128,
+      "candidates": 802,
+      "returned": 54
+    },
+    {
+      "owner": "student-263",
+      "ms": 177.47484199999963,
+      "candidates": 1163,
+      "returned": 69
+    },
+    {
+      "owner": "student-018",
+      "ms": 93.96727699999974,
+      "candidates": 759,
+      "returned": 25
+    },
+    {
+      "owner": "student-165",
+      "ms": 89.55689500000153,
+      "candidates": 1196,
+      "returned": 49
+    },
+    {
+      "owner": "student-116",
+      "ms": 77.08057399999961,
+      "candidates": 939,
+      "returned": 22
+    },
+    {
+      "owner": "student-009",
+      "ms": 83.80473999999958,
+      "candidates": 1144,
+      "returned": 54
+    },
+    {
+      "owner": "student-013",
+      "ms": 106.35611500000232,
+      "candidates": 885,
+      "returned": 72
+    },
+    {
+      "owner": "student-358",
+      "ms": 139.65961199999583,
+      "candidates": 1226,
+      "returned": 88
+    },
+    {
+      "owner": "student-145",
+      "ms": 74.18383800000447,
+      "candidates": 707,
+      "returned": 41
+    },
+    {
+      "owner": "student-020",
+      "ms": 63.18277799999487,
+      "candidates": 774,
+      "returned": 6
+    },
+    {
+      "owner": "student-344",
+      "ms": 64.0012429999988,
+      "candidates": 755,
+      "returned": 133
+    },
+    {
+      "owner": "student-204",
+      "ms": 93.34453199999552,
+      "candidates": 595,
+      "returned": 50
+    },
+    {
+      "owner": "student-203",
+      "ms": 188.17858200000046,
+      "candidates": 1208,
+      "returned": 21
+    },
+    {
+      "owner": "student-261",
+      "ms": 94.45192600000155,
+      "candidates": 1137,
+      "returned": 109
+    },
+    {
+      "owner": "student-045",
+      "ms": 90.4655070000008,
+      "candidates": 1010,
+      "returned": 47
+    },
+    {
+      "owner": "student-197",
+      "ms": 140.375043,
+      "candidates": 858,
+      "returned": 12
+    },
+    {
+      "owner": "student-485",
+      "ms": 115.61106300000392,
+      "candidates": 1216,
+      "returned": 79
+    },
+    {
+      "owner": "student-338",
+      "ms": 57.358578999999736,
+      "candidates": 782,
+      "returned": 7
+    },
+    {
+      "owner": "student-185",
+      "ms": 159.1128949999984,
+      "candidates": 1134,
+      "returned": 146
+    },
+    {
+      "owner": "student-030",
+      "ms": 104.28677899999457,
+      "candidates": 682,
+      "returned": 5
+    },
+    {
+      "owner": "student-367",
+      "ms": 115.06021999999939,
+      "candidates": 912,
+      "returned": 40
+    },
+    {
+      "owner": "student-015",
+      "ms": 115.18483399999968,
+      "candidates": 1130,
+      "returned": 95
+    },
+    {
+      "owner": "student-128",
+      "ms": 97.45181600000069,
+      "candidates": 1095,
+      "returned": 77
+    },
+    {
+      "owner": "student-275",
+      "ms": 155.33219200000167,
+      "candidates": 861,
+      "returned": 18
+    },
+    {
+      "owner": "student-385",
+      "ms": 108.7554799999998,
+      "candidates": 821,
+      "returned": 94
+    },
+    {
+      "owner": "student-378",
+      "ms": 93.91078199999902,
+      "candidates": 686,
+      "returned": 43
+    },
+    {
+      "owner": "student-346",
+      "ms": 135.39781899999798,
+      "candidates": 1038,
+      "returned": 107
+    },
+    {
+      "owner": "student-343",
+      "ms": 92.84387399999832,
+      "candidates": 720,
+      "returned": 7
+    },
+    {
+      "owner": "student-025",
+      "ms": 115.29896800000279,
+      "candidates": 811,
+      "returned": 58
+    },
+    {
+      "owner": "student-175",
+      "ms": 129.27497900000162,
+      "candidates": 948,
+      "returned": 40
+    },
+    {
+      "owner": "student-094",
+      "ms": 116.70336899999529,
+      "candidates": 1036,
+      "returned": 65
+    },
+    {
+      "owner": "student-111",
+      "ms": 80.86261899999954,
+      "candidates": 1188,
+      "returned": 107
+    },
+    {
+      "owner": "student-321",
+      "ms": 103.3818140000003,
+      "candidates": 1074,
+      "returned": 64
+    },
+    {
+      "owner": "student-161",
+      "ms": 171.31346800000028,
+      "candidates": 1364,
+      "returned": 63
+    },
+    {
+      "owner": "student-369",
+      "ms": 49.16563099999621,
+      "candidates": 864,
+      "returned": 89
+    },
+    {
+      "owner": "student-208",
+      "ms": 95.87194499999896,
+      "candidates": 1108,
+      "returned": 69
+    },
+    {
+      "owner": "student-097",
+      "ms": 112.66514499999903,
+      "candidates": 833,
+      "returned": 7
+    },
+    {
+      "owner": "student-326",
+      "ms": 71.20477599999867,
+      "candidates": 964,
+      "returned": 69
+    },
+    {
+      "owner": "student-202",
+      "ms": 131.1089639999991,
+      "candidates": 1213,
+      "returned": 34
+    },
+    {
+      "owner": "student-386",
+      "ms": 55.33256399999664,
+      "candidates": 861,
+      "returned": 49
+    },
+    {
+      "owner": "student-061",
+      "ms": 107.86135500000091,
+      "candidates": 847,
+      "returned": 86
+    },
+    {
+      "owner": "student-067",
+      "ms": 108.97801700000127,
+      "candidates": 597,
+      "returned": 16
+    },
+    {
+      "owner": "student-392",
+      "ms": 43.558828000001085,
+      "candidates": 626,
+      "returned": 44
+    },
+    {
+      "owner": "student-434",
+      "ms": 69.70370399999956,
+      "candidates": 982,
+      "returned": 86
+    },
+    {
+      "owner": "student-487",
+      "ms": 106.842227000001,
+      "candidates": 847,
+      "returned": 123
+    },
+    {
+      "owner": "student-141",
+      "ms": 91.79914600000484,
+      "candidates": 997,
+      "returned": 62
+    },
+    {
+      "owner": "student-248",
+      "ms": 77.90488700000424,
+      "candidates": 822,
+      "returned": 12
+    },
+    {
+      "owner": "student-335",
+      "ms": 165.8085360000041,
+      "candidates": 1180,
+      "returned": 88
+    },
+    {
+      "owner": "student-086",
+      "ms": 85.24360599999636,
+      "candidates": 1001,
+      "returned": 139
+    },
+    {
+      "owner": "student-149",
+      "ms": 161.56310400000075,
+      "candidates": 1111,
+      "returned": 78
+    },
+    {
+      "owner": "student-075",
+      "ms": 81.72008499999356,
+      "candidates": 928,
+      "returned": 57
+    },
+    {
+      "owner": "student-076",
+      "ms": 144.86284899999737,
+      "candidates": 1078,
+      "returned": 19
+    },
+    {
+      "owner": "student-221",
+      "ms": 154.4690550000014,
+      "candidates": 1207,
+      "returned": 106
+    },
+    {
+      "owner": "student-151",
+      "ms": 93.81528299999627,
+      "candidates": 563,
+      "returned": 18
+    },
+    {
+      "owner": "student-366",
+      "ms": 78.54279300000053,
+      "candidates": 460,
+      "returned": 9
+    },
+    {
+      "owner": "student-395",
+      "ms": 160.6759219999949,
+      "candidates": 908,
+      "returned": 27
+    },
+    {
+      "owner": "student-320",
+      "ms": 69.32638800000132,
+      "candidates": 1019,
+      "returned": 34
+    },
+    {
+      "owner": "student-389",
+      "ms": 206.1044619999957,
+      "candidates": 1145,
+      "returned": 27
+    },
+    {
+      "owner": "student-460",
+      "ms": 79.4811400000035,
+      "candidates": 949,
+      "returned": 9
+    },
+    {
+      "owner": "student-470",
+      "ms": 93.25277899999492,
+      "candidates": 881,
+      "returned": 12
+    },
+    {
+      "owner": "student-227",
+      "ms": 163.82941899999423,
+      "candidates": 1241,
+      "returned": 87
+    },
+    {
+      "owner": "student-052",
+      "ms": 105.78280099999392,
+      "candidates": 858,
+      "returned": 31
+    },
+    {
+      "owner": "student-110",
+      "ms": 61.46718500000134,
+      "candidates": 733,
+      "returned": 46
+    },
+    {
+      "owner": "student-435",
+      "ms": 100.75271900000371,
+      "candidates": 891,
+      "returned": 90
+    },
+    {
+      "owner": "student-260",
+      "ms": 69.96009500000218,
+      "candidates": 1002,
+      "returned": 74
+    },
+    {
+      "owner": "student-268",
+      "ms": 132.85011700000177,
+      "candidates": 1163,
+      "returned": 67
+    },
+    {
+      "owner": "student-307",
+      "ms": 77.25160399999731,
+      "candidates": 546,
+      "returned": 10
+    },
+    {
+      "owner": "student-084",
+      "ms": 70.38734499999555,
+      "candidates": 548,
+      "returned": 60
+    },
+    {
+      "owner": "student-458",
+      "ms": 68.20553800000198,
+      "candidates": 937,
+      "returned": 68
+    },
+    {
+      "owner": "student-266",
+      "ms": 101.61420199999702,
+      "candidates": 930,
+      "returned": 12
+    },
+    {
+      "owner": "student-428",
+      "ms": 94.84425100000226,
+      "candidates": 922,
+      "returned": 54
+    },
+    {
+      "owner": "student-493",
+      "ms": 95.71020300000237,
+      "candidates": 840,
+      "returned": 114
+    },
+    {
+      "owner": "student-394",
+      "ms": 114.09406100000342,
+      "candidates": 1107,
+      "returned": 88
+    },
+    {
+      "owner": "student-450",
+      "ms": 87.13002899999992,
+      "candidates": 726,
+      "returned": 35
+    },
+    {
+      "owner": "student-283",
+      "ms": 105.79876199999853,
+      "candidates": 906,
+      "returned": 84
+    },
+    {
+      "owner": "student-483",
+      "ms": 82.71814499999891,
+      "candidates": 870,
+      "returned": 50
+    },
+    {
+      "owner": "student-225",
+      "ms": 66.60959800000273,
+      "candidates": 784,
+      "returned": 6
+    },
+    {
+      "owner": "student-310",
+      "ms": 106.54935699999623,
+      "candidates": 1201,
+      "returned": 134
+    },
+    {
+      "owner": "student-103",
+      "ms": 99.8387470000016,
+      "candidates": 807,
+      "returned": 57
+    },
+    {
+      "owner": "student-043",
+      "ms": 110.96757300000172,
+      "candidates": 727,
+      "returned": 18
+    },
+    {
+      "owner": "student-217",
+      "ms": 87.79942299999675,
+      "candidates": 798,
+      "returned": 75
+    },
+    {
+      "owner": "student-252",
+      "ms": 69.83997999999701,
+      "candidates": 591,
+      "returned": 43
+    },
+    {
+      "owner": "student-313",
+      "ms": 93.23198099999718,
+      "candidates": 654,
+      "returned": 53
+    },
+    {
+      "owner": "student-337",
+      "ms": 116.33395700000256,
+      "candidates": 879,
+      "returned": 57
+    },
+    {
+      "owner": "student-024",
+      "ms": 106.63100999999733,
+      "candidates": 760,
+      "returned": 23
+    },
+    {
+      "owner": "student-319",
+      "ms": 98.2216069999995,
+      "candidates": 904,
+      "returned": 62
+    },
+    {
+      "owner": "student-339",
+      "ms": 103.94511900000361,
+      "candidates": 1033,
+      "returned": 61
+    },
+    {
+      "owner": "student-000",
+      "ms": 51.167992000002414,
+      "candidates": 703,
+      "returned": 5
+    },
+    {
+      "owner": "student-072",
+      "ms": 89.7621599999984,
+      "candidates": 787,
+      "returned": 46
+    },
+    {
+      "owner": "student-443",
+      "ms": 194.52121400000033,
+      "candidates": 1034,
+      "returned": 57
+    },
+    {
+      "owner": "student-136",
+      "ms": 163.9598130000013,
+      "candidates": 1267,
+      "returned": 63
+    },
+    {
+      "owner": "student-114",
+      "ms": 78.66030299999693,
+      "candidates": 423,
+      "returned": 10
+    },
+    {
+      "owner": "student-172",
+      "ms": 79.0410469999988,
+      "candidates": 878,
+      "returned": 99
+    },
+    {
+      "owner": "student-108",
+      "ms": 85.70016100000066,
+      "candidates": 544,
+      "returned": 6
+    },
+    {
+      "owner": "student-207",
+      "ms": 89.57381700000406,
+      "candidates": 1002,
+      "returned": 88
+    },
+    {
+      "owner": "student-479",
+      "ms": 145.08032699999603,
+      "candidates": 961,
+      "returned": 78
+    },
+    {
+      "owner": "student-447",
+      "ms": 72.02238800000487,
+      "candidates": 909,
+      "returned": 111
+    },
+    {
+      "owner": "student-028",
+      "ms": 113.3910939999987,
+      "candidates": 1055,
+      "returned": 127
+    },
+    {
+      "owner": "student-350",
+      "ms": 71.10592200000247,
+      "candidates": 802,
+      "returned": 55
+    },
+    {
+      "owner": "student-109",
+      "ms": 116.23608399999648,
+      "candidates": 1044,
+      "returned": 29
+    },
+    {
+      "owner": "student-365",
+      "ms": 169.58732500000042,
+      "candidates": 1103,
+      "returned": 125
+    },
+    {
+      "owner": "student-315",
+      "ms": 78.78309299999819,
+      "candidates": 956,
+      "returned": 54
+    },
+    {
+      "owner": "student-244",
+      "ms": 115.92942900000344,
+      "candidates": 1032,
+      "returned": 78
+    },
+    {
+      "owner": "student-148",
+      "ms": 140.3650140000027,
+      "candidates": 1084,
+      "returned": 99
+    },
+    {
+      "owner": "student-403",
+      "ms": 109.56400399999984,
+      "candidates": 845,
+      "returned": 69
+    },
+    {
+      "owner": "student-464",
+      "ms": 75.33509399999457,
+      "candidates": 793,
+      "returned": 44
+    },
+    {
+      "owner": "student-237",
+      "ms": 58.73365499999636,
+      "candidates": 884,
+      "returned": 45
+    },
+    {
+      "owner": "student-482",
+      "ms": 74.88943999999901,
+      "candidates": 1006,
+      "returned": 113
+    },
+    {
+      "owner": "student-071",
+      "ms": 152.08311500000127,
+      "candidates": 1029,
+      "returned": 44
+    },
+    {
+      "owner": "student-050",
+      "ms": 69.08588900000177,
+      "candidates": 805,
+      "returned": 49
+    },
+    {
+      "owner": "student-163",
+      "ms": 105.09669500000018,
+      "candidates": 803,
+      "returned": 39
+    },
+    {
+      "owner": "student-001",
+      "ms": 87.33658599999762,
+      "candidates": 726,
+      "returned": 69
+    },
+    {
+      "owner": "student-374",
+      "ms": 69.36076299999695,
+      "candidates": 836,
+      "returned": 19
+    },
+    {
+      "owner": "student-430",
+      "ms": 157.91633300000103,
+      "candidates": 1216,
+      "returned": 38
+    },
+    {
+      "owner": "student-375",
+      "ms": 92.52092800000537,
+      "candidates": 1009,
+      "returned": 14
+    },
+    {
+      "owner": "student-178",
+      "ms": 99.98473900000681,
+      "candidates": 1023,
+      "returned": 11
+    },
+    {
+      "owner": "student-181",
+      "ms": 72.09717800000362,
+      "candidates": 608,
+      "returned": 11
+    },
+    {
+      "owner": "student-176",
+      "ms": 87.05990799999563,
+      "candidates": 1023,
+      "returned": 83
+    },
+    {
+      "owner": "student-118",
+      "ms": 107.04762000000483,
+      "candidates": 1280,
+      "returned": 106
+    },
+    {
+      "owner": "student-354",
+      "ms": 105.79910199999722,
+      "candidates": 653,
+      "returned": 14
+    },
+    {
+      "owner": "student-019",
+      "ms": 118.56081799999811,
+      "candidates": 901,
+      "returned": 67
+    },
+    {
+      "owner": "student-471",
+      "ms": 72.04365899999539,
+      "candidates": 819,
+      "returned": 11
+    },
+    {
+      "owner": "student-474",
+      "ms": 110.53976200000034,
+      "candidates": 769,
+      "returned": 13
+    },
+    {
+      "owner": "student-124",
+      "ms": 134.47828599999775,
+      "candidates": 1112,
+      "returned": 71
+    },
+    {
+      "owner": "student-069",
+      "ms": 91.47904700000072,
+      "candidates": 1063,
+      "returned": 153
+    },
+    {
+      "owner": "student-200",
+      "ms": 79.31958699999814,
+      "candidates": 927,
+      "returned": 53
+    },
+    {
+      "owner": "student-092",
+      "ms": 94.443941000005,
+      "candidates": 957,
+      "returned": 12
+    },
+    {
+      "owner": "student-382",
+      "ms": 131.64341600000625,
+      "candidates": 1200,
+      "returned": 38
+    },
+    {
+      "owner": "student-398",
+      "ms": 102.356832999998,
+      "candidates": 968,
+      "returned": 63
+    },
+    {
+      "owner": "student-026",
+      "ms": 51.2265219999972,
+      "candidates": 580,
+      "returned": 9
+    },
+    {
+      "owner": "student-476",
+      "ms": 94.64800300000206,
+      "candidates": 824,
+      "returned": 16
+    },
+    {
+      "owner": "student-194",
+      "ms": 49.319838999996136,
+      "candidates": 709,
+      "returned": 7
+    },
+    {
+      "owner": "student-459",
+      "ms": 61.54512100000284,
+      "candidates": 1004,
+      "returned": 89
+    },
+    {
+      "owner": "student-077",
+      "ms": 157.3045259999999,
+      "candidates": 971,
+      "returned": 68
+    },
+    {
+      "owner": "student-480",
+      "ms": 90.288407,
+      "candidates": 538,
+      "returned": 46
+    },
+    {
+      "owner": "student-058",
+      "ms": 148.85691100000258,
+      "candidates": 1279,
+      "returned": 58
+    },
+    {
+      "owner": "student-098",
+      "ms": 62.375467999998364,
+      "candidates": 889,
+      "returned": 107
+    },
+    {
+      "owner": "student-250",
+      "ms": 135.48317800000223,
+      "candidates": 1258,
+      "returned": 91
+    },
+    {
+      "owner": "student-195",
+      "ms": 89.4009240000014,
+      "candidates": 798,
+      "returned": 43
+    },
+    {
+      "owner": "student-399",
+      "ms": 49.17834500000026,
+      "candidates": 817,
+      "returned": 154
+    },
+    {
+      "owner": "student-242",
+      "ms": 68.88155499999993,
+      "candidates": 850,
+      "returned": 13
+    },
+    {
+      "owner": "student-331",
+      "ms": 120.75955599999725,
+      "candidates": 852,
+      "returned": 49
+    },
+    {
+      "owner": "student-039",
+      "ms": 111.4068169999955,
+      "candidates": 1094,
+      "returned": 53
+    },
+    {
+      "owner": "student-397",
+      "ms": 90.00807100000384,
+      "candidates": 866,
+      "returned": 43
+    },
+    {
+      "owner": "student-445",
+      "ms": 79.2405510000026,
+      "candidates": 758,
+      "returned": 12
+    },
+    {
+      "owner": "student-489",
+      "ms": 72.46205299999565,
+      "candidates": 976,
+      "returned": 131
+    },
+    {
+      "owner": "student-258",
+      "ms": 80.6300029999984,
+      "candidates": 451,
+      "returned": 33
+    },
+    {
+      "owner": "student-432",
+      "ms": 91.66653799999767,
+      "candidates": 620,
+      "returned": 39
+    },
+    {
+      "owner": "student-254",
+      "ms": 59.793259999998554,
+      "candidates": 763,
+      "returned": 96
+    },
+    {
+      "owner": "student-157",
+      "ms": 119.8698710000026,
+      "candidates": 761,
+      "returned": 17
+    },
+    {
+      "owner": "student-427",
+      "ms": 88.69453999999678,
+      "candidates": 771,
+      "returned": 13
+    },
+    {
+      "owner": "student-413",
+      "ms": 186.7009229999967,
+      "candidates": 1285,
+      "returned": 51
+    },
+    {
+      "owner": "student-117",
+      "ms": 127.60216599999694,
+      "candidates": 1088,
+      "returned": 110
+    },
+    {
+      "owner": "student-426",
+      "ms": 112.32418499999767,
+      "candidates": 749,
+      "returned": 11
+    },
+    {
+      "owner": "student-491",
+      "ms": 203.6901299999954,
+      "candidates": 1244,
+      "returned": 64
+    },
+    {
+      "owner": "student-488",
+      "ms": 78.5237169999964,
+      "candidates": 901,
+      "returned": 82
+    },
+    {
+      "owner": "student-033",
+      "ms": 52.359122999994725,
+      "candidates": 828,
+      "returned": 6
+    },
+    {
+      "owner": "student-340",
+      "ms": 118.50133700000151,
+      "candidates": 1133,
+      "returned": 59
+    },
+    {
+      "owner": "student-126",
+      "ms": 100.87986700000329,
+      "candidates": 748,
+      "returned": 88
+    },
+    {
+      "owner": "student-456",
+      "ms": 68.48796700000094,
+      "candidates": 594,
+      "returned": 11
+    },
+    {
+      "owner": "student-469",
+      "ms": 63.57314100000076,
+      "candidates": 731,
+      "returned": 47
+    },
+    {
+      "owner": "student-495",
+      "ms": 92.33425799999532,
+      "candidates": 1042,
+      "returned": 19
+    },
+    {
+      "owner": "student-139",
+      "ms": 104.4263110000029,
+      "candidates": 933,
+      "returned": 59
+    },
+    {
+      "owner": "student-096",
+      "ms": 80.94042400000035,
+      "candidates": 735,
+      "returned": 13
+    },
+    {
+      "owner": "student-302",
+      "ms": 77.16812700000446,
+      "candidates": 906,
+      "returned": 42
+    },
+    {
+      "owner": "student-156",
+      "ms": 104.34776299999794,
+      "candidates": 736,
+      "returned": 10
+    },
+    {
+      "owner": "student-216",
+      "ms": 94.46958900000027,
+      "candidates": 606,
+      "returned": 9
+    },
+    {
+      "owner": "student-199",
+      "ms": 104.28173999999854,
+      "candidates": 722,
+      "returned": 21
+    },
+    {
+      "owner": "student-298",
+      "ms": 101.62887900000351,
+      "candidates": 1136,
+      "returned": 47
+    },
+    {
+      "owner": "student-373",
+      "ms": 92.28542600000219,
+      "candidates": 550,
+      "returned": 5
+    },
+    {
+      "owner": "student-012",
+      "ms": 99.06244200000219,
+      "candidates": 500,
+      "returned": 59
+    },
+    {
+      "owner": "student-391",
+      "ms": 112.7298959999971,
+      "candidates": 733,
+      "returned": 73
+    },
+    {
+      "owner": "student-442",
+      "ms": 131.68091499999719,
+      "candidates": 1268,
+      "returned": 90
+    },
+    {
+      "owner": "student-099",
+      "ms": 110.87029199999961,
+      "candidates": 1092,
+      "returned": 53
+    },
+    {
+      "owner": "student-127",
+      "ms": 120.8128979999965,
+      "candidates": 781,
+      "returned": 12
+    },
+    {
+      "owner": "student-021",
+      "ms": 74.7922569999937,
+      "candidates": 1077,
+      "returned": 158
+    },
+    {
+      "owner": "student-192",
+      "ms": 85.23521099999925,
+      "candidates": 707,
+      "returned": 58
+    },
+    {
+      "owner": "student-288",
+      "ms": 85.11911099999998,
+      "candidates": 621,
+      "returned": 100
+    },
+    {
+      "owner": "student-424",
+      "ms": 109.8521150000015,
+      "candidates": 1174,
+      "returned": 157
+    },
+    {
+      "owner": "student-437",
+      "ms": 165.46300899999915,
+      "candidates": 1251,
+      "returned": 88
+    },
+    {
+      "owner": "student-276",
+      "ms": 92.83799100000033,
+      "candidates": 351,
+      "returned": 34
+    },
+    {
+      "owner": "student-348",
+      "ms": 78.80931299999793,
+      "candidates": 727,
+      "returned": 14
+    },
+    {
+      "owner": "student-037",
+      "ms": 120.79463300000498,
+      "candidates": 739,
+      "returned": 54
+    },
+    {
+      "owner": "student-143",
+      "ms": 168.42803399999684,
+      "candidates": 1101,
+      "returned": 87
+    },
+    {
+      "owner": "student-066",
+      "ms": 94.64800199999445,
+      "candidates": 444,
+      "returned": 12
+    },
+    {
+      "owner": "student-177",
+      "ms": 92.73309600000357,
+      "candidates": 1052,
+      "returned": 96
+    },
+    {
+      "owner": "student-421",
+      "ms": 106.52895900000294,
+      "candidates": 890,
+      "returned": 26
+    },
+    {
+      "owner": "student-087",
+      "ms": 96.50454000000173,
+      "candidates": 990,
+      "returned": 123
+    },
+    {
+      "owner": "student-213",
+      "ms": 107.88340600000083,
+      "candidates": 1062,
+      "returned": 9
+    },
+    {
+      "owner": "student-277",
+      "ms": 118.45344599999953,
+      "candidates": 866,
+      "returned": 51
+    },
+    {
+      "owner": "student-188",
+      "ms": 51.1478350000034,
+      "candidates": 941,
+      "returned": 78
+    },
+    {
+      "owner": "student-219",
+      "ms": 76.93501000000106,
+      "candidates": 1172,
+      "returned": 125
+    },
+    {
+      "owner": "student-123",
+      "ms": 103.39018000000215,
+      "candidates": 1072,
+      "returned": 50
+    },
+    {
+      "owner": "student-342",
+      "ms": 98.4669969999959,
+      "candidates": 800,
+      "returned": 22
+    },
+    {
+      "owner": "student-446",
+      "ms": 56.17244700000447,
+      "candidates": 825,
+      "returned": 42
+    },
+    {
+      "owner": "student-336",
+      "ms": 111.70221999999922,
+      "candidates": 793,
+      "returned": 51
+    },
+    {
+      "owner": "student-408",
+      "ms": 80.55866000000242,
+      "candidates": 747,
+      "returned": 65
+    },
+    {
+      "owner": "student-431",
+      "ms": 206.07619999999588,
+      "candidates": 1197,
+      "returned": 56
+    },
+    {
+      "owner": "student-209",
+      "ms": 204.9373059999998,
+      "candidates": 1191,
+      "returned": 117
+    },
+    {
+      "owner": "student-322",
+      "ms": 104.11532799999986,
+      "candidates": 1173,
+      "returned": 54
+    },
+    {
+      "owner": "student-405",
+      "ms": 73.35745000000315,
+      "candidates": 1126,
+      "returned": 94
+    },
+    {
+      "owner": "student-078",
+      "ms": 69.55842299999495,
+      "candidates": 611,
+      "returned": 36
+    },
+    {
+      "owner": "student-384",
+      "ms": 94.34587700000702,
+      "candidates": 662,
+      "returned": 10
+    },
+    {
+      "owner": "student-235",
+      "ms": 175.4605470000024,
+      "candidates": 807,
+      "returned": 14
+    },
+    {
+      "owner": "student-038",
+      "ms": 89.30454400000599,
+      "candidates": 917,
+      "returned": 56
+    },
+    {
+      "owner": "student-477",
+      "ms": 123.17608299999847,
+      "candidates": 1110,
+      "returned": 16
+    },
+    {
+      "owner": "student-016",
+      "ms": 137.18032700000185,
+      "candidates": 1083,
+      "returned": 48
+    },
+    {
+      "owner": "student-465",
+      "ms": 69.41961299999821,
+      "candidates": 854,
+      "returned": 20
+    },
+    {
+      "owner": "student-150",
+      "ms": 115.5886410000021,
+      "candidates": 775,
+      "returned": 7
+    },
+    {
+      "owner": "student-144",
+      "ms": 76.06689400000323,
+      "candidates": 770,
+      "returned": 83
+    },
+    {
+      "owner": "student-187",
+      "ms": 117.36422599999787,
+      "candidates": 780,
+      "returned": 53
+    },
+    {
+      "owner": "student-314",
+      "ms": 78.86127000000124,
+      "candidates": 933,
+      "returned": 69
+    },
+    {
+      "owner": "student-107",
+      "ms": 189.85299899999518,
+      "candidates": 1461,
+      "returned": 81
+    },
+    {
+      "owner": "student-463",
+      "ms": 123.68899399999646,
+      "candidates": 738,
+      "returned": 11
+    },
+    {
+      "owner": "student-229",
+      "ms": 107.60393399999884,
+      "candidates": 889,
+      "returned": 110
+    },
+    {
+      "owner": "student-085",
+      "ms": 90.05729299999803,
+      "candidates": 775,
+      "returned": 62
+    },
+    {
+      "owner": "student-416",
+      "ms": 76.95882600000186,
+      "candidates": 1032,
+      "returned": 93
+    },
+    {
+      "owner": "student-402",
+      "ms": 89.19250199999806,
+      "candidates": 670,
+      "returned": 43
+    },
+    {
+      "owner": "student-211",
+      "ms": 114.25423099999898,
+      "candidates": 872,
+      "returned": 49
+    },
+    {
+      "owner": "student-060",
+      "ms": 121.40508700000646,
+      "candidates": 576,
+      "returned": 91
+    },
+    {
+      "owner": "student-451",
+      "ms": 149.84375900000305,
+      "candidates": 917,
+      "returned": 84
+    },
+    {
+      "owner": "student-304",
+      "ms": 175.60633100000268,
+      "candidates": 1236,
+      "returned": 95
+    },
+    {
+      "owner": "student-198",
+      "ms": 87.29081099999894,
+      "candidates": 529,
+      "returned": 32
+    },
+    {
+      "owner": "student-147",
+      "ms": 104.80148299999564,
+      "candidates": 904,
+      "returned": 18
+    },
+    {
+      "owner": "student-170",
+      "ms": 71.48182500000257,
+      "candidates": 838,
+      "returned": 14
+    },
+    {
+      "owner": "student-438",
+      "ms": 101.91731000000436,
+      "candidates": 753,
+      "returned": 30
+    },
+    {
+      "owner": "student-472",
+      "ms": 118.32729100000142,
+      "candidates": 1169,
+      "returned": 72
+    },
+    {
+      "owner": "student-330",
+      "ms": 107.28221900000062,
+      "candidates": 656,
+      "returned": 9
+    },
+    {
+      "owner": "student-282",
+      "ms": 114.14670900000056,
+      "candidates": 772,
+      "returned": 40
+    },
+    {
+      "owner": "student-090",
+      "ms": 77.47313900000154,
+      "candidates": 636,
+      "returned": 62
+    },
+    {
+      "owner": "student-228",
+      "ms": 88.07062099999894,
+      "candidates": 742,
+      "returned": 63
+    },
+    {
+      "owner": "student-048",
+      "ms": 93.21655099999771,
+      "candidates": 716,
+      "returned": 47
+    },
+    {
+      "owner": "student-032",
+      "ms": 53.334249999999884,
+      "candidates": 810,
+      "returned": 74
+    },
+    {
+      "owner": "student-412",
+      "ms": 145.01997400000255,
+      "candidates": 1169,
+      "returned": 91
+    },
+    {
+      "owner": "student-292",
+      "ms": 121.35825900000054,
+      "candidates": 1098,
+      "returned": 49
+    },
+    {
+      "owner": "student-498",
+      "ms": 70.98597700000391,
+      "candidates": 716,
+      "returned": 39
+    },
+    {
+      "owner": "student-049",
+      "ms": 126.66743399999541,
+      "candidates": 720,
+      "returned": 41
+    }
+  ]
+}

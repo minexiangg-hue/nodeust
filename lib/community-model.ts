@@ -174,6 +174,7 @@ export type MatchDetails = {
 };
 export type MatchPayload = PostPayload & { match: MatchDetails };
 export type MatchesResponse = {
+  relatedItems?: PostPayload[];
   items: MatchPayload[];
   hasMore: boolean;
   total: number;

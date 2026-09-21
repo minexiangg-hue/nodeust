@@ -1,0 +1,716 @@
+{
+  "summary": {
+    "oldVersion": "reciprocal-intents-v5",
+    "newVersion": "practical-rules-v1",
+    "scope": "Previously exposed 100-case fixture; v5 source checkpoint comparison, not new independent acceptance or proof of exact deployed source parity",
+    "positives": 50,
+    "oldMatches": 11,
+    "newMatches": 12,
+    "newMatchesOrRelated": 37,
+    "oldConflictMatches": 2,
+    "newConflictMatches": 2,
+    "conflictingPairsInRelated": 11
+  },
+  "rows": [
+    {
+      "id": "hall-001",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-002",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-003",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "hall-004",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "hall-005",
+      "expected": "match",
+      "before": null,
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "hall-006",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-007",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-008",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "hall-009",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "hall-010",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "hall-011",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-012",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-013",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-014",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-015",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-016",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "hall-017",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "hall-018",
+      "expected": "uncertain",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "hall-019",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "hall-020",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "goods-001",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-002",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-003",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-004",
+      "expected": "match",
+      "before": "high",
+      "after": "high",
+      "related": false
+    },
+    {
+      "id": "goods-005",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "goods-006",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-007",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "goods-008",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-009",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-010",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-011",
+      "expected": "reject",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-012",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "goods-013",
+      "expected": "reject",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-014",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "goods-015",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "goods-016",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "goods-017",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "goods-018",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "goods-019",
+      "expected": "uncertain",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "goods-020",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-001",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-002",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-003",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-004",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-005",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-006",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-007",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-008",
+      "expected": "match",
+      "before": "possible",
+      "after": "possible",
+      "related": false
+    },
+    {
+      "id": "study-009",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-010",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-011",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-012",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-013",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-014",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-015",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-016",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-017",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-018",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "study-019",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "study-020",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-001",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-002",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-003",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-004",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-005",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-006",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-007",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-008",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-009",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-010",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-011",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-012",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-013",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-014",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-015",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-016",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-017",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-018",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "transport-019",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "transport-020",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-001",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-002",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-003",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-004",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-005",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-006",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-007",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-008",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-009",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-010",
+      "expected": "match",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-011",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-012",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-013",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-014",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-015",
+      "expected": "reject",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-016",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-017",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-018",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    },
+    {
+      "id": "other-019",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": false
+    },
+    {
+      "id": "other-020",
+      "expected": "uncertain",
+      "before": null,
+      "after": null,
+      "related": true
+    }
+  ]
+}

@@ -377,6 +377,13 @@ export function MatchesPanel({
           </div>
         </output>
       )}
+      {data && !error && Boolean(data.relatedItems?.length) && (
+        <details className="match-details-guide" open>
+          <summary>{t('Related posts · not confirmed matches', '相关帖子 · 尚未确认匹配', '相關帖子 · 尚未確認配對')}</summary>
+          <p>{t('Similar wording only. Check whether your needs, timing and conditions fit before contacting the author.', '仅根据内容相关性提供线索。联系前请核对双方需求、时间和条件。', '僅根據內容相關性提供線索。聯絡前請核對雙方需求、時間和條件。')}</p>
+          {data.relatedItems?.map(item => <ActivityCard key={item.id} item={mapPost(item)} locale={locale} onClick={() => onOpen(mapPost(item))} />)}
+        </details>
+      )}
       {data && !error && (data.hasMore || page > 0) && (
         <nav
           className="match-pagination"

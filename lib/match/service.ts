@@ -1,3 +1,4 @@
+import { rankRelatedPosts } from './related.ts';
 import { and, asc, eq, gt, inArray, ne, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/mysql-core';
 import { getDb } from '@/db';
@@ -9,12 +10,12 @@ import {
 } from '@/db/schema';
 import {
   MatchIndex,
-  parseMatchPost,
   rankMatches,
   MATCH_VERSION,
 } from './engine.ts';
 import type { MatchPost } from './types.ts';
 import { ownPostGuidance } from './guidance.ts';
+import { parseCurrentMatchPost } from './parsed-post-cache.ts';
 
 const fields = {
   id: posts.id,
@@ -119,21 +120,11 @@ export async function getMemberMatches(
       ),
     loadIndex(),
   ]);
-  const parseCurrent = (post: PublicRow) => {
-    const cached = index.posts.get(post.id);
-    return cached &&
-      new Date(cached.post.updatedAt || cached.post.createdAt).getTime() ===
-        new Date(post.updatedAt || post.createdAt).getTime() &&
-      cached.post.title === post.title &&
-      cached.post.body === post.body &&
-      cached.post.currentHall === post.currentHall &&
-      cached.post.targetHall === post.targetHall
-      ? { ...cached, post }
-      : parseMatchPost(post);
-  };
+  const parseCurrent = (post: PublicRow) =>
+    parseCurrentMatchPost(post, index.posts.get(post.id));
   const own = ownRows.map(parseCurrent);
   const blockedOwners = new Set(blocked.map((row) => row.peerId));
-  const ids = [...index.candidates(own)].filter((id) => {
+  const ids = [...index.candidates(own, blockedOwners)].filter((id) => {
     const ownerId = index.posts.get(id)?.post.ownerId;
     return ownerId && ownerId !== memberId && !blockedOwners.has(ownerId);
   });
@@ -155,7 +146,9 @@ export async function getMemberMatches(
       );
     candidates.push(...rows.filter((row) => !blockedOwners.has(row.ownerId)));
   }
-  const ranked = rankMatches(own, candidates.map(parseCurrent), now);
+  const parsedCandidates = candidates.map(parseCurrent);
+  const ranked = rankMatches(own, parsedCandidates, now);
+  const related = process.env.NODE_RELATED_ENABLED === 'false' ? [] : rankRelatedPosts(own, parsedCandidates.filter(p => !options.kind || p.post.category === options.kind), new Set(ranked.map(r => r.post.id)), now);
   const visible = ranked.filter(
     (row) =>
       (options.includePossible || row.confidence === 'high') &&
@@ -164,6 +157,10 @@ export async function getMemberMatches(
   const details = new Map(candidates.map((row) => [row.id, row]));
   return {
     version: MATCH_VERSION,
+    relatedItems: related.map(({post}) => {
+      const row = details.get(post.id)!;
+      return { id: row.id, category: row.category, title: row.title, body: row.body, locationId: row.locationId, currentHall: row.currentHall, targetHall: row.targetHall, createdAt: row.createdAt, replyCount: row.replyCount, anonymousAlias: row.anonymousAlias, isMine: false };
+    }),
     items: visible.slice(options.offset, options.offset + 25).map((match) => {
       const row = details.get(match.post.id)!;
       // Explicit allowlist: identity, owner ID and hidden account fields never leave the server.

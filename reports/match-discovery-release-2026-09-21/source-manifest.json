@@ -1,0 +1,27 @@
+{
+  "buildId": "ydSGmmPz9uNsU3HLbk4wl",
+  "files": {
+    "lib/match/cache-state.ts": "aa84bc9f7e31a713688177e1ba3ed326e057a5dc5f7ff78769df834ebade4cbf",
+    "lib/match/constraints.ts": "3f40faf17535d8129815623e6d652f8cee259335037a558617774a263779c543",
+    "lib/match/cooperation.ts": "aa34cee8ce9d9cc01d9a06a7155837759ec2141f47bf94070ef4ee55ed24c48c",
+    "lib/match/engine.ts": "ed2e39ee4e1ad418e91b55cad265ee0b9e1160376f08fb1fb60432a366226296",
+    "lib/match/goods-authenticity.ts": "68a8f324721d825c8d3933c35e227d909c242b6a7ee05b5959083d5013688101",
+    "lib/match/guidance.ts": "50fc475da5400676b2327c62a37b9e5a617253f53f3b75130180e73e77c918fe",
+    "lib/match/housing-goods.ts": "18f670ebb7c2ee486c7d2d01dec351e5d5ea754efe9639e324a0ac1063320df3",
+    "lib/match/loan.ts": "42b1b82fd202e0e96bd6cfd02aa682d9b244aeb704d7aa845dbf404252e60b35",
+    "lib/match/mobility-study.ts": "41a36f5589571f26d929f8530a8b297036a4c5e649a346fd3f466e0d684f8be8",
+    "lib/match/open-study-topic.ts": "c40c4134f60da028551fe8623833aec8b43b9017b2cfaec640347c903bd9c8e3",
+    "lib/match/parsed-post-cache.ts": "23ace4a030aec3ea51720677b81cba336a4be2794bf5ea5b05b422eb03d28f5d",
+    "lib/match/related.ts": "4c7ab9e9d584820b54d8d65f8149b818a1e27a0b72d288db4ead78b33fe2be0d",
+    "lib/match/requirements.ts": "0a6bc316d905207d92b8ecca56839c84589f62477244fbcbbc7a3dda93d70ccc",
+    "lib/match/residence-text.ts": "7617c017a87850356419f934612ce36f75b874401bb66904042555cd32d3861b",
+    "lib/match/retrieval.ts": "9bbfb402372b13963e785ce868c2399270816575ac9aca67417e1e30ce74b42a",
+    "lib/match/semantic-schema.ts": "965c824066cec9c000792e4a5dbd223bf70fad82067f9a763217d6df61d4026f",
+    "lib/match/service.ts": "d1bdfd48f72a36a1cf623f9a0a13df0b3d5f5bd8b81b4a031a3036329749ef56",
+    "lib/match/study-fee.ts": "e9e5cdfa99a4901ce9e7cfea38cc409288ca7b4017c02099eaf3e2edb547d01a",
+    "lib/match/text.ts": "dbf100e905cf0e7e6e428e1843254bc5e5da1d000a0bf0a428deddd039e74257",
+    "lib/match/types.ts": "0f52506293eedfa2a4b1fdc8ba3f06eeb721c9ab5e75ecb65af05d4ea6b38122",
+    "lib/community-model.ts": "8ba89b92d7a2fc4c469f87bb1bd1f367b449b81eabf9fb0380ef647adb1228be",
+    "components/community/request-cards.tsx": "d902bb12a1ab3e4ba155bce941deaa8e9921563fafb11218bfc4948ddc8d4a3b"
+  }
+}

@@ -1,4 +1,5 @@
 import type { Money } from './constraints.ts';
+import type { MatchClaim, MatchRequirement } from './requirements.ts';
 
 /** Public post content only. Owner IDs are used by the server for exclusion, never extraction. */
 export type MatchPost = {
@@ -99,6 +100,9 @@ export type MatchIntent = {
   guestAccess?: 'provided' | 'restricted';
   /** Verbatim source snippets, never claims from latent test labels. */
   evidence: string[];
+  /** Explicit facts and counterpart requirements, scoped to this intent only. */
+  claims?: MatchClaim[];
+  requirements?: MatchRequirement[];
   /** Missing essential fields; prevents classification as a confident match. */
   missing: string[];
 };

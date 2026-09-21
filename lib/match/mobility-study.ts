@@ -1,3 +1,5 @@
+import { openStudyTopic } from './open-study-topic.ts';
+import { requestsCooperation } from './cooperation.ts';
 import { canonicalHallName } from './housing-goods.ts';
 import { studyFee } from './study-fee.ts';
 import type { MatchIntent, MatchPost } from './types.ts';
@@ -304,6 +306,7 @@ function studySide(text: string): MatchIntent['side'] | undefined {
   if (/\b(?:seeking|looking for|want|need) (?:a |one )?peer\b.{0,65}\b(?:practice|practise|review|revise|study|learn)\b/.test(t)) return 'peer';
   if (/\b(?:peer (?:flashcard |revision |study )?practice|learners (?:reviewing|practicing|revising)|more peers? welcome)\b/.test(t)) return 'peer';
   if (/\b(?:revision|study|studying|practice|learning|project|assignment|homework)\s+(?:buddy|buddies|partner|partners|group|together)|\b(?:revise|review|study|practice|learn)\s+(?:it\s+)?together|\b(?:study sesh|study session|problem sets? together|peer study|peer session|peers taking turns)|[温溫][书書]伴|一[齐齊起].{0,12}(?:[复複][习習]|[温溫][书書]|[学學][习習]|做[题題]|练[题題]|[读讀][书書])|(?:[学學][习習]|[复複][习習]|[温溫][书書])(?:搭子|同伴|伙伴|[伙夥]伴|小[组組]|伴)|[组組][队隊].{0,15}(?:作[业業]|[学學][习習])|相互反[馈饋]|互相反[馈饋]|一起刷[题題]|一[齐齊起]練(?:習|\s|[a-z電电積积])|(?<!不)互相[練练](?:習|习|\s|[a-z口听聽阅閱讀读写寫])|互相對下/.test(t)) return 'peer';
+  if (requestsCooperation(text, 'study')) return 'peer';
 }
 function studyEntities(text: string): { entity: string; start: number; end: number }[] {
   const courses = [...text.matchAll(/\b([A-Za-z]{2,8})\s*[-_]?\s*(\d{3,5}[A-Za-z]?)\b(?![-/]\d)/g)]
@@ -428,7 +431,7 @@ function parseStudySection(post: MatchPost): MatchIntent[] {
     const topicDetails = studyTopics(post.body || text, overallSide);
     const meeting = studyMeetingPlaces(post.body || text);
     return (meeting.places.length ? meeting.places : [undefined]).map(place => ({
-      kind: 'study', entity: 'unknown-course', side: overallSide, place,
+      kind: 'study', entity: openStudyTopic(post.body) ?? openStudyTopic(text) ?? 'unknown-course', side: overallSide, place,
       topics: topicDetails.topics, requiredTopics: topicDetails.requiredTopics,
       date: timing.date, minute: timing.minute, endMinute: timing.endMinute,
       strictTime: timing.strictTime, communication: language, evidence: evidence(text),
@@ -499,7 +502,7 @@ const ACTIVITIES: [string, RegExp][] = [
 function parseSocialSection(post: MatchPost): MatchIntent[] {
   const text = fullText(post); const t = normalizeText(text);
   if (isCancelled(text)) return [];
-  const invitation = /\b(?:anyone|anybody|someone|somebody)\b.{0,35}\b(?:up for|want|wanna|for|fancy|join|interested|free for|keen|down for)|\b(?:looking|lookin|find|seeking|want|need)\b.{0,55}\b(?:buddy|partner|buddies|companion|companions|company|people|someone|group|opponent|peers)|\b(?:buddy|partner|companion|opponent|peers)(?:\s+wanted|\b)|\b(?:let'?s|join me|join us|come along|wanna|who'?s up for|go together)|想[约約]同[学學]|想找人|有[没冇]有人?想一[齐齊起]|有[没冇]人.{0,35}(?:一[齐齊起]|打|行山|游泳|咖啡)|[约約]人|揾人|搵人|搵[个個]|揾[个個]|(?:搵|找).{0,12}(?:同伴|搭子|伙伴|夥伴)|另找人|一[齐齊起].{0,15}(?:吗|嗎|嘛|呀|啊|[？?])/.test(t);
+  const invitation = requestsCooperation(text, 'activity') || /\b(?:anyone|anybody|someone|somebody)\b.{0,35}\b(?:up for|want|wanna|for|fancy|join|interested|free for|keen|down for)|\b(?:looking|lookin|find|seeking|want|need)\b.{0,55}\b(?:buddy|partner|buddies|companion|companions|company|people|someone|group|opponent|peers)|\b(?:buddy|partner|companion|opponent|peers)(?:\s+wanted|\b)|\b(?:let'?s|join me|join us|come along|wanna|who'?s up for|go together)|想[约約]同[学學]|想找人|有[没冇]有人?想一[齐齊起]|有[没冇]人.{0,35}(?:一[齐齊起]|打|行山|游泳|咖啡)|[约約]人|揾人|搵人|搵[个個]|揾[个個]|(?:搵|找).{0,12}(?:同伴|搭子|伙伴|夥伴)|另找人|一[齐齊起].{0,15}(?:吗|嗎|嘛|呀|啊|[？?])/.test(t);
   if (/\b(?:not my event|not joining|just a diary|not want company|not looking for companions)\b|不是[约約]人|没有[约約]活[动動]|只是(?:感[叹嘆]|引用)|不[约約]人/.test(t)) return [];
   const joining = /\b(?:hoping|looking|want(?:ing)?|keen) to join\b|想加入|希望加入|想[参參]加/.test(t);
   const vacancies = quantity(t, [

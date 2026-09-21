@@ -1,0 +1,41 @@
+[
+  {
+    "path": "/api/health",
+    "status": 200,
+    "finalUrl": "https://nodeust.duckdns.org/api/health"
+  },
+  {
+    "path": "/login",
+    "status": 200,
+    "finalUrl": "https://nodeust.duckdns.org/login"
+  },
+  {
+    "path": "/matches",
+    "status": 200,
+    "finalUrl": "https://nodeust.duckdns.org/matches"
+  },
+  {
+    "asset": "/_next/static/css/a5d9556e806055ad.css",
+    "status": 200
+  },
+  {
+    "asset": "/_next/static/css/eb211b7f3c76f00f.css",
+    "status": 200
+  },
+  {
+    "asset": "/_next/static/chunks/webpack-b39d845ddadee24a.js",
+    "status": 200
+  },
+  {
+    "asset": "/_next/static/chunks/4bd1b696-93bf506b236d6248.js",
+    "status": 200
+  },
+  {
+    "asset": "/_next/static/chunks/3794-3679f1c05160977c.js",
+    "status": 200
+  },
+  {
+    "asset": "/_next/static/chunks/main-app-5bcb889341a6dc71.js",
+    "status": 200
+  }
+]

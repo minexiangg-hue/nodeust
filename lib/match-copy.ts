@@ -4,6 +4,7 @@ import type { Category, MatchReason } from '@/lib/community-model';
 type Copy = [string, string, string];
 
 const missingCopy: Record<string, Copy> = {
+  'requirement:item-authenticity': ['Confirm whether the item is genuine', '确认商品是否为正品', '確認商品是否為正品'],
   'item-format': ['Book format', '教材载体（纸本或电子版）', '教材載體（紙本或電子版）'],
   'item-language': ['Book language', '教材语言', '教材語言'],
   'guest-access': ['Confirm guest access to the venue', '确认访客能否进入场地', '確認訪客能否進入場地'],

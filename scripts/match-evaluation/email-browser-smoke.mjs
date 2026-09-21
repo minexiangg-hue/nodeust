@@ -18,6 +18,7 @@ export async function checkEmailMatchBrowser({base,cookie}) {
         page.on('pageerror',e=>errors.push(e.message));
         await page.goto(base+'/matches',{waitUntil:'networkidle'});
         await page.waitForFunction(()=>document.querySelectorAll('.match-result-card').length===25);
+        assert.ok(await page.getByText('Related posts · not confirmed matches',{exact:true}).isVisible());
         const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
         assert.equal(overflow,false,`${name} horizontal overflow`);
         await page.locator('.match-pagination').getByRole('button',{name:'Next',exact:true}).click();

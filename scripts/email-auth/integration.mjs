@@ -283,6 +283,8 @@ try {
     try {
       await db.execute("INSERT INTO users (id,identity_id,email,affiliation,full_name,nickname,anonymous_alias,role,status,created_at,updated_at) VALUES (?,?,?,'student','Synthetic peer','Synthetic peer','Synthetic peer','member','active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))",[peer,peer,`match-${peer}@connect.ust.hk`]);
       for(const id of offerIds) await db.execute("INSERT INTO posts (id,owner_id,category,title,body,location_id,status,created_at,updated_at) VALUES (?,?,'goods','Monitor available','Selling a monitor for HKD 50.','academic-building','active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))",[id,peer]);
+      const relatedId = crypto.randomUUID();
+      await db.execute("INSERT INTO posts (id,owner_id,category,title,body,location_id,status,created_at,updated_at) VALUES (?,?,'goods','Monitor calibration discussion','Monitor colour calibration notes and display setup.','academic-building','active',UTC_TIMESTAMP(3),UTC_TIMESTAMP(3))",[relatedId,peer]);
       const created = await fetch(base+'/api/posts',{method:'POST',headers:{'content-type':'application/json',cookie,origin:base},body:JSON.stringify({category:'goods',title:'Monitor wanted',body:'Looking to buy a monitor, budget HKD 100.',locationId:'academic-building'})});
       assert.equal(created.status,201);
       const [mine] = await db.execute("SELECT p.id FROM posts p JOIN users u ON u.id=p.owner_id WHERE u.identity_id=? AND p.title='Monitor wanted'",[identity]);
@@ -301,6 +303,10 @@ try {
       };
       const first=await page(0),second=await page(1);
       assert.equal(first.ownPostCount,103);
+      assert.ok(first.relatedItems.some(item=>item.id===relatedId));
+      assert.ok(!first.items.some(item=>item.id===relatedId));
+      for(const item of first.relatedItems)for(const key of ['ownerId','identityId','email','fullName','contactValue','match'])assert.ok(!(key in item));
+
       const items=[...first.items,...second.items];
       assert.equal(first.items.length,25);assert.equal(second.items.length,2);
       assert.equal(first.hasMore,true);assert.equal(second.hasMore,false);
@@ -348,7 +354,9 @@ try {
       for(const user of [me.owner_id,peer])await db.execute('INSERT INTO conversation_participants(id,conversation_id,user_id,is_blocked,joined_at) VALUES (?,?,?,false,UTC_TIMESTAMP(3))',[crypto.randomUUID(),matchConversation,user]);
       for(const user of [me.owner_id,peer]) {
         await db.execute('UPDATE conversation_participants SET is_blocked=true WHERE conversation_id=? AND user_id=?',[matchConversation,user]);
-        assert.equal((await page(0)).total,0);
+        const blockedResult=await page(0);
+        assert.equal(blockedResult.total,0);
+        assert.equal(blockedResult.relatedItems.length,0);
         await db.execute('UPDATE conversation_participants SET is_blocked=false WHERE conversation_id=?',[matchConversation]);
         assert.equal((await page(0)).total,25);
       }

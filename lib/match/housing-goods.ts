@@ -1,6 +1,7 @@
 import type { MatchIntent, MatchPost } from './types.ts';
 import { residenceDateRange, residenceMonthRange } from './residence-text.ts';
 import { loanPeriod } from './loan.ts';
+import { goodsAuthenticity } from './goods-authenticity.ts';
 import { parseResidenceLabel } from './constraints.ts';
 import { extractSchedule, isCancelled, normalizeText } from './text.ts';
 
@@ -727,9 +728,18 @@ function priceConstraint(
   const freePrice = pricedFree && !/not free|不是免费|不是免費/.test(text);
   const prices = [
     ...text.matchAll(
-      /(?:hk\s*\$|hkd\s*\$?|hk\$|港币|港幣|\$)\s*((?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.\d{1,2})?)|((?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.\d{1,2})?)\s*(?:hkd|hk\$|港币|港幣|蚊|元|块|塊|dollars?)|(?:asking|ask|budget(?:\s+(?:up to|of|is))?|up to|at most|max(?:imum)?|limit|under|<=|≤|要价|要價|预算(?:上限)?|預算(?:上限)?|最多出|最高|最多|卖|賣|售)\s*[:：]?\s*(?:hkd|hk\$|\$)?\s*((?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.\d{1,2})?)/gi,
+      /(?:hk\s*\$|hkd\s*\$?|hk\$|港币|港幣|\$)\s*((?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.\d{1,2})?)(?!\d|\.\d)|(?<![0-9.+−-])(?<!\d,)((?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.\d{1,2})?)(?!\d|\.\d)\s*(?:hkd|hk\$|港币|港幣|蚊|元|块|塊|dollars?)|(?:asking|ask|budget(?:\s+(?:up to|of|is))?|up to|at most|max(?:imum)?|limit|under|<=|≤|要价|要價|预算(?:上限)?|預算(?:上限)?|最多出|最高|最多|卖|賣|售)\s*[:：]?\s*(?:hkd|hk\$|\$)?\s*((?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.\d{1,2})?)(?!\d|\.\d)/gi,
     ),
   ];
+  // A malformed quote must not disappear when another valid quote or "free"
+  // occurs nearby. Check that every explicit money span was consumed.
+  const moneyMentions = [
+    ...text.matchAll(/(?:hk\s*\$|hkd\s*\$?|港币|港幣|\$)\s*[+−-]?(?:\d|\.\d)/gi),
+    ...text.matchAll(/[+−-]?(?:\d[\d,.]*|\.\d+)\s*(?:hkd|hk\$|港币|港幣|蚊|元|块|塊|dollars?)/gi),
+  ];
+  if (moneyMentions.some(mention => !prices.some(price =>
+    price.index! <= mention.index! && price.index! + price[0].length > mention.index!,
+  ))) return {missing: ['price_ambiguous']};
   const values = [
     ...new Set(
       prices.map((match) =>
@@ -737,6 +747,15 @@ function priceConstraint(
       ),
     ),
   ];
+  // A quoted amount must end at a numeric boundary. A comma immediately
+  // followed by digits can be a malformed grouping or a separate date/time.
+  // Only explicit calendar/clock syntax establishes the latter distinction.
+  const ambiguousGrouping = prices.some(match => {
+    const tail = text.slice(match.index! + match[0].length);
+    return /^,\d/.test(tail) &&
+      !/^,(?:20\d{2}(?:年|[-/]\d)|\d{1,2}(?:月|[:/]\d))/.test(tail);
+  });
+  if (ambiguousGrouping) return {missing: ['price_ambiguous']};
   if (!values.length) return freePrice ? { price: 0, missing: [] } : { missing: [] };
   if (freePrice && values.some(value => value !== 0)) return { missing: ['price_ambiguous'] };
   if (
@@ -1045,7 +1064,9 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
         start: mention.start - sentenceStart,
         end: mention.end - sentenceStart,
       });
-      if (!direction.side && source === post.body) {
+      // A title fills an absent role; it cannot reverse an explicit denial
+      // in the body (e.g. a sale title followed by "I don't have this model").
+      if (!direction.side && !direction.negated && source === post.body) {
         const titleMention = titleMentions.find(
           (item) => item.entity === mention.entity,
         );
@@ -1059,7 +1080,10 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
         );
         if (titleDirection.side) direction = titleDirection;
       }
-      if (!direction.side || direction.negated) continue;
+      const excludesUse = /(?:\b(?:cannot|can['’]t|could not|couldn['’]t)\s+(?:use|accept)|不接受|不能用|用不了|唔用得)\s*(?:(?:an?|the|my)\s+)?$/.test(
+        sentence.slice(0, mention.start - sentenceStart),
+      );
+      if (!direction.side || direction.negated || (direction.side === 'seek' && excludesUse)) continue;
       const start = prior ? Math.max(prior.end, sentenceStart) : 0;
       const end = next ? next.start : text.length;
       const after = text
@@ -1157,6 +1181,8 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
         /\b(?:not|around|about|approximately|at most|maximum)\b|不是|大約|大约|最多|[~–]/.test(context) ||
         (direction.side === 'seek' && !minimumThickness));
       if (thicknessUncertain) missing.push('item-thickness');
+      const {missing: authenticityMissing = [], ...authenticity} = goodsAuthenticity(context, direction.side, [literal(source)]);
+      missing.push(...authenticityMissing);
       const intent: MatchIntent = {
         kind: 'goods',
         entity,
@@ -1171,6 +1197,7 @@ export function parseGoods(post: MatchPost): MatchIntent[] {
         } : {}),
         ...(entity === 'yoga-mat' && !thicknessUncertain ? direction.side === 'offer' ? {thicknessMm:thickness} : {minimumThicknessMm:thickness} : {}),
         condition: conditionConstraint(context),
+        ...authenticity,
         ...details,
         evidence: [
           ...new Set([literal(post.title), literal(source)].filter(Boolean)),

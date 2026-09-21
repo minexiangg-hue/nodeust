@@ -1,11 +1,13 @@
+import { TextCandidateIndex } from './retrieval.ts';
 import type { MatchIntent, MatchPost, ParsedPost, PairMatch } from './types.ts';
 import { parseHousing, parseGoods } from './housing-goods.ts';
 import { parseTransport, parseStudy, parseSocial } from './mobility-study.ts';
 import { compareResidencePeriods, compareRoomAcceptance, parseResidenceLabel, compareMoney } from './constraints.ts';
 import { compareLoanPeriods } from './loan.ts';
+import { compareRequirements } from './requirements.ts';
 import type { RoomType } from './constraints.ts';
 
-export const MATCH_VERSION = 'reciprocal-intents-v6-dev';
+export const MATCH_VERSION = 'practical-discovery-v1';
 export const TIME_TOLERANCE_MINUTES = 30;
 
 export function parseMatchPost(post: MatchPost): ParsedPost {
@@ -102,6 +104,13 @@ export function compareIntents(
 ): PairMatch | null {
   if (a.kind !== b.kind || isExpired(a, now) || isExpired(b, now)) return null;
   const missing = new Set([...a.missing, ...b.missing]);
+  for (const result of [
+    ...compareRequirements(a.requirements, b.claims),
+    ...compareRequirements(b.requirements, a.claims),
+  ]) {
+    if (result.status === 'conflict') return null;
+    if (result.status === 'unknown') missing.add(`requirement:${result.key}`);
+  }
   const reasons: PairMatch['reasons'] = [];
   const required = (key: keyof MatchIntent, code: string) => {
     if (a[key] === undefined || b[key] === undefined) missing.add(code);
@@ -554,10 +563,18 @@ function indexKey(intent: MatchIntent, reverse = false): string {
 export class MatchIndex {
   posts = new Map<string, ParsedPost>();
   buckets = new Map<string, Set<string>>();
+  private textCandidates = new TextCandidateIndex();
   constructor(posts: readonly MatchPost[]) {
     for (const post of posts) this.add(parseMatchPost(post));
   }
   add(parsed: ParsedPost): void {
+    const previous = this.posts.get(parsed.post.id);
+    for (const intent of previous?.intents ?? []) {
+      const key = indexKey(intent), bucket = this.buckets.get(key);
+      bucket?.delete(parsed.post.id);
+      if (!bucket?.size) this.buckets.delete(key);
+    }
+    this.textCandidates.add(parsed.post);
     this.posts.set(parsed.post.id, parsed);
     for (const intent of parsed.intents) {
       const key = indexKey(intent);
@@ -566,12 +583,16 @@ export class MatchIndex {
       this.buckets.set(key, bucket);
     }
   }
-  candidates(own: readonly ParsedPost[]): Set<string> {
+  candidates(own: readonly ParsedPost[], excludedOwners: ReadonlySet<string> = new Set()): Set<string> {
     const result = new Set<string>();
     for (const post of own)
       for (const intent of post.intents)
         for (const id of this.buckets.get(indexKey(intent, true)) ?? [])
           result.add(id);
+    // Retrieval broadens discovery only. All candidates still pass comparePosts.
+    for (const post of own)
+      for (const candidate of this.textCandidates.search(post.post, { limit: 100, excludedOwners }))
+        result.add(candidate.id);
     return result;
   }
 }
